@@ -26,7 +26,7 @@ import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   sortSpeciesCounts,
-  speciesSortToApiParams,
+  speciesSortToSpeciesCountsParams,
 } from "sharedHelpers/speciesSort";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
@@ -402,7 +402,7 @@ const MyObservationsResults = ( ) => {
 
   // Map the selected sort option to API params
   const sortAPIParams = useMemo(
-    () => speciesSortToApiParams( myObsState.speciesSort ),
+    () => speciesSortToSpeciesCountsParams( myObsState.speciesSort ),
     [myObsState.speciesSort],
   );
 

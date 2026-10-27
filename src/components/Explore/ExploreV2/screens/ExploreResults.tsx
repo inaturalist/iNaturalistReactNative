@@ -53,7 +53,7 @@ import {
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   EXPLORE_SPECIES_SORT_OPTIONS,
-  speciesSortToApiParams,
+  speciesSortToSpeciesCountsParams,
   useSpeciesSortLabels,
 } from "sharedHelpers/speciesSort";
 import { useTranslation } from "sharedHooks";
@@ -208,7 +208,7 @@ const ExploreResults = ( ) => {
 
   const speciesListParams = useMemo( ( ) => ( {
     ...baseSearchParams,
-    ...speciesSortToApiParams( state.speciesSortBy ),
+    ...speciesSortToSpeciesCountsParams( state.speciesSortBy ),
   } ), [baseSearchParams, state.speciesSortBy] );
 
   const speciesCount = useSpeciesCount(

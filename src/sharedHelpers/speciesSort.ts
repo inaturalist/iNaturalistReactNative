@@ -1,10 +1,11 @@
 import useTranslation from "sharedHooks/useTranslation";
 import type { SortDirection, SpeciesCount } from "types/sorting";
 
-export type SpeciesOrderBy = "count";
+// Params for observations/species_counts, which only sorts by count
+type SpeciesCountsOrderBy = "count";
 
-export interface SpeciesSortAPIParams {
-  order_by: SpeciesOrderBy;
+export interface SpeciesCountsSortAPIParams {
+  order_by: SpeciesCountsOrderBy;
   order: SortDirection;
 }
 
@@ -18,7 +19,7 @@ export interface SpeciesSortLabels {
   text: string;
 }
 
-const SPECIES_SORT_TO_API_PARAMS: Record<SPECIES_SORT, SpeciesSortAPIParams> = {
+const SPECIES_SORT_TO_SPECIES_COUNTS_PARAMS: Record<SPECIES_SORT, SpeciesCountsSortAPIParams> = {
   [SPECIES_SORT.COUNT_DESC]: { order_by: "count", order: "desc" },
   [SPECIES_SORT.COUNT_ASC]: { order_by: "count", order: "asc" },
 };
@@ -48,8 +49,10 @@ export function useSpeciesSortLabels( ): Record<SPECIES_SORT, SpeciesSortLabels>
   };
 }
 
-export function speciesSortToApiParams( sort: SPECIES_SORT ): SpeciesSortAPIParams {
-  return SPECIES_SORT_TO_API_PARAMS[sort];
+export function speciesSortToSpeciesCountsParams(
+  sort: SPECIES_SORT,
+): SpeciesCountsSortAPIParams {
+  return SPECIES_SORT_TO_SPECIES_COUNTS_PARAMS[sort];
 }
 
 export function sortSpeciesCounts<T extends SpeciesCount>(
