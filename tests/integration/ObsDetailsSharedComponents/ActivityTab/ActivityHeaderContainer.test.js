@@ -107,4 +107,27 @@ describe( "ActivityHeaderContainer", ( ) => {
       } );
     } );
   } );
+
+  describe( "edit comment", ( ) => {
+    it( "suggests users for @mentions when typing @", async ( ) => {
+      const observer = factory( "RemoteUser" );
+      const mockComment = factory( "RemoteComment", { user: mockUser, body: "Nice " } );
+      renderComponent(
+        <ActivityHeaderContainer
+          item={mockComment}
+          mentionSuggestions={[observer]}
+        />,
+      );
+      fireEvent.press( await screen.findByLabelText( "Comment options" ) );
+      fireEvent.press( await screen.findByText( "Edit comment" ) );
+
+      const input = await screen.findByTestId( "TextInputSheet.notes" );
+      fireEvent.changeText( input, "Nice @" );
+      fireEvent( input, "selectionChange", {
+        nativeEvent: { selection: { start: 6, end: 6 } },
+      } );
+
+      expect( await screen.findByText( observer.login ) ).toBeVisible( );
+    } );
+  } );
 } );
