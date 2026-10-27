@@ -17,20 +17,20 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
 const PROJECT_OBSERVATION_RULE_FIELDS = {
   id: true,
   operand_id: true,
-  // TODO: this can be deleted from here and from realm persistence
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
   operand_type: true,
   operator: true,
   place: {
     display_name: true,
     id: true,
   },
-  // TODO: this can be deleted from here and from realm persistence
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
   project: {
     id: true,
     title: true,
   },
   taxon: {
-    // TODO: this should be changed to request a persitable taxon
+    // TODO: MOB-1946 this should be changed to request a persitable taxon
     ancestor_ids: true,
     id: true,
     name: true,
@@ -38,7 +38,7 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
     rank: true,
     rank_level: true,
   },
-  // TODO: this can be deleted from here and from realm persistence
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
   user: {
     id: true,
     login: true,
