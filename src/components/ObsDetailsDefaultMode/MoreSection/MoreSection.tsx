@@ -1,11 +1,8 @@
-// @flow
-
 import {
   Heading3,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 
 import DQAButton from "./DQAButton";
@@ -13,14 +10,19 @@ import ProjectButton from "./ProjectButton";
 import ShareButton from "./ShareButton";
 import ViewInBrowserButton from "./ViewInBrowserButton";
 
-type Props = {
-  observation: Object
+interface Props {
+  observation: {
+    id: number;
+    non_traditional_projects?: object[];
+    project_observations?: object[];
+    uuid: string;
+  };
 }
 
-const MoreSection = ( { observation }: Props ): Node => {
-  const observationUUID = observation?.uuid;
-
+const MoreSection = ( { observation }: Props ) => {
   if ( !observation ) return null;
+
+  const observationUUID = observation.uuid;
 
   return (
     <View className="m-4 mb-8">

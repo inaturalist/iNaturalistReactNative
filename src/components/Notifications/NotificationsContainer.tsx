@@ -5,13 +5,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
 import NotificationsList from "components/Notifications/NotificationsList";
 import React, { useCallback, useState } from "react";
-import type { RealmUser } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import {
   useInfiniteNotificationsScroll,
 } from "sharedHooks";
 
 interface Props {
-  currentUser: RealmUser | null;
+  currentUser: UserPojo | null;
   notificationParams: ApiObservationsUpdatesParams;
   onRefresh?: ( ) => void;
 }

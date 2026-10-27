@@ -1,19 +1,22 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiObservation } from "api/types";
 import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 
 interface Props {
-  observation: ApiObservation;
+  observation: {
+    non_traditional_projects?: object[];
+    project_observations?: object[];
+    uuid: string;
+  };
 }
 
 const ProjectButton = ( { observation }: Props ) => {
   const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
 
-  const traditionalProjectCount = observation?.project_observations?.length || 0;
-  const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
+  const traditionalProjectCount = observation.project_observations?.length || 0;
+  const nonTraditionalProjectCount = observation.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
 

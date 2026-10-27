@@ -4,7 +4,7 @@ const checkCamelAndSnakeCase = (
   camelCaseKey: string,
 ): any => { // eslint-disable-line @typescript-eslint/no-explicit-any
   if ( !object ) { return ""; }
-  const snakeCaseKey = camelCaseKey.replace( /[A-Z]/g, letter => `_${letter.toLowerCase()}` );
+  const snakeCaseKey = camelCaseKey.replace( /[A-Z]/g, letter => `_${letter.toLowerCase( )}` );
 
   return object[camelCaseKey] || object[snakeCaseKey];
 };

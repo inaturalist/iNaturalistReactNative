@@ -11,7 +11,10 @@ import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  taxon: object;
+  taxon: {
+    wikipedia_summary?: string;
+    wikipedia_url?: string;
+  };
 }
 
 const BASE_STYLE = {

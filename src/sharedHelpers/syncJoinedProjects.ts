@@ -1,6 +1,6 @@
 import { PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
 import type { ApiProjectSummaryWithPOF } from "api/types";
-import fetchUserProjects from "api/usersTyped";
+import { fetchUserProjects } from "api/users";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type Realm from "realm";
 import Project from "realmModels/Project";

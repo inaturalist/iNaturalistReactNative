@@ -1,5 +1,3 @@
-// @flow
-
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import {
   StackActions,
@@ -7,7 +5,9 @@ import {
   useNavigationState,
   useRoute,
 } from "@react-navigation/native";
+import { SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
+import type { ApiSpeciesCountSummary } from "api/types";
 import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
@@ -27,8 +27,8 @@ import { View } from "components/styledComponents";
 import i18n from "i18next";
 import compact from "lodash/compact";
 import find from "lodash/find";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ScrollView,
@@ -76,7 +76,7 @@ const { useRealm } = RealmContext;
 
 const isTablet = DeviceInfo.isTablet();
 
-const TaxonDetails = ( ): Node => {
+const TaxonDetails = ( ) => {
   // Local state
   const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -91,9 +91,15 @@ const TaxonDetails = ( ): Node => {
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
 
   // Hooks
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"TaxonDetails">["navigation"] &
+    TabStackScreenProps<"TaxonDetails">["navigation"]
+  >( );
   const navigateToExplore = useNavigateToExplore( );
-  const { params } = useRoute( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"TaxonDetails">["route"] &
+    TabStackScreenProps<"TaxonDetails">["route"]
+  >( );
   const {
     id, hideNavButtons, firstPhotoID, representativePhoto,
   } = params;
@@ -178,14 +184,10 @@ const TaxonDetails = ( ): Node => {
 
   const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxon?.id],
-    ( ) => fetchSpeciesCounts( {
+    ( ) => fetchSpeciesCounts<ApiSpeciesCountSummary>( {
       user_id: currentUser?.id,
       taxon_id: taxon?.id,
-      fields: {
-        taxon: {
-          id: true,
-        },
-      },
+      fields: SPECIES_COUNTS_SUMMARY_FIELDS,
     } ),
     {
       enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser ),

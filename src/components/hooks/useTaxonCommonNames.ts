@@ -1,4 +1,6 @@
+import { SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
+import type { ApiSpeciesCountVerboseSummary } from "api/types";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Taxon from "realmModels/Taxon";
@@ -25,14 +27,7 @@ const useTaxonCommonNames = ( ) => {
 
   const params = {
     per_page: 500,
-    fields: {
-      taxon: {
-        iconic_taxon_name: true,
-        id: true,
-        preferred_common_name: true,
-        name: true,
-      },
-    },
+    fields: SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS,
   };
 
   if ( userLocation?.latitude ) {
@@ -43,7 +38,7 @@ const useTaxonCommonNames = ( ) => {
   const realm = useRealm( );
   const { data } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", userLocation],
-    optsWithAuth => fetchSpeciesCounts(
+    optsWithAuth => fetchSpeciesCounts<ApiSpeciesCountVerboseSummary>(
       params,
       optsWithAuth,
     ),

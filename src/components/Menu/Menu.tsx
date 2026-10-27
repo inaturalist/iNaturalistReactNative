@@ -200,7 +200,7 @@ const Menu = ( ) => {
     navigation.goBack( );
   };
 
-  const onSubmitFeedback = useCallback( async ( feedbackText: string ) => {
+  const onSubmitFeedback = useCallback( async ( feedbackText: string | undefined ) => {
     if ( !isConnected ) {
       showOfflineAlert( t );
       return false;

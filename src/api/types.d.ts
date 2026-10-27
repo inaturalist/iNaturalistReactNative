@@ -1,6 +1,9 @@
-// Generic types, please keep alphabetized
 export interface ApiDefaultResult {
   id: number;
+}
+
+export interface ApiCount {
+  count: number;
 }
 
 export interface ApiOpts {
@@ -382,4 +385,49 @@ export interface ApiObservationsSearchParams extends ApiObservationFilterParams 
     typeof ORDER_BY_UPDATED_AT |
     typeof ORDER_BY_VOTES;
   return_bounds?: boolean;
+}
+
+// When using SPECIES_COUNTS_SUMMARY_FIELDS
+export interface ApiSpeciesCountSummary extends ApiRecord {
+  taxon: {
+    id: number;
+  };
+}
+
+// When using SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS
+export interface ApiSpeciesCountVerboseSummary extends ApiCount {
+  taxon: {
+    iconic_taxon_name: string | null;
+    id: number;
+    name: string;
+    preferred_common_name: string | null;
+  } | null;
+}
+
+// When using Taxon.LIMITED_TAXON_FIELDS
+export interface ApiTaxonLimited extends ApiRecord {
+  ancestor_ids: number[];
+  default_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+  representative_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  taxon_photos: {
+    photo: {
+      url: string | null;
+    } | null;
+  }[];
+}
+
+// When using SPECIES_COUNTS_DETAILS_FIELDS
+export interface ApiSpeciesCountDetails extends ApiCount {
+  taxon: ApiTaxonLimited;
 }

@@ -4,8 +4,9 @@ import {
   INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import type { MyObservationsStackScreenProps } from "navigation/types";
 import * as React from "react";
-import type { RealmUser } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
@@ -20,14 +21,16 @@ const DROP_SHADOW = getShadow( {
 } );
 
 interface Props {
-  currentUser: RealmUser | null;
+  currentUser: UserPojo | null;
 }
 
 const LoginBanner = ( {
   currentUser,
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation();
+  const navigation = useNavigation<
+    MyObservationsStackScreenProps<"MyObservationsResults">["navigation"]
+  >( );
   const loginBannerDismissed = useStore( state => state.layout.loginBannerDismissed );
   const setLoginBannerDismissed = useStore( state => state.layout.setLoginBannerDismissed );
 

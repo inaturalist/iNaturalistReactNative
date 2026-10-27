@@ -1,15 +1,12 @@
 // Directly imported, not from index.js to avoid circular dependency
 import Heading3 from "components/SharedComponents/Typography/Heading3";
 import React from "react";
+import type { UserPojo } from "realmModels/User";
 
 import InlineUserBase from "./InlineUserBase";
 
 interface Props {
-  user: {
-    id: number;
-    icon_url?: string;
-    login: string;
-  };
+  user: UserPojo;
   isConnected: boolean;
 }
 
