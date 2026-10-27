@@ -1,3 +1,4 @@
+import type { RealmObservation } from "realmModels/types";
 import useTranslation from "sharedHooks/useTranslation";
 import type { SortDirection, SpeciesCount } from "types/sorting";
 
@@ -90,6 +91,27 @@ export function speciesSortToTaxaObservedParams(
   sort: TaxaObservedSort,
 ): TaxaObservedSortAPIParams {
   return SPECIES_SORT_TO_TAXA_OBSERVED_PARAMS[sort];
+}
+
+const DATE_PREFIX = /^\d{4}-\d{2}-\d{2}/;
+
+// Local stand-in for taxa_observed's first_observed_on, for signed-out users. Prefers
+// observed_on, which the server sets on upload as the observation's local date. Local-only
+// observations only have observed_on_string (e.g. "2026-10-09T14:30"), so we fall back to
+// its date part. Strings from other clients can be in UTC (e.g. "2026-10-12 02:15:00Z"),
+// where the date part can be a day off, which is why observed_on should come first
+export function earliestObservedOn(
+  observations: Pick<RealmObservation, "observed_on" | "observed_on_string">[],
+): string | null {
+  return observations.reduce<string | null>( ( earliest, observation ) => {
+    const observedOn = (
+      observation.observed_on || observation.observed_on_string || ""
+    ).match( DATE_PREFIX )?.[0];
+    if ( !observedOn ) return earliest;
+    return !earliest || observedOn < earliest
+      ? observedOn
+      : earliest;
+  }, null );
 }
 
 // Matches taxa_observed: species without a first observed date go last in both

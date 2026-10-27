@@ -1,4 +1,5 @@
 import {
+  earliestObservedOn,
   EXPLORE_SPECIES_SORT_OPTIONS,
   isSpeciesCountsSort,
   sortSpeciesCounts,
@@ -99,6 +100,42 @@ describe( "speciesSort", ( ) => {
       const input = [...speciesCounts];
       sortSpeciesCounts( input, SPECIES_SORT.DATE_OBSERVED_NEWEST );
       expect( input ).toEqual( speciesCounts );
+    } );
+  } );
+
+  describe( "earliestObservedOn", ( ) => {
+    it( "returns the earliest date across observations", ( ) => {
+      expect( earliestObservedOn( [
+        { observed_on_string: "2024-05-01T10:00" },
+        { observed_on_string: "2019-02-03T23:59:59" },
+        { observed_on_string: "2021-07-04 00:00" },
+      ] ) ).toBe( "2019-02-03" );
+    } );
+
+    it( "uses observed_on when observed_on_string is missing", ( ) => {
+      expect( earliestObservedOn( [
+        { observed_on_string: null, observed_on: "2018-01-01" },
+        { observed_on_string: "2020-01-01T08:00" },
+      ] ) ).toBe( "2018-01-01" );
+    } );
+
+    it( "prefers observed_on over a UTC observed_on_string from another client", ( ) => {
+      expect( earliestObservedOn( [
+        { observed_on_string: "2026-10-12 02:15:00Z", observed_on: "2026-10-11" },
+      ] ) ).toBe( "2026-10-11" );
+    } );
+
+    it( "ignores observations without a usable date", ( ) => {
+      expect( earliestObservedOn( [
+        { observed_on_string: null },
+        { observed_on_string: "not a date" },
+        { observed_on_string: "2023-09-09T12:00" },
+      ] ) ).toBe( "2023-09-09" );
+    } );
+
+    it( "returns null when no observation has a date", ( ) => {
+      expect( earliestObservedOn( [{ observed_on_string: null }] ) ).toBeNull( );
+      expect( earliestObservedOn( [] ) ).toBeNull( );
     } );
   } );
 } );

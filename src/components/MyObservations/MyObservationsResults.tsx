@@ -26,6 +26,7 @@ import type { RealmObservation } from "realmModels/types";
 import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
+  earliestObservedOn,
   isSpeciesCountsSort,
   sortSpeciesCounts,
   speciesSortToSpeciesCountsParams,
@@ -399,7 +400,11 @@ const MyObservationsResults = ( ) => {
 
     return leafTaxonIds.map( id => {
       const obs = localObs.filter( o => o.taxon.id === id );
-      return { count: obs.length, taxon: obs[0].taxon };
+      return {
+        count: obs.length,
+        taxon: obs[0].taxon,
+        first_observed_on: earliestObservedOn( obs ),
+      };
     } );
   }, [currentUser, activeTab, realm, leafTaxonIds] );
 
