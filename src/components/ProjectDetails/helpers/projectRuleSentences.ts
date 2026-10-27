@@ -57,8 +57,6 @@ const ruleToSentence = (
   }
 };
 
-console.log( "ruleToSentence", ruleToSentence );
-
 const buildProjectRuleSentences = (
   rules: ApiProjectObservationRule[] | undefined,
   projectObservationFields: ApiProjectObservationField[] | undefined,
@@ -69,6 +67,7 @@ const buildProjectRuleSentences = (
   }
 
   const fieldNamesByID = observationFieldNameById( projectObservationFields );
+  const orConnector = t( "or--project-rule" );
   const sentences: string[] = [];
 
   rules.forEach( rule => {
@@ -83,6 +82,24 @@ const buildProjectRuleSentences = (
       sentences.push( sentence );
     }
   } );
+
+  const placeSentences = rules
+    .filter( rule => rule.operator === "observed_in_place?" )
+    .map( rule => ruleToSentence( rule, fieldNamesByID, t ) );
+  const combinedPlaceSentence = placeSentences.join( ` ${orConnector} ` );
+
+  if ( combinedPlaceSentence ) {
+    sentences.push( combinedPlaceSentence );
+  }
+
+  const taxonSentences = rules
+    .filter( rule => rule.operator === "in_taxon?" )
+    .map( rule => ruleToSentence( rule, fieldNamesByID, t ) );
+  const combinedTaxonSentence = taxonSentences.join( ` ${orConnector} ` );
+
+  if ( combinedTaxonSentence ) {
+    sentences.push( combinedTaxonSentence );
+  }
 
   return sentences;
 };

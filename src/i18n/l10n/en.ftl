@@ -997,7 +997,7 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 # Accessibility hint for search button in Explore header that navigates to the search interface
 Opens-search-interface = Opens search interface.
-# Connector placed between any number of alternative project rule sentences
+# Connector placed between any number of alternative project rule sentences, e.g. "must be observed in Germany or must be observed in France"
 or--project-rule = or
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
