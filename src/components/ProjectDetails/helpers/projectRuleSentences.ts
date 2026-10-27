@@ -38,6 +38,10 @@ const ruleToSentence = (
       return t( "must-have-media" );
     case "identified?":
       return t( "must-be-identified" );
+    case "in_taxon?": {
+      const name = rule.taxon?.name;
+      return t( "must-be-in-taxon", { name } );
+    }
     case "observed_in_place?": {
       const placeName = rule.place?.display_name;
       return t( "must-be-observed-in-place", { placeName } );
