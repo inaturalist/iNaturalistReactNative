@@ -196,9 +196,21 @@ const fetchUserEmailAvailable = async (
   }
 };
 
+const fetchTaxaObserved = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) => {
+  try {
+    return await inatjs.users.taxaObserved( params, opts );
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchTaxaObserved", opts } },
+    );
+  }
+};
+
 export {
   blockUser,
   fetchRemoteUser,
+  fetchTaxaObserved,
   fetchUserEmailAvailable,
   fetchUserMe,
   fetchUserProjects,
