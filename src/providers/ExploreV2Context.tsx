@@ -14,6 +14,7 @@ import {
 } from "providers/ExploreContext";
 import * as React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import type { SpeciesCountsSort } from "sharedHelpers/speciesSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 
 export enum EXPLORE_V2_ACTION {
@@ -129,7 +130,7 @@ export interface ExploreV2State {
   subject: ExploreV2Subject | null;
   location: ExploreV2LocationState;
   sortBy: OBSERVATIONS_SORT;
-  speciesSortBy: SPECIES_SORT;
+  speciesSortBy: SpeciesCountsSort;
   filters: ExploreV2Filters;
   activeTab: ExploreV2Tab;
   // Bumped each time a whole search is applied from outside the results screen, e.g. a
@@ -155,7 +156,7 @@ export type ExploreV2Action =
     bounds: ApiTotalBounds;
   }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
-  | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
+  | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SpeciesCountsSort }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
   | { type: EXPLORE_V2_ACTION.APPLY_SEARCH; search: ExploreV2Search }

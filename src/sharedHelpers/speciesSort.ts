@@ -9,9 +9,29 @@ export interface SpeciesCountsSortAPIParams {
   order: SortDirection;
 }
 
+// Params for users/:id/taxa_observed, which we only use for sorting by the date a
+// species was first observed, since it's more expensive than using species_counts
+type TaxaObservedOrderBy = "first_observed_on";
+
+export interface TaxaObservedSortAPIParams {
+  order_by: TaxaObservedOrderBy;
+  order: SortDirection;
+}
+
 export enum SPECIES_SORT {
   COUNT_DESC = "COUNT_DESC",
   COUNT_ASC = "COUNT_ASC",
+  DATE_OBSERVED_NEWEST = "DATE_OBSERVED_NEWEST",
+  DATE_OBSERVED_OLDEST = "DATE_OBSERVED_OLDEST",
+}
+
+// Sorts that observations/species_counts supports. Date sorts are MyObs-only, since
+// taxa_observed is scoped to a single user
+export type SpeciesCountsSort = SPECIES_SORT.COUNT_DESC | SPECIES_SORT.COUNT_ASC;
+type TaxaObservedSort = Exclude<SPECIES_SORT, SpeciesCountsSort>;
+
+export function isSpeciesCountsSort( sort: SPECIES_SORT ): sort is SpeciesCountsSort {
+  return sort === SPECIES_SORT.COUNT_DESC || sort === SPECIES_SORT.COUNT_ASC;
 }
 
 export interface SpeciesSortLabels {
@@ -19,23 +39,34 @@ export interface SpeciesSortLabels {
   text: string;
 }
 
-const SPECIES_SORT_TO_SPECIES_COUNTS_PARAMS: Record<SPECIES_SORT, SpeciesCountsSortAPIParams> = {
+const SPECIES_SORT_TO_SPECIES_COUNTS_PARAMS: Record<
+  SpeciesCountsSort,
+  SpeciesCountsSortAPIParams
+> = {
   [SPECIES_SORT.COUNT_DESC]: { order_by: "count", order: "desc" },
   [SPECIES_SORT.COUNT_ASC]: { order_by: "count", order: "asc" },
 };
 
-export const MY_OBSERVATIONS_SPECIES_SORT_OPTIONS: SPECIES_SORT[] = [
+const SPECIES_SORT_TO_TAXA_OBSERVED_PARAMS: Record<
+  TaxaObservedSort,
+  TaxaObservedSortAPIParams
+> = {
+  [SPECIES_SORT.DATE_OBSERVED_NEWEST]: { order_by: "first_observed_on", order: "desc" },
+  [SPECIES_SORT.DATE_OBSERVED_OLDEST]: { order_by: "first_observed_on", order: "asc" },
+};
+
+// TODO: offer the date sorts here once they have labels (MOB-1667)
+export const MY_OBSERVATIONS_SPECIES_SORT_OPTIONS: SpeciesCountsSort[] = [
   SPECIES_SORT.COUNT_DESC,
   SPECIES_SORT.COUNT_ASC,
 ];
 
-// idk if these will ever be different but this feels safer
-export const EXPLORE_SPECIES_SORT_OPTIONS: SPECIES_SORT[] = [
+export const EXPLORE_SPECIES_SORT_OPTIONS: SpeciesCountsSort[] = [
   SPECIES_SORT.COUNT_DESC,
   SPECIES_SORT.COUNT_ASC,
 ];
 
-export function useSpeciesSortLabels( ): Record<SPECIES_SORT, SpeciesSortLabels> {
+export function useSpeciesSortLabels( ): Record<SpeciesCountsSort, SpeciesSortLabels> {
   const { t } = useTranslation( );
   return {
     [SPECIES_SORT.COUNT_DESC]: {
@@ -50,9 +81,15 @@ export function useSpeciesSortLabels( ): Record<SPECIES_SORT, SpeciesSortLabels>
 }
 
 export function speciesSortToSpeciesCountsParams(
-  sort: SPECIES_SORT,
+  sort: SpeciesCountsSort,
 ): SpeciesCountsSortAPIParams {
   return SPECIES_SORT_TO_SPECIES_COUNTS_PARAMS[sort];
+}
+
+export function speciesSortToTaxaObservedParams(
+  sort: TaxaObservedSort,
+): TaxaObservedSortAPIParams {
+  return SPECIES_SORT_TO_TAXA_OBSERVED_PARAMS[sort];
 }
 
 export function sortSpeciesCounts<T extends SpeciesCount>(

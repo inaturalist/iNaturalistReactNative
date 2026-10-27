@@ -50,7 +50,7 @@ import {
   OBSERVATIONS_SORT,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
-import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import type { SpeciesCountsSort } from "sharedHelpers/speciesSort";
 import {
   EXPLORE_SPECIES_SORT_OPTIONS,
   speciesSortToSpeciesCountsParams,
@@ -132,7 +132,7 @@ const ExploreResults = ( ) => {
       };
       return acc;
     },
-    {} as Record<SPECIES_SORT, SortOption<SPECIES_SORT>>,
+    {} as Record<SpeciesCountsSort, SortOption<SpeciesCountsSort>>,
   );
 
   const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
@@ -453,7 +453,7 @@ const ExploreResults = ( ) => {
           confirm={speciesSortBy => {
             dispatch( {
               type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
-              speciesSortBy: speciesSortBy as SPECIES_SORT,
+              speciesSortBy: speciesSortBy as SpeciesCountsSort,
             } );
             setShowSortSheet( false );
           }}

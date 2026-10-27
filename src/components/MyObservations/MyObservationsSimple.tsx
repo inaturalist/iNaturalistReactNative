@@ -239,8 +239,8 @@ const MyObservationsSimple = ( {
     );
 
     const searchThisTaxon = ( ) => {
-      // fetchSpeciesCounts (logged in path) returns ApiTaxon-shaped (snake_case) taxa;
-      // the logged-out path returns real RealmTaxon (camelCase) objects.
+      // fetchSpeciesCounts and fetchTaxaObserved (logged in path) return ApiTaxon-shaped
+      // (snake_case) taxa; the logged-out path returns real RealmTaxon (camelCase) objects.
       // SpeciesCount.taxon is only typed as RealmTaxon, so narrow between both
       // shapes the same way SearchMyObservationsTaxon.tsx does.
       const taxon = speciesCount.taxon as ApiTaxon | RealmTaxon;
