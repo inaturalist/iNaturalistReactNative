@@ -27,9 +27,7 @@ const useTaxonCommonNames = ( ) => {
 
   const params = {
     per_page: 500,
-    fields: {
-      taxon: SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS,
-    },
+    fields: SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS,
   };
 
   if ( userLocation?.latitude ) {
