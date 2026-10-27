@@ -1,5 +1,3 @@
-// @flow
-
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { fontRegular } from "appConstants/fontFamilies";
 import {
@@ -7,8 +5,9 @@ import {
   MentionTextInput,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
+import type { TFunction } from "i18next";
 import React, { useMemo, useState } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -20,20 +19,24 @@ import colors from "styles/tailwindColors";
 // (e.g. iPhone SE) will jerk around a bit to avoid the top inset
 const TARGET_INPUT_HEIGHT = 220;
 
-type Props = {
-  buttonText: string,
-  confirm: Function,
-  description?: string,
-  mentionsEnabled?: boolean,
-  onPressClose: Function,
-  headerText: string,
-  initialInput?: string,
-  maxLength?: number,
-  placeholder?: string,
-  textInputStyle?: Object
+interface Props {
+  buttonText?: string;
+  confirm: ( input: string | undefined ) => boolean;
+  description?: string;
+  mentionsEnabled?: boolean;
+  onPressClose: ( ) => void;
+  headerText: string;
+  initialInput?: string;
+  maxLength?: number;
+  placeholder?: string;
+  textInputStyle?: object;
 }
 
-const CharLimit = ( { current = 0, limit = 1, t } ) => {
+const CharLimit = ( { current = 0, limit = 1, t }: {
+  current?: number;
+  limit?: number;
+  t: TFunction;
+} ) => {
   let currentColor = "text-darkGrayDisabled";
   if ( current / limit >= 1 ) {
     currentColor = "text-warningRed";
@@ -66,7 +69,7 @@ const TextInputSheet = ( {
   maxLength,
   placeholder,
   textInputStyle,
-}: Props ): Node => {
+}: Props ) => {
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
@@ -102,7 +105,7 @@ const TextInputSheet = ( {
       onPressClose={dismissKeyboardAndClose}
       headerText={headerText}
       keyboardShouldPersistTaps="always"
-      onLayout={event => {
+      onLayout={( event: LayoutChangeEvent ) => {
         const { height } = event.nativeEvent.layout;
         // Only do this once. Device height isn't going to change
         if ( sheetHeight === 0 ) {
@@ -169,6 +172,7 @@ const TextInputSheet = ( {
             // If the confirm() callback returns false, something went wrong
             // and the user may need to edit the text or do something else
             // before we close the sheet
+            // TODO: confirm is async in some cases
             if ( confirm( input ) !== false ) {
               dismissKeyboardAndClose( );
             }

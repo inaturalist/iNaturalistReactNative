@@ -1,10 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiProjectType, ProjectRulePreference } from "api/types";
+import type {
+  ApiProjectObservationField,
+  ApiProjectObservationRule,
+  ApiProjectType,
+  ProjectRulePreference,
+} from "api/types";
 import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import isTraditionalProject from "components/Projects/helpers/isTraditionalProject";
 import {
+  Body2,
   Body4,
   Button,
   Heading1,
@@ -31,6 +37,7 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+import buildProjectRuleSentences from "./helpers/projectRuleSentences";
 import type {
   COORDINATE_ACCESS,
 } from "./Sheets/CoordinateAccessSheet";
@@ -65,6 +72,8 @@ interface Project {
   membership_model: "inviteonly" | "open" | null;
   members_count?: number;
   observations_count?: number;
+  project_observation_fields?: ApiProjectObservationField[];
+  project_observation_rules?: ApiProjectObservationRule[];
   project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   species_count?: number;
@@ -140,6 +149,11 @@ const ProjectDetails = ( {
 
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
   const isTraditional = isTraditionalProject( project.project_type );
+  const projectRuleSentences = buildProjectRuleSentences(
+    project.project_observation_rules,
+    project.project_observation_fields,
+    t,
+  );
 
   const displayBriefcase = ( ) => (
     <INatIcon
@@ -235,6 +249,16 @@ const ProjectDetails = ( {
                 />
               );
             } )}
+          </View>
+        )}
+        {project.project_type === "" && (
+          <View className="mt-8">
+            <Heading4 className="mb-3">{t( "PROJECT-RULES" )}</Heading4>
+            {projectRuleSentences.map( sentence => (
+              <Body2 key={sentence} className="mb-1">
+                {`• ${sentence}`}
+              </Body2>
+            ) )}
           </View>
         )}
         {project.project_type === "collection" && (

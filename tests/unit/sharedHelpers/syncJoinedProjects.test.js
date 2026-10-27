@@ -1,12 +1,11 @@
-import fetchUserProjects from "api/usersTyped";
+import { fetchUserProjects } from "api/users";
 import Project from "realmModels/Project";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";
 import factory from "tests/factory";
 
-jest.mock( "api/usersTyped", () => ( {
-  __esModule: true,
-  default: jest.fn( ),
+jest.mock( "api/users", () => ( {
+  fetchUserProjects: jest.fn( ),
 } ) );
 
 const currentUserId = 42;

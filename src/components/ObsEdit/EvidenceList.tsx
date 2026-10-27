@@ -1,5 +1,3 @@
-// @flow
-
 import deleteRemoteObservationSound from "api/observationSounds";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -10,11 +8,11 @@ import {
 import findIndex from "lodash/findIndex";
 import sortBy from "lodash/sortBy";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, {
   useCallback, useMemo, useState,
 } from "react";
 import { Alert } from "react-native";
+import type { DragEndParams, RenderItem } from "react-native-draggable-flatlist";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
@@ -28,21 +26,24 @@ import colors from "styles/tailwindColors";
 const { useRealm } = RealmContext;
 const logger = log.extend( "EvidenceList" );
 
-type Props = {
-  handleAddEvidence?: Function,
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
+interface Props {
+  handleAddEvidence?: ( ) => void;
   observationSounds?: {
-    id?: number,
-    sound: {
-      file_url: string,
-    },
-    uuid: string
-  }[]
+    id?: number;
+    sound: SoundItem;
+    uuid: string;
+  }[];
 }
 
 const EvidenceList = ( {
   handleAddEvidence,
   observationSounds = [],
-}: Props ): Node => {
+}: Props ) => {
   const currentObservation = useStore( state => state.currentObservation );
 
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
@@ -51,7 +52,7 @@ const EvidenceList = ( {
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
   const { t } = useTranslation( );
-  const [selectedMediaUri, setSelectedMediaUri]: [string | null, Function] = useState( null );
+  const [selectedMediaUri, setSelectedMediaUri] = useState<string | null>( null );
   const [deleting, setDeleting] = useState( false );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
@@ -68,7 +69,7 @@ const EvidenceList = ( {
     ...observationSounds.map( obsSound => obsSound.sound.file_url ),
   ] ), [photoUris, observationSounds] );
 
-  const handleDragAndDrop = useCallback( ( { data: newPhotoPositions } ) => {
+  const handleDragAndDrop = useCallback( ( { data: newPhotoPositions }: DragEndParams<string> ) => {
     const newObsPhotos = observationPhotos.map( ( obsPhoto => {
       const { photo } = obsPhoto;
       const photoUri = Photo.displayLocalOrRemoteSquarePhoto( photo );
@@ -85,8 +86,8 @@ const EvidenceList = ( {
     updateObservationKeys,
   ] );
 
-  const renderPhoto = useCallback(
-    ( { item: obsPhotoUri, _getIndex, drag } ) => (
+  const renderPhoto: RenderItem<string> = useCallback(
+    ( { item: obsPhotoUri, drag } ) => (
       <ScaleDecorator>
         <Pressable
           onLongPress={drag}
@@ -159,7 +160,7 @@ const EvidenceList = ( {
     </Pressable>
   ), [handleAddEvidence, t] );
 
-  const afterMediaDeleted = useCallback( deletedUri => {
+  const afterMediaDeleted = useCallback( ( deletedUri: string ) => {
     // If there was was only one item and it was deleted, close the modal by
     // nullifying the selected media URI. Otherwise, choose the last
     // remaining item.
@@ -176,13 +177,13 @@ const EvidenceList = ( {
     ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth ),
   );
 
-  const onDeletePhoto = useCallback( async uriToDelete => {
+  const onDeletePhoto = useCallback( async ( uriToDelete: string ) => {
     await ObservationPhoto.deletePhoto( uriToDelete, currentObservation, realm );
     deletePhotoFromObservation( uriToDelete );
     afterMediaDeleted( uriToDelete );
   }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, realm] );
 
-  const onDeleteSound = useCallback( async uriToDelete => {
+  const onDeleteSound = useCallback( async ( uriToDelete: string ) => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );
     async function removeLocalSound( ) {
       deleteSoundFromObservation( uriToDelete );

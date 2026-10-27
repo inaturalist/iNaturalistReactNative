@@ -1,21 +1,25 @@
-// @flow
-
+import type { ParamListRoute } from "@react-navigation/native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import AddObsTooltip from "components/AddObsBottomSheet/AddObsTooltip";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { navigationRef } from "navigation/navigationUtils";
+import type { RootStackParamList } from "navigation/types";
 import * as React from "react";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
 
+import ADD_OBS_SCREENS from "./types";
+
 const logger = log.extend( "AddObsButton" );
 
-const AddObsButton = ( ): React.Node => {
+const AddObsButton = ( ) => {
   const [showBottomSheet, setShowBottomSheet] = React.useState( false );
   const [showTooltip, setShowTooltip] = React.useState( false );
-  const [currentRoute, setCurrentRoute] = React.useState( null );
+  const [currentRoute, setCurrentRoute] = React.useState<
+    ParamListRoute<RootStackParamList> | undefined | null
+  >( null );
 
   const { t } = useTranslation();
 
@@ -115,10 +119,14 @@ const AddObsButton = ( ): React.Node => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  type Screen = "ObsEdit" | "Camera" | "PhotoLibrary" | "SoundRecorder";
-  const navAndCloseBottomSheet = ( screen: Screen, params ) => {
-    if ( screen !== "ObsEdit" ) {
-      resetObservationFlowSlice( );
+  const navAndCloseBottomSheet = (
+    screen: ADD_OBS_SCREENS,
+    params?: {
+      camera?: string;
+    },
+  ) => {
+    if ( screen !== ADD_OBS_SCREENS.OBS_EDIT ) {
+      resetObservationFlowSlice();
     }
 
     // we need to reset the navigation stack whenever a user navigates from the AddObs wheel,
@@ -145,7 +153,9 @@ const AddObsButton = ( ): React.Node => {
 
     closeBottomSheet( );
   };
-  const navToARCamera = ( ) => { navAndCloseBottomSheet( "Camera", { camera: "AI" } ); };
+  const navToARCamera = ( ) => {
+    navAndCloseBottomSheet( ADD_OBS_SCREENS.CAMERA, { camera: "AI" } );
+  };
 
   // #endregion
 

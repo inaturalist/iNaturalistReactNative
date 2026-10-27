@@ -13,7 +13,7 @@ import {
 } from "api/projects";
 import { updateProjectUser } from "api/projectUsers";
 import type {
-  ApiObservationsSearchResponse, ApiProject, ApiResponse,
+  ApiObservationsSearchResponse, ApiProject,
 } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
@@ -81,7 +81,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
-  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data: speciesCounts } = useAuthenticatedQuery(
     speciesCountsQueryKey,
     ( ) => fetchSpeciesCounts( {
       project_id: id,
@@ -211,6 +211,8 @@ const ProjectDetailsContainer = ( ) => {
       icon: project.icon,
       id: project.id,
       membership_model: project.membership_model,
+      project_observation_fields: project.project_observation_fields,
+      project_observation_rules: project.project_observation_rules,
       project_type: project.project_type,
       rule_preferences: project.rule_preferences,
       title: project.title,

@@ -1,4 +1,3 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
 import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
@@ -11,9 +10,10 @@ import {
   Pressable, View,
 } from "components/styledComponents";
 import Arrow from "images/svg/curved_arrow_down.svg";
-import type { Node } from "react";
+import type { MyObservationsStackScreenProps } from "navigation/types";
 import React from "react";
 import { I18nManager } from "react-native";
+import type { UserPojo } from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
 import LoginBanner from "./LoginBanner";
@@ -21,15 +21,17 @@ import LoginBanner from "./LoginBanner";
 const MIRRORED = { transform: [{ rotateY: "180deg" }] };
 
 interface Props {
-  currentUser: Object | null;
+  currentUser: UserPojo | null;
   isConnected: boolean;
   justFinishedSignup: boolean;
 }
 
 const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSignup }:
-  Props ): Node => {
+  Props ) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = useNavigation<
+    MyObservationsStackScreenProps<"MyObservationsResults">["navigation"]
+  >( );
 
   const navToARCamera = ( ) => {
     navigation.navigate( "NoBottomTabStackNavigator", {
@@ -65,11 +67,9 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
               className="absolute right-[-20px] top-[-23px]"
               style={I18nManager.isRTL && MIRRORED}
             >
-              {/* $FlowIgnore[not-a-component] */}
               <Arrow />
             </View>
             <GradientButton
-              clas
               accessibilityLabel={t( "Add-observations" )}
               sizeClassName="w-[141px] h-[141px] self-center"
               onPress={navToARCamera}

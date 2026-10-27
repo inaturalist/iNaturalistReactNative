@@ -9,9 +9,11 @@ import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
+import ADD_OBS_SCREENS from "./types";
+
 interface Props {
   closeBottomSheet: ( ) => void;
-  navAndCloseBottomSheet: ( screen: string, params?: {
+  navAndCloseBottomSheet: ( screen: ADD_OBS_SCREENS, params?: {
     camera?: string;
   } ) => void;
   hidden: boolean;
@@ -44,7 +46,7 @@ const AddObsBottomSheet = ( {
     aiCamera: {
       text: t( "ID-in-Camera" ),
       icon: "aicamera",
-      onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "AI" } ),
+      onPress: ( ) => navAndCloseBottomSheet( ADD_OBS_SCREENS.CAMERA, { camera: "AI" } ),
       testID: "aicamera-button",
       accessibilityLabel: t( "AI-Camera" ),
       accessibilityHint: t( "Navigates-to-AI-camera" ),
@@ -52,7 +54,7 @@ const AddObsBottomSheet = ( {
     standardCamera: {
       text: t( "Take-photos" ),
       icon: "camera",
-      onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "Standard" } ),
+      onPress: ( ) => navAndCloseBottomSheet( ADD_OBS_SCREENS.CAMERA, { camera: "Standard" } ),
       testID: "camera-button",
       accessibilityLabel: t( "Camera" ),
       accessibilityHint: t( "Navigates-to-camera" ),
@@ -60,7 +62,7 @@ const AddObsBottomSheet = ( {
     photoLibrary: {
       text: t( "Upload-photos" ),
       icon: "photo-library",
-      onPress: ( ) => navAndCloseBottomSheet( "PhotoLibrary" ),
+      onPress: ( ) => navAndCloseBottomSheet( ADD_OBS_SCREENS.PHOTO_LIBRARY ),
       testID: "import-media-button",
       accessibilityLabel: t( "Photo-importer" ),
       accessibilityHint: t( "Navigates-to-photo-importer" ),
@@ -68,7 +70,7 @@ const AddObsBottomSheet = ( {
     soundRecorder: {
       text: t( "Record-a-sound" ),
       icon: "microphone",
-      onPress: ( ) => navAndCloseBottomSheet( "SoundRecorder" ),
+      onPress: ( ) => navAndCloseBottomSheet( ADD_OBS_SCREENS.SOUND_RECORDER ),
       testID: "record-sound-button",
       accessibilityLabel: t( "Sound-recorder" ),
       accessibilityHint: t( "Navigates-to-sound-recorder" ),
@@ -79,7 +81,7 @@ const AddObsBottomSheet = ( {
       onPress: async ( ) => {
         const newObservation = await Observation.new( );
         prepareObsEdit( newObservation );
-        navAndCloseBottomSheet( "ObsEdit" );
+        navAndCloseBottomSheet( ADD_OBS_SCREENS.OBS_EDIT );
       },
       testID: "observe-without-evidence-button",
       accessibilityLabel: t( "Observation-with-no-evidence" ),
