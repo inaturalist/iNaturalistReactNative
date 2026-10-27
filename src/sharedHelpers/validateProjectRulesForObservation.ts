@@ -70,13 +70,24 @@ const isGeoreferenced = ( observation: RealmObservationPojo ) => (
   && typeof observation.privateLongitude === "number"
 );
 
-const photoCount = ( observation: RealmObservationPojo ) => (
-  observation.observationPhotos?.length ?? 0
+const hasPhoto = ( observation: RealmObservationPojo ) => !!observation.observationPhotos?.length;
+
+const hasSound = ( observation: RealmObservationPojo ) => !!observation.observationSounds?.length;
+
+const hasMedia = ( observation: RealmObservationPojo ) => (
+  hasPhoto( observation ) || hasSound( observation )
 );
 
-const soundCount = ( observation: RealmObservationPojo ) => (
-  observation.observationSounds?.length ?? 0
+const hasDate = ( observation: RealmObservationPojo ) => (
+  !Number.isNaN( Date.parse( observation.observed_on_string ?? "" ) )
+  || !!observation.time_observed_at
+  || !!observation.observed_on
 );
+
+const isVerifiable = ( observation: RealmObservationPojo ) => !isCaptive( observation )
+  && hasMedia( observation )
+  && isGeoreferenced( observation )
+  && hasDate( observation );
 
 const observationTaxonId = ( observation: RealmObservationPojo ) => (
   observation.taxon?.id ?? observation.taxon_id
@@ -110,18 +121,20 @@ const evaluateRule = (
     case "georeferenced?":
       return statusFrom( isGeoreferenced( observation ) );
     case "has_a_photo?":
-      return statusFrom( photoCount( observation ) > 0 );
+      return statusFrom( hasPhoto( observation ) );
     case "has_a_sound?":
-      return statusFrom( soundCount( observation ) > 0 );
+      return statusFrom( hasSound( observation ) );
     case "has_media?":
-      return statusFrom( photoCount( observation ) + soundCount( observation ) > 0 );
+      return statusFrom( hasMedia( observation ) );
+    case "verifiable?":
+      return statusFrom( isVerifiable( observation ) );
     case "identified?":
       return statusFrom( observationTaxonId( observation ) != null );
     case "in_taxon?":
       return evaluateInTaxon( observation, rule );
     default:
       // Needs data only the server has, e.g. place geometry, project list
-      // taxa, membership settings, or the server-computed quality grade
+      // taxa, or membership settings
       return "unknown";
   }
 };

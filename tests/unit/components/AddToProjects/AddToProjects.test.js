@@ -280,7 +280,7 @@ describe( "AddToProjects", ( ) => {
       rulesProject.project_observation_rules = [
         realmRule( "identified?" ),
         realmRule( "wild?" ),
-        realmRule( "verifiable?" ),
+        realmRule( "observed_in_place?" ),
         realmRule( "in_taxon?", {
           operand_id: 4789,
           operand_type: "Taxon",
@@ -305,7 +305,7 @@ describe( "AddToProjects", ( ) => {
 
       expect( screen.getByText( "Identification" ) ).toBeVisible( );
       expect( screen.getByText( "Wild" ) ).toBeVisible( );
-      expect( screen.getByText( "Verifiable" ) ).toBeVisible( );
+      expect( screen.getByText( "Specific location" ) ).toBeVisible( );
       expect( screen.getByText( "Specific identification" ) ).toBeVisible( );
       expect(
         screen.getByText( "To add to this project, all required fields must be filled" ),
@@ -328,10 +328,10 @@ describe( "AddToProjects", ( ) => {
 
       await actor.press( screen.getByText( rulesProject.title ) );
 
-      const verifiableRow = within( ruleRow( "verifiable?" ) );
-      expect( verifiableRow.getByText( "Required" ) ).toBeVisible( );
-      expect( verifiableRow.queryByText( iconGlyph( "triangle-exclamation" ) ) ).toBeNull( );
-      expect( verifiableRow.queryByText( iconGlyph( "checkmark-circle" ) ) ).toBeNull( );
+      const placeRow = within( ruleRow( "observed_in_place?" ) );
+      expect( placeRow.getByText( "Required" ) ).toBeVisible( );
+      expect( placeRow.queryByText( iconGlyph( "triangle-exclamation" ) ) ).toBeNull( );
+      expect( placeRow.queryByText( iconGlyph( "checkmark-circle" ) ) ).toBeNull( );
     } );
 
     it( "lists the rule taxa without making them pressable", async ( ) => {

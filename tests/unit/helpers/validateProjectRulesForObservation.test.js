@@ -78,7 +78,6 @@ describe( "validateProjectRules", ( ) => {
       ["coordinates_shareable_by_project_curators?"],
       ["observed_in_place?"],
       ["on_list?"],
-      ["verifiable?"],
     ] )( "%s should be unknown", operator => {
       const obs = observation( {
         latitude: 37.7,
@@ -87,6 +86,35 @@ describe( "validateProjectRules", ( ) => {
         taxon: sanderling,
       } );
       expect( statusFor( obs, operator ) ).toBe( "unknown" );
+    } );
+  } );
+
+  describe( "verifiable?", ( ) => {
+    const verifiableObservation = ( overrides = {} ) => observation( {
+      latitude: 37.7,
+      longitude: -122.4,
+      observationPhotos: [factory( "LocalObservationPhoto" )],
+      observed_on_string: "2024-05-01T09:30:00",
+      ...overrides,
+    } );
+
+    test.each( [
+      ["when wild with evidence, location, and date", "pass", {}],
+      ["with only a sound as evidence", "pass", {
+        observationPhotos: [],
+        observationSounds: [factory( "LocalObservationSound" )],
+      }],
+      ["with a date only from time_observed_at", "pass", {
+        observed_on_string: null,
+        time_observed_at: "2024-05-01T16:30:00Z",
+      }],
+      ["when captive", "fail", { captive_flag: true }],
+      ["without evidence", "fail", { observationPhotos: [] }],
+      ["without a location", "fail", { latitude: null, longitude: null }],
+      ["without a date", "fail", { observed_on_string: null }],
+      ["with an unparseable date", "fail", { observed_on_string: "not a date" }],
+    ] )( "%s should %s", ( _description, expected, overrides ) => {
+      expect( statusFor( verifiableObservation( overrides ), "verifiable?" ) ).toBe( expected );
     } );
   } );
 
@@ -176,7 +204,7 @@ describe( "validateProjectRulesForObservation", ( ) => {
 
   it( "should not block on rules only the server can check", ( ) => {
     const result = validateProjectRulesForObservation( observation( ), [
-      project( [rule( "verifiable?" ), rule( "observed_in_place?" )] ),
+      project( [rule( "on_list?" ), rule( "observed_in_place?" )] ),
     ] );
     expect( result.valid ).toBe( true );
     expect( result.groups.map( group => group.status ) ).toEqual( ["unknown", "unknown"] );
