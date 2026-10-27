@@ -2,9 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 import type {
   ApiProjectObservationField,
   ApiProjectObservationRule,
+  ApiProjectType,
   ProjectRulePreference,
 } from "api/types";
-import type { ApiProjectType, ProjectRulePreference } from "api/types";
 import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
