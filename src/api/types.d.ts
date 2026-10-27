@@ -65,40 +65,6 @@ interface ApiProjectObservationField {
   required: boolean | null;
 }
 
-type Operator =
-  | "georeferenced?"
-  | "captive?"
-  | "coordinates_shareable_by_project_curators?"
-  | "has_a_photo?"
-  | "has_a_sound?"
-  | "has_media?"
-  | "identified?"
-  | "verifiable?"
-  | "wild?"
-  | "on_list?";
-
-type OperatorWithOperand =
-  | "has_observation_field?"
-  | "observed_in_place?";
-
-interface ApiRule {
-  id: number;
-  operand_id: null;
-  operator: Operator;
-}
-
-interface ApiRuleWithOperand {
-  id: number;
-  operand_id: number;
-  operator: OperatorWithOperand;
-  place?: {
-    id: number;
-    display_name: string;
-  };
-}
-
-type ApiProjectObservationRule = ApiRule | ApiRuleWithOperand
-
 export interface ApiResponse<T> {
   total_results: number;
   page: number;
@@ -211,20 +177,39 @@ export interface ApiUser extends ApiRecord {
   species_count?: number;
 }
 
-// Operand objects are only present when fetched with rule_details: true
-export interface ApiProjectObservationRule {
+type Operator =
+  | "georeferenced?"
+  | "captive?"
+  | "coordinates_shareable_by_project_curators?"
+  | "has_a_photo?"
+  | "has_a_sound?"
+  | "has_media?"
+  | "identified?"
+  | "verifiable?"
+  | "wild?"
+  | "on_list?";
+
+type OperatorWithOperand =
+  | "has_observation_field?"
+  | "observed_in_place?";
+
+interface ApiRule {
   id: number;
-  operand_id: number | null;
-  // e.g. "Taxon", "Place", "User", "Project", "ObservationField"; null for
-  // operand-less rules like "verifiable?"
-  operand_type: string | null;
-  operator: string;
-  place?: ApiPlace;
-  project?: { id: number; title: string };
-  taxon?: ApiTaxon;
-  user?: ApiUser;
+  operand_id: null;
+  operator: Operator;
 }
 
+interface ApiRuleWithOperand {
+  id: number;
+  operand_id: number;
+  operator: OperatorWithOperand;
+  place?: {
+    id: number;
+    display_name: string;
+  };
+}
+
+type ApiProjectObservationRule = ApiRule | ApiRuleWithOperand
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
   icon: string;
