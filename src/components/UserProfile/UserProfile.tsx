@@ -27,20 +27,16 @@ import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useFeatureFlag,
   useTranslation,
 } from "sharedHooks";
 import useNavigateToAccountSettings from "sharedHooks/useNavigateToAccountSettings";
 import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ) => {
-  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
-
   const navigateToExplore = useNavigateToExplore( );
   const navigation = useNavigation <TabStackScreenProps<"UserProfile">["navigation"]>( );
   const currentUser = useCurrentUser( );
@@ -160,7 +156,6 @@ const UserProfile = ( ) => {
         )}
       </View>
       <OverviewCounts
-        newsEnabled={newsEnabled}
         counts={user}
         onObservationPressed={onObservationPressed}
         onSpeciesPressed={onSpeciesPressed}

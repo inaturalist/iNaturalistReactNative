@@ -1,12 +1,12 @@
 import { RealmContext } from "providers/contexts";
 import { useMemo } from "react";
 import Observation from "realmModels/Observation";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import { observationSortToRealmSort } from "sharedHelpers/observationsSort";
 
 const { useQuery } = RealmContext;
 
-const useLocalObservationIds = ( sortBy?: OBSERVATIONS_SORT ) => {
+const useLocalObservationIds = ( sortBy?: MyObservationsSort ) => {
   const unsyncedObs = useQuery(
     {
       type: Observation,

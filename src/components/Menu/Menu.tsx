@@ -12,21 +12,23 @@ import {
   WarningSheet,
 } from "components/SharedComponents";
 import { Pressable, ScrollView, View } from "components/styledComponents";
+import DonateIcon from "images/svg/donate.svg";
 import { RealmContext } from "providers/contexts";
+import type { FC } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { SvgProps } from "react-native-svg";
 import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
-  useCurrentUser, useDebugMode, useFeatureFlag,
+  useCurrentUser, useDebugMode,
   useLayoutPrefs, useTranslation,
 } from "sharedHooks";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -35,7 +37,8 @@ const { useRealm } = RealmContext;
 
 interface BaseMenuOption {
   label: string;
-  icon: string;
+  // INatIcon glyph name, or an SVG component for multicolor icons
+  icon: string | FC<SvgProps>;
   color?: string;
   testID?: string;
   isLogout?: boolean;
@@ -110,7 +113,6 @@ const Menu = ( ) => {
   const { isConnected } = useNetInfo( );
 
   const layoutPrefs = useLayoutPrefs();
-  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
@@ -127,8 +129,12 @@ const Menu = ( ) => {
     donate: {
       label: t( "DONATE" ),
       navigation: "Donate",
-      icon: "heart",
-      color: colors.inatGreen,
+      icon: DonateIcon,
+    },
+    news: {
+      label: t( "BLOG" ),
+      navigation: "Journal",
+      icon: "blog",
     },
     help: {
       label: t( "HELP" ),
@@ -153,16 +159,6 @@ const Menu = ( ) => {
         }
       },
     },
-
-    ...( newsEnabled
-      ? {
-        news: {
-          label: t( "BLOG" ),
-          navigation: "Journal",
-          icon: "leaf",
-        },
-      }
-      : {} ),
 
     ...( currentUser
       ? {
