@@ -194,6 +194,12 @@ interface ApiRule {
   id: number;
   operand_id: null;
   operator: Operator;
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
+  operand_type: string | null;
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
+  project?: { id: number; title: string };
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
+  user?: ApiUser;
 }
 
 // Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
@@ -202,6 +208,7 @@ interface ApiRuleHasOF {
   operand_id: number;
   operator: "has_observation_field?";
 }
+
 // Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
 interface ApiRuleInPlace {
   id: number;
@@ -212,14 +219,20 @@ interface ApiRuleInPlace {
     display_name: string | null;
   } | null;
 }
+
 // Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
 interface ApiRuleInTaxon {
   id: number;
   operand_id: number;
   operator: "in_taxon?";
+  // TODO: MOB-1946 this should be changed to request a persistable taxon
   taxon: {
+    ancestor_ids: number[];
     id: number;
     name: string;
+    preferred_common_name: string | null;
+    rank: string;
+    rank_level: number;
   } | null;
 }
 
