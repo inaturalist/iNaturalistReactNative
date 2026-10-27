@@ -189,32 +189,41 @@ type Operator =
   | "wild?"
   | "on_list?";
 
-type OperatorWithOperand =
-  | "has_observation_field?"
-  | "observed_in_place?"
-  | "in_taxon?";
-
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
 interface ApiRule {
   id: number;
   operand_id: null;
   operator: Operator;
 }
 
-interface ApiRuleWithOperand {
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRuleHasOF {
   id: number;
   operand_id: number;
-  operator: OperatorWithOperand;
-  place?: {
+  operator: "has_observation_field?";
+}
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRuleInPlace {
+  id: number;
+  operand_id: number;
+  operator: "observed_in_place?";
+  place: {
     id: number;
-    display_name: string;
-  };
-  taxon?: {
+    display_name: string | null;
+  } | null;
+}
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRuleInTaxon {
+  id: number;
+  operand_id: number;
+  operator: "in_taxon?";
+  taxon: {
     id: number;
     name: string;
-  };
+  } | null;
 }
 
-type ApiProjectObservationRule = ApiRule | ApiRuleWithOperand
+type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
 
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
