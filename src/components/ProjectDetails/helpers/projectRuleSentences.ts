@@ -72,6 +72,12 @@ const buildProjectRuleSentences = (
   const sentences: string[] = [];
 
   rules.forEach( rule => {
+    if (
+      rule.operator === "in_taxon?"
+      || rule.operator === "observed_in_place?"
+    ) {
+      return;
+    }
     const sentence = ruleToSentence( rule, fieldNamesByID, t );
     if ( sentence ) {
       sentences.push( sentence );
