@@ -1,4 +1,4 @@
-import type { ProjectRulePreference } from "api/types";
+import type { ApiProjectType, ProjectRulePreference } from "api/types";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
@@ -19,7 +19,7 @@ const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/gene
 interface Project {
   icon: string;
   id: number;
-  project_type: "collection" | "umbrella" | "";
+  project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   title: string;
 }
