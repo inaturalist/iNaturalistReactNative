@@ -53,6 +53,7 @@ import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
+import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import LoginSheet from "./LoginSheet";
 import MyObservationsGroupedByIconicTaxaView from "./MyObservationsGroupedByIconicTaxaView";
 import MyObservationsMapView from "./MyObservationsMapView";
@@ -101,6 +102,8 @@ interface Props {
   updateObservationsView: ( value: string ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
+  // True while the species list is being fetched, including its first page
+  isLoadingTaxa?: boolean;
   justFinishedSignup: boolean;
   loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
@@ -165,6 +168,7 @@ const MyObservationsSimple = ( {
   updateObservationsView,
   fetchMoreTaxa,
   isFetchingTaxa,
+  isLoadingTaxa,
   justFinishedSignup,
   loggedInWhileInDefaultMode = false,
   refetchTaxa,
@@ -491,6 +495,16 @@ const MyObservationsSimple = ( {
     return null;
   };
 
+  const renderEmptyTaxaContent = ( ) => {
+    if ( showSpeciesSearchEmptyState ) {
+      return <SearchEmptyState />;
+    }
+    if ( isLoadingTaxa && isConnected !== false ) {
+      return <FullScreenActivityIndicator />;
+    }
+    return renderOfflineNotice( );
+  };
+
   function showOfflineAlert( ) {
     Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
   }
@@ -608,11 +622,7 @@ const MyObservationsSimple = ( {
             />
           </>
         )}
-        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && (
-          showSpeciesSearchEmptyState
-            ? <SearchEmptyState />
-            : renderOfflineNotice( )
-        )}
+        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderEmptyTaxaContent( ) }
       </ViewWrapper>
       {openSheet === ACTIVE_SHEET.SORT && activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet

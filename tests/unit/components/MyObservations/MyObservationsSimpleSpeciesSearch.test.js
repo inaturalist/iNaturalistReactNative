@@ -41,6 +41,7 @@ const mockSetSpeciesSortOptionId = jest.fn( );
 const renderSpeciesTab = ( {
   currentUser = undefined,
   isConnected = true,
+  isLoadingTaxa = false,
   taxa = mockSpeciesCounts,
   showSpeciesSearchEmptyState = false,
   speciesSortOptionId = SPECIES_SORT.COUNT_DESC,
@@ -50,6 +51,7 @@ const renderSpeciesTab = ( {
     activeTab={TAXA_TAB}
     currentUser={currentUser}
     isConnected={isConnected}
+    isLoadingTaxa={isLoadingTaxa}
     observationIds={[]}
     onEndReached={jest.fn( )}
     updateObservationsView={jest.fn( )}
@@ -103,6 +105,19 @@ describe( "MyObservationsSimple species tab", ( ) => {
 
     expect( screen.getByText( "You are offline. Tap to try again." ) ).toBeTruthy( );
     expect( screen.queryByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeNull( );
+  } );
+
+  it( "renders an activity indicator while the species list loads", ( ) => {
+    renderSpeciesTab( { taxa: [], isLoadingTaxa: true } );
+
+    expect( screen.getByTestId( "FullScreenActivityIndicator" ) ).toBeVisible( );
+  } );
+
+  it( "renders the offline notice instead of an activity indicator when offline", ( ) => {
+    renderSpeciesTab( { taxa: [], isLoadingTaxa: true, isConnected: false } );
+
+    expect( screen.getByText( "You are offline. Tap to try again." ) ).toBeVisible( );
+    expect( screen.queryByTestId( "FullScreenActivityIndicator" ) ).toBeNull( );
   } );
 
   describe( "when signed in", ( ) => {

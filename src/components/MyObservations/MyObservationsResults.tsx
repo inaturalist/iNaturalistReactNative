@@ -562,6 +562,7 @@ const MyObservationsResults = ( ) => {
       isConnected={isConnected}
       isFetchingNextPage={isFetchingNextPageForList}
       isFetchingTaxa={isFetchingTaxa}
+      isLoadingTaxa={isLoadingTaxa}
       justFinishedSignup={justFinishedSignup}
       layout={layout}
       listRef={listRef}
