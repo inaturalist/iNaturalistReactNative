@@ -4,6 +4,8 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
+import type { ApiSpeciesCountDetails } from "api/types";
+import type { MyObservationsStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import {
   MY_OBSERVATIONS_ACTION,
@@ -20,7 +22,7 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   sortSpeciesCounts,
@@ -68,7 +70,9 @@ const MyObservationsResults = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    MyObservationsStackScreenProps<"MyObservationsResults">["navigation"]
+  >( );
   const listRef = useRef<FlashListRef<RealmObservation>>( null );
   const taxaListRef = useRef<FlashListRef<SpeciesCount>>( null );
   const navigateToObsEdit = useNavigateToObsEdit( );
@@ -185,7 +189,7 @@ const MyObservationsResults = ( ) => {
     } );
   };
 
-  const setObservationsSortOptionId = ( value: OBSERVATIONS_SORT ) => {
+  const setObservationsSortOptionId = ( value: MyObservationsSort ) => {
     myObsDispatch( {
       type: MY_OBSERVATIONS_ACTION.SET_OBSERVATIONS_SORT,
       observationsSort: value,
@@ -411,7 +415,7 @@ const MyObservationsResults = ( ) => {
     refetch: refetchTaxa,
   } = useInfiniteScroll(
     `MyObsSimple-fetchSpeciesCounts-${currentUser?.id}-${myObsState.speciesSort}`,
-    fetchSpeciesCounts,
+    fetchSpeciesCounts<ApiSpeciesCountDetails>,
     {
       user_id: currentUser?.id,
       ...sortAPIParams,

@@ -1,6 +1,9 @@
-// Generic types, please keep alphabetized
 export interface ApiDefaultResult {
   id: number;
+}
+
+export interface ApiCount {
+  count: number;
 }
 
 export interface ApiOpts {
@@ -177,25 +180,81 @@ export interface ApiUser extends ApiRecord {
   species_count?: number;
 }
 
-// Operand objects are only present when fetched with rule_details: true
-export interface ApiProjectObservationRule {
+type Operator =
+  | "georeferenced?"
+  | "captive?"
+  | "coordinates_shareable_by_project_curators?"
+  | "has_a_photo?"
+  | "has_a_sound?"
+  | "has_media?"
+  | "identified?"
+  | "verifiable?"
+  | "wild?"
+  | "on_list?";
+
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRule {
   id: number;
-  operand_id: number | null;
-  // e.g. "Taxon", "Place", "User", "Project", "ObservationField"; null for
-  // operand-less rules like "verifiable?"
+  operand_id: null;
+  operator: Operator;
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
   operand_type: string | null;
-  operator: string;
-  place?: ApiPlace;
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
   project?: { id: number; title: string };
-  taxon?: ApiTaxon;
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
   user?: ApiUser;
 }
+
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRuleHasOF {
+  id: number;
+  operand_id: number;
+  operator: "has_observation_field?";
+}
+
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRuleInPlace {
+  id: number;
+  operand_id: number;
+  operator: "observed_in_place?";
+  place: {
+    id: number;
+    display_name: string | null;
+  } | null;
+}
+
+// Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
+interface ApiRuleInTaxon {
+  id: number;
+  operand_id: number;
+  operator: "in_taxon?";
+  // TODO: MOB-1946 this should be changed to request a persistable taxon
+  taxon: {
+    ancestor_ids: number[];
+    id: number;
+    name: string;
+    preferred_common_name: string | null;
+    rank: string;
+    rank_level: number;
+  } | null;
+}
+
+type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
+
+// "", "bioblitz", "contest", and "assessment" are all traditional
+export type ApiProjectType =
+  | "collection"
+  | "umbrella"
+  | ""
+  | "bioblitz"
+  | "contest"
+  | "assessment";
 
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
   icon: string;
   id: number;
-  project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
+  project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   title: string;
 }
@@ -373,4 +432,49 @@ export interface ApiObservationsSearchParams extends ApiObservationFilterParams 
     typeof ORDER_BY_UPDATED_AT |
     typeof ORDER_BY_VOTES;
   return_bounds?: boolean;
+}
+
+// When using SPECIES_COUNTS_SUMMARY_FIELDS
+export interface ApiSpeciesCountSummary extends ApiRecord {
+  taxon: {
+    id: number;
+  };
+}
+
+// When using SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS
+export interface ApiSpeciesCountVerboseSummary extends ApiCount {
+  taxon: {
+    iconic_taxon_name: string | null;
+    id: number;
+    name: string;
+    preferred_common_name: string | null;
+  } | null;
+}
+
+// When using Taxon.LIMITED_TAXON_FIELDS
+export interface ApiTaxonLimited extends ApiRecord {
+  ancestor_ids: number[];
+  default_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+  representative_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  taxon_photos: {
+    photo: {
+      url: string | null;
+    } | null;
+  }[];
+}
+
+// When using SPECIES_COUNTS_DETAILS_FIELDS
+export interface ApiSpeciesCountDetails extends ApiCount {
+  taxon: ApiTaxonLimited;
 }

@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
@@ -11,19 +9,26 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import capitalize from "lodash/capitalize";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
-type Props = {
-  currentObservation: Object,
-  resetScreen: boolean,
-  setResetScreen: Function,
-  updateObservationKeys: Function
+interface Props {
+  currentObservation: {
+    taxon?: {
+      name: string;
+      rank_level: number;
+    };
+    observationPhotos: object[];
+  };
+  resetScreen: boolean;
+  setResetScreen: ( resetScreen: boolean ) => void;
+  updateObservationKeys: ( param: { taxon: RealmTaxon | undefined } ) => void;
 }
 
 const IdentificationSection = ( {
@@ -31,9 +36,12 @@ const IdentificationSection = ( {
   resetScreen,
   setResetScreen,
   updateObservationKeys,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"ObsEdit">["navigation"] &
+    TabStackScreenProps<"ObsEdit">["navigation"]
+  >( );
   const realm = useRealm( );
 
   const identTaxon = currentObservation?.taxon;

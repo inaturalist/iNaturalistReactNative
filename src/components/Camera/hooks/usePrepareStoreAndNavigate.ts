@@ -52,16 +52,20 @@ const usePrepareStoreAndNavigate = ( ) => {
       return Promise.resolve( );
     }
     setSavingPhoto( true );
-    const savedPhotoUris = await savePhotosToPhotoLibrary( uris, userLocation );
-    await logStageIfAICamera( "save_photos_to_photo_library_complete" );
-    if ( savedPhotoUris.length > 0 ) {
-      // Save these camera roll URIs, so later on observation editor can update
-      // the EXIF metadata of these photos, once we retrieve a location.
-      addCameraRollUris( savedPhotoUris );
+    try {
+      const savedPhotoUris = await savePhotosToPhotoLibrary( uris, userLocation );
+      await logStageIfAICamera( "save_photos_to_photo_library_complete" );
+      if ( savedPhotoUris.length > 0 ) {
+        // Save these camera roll URIs, so later on observation editor can update
+        // the EXIF metadata of these photos, once we retrieve a location.
+        addCameraRollUris( savedPhotoUris );
+      }
+      // When we've persisted photos to the observation, we don't need them in
+      // state anymore
+      setCameraState( { evidenceToAdd: [], cameraUris: [] } );
+    } finally {
+      setSavingPhoto( false );
     }
-    // When we've persisted photos to the observation, we don't need them in
-    // state anymore
-    setCameraState( { evidenceToAdd: [], cameraUris: [], savingPhoto: false } );
     return null;
   }, [
     addCameraRollUris,

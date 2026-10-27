@@ -74,7 +74,7 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>
@@ -171,7 +171,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <CircularProgress
@@ -243,7 +243,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <View
@@ -297,7 +297,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
             ]
           }
         >
-          
+          
         </Text>
       </View>
     </View>
@@ -410,7 +410,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <View
@@ -464,7 +464,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                 ]
               }
             >
-              
+              
             </Text>
           </View>
         </View>

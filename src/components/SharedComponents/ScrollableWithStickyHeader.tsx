@@ -1,5 +1,3 @@
-// @flow
-
 // ScrollableWithStickyHeader renders a scrollable view (e.g. ScrollView or
 // FlashList) with a header component above it. The header component will
 // stick to the top of the screen when scrolled to a particular y value
@@ -31,7 +29,6 @@
 // problems
 
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useEffect,
   useMemo,
@@ -41,17 +38,17 @@ import React, {
 import { Animated } from "react-native";
 import { useDeviceOrientation } from "sharedHooks";
 
-type Props = {
-  onScroll?: Function,
-  renderHeader: Function,
-  renderScrollable: Function
-};
+interface Props {
+  onScroll?: ( ) => void;
+  renderHeader: ( props ) => React.JSX.Element;
+  renderScrollable: ( props ) => React.JSX.Element;
+}
 
 const ScrollableWithStickyHeader = ( {
   onScroll,
   renderHeader,
   renderScrollable,
-}: Props ): Node => {
+}: Props ) => {
   const {
     isTablet,
     screenHeight,
