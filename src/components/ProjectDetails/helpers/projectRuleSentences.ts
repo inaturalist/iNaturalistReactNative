@@ -69,10 +69,16 @@ const buildProjectRuleSentences = (
   }
 
   const fieldNamesByID = observationFieldNameById( projectObservationFields );
-  return rules.map( rule => {
+  const sentences: string[] = [];
+
+  rules.forEach( rule => {
     const sentence = ruleToSentence( rule, fieldNamesByID, t );
-    return sentence;
-  } ).filter( text => text !== null );
+    if ( sentence ) {
+      sentences.push( sentence );
+    }
+  } );
+
+  return sentences;
 };
 
 export default buildProjectRuleSentences;
