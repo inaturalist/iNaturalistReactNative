@@ -56,10 +56,11 @@ const SPECIES_SORT_TO_TAXA_OBSERVED_PARAMS: Record<
   [SPECIES_SORT.DATE_OBSERVED_OLDEST]: { order_by: "first_observed_on", order: "asc" },
 };
 
-// TODO: offer the date sorts here once they have labels (MOB-1667)
-export const MY_OBSERVATIONS_SPECIES_SORT_OPTIONS: SpeciesCountsSort[] = [
+export const MY_OBSERVATIONS_SPECIES_SORT_OPTIONS: SPECIES_SORT[] = [
   SPECIES_SORT.COUNT_DESC,
   SPECIES_SORT.COUNT_ASC,
+  SPECIES_SORT.DATE_OBSERVED_NEWEST,
+  SPECIES_SORT.DATE_OBSERVED_OLDEST,
 ];
 
 export const EXPLORE_SPECIES_SORT_OPTIONS: SpeciesCountsSort[] = [
@@ -67,7 +68,7 @@ export const EXPLORE_SPECIES_SORT_OPTIONS: SpeciesCountsSort[] = [
   SPECIES_SORT.COUNT_ASC,
 ];
 
-export function useSpeciesSortLabels( ): Record<SpeciesCountsSort, SpeciesSortLabels> {
+export function useSpeciesSortLabels( ): Record<SPECIES_SORT, SpeciesSortLabels> {
   const { t } = useTranslation( );
   return {
     [SPECIES_SORT.COUNT_DESC]: {
@@ -77,6 +78,14 @@ export function useSpeciesSortLabels( ): Record<SpeciesCountsSort, SpeciesSortLa
     [SPECIES_SORT.COUNT_ASC]: {
       label: t( "Least-Observed" ),
       text: t( "Species-with-the-least-observations-appear-first" ),
+    },
+    [SPECIES_SORT.DATE_OBSERVED_NEWEST]: {
+      label: t( "Date-Observed-Newest" ),
+      text: t( "Species-observed-recently-appear-first" ),
+    },
+    [SPECIES_SORT.DATE_OBSERVED_OLDEST]: {
+      label: t( "Date-Observed-Oldest" ),
+      text: t( "Species-observed-least-recently-appear-first" ),
     },
   };
 }

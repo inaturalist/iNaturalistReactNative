@@ -1,8 +1,10 @@
 import { screen, userEvent, within } from "@testing-library/react-native";
+import { ACTIVE_SHEET } from "components/MyObservations/MyObservationsResults";
 import MyObservationsSimple, { OBSERVATIONS_TAB, TAXA_TAB }
   from "components/MyObservations/MyObservationsSimple";
 import initI18next from "i18n/initI18next";
 import React from "react";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -34,12 +36,15 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 const mockSetActiveTab = jest.fn( );
+const mockSetSpeciesSortOptionId = jest.fn( );
 
 const renderSpeciesTab = ( {
   currentUser = undefined,
   isConnected = true,
   taxa = mockSpeciesCounts,
   showSpeciesSearchEmptyState = false,
+  speciesSortOptionId = SPECIES_SORT.COUNT_DESC,
+  openSheet = ACTIVE_SHEET.NONE,
 } = {} ) => renderComponent(
   <MyObservationsSimple
     activeTab={TAXA_TAB}
@@ -53,6 +58,10 @@ const renderSpeciesTab = ( {
     showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
     fetchMoreTaxa={jest.fn( )}
     refetchTaxa={jest.fn( )}
+    speciesSortOptionId={speciesSortOptionId}
+    setSpeciesSortOptionId={mockSetSpeciesSortOptionId}
+    openSheet={openSheet}
+    setOpenSheet={jest.fn( )}
   />,
 );
 
@@ -69,6 +78,7 @@ beforeEach( ( ) => {
   useStore.setState( initialStoreState, true );
   mockedNavigate.mockClear( );
   mockSetActiveTab.mockClear( );
+  mockSetSpeciesSortOptionId.mockClear( );
 } );
 
 describe( "MyObservationsSimple species tab", ( ) => {
@@ -142,5 +152,19 @@ describe( "MyObservationsSimple species tab", ( ) => {
 
       expect( screen.queryByTestId( "SimpleTaxonGridItem.infoButton" ) ).toBeNull( );
     } );
+  } );
+
+  it( "offers date observed sorts and applies the one chosen", async ( ) => {
+    renderSpeciesTab( { openSheet: ACTIVE_SHEET.SORT } );
+
+    expect( screen.getByText( "Date Observed: Newest" ) ).toBeVisible( );
+    expect( screen.getByText( "Species observed recently appear first" ) ).toBeVisible( );
+    expect( screen.getByText( "Date Observed: Oldest" ) ).toBeVisible( );
+    expect( screen.getByText( "Species observed least recently appear first" ) ).toBeVisible( );
+
+    await actor.press( screen.getByText( "Date Observed: Newest" ) );
+    await actor.press( screen.getByText( "CONFIRM" ) );
+
+    expect( mockSetSpeciesSortOptionId ).toHaveBeenCalledWith( SPECIES_SORT.DATE_OBSERVED_NEWEST );
   } );
 } );
