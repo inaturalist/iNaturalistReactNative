@@ -92,6 +92,28 @@ export function speciesSortToTaxaObservedParams(
   return SPECIES_SORT_TO_TAXA_OBSERVED_PARAMS[sort];
 }
 
+// Matches taxa_observed: species without a first observed date go last in both
+// directions, and ties are broken by taxon id ascending
+function compareFirstObservedOn(
+  a: SpeciesCount,
+  b: SpeciesCount,
+  order: SortDirection,
+): number {
+  const aDate = a.first_observed_on;
+  const bDate = b.first_observed_on;
+  if ( aDate !== bDate ) {
+    if ( !aDate ) return 1;
+    if ( !bDate ) return -1;
+    const diff = aDate < bDate
+      ? -1
+      : 1;
+    return order === "asc"
+      ? diff
+      : -diff;
+  }
+  return a.taxon.id - b.taxon.id;
+}
+
 export function sortSpeciesCounts<T extends SpeciesCount>(
   speciesCounts: T[],
   sortOptionId: SPECIES_SORT,
@@ -99,6 +121,12 @@ export function sortSpeciesCounts<T extends SpeciesCount>(
   const sorted = [...speciesCounts];
 
   sorted.sort( ( a, b ) => {
+    if ( sortOptionId === SPECIES_SORT.DATE_OBSERVED_NEWEST ) {
+      return compareFirstObservedOn( a, b, "desc" );
+    }
+    if ( sortOptionId === SPECIES_SORT.DATE_OBSERVED_OLDEST ) {
+      return compareFirstObservedOn( a, b, "asc" );
+    }
     const diff = a.count - b.count;
     return sortOptionId === SPECIES_SORT.COUNT_ASC
       ? diff
