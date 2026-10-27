@@ -78,7 +78,8 @@ type Operator =
   | "on_list?";
 
 type OperatorWithOperand =
-  | "has_observation_field?";
+  | "has_observation_field?"
+  | "observed_in_place?";
 
 interface ApiRule {
   id: number;
@@ -90,6 +91,10 @@ interface ApiRuleWithOperand {
   id: number;
   operand_id: number;
   operator: OperatorWithOperand;
+  place?: {
+    id: number;
+    display_name: string;
+  };
 }
 
 type ApiProjectObservationRule = ApiRule | ApiRuleWithOperand
