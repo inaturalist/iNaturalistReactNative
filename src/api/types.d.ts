@@ -191,7 +191,8 @@ type Operator =
 
 type OperatorWithOperand =
   | "has_observation_field?"
-  | "observed_in_place?";
+  | "observed_in_place?"
+  | "in_taxon?";
 
 interface ApiRule {
   id: number;
@@ -207,9 +208,14 @@ interface ApiRuleWithOperand {
     id: number;
     display_name: string;
   };
+  taxon?: {
+    id: number;
+    name: string;
+  };
 }
 
 type ApiProjectObservationRule = ApiRule | ApiRuleWithOperand
+
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
   icon: string;
