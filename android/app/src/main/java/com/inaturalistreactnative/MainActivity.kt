@@ -6,6 +6,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnable
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import android.os.Build
 import android.os.Bundle
+import android.widget.EditText
 
 class MainActivity : ReactActivity() {
   /**
@@ -14,6 +15,13 @@ class MainActivity : ReactActivity() {
    */
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(null)
+    // Fabric views attached after layout keep isLaidOut()=false, so Android postpones
+    // autofill's focus event until the field lays out again (i.e. until typing).
+    window.decorView.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
+      if (newFocus is EditText && !newFocus.isLaidOut) {
+        newFocus.layout(newFocus.left, newFocus.top, newFocus.right, newFocus.bottom)
+      }
+    }
   }
 
   /**
