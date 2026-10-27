@@ -411,7 +411,7 @@ export interface ApiTaxonLimited extends ApiRecord {
     id: number;
     url: string | null;
   } | null;
-  taxonPhotos: {
+  taxon_photos: {
     photo: {
       url: string | null;
     } | null;
