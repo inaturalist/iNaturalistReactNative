@@ -173,9 +173,10 @@ describe( "MyObservationsSimple species tab", ( ) => {
     renderSpeciesTab( { openSheet: ACTIVE_SHEET.SORT } );
 
     expect( screen.getByText( "Date Observed: Newest" ) ).toBeVisible( );
-    expect( screen.getByText( "Species observed recently appear first" ) ).toBeVisible( );
+    expect( screen.getByText( "Species first observed recently appear first" ) ).toBeVisible( );
     expect( screen.getByText( "Date Observed: Oldest" ) ).toBeVisible( );
-    expect( screen.getByText( "Species observed least recently appear first" ) ).toBeVisible( );
+    expect( screen.getByText( "Species first observed least recently appear first" ) )
+      .toBeVisible( );
 
     await actor.press( screen.getByText( "Date Observed: Newest" ) );
     await actor.press( screen.getByText( "CONFIRM" ) );

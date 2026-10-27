@@ -81,11 +81,11 @@ export function useSpeciesSortLabels( ): Record<SPECIES_SORT, SpeciesSortLabels>
     },
     [SPECIES_SORT.DATE_OBSERVED_NEWEST]: {
       label: t( "Date-Observed-Newest" ),
-      text: t( "Species-observed-recently-appear-first" ),
+      text: t( "Species-first-observed-recently-appear-first" ),
     },
     [SPECIES_SORT.DATE_OBSERVED_OLDEST]: {
       label: t( "Date-Observed-Oldest" ),
-      text: t( "Species-observed-least-recently-appear-first" ),
+      text: t( "Species-first-observed-least-recently-appear-first" ),
     },
   };
 }
