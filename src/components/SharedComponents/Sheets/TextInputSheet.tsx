@@ -20,7 +20,7 @@ import colors from "styles/tailwindColors";
 const TARGET_INPUT_HEIGHT = 220;
 
 interface Props {
-  buttonText: string;
+  buttonText?: string;
   confirm: ( input: string | undefined ) => boolean;
   description?: string;
   mentionsEnabled?: boolean;
