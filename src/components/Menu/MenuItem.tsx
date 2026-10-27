@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
+import colors from "styles/tailwindColors";
 
 import type { MenuOption } from "./Menu";
 
@@ -25,7 +26,9 @@ const MenuItem = ( {
     onPress={onPress}
   >
     <View className="mr-5">
-      <INatIcon name={item.icon} size={22} color={item.color} />
+      {typeof item.icon === "string"
+        ? <INatIcon name={item.icon} size={22} color={item.color} />
+        : <item.icon width={22} height={22} color={item.color || colors.darkGray} />}
     </View>
     <Heading4>{item.label}</Heading4>
   </Pressable>
