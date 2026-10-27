@@ -220,7 +220,7 @@ describe( "ProjectDetails", ( ) => {
         />,
       );
 
-      await actor.press( screen.getByText( "LEAVE" ) );
+      await actor.press( screen.getByText( "LEAVE PROJECT" ) );
 
       expect( await screen.findByTestId( "LeaveSheet" ) ).toBeVisible( );
     } );

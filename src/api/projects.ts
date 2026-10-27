@@ -1,8 +1,10 @@
 import inatjs from "inaturalistjs";
 
-import type { ErrorWithResponse } from "./error";
+import type { ErrorWithResponse, INatApiError } from "./error";
 import handleError from "./error";
-import type { ApiOpts, ApiUntypedParams } from "./types";
+import type {
+  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse, ApiUntypedParams,
+} from "./types";
 
 const FIELDS = {
   title: true,
@@ -92,14 +94,18 @@ const leaveProject = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} )
   }
 };
 
-const fetchMembership = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) => {
+const fetchProjectMembership = async <T = ApiDefaultResult>(
+  params: ApiGetByIdParams,
+  opts: ApiOpts = {},
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const response = await inatjs.projects.membership( { ...PARAMS, ...params }, opts );
-    return response.total_results;
+    const response = await inatjs.projects.membership( params, opts );
+    if ( !response ) { return null; }
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
-      { context: { functionName: "fetchMembership", opts } },
+      { context: { functionName: "fetchProjectMembership", opts } },
     );
   }
 };
@@ -107,8 +113,8 @@ const fetchMembership = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {
 export default searchProjects;
 
 export {
-  fetchMembership,
   fetchProjectMembers,
+  fetchProjectMembership,
   fetchProjectPostsCount,
   fetchProjects,
   joinProject,

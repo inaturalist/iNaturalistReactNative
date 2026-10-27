@@ -1,16 +1,14 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import ObsPressable from "components/ObservationsFlashList/ObsPressable";
-import { RealmContext } from "providers/contexts";
 import React from "react";
 import { Alert } from "react-native";
-import type { RealmObservation } from "realmModels/types";
 import type { UserPojo } from "realmModels/User";
-import { useLayoutPrefs, useNavigateToObsEdit, useTranslation } from "sharedHooks";
+import {
+  useLayoutPrefs, useListItemObservation, useNavigateToObsEdit, useTranslation,
+} from "sharedHooks";
 import { UPLOAD_PENDING } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
-
-const { useObject } = RealmContext;
 
 interface Props {
   currentUser: UserPojo | null;
@@ -19,8 +17,8 @@ interface Props {
   width: number;
 }
 
-// The connected wrapper for one small grid tile: it owns the per-observation state and the
-// press handlers, and hands them to ObsPressable, which hydrates from Realm and renders the
+// The connected wrapper for one small grid tile: it reads the observation from Realm, owns the
+// per-observation state and the press handlers, and hands them to ObsPressable, which renders the
 // presentational SmallGridObsItem.
 // This subscribes to the upload store itself, with selectors narrow enough to return
 // primitives, so an upload progress tick re-renders only the cell that's actually uploading.
@@ -46,7 +44,8 @@ const SmallGridObsItemContainer = ( {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
 
-  const observation = useObject<RealmObservation>( "Observation", uuid );
+  // The only Realm subscription for this tile: ObsPressable gets the observation from here
+  const observation = useListItemObservation( uuid );
   // Not the needs_sync column, which is cleared as soon as the observation record itself gets a
   // server id, even if its photos or sounds are still uploading
   const obsNeedsSync = observation?.needsSync( ) ?? false;
@@ -97,6 +96,7 @@ const SmallGridObsItemContainer = ( {
       explore={false}
       height={height}
       layout="smallGrid"
+      observation={observation}
       onItemPress={onItemPress}
       onUploadButtonPress={onUploadButtonPress}
       queued={queued}

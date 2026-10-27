@@ -1,5 +1,6 @@
 import type { Region } from "react-native-maps";
 import type { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
+import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import type { StateCreator } from "zustand";
@@ -21,7 +22,7 @@ export interface MyObservationsTaxon {
 }
 
 export interface MyObservationsState {
-  observationsSort: OBSERVATIONS_SORT;
+  observationsSort: MyObservationsSort;
   speciesSort: SPECIES_SORT;
   searchedTaxon: MyObservationsTaxon | null;
 }
