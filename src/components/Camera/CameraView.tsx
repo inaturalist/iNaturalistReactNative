@@ -100,8 +100,6 @@ const CameraView = ( {
     { photoResolution: "max" },
     { videoResolution: "max" },
   ] );
-  // Set the exposure to the middle of the min and max exposure
-  const exposure = ( device.maxExposure + device.minExposure ) / 2;
 
   const onError = useCallback(
     ( error: CameraRuntimeError ) => {
@@ -175,7 +173,6 @@ const CameraView = ( {
           device={device}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableZoomGesture={false}
-          exposure={exposure}
           format={format}
           frameProcessor={frameProcessor}
           isActive={isActive}
