@@ -11,7 +11,7 @@ import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { AnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { TakePhotoOptions } from "react-native-vision-camera";
+import type { CapturePhotoSettings } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
 
 const isTablet = DeviceInfo.isTablet();
@@ -26,7 +26,7 @@ interface Props {
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   takingPhoto: boolean;
   toggleFlash: ( ) => void;
   zoomTextValue: string;

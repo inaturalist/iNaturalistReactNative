@@ -13,7 +13,7 @@ import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type {
-  CameraDevice, CameraPhotoOutput, CameraRef, TakePhotoOptions,
+  CameraDevice, CameraPhotoOutput, CameraRef, CapturePhotoSettings,
 } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
@@ -69,7 +69,7 @@ interface Props {
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
   takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
   requestLocationPermissions: () => void;

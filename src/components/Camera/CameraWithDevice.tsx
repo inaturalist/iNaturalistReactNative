@@ -3,7 +3,7 @@ import type { RefObject } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type {
-  CameraDevice, CameraPhotoOutput, CameraRef, TakePhotoOptions,
+  CameraDevice, CameraPhotoOutput, CameraRef, CapturePhotoSettings,
 } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
@@ -26,7 +26,7 @@ interface Props {
   takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   newPhotoUris: string[];
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
   requestLocationPermissions: () => void;

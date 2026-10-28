@@ -16,7 +16,7 @@ import React, {
 import { Alert, StatusBar } from "react-native";
 import type {
   CameraRef,
-  TakePhotoOptions,
+  CapturePhotoSettings,
 } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
@@ -134,9 +134,11 @@ const CameraContainer = ( ) => {
     // We had this set to true in Seek but received many reports of it not respecting OS-wide sound
     // level and scared away wildlife. So maybe better to just disable it.
     enableShutterSound: false,
-    ...( hasFlash && { flash: "off" } as const ),
+    ...( hasFlash && { flashMode: "off" } as const ),
   } as const;
-  const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
+  const [takePhotoOptions, setTakePhotoOptions] = useState<CapturePhotoSettings>(
+    initialPhotoOptions,
+  );
   const [takingPhoto, setTakingPhoto] = useState( false );
   const [confirmPhotosInProgress, setconfirmPhotosInProgress] = useState( false );
   const confirmPhotosInProgressRef = useRef( false );
@@ -205,7 +207,7 @@ const CameraContainer = ( ) => {
   const toggleFlash = ( ) => {
     setTakePhotoOptions( {
       ...takePhotoOptions,
-      flash: takePhotoOptions.flash === "on"
+      flashMode: takePhotoOptions.flashMode === "on"
         ? "off"
         : "on",
     } );

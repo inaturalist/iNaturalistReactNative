@@ -17,7 +17,7 @@ import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type {
-  CameraDevice, CameraPhotoOutput, CameraRef, TakePhotoOptions,
+  CameraDevice, CameraPhotoOutput, CameraRef, CapturePhotoSettings,
 } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -49,7 +49,7 @@ interface Props {
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
   takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   newPhotoUris: string[];
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
   photoOutput: CameraPhotoOutput;
