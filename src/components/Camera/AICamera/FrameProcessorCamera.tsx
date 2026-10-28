@@ -138,7 +138,7 @@ const FrameProcessorCamera = ( {
     : ( useLocation && hasUserLocation );
   // The vision-plugin has a function to look up the location of the user in a h3 gridded world
   // unfortunately, I was not able to run this new function in the worklets directly,
-  // so we need to do this here before calling the useFrameProcessor hook.
+  // so we need to do this here before calling the useFrameOutput hook.
   // For predictions from file this function runs in the vision-plugin code directly.
   const geoModelCellLocation = hasUserLocation
     ? InatVision.getCellLocation( userLocation )
