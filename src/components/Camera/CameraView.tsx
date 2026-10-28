@@ -9,7 +9,7 @@ import React, {
   useCallback,
 } from "react";
 import {
-  Dimensions, Platform, StyleSheet,
+  Platform, StyleSheet,
 } from "react-native";
 import type {
   PanGesture,
@@ -74,14 +74,6 @@ const CameraView = ( {
   const appState = useAppState( );
   const isActive = !inactive && isFocused && appState === "active";
 
-  // Select the camera format based on the screen aspect ratio on ai camera as it is full-screen
-  const screen = Dimensions.get( "screen" );
-  const aiVideoAspectRatio = screen.height / screen.width;
-  const aiPhotoAspectRatio = screen.height / screen.width;
-  const standardVideoAspectRatio = 4 / 3;
-  const standardPhotoAspectRatio = 4 / 3;
-  // Select a format that provides the highest resolution for photos and videos
-
   const onError = useCallback(
     ( error: Error ) => {
       // { code: string, message: string, cause?: {} }
@@ -120,18 +112,6 @@ const CameraView = ( {
           style={StyleSheet.absoluteFill}
           outputs={[photoOutput, frameOutput]}
           constraints={[
-            // {
-            //   videoAspectRatio:
-            //     cameraScreen === "standard"
-            //       ? standardVideoAspectRatio
-            //       : aiVideoAspectRatio,
-            // },
-            // {
-            //   photoAspectRatio:
-            //     cameraScreen === "standard"
-            //       ? standardPhotoAspectRatio
-            //       : aiPhotoAspectRatio,
-            // },
             { resolutionBias: photoOutput },
           ]}
         />
