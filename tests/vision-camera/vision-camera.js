@@ -57,69 +57,6 @@ export class mockCamera extends React.PureComponent {
     } );
   }
 
-  // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
-  async takePhoto() {
-    if ( Platform.OS === "android" ) {
-      /*
-        On Android, copyAssetsFileIOS is not available. Instead, copy the test
-        image that was pushed to the app's external files directory by
-        iNatE2eBeforeAll (via `adb push e2e/animal.jpg`).
-        ExternalDirectoryPath = /sdcard/Android/data/<package>/files/
-        which is accessible by the app without extra permissions.
-      */
-      const sourcePath = `${ExternalDirectoryPath}/e2e_test.jpg`;
-      const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
-      try {
-        await copyFile( sourcePath, destPath );
-        return {
-          path: destPath,
-          metadata: { Orientation: 1 },
-        };
-      } catch ( err ) {
-        console.log( "Error copying test photo on Android:", err );
-        return null;
-      }
-    }
-
-    return CameraRoll.getPhotos( {
-      first: 20,
-      assetType: "Photos",
-    } )
-      .then( async r => {
-        /*
-          Basically, here, we are reading the newest twenty photos from the simulators gallery
-          and return the oldest one of those. Copy it to a new path and treat it as a new photo.
-        */
-        const testPhoto = r.edges[r.edges.length - 1].node.image;
-        let oldUri = testPhoto.uri;
-        if ( testPhoto.uri.includes( "ph://" ) ) {
-          let id = testPhoto.uri.replace( "ph://", "" );
-          id = id.substring( 0, id.indexOf( "/" ) );
-          oldUri = `assets-library://asset/asset.jpg?id=${id}&ext=jpg`;
-          console.log( `Converted file uri to ${oldUri}` );
-        }
-        const encodedUri = encodeURI( oldUri );
-        const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
-        const newPath = await copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
-        const photo = { uri: newPath, predictions: [] };
-        if ( typeof photo !== "object" ) {
-          console.log( "photo is not an object", typeof photo );
-          return null;
-        }
-        return {
-          ...testPhoto,
-          path: newPath,
-          metadata: {
-            Orientation: testPhoto.orientation,
-          },
-        };
-      } )
-      .catch( err => {
-        console.log( "Error getting photos", err );
-        return null;
-      } );
-  }
-
   render() {
     return <View style={style} collapsable={false} />;
   }
@@ -160,3 +97,71 @@ const mockAsyncRunner = {
 export const mockUseAsyncRunner = () => mockAsyncRunner;
 
 export const mockUseFrameOutput = options => options;
+
+const mockCapturePhotoToFile = async ( _settings, callbacks = {} ) => {
+  if ( Platform.OS === "android" ) {
+    /*
+        On Android, copyAssetsFileIOS is not available. Instead, copy the test
+        image that was pushed to the app's external files directory by
+        iNatE2eBeforeAll (via `adb push e2e/animal.jpg`).
+        ExternalDirectoryPath = /sdcard/Android/data/<package>/files/
+        which is accessible by the app without extra permissions.
+      */
+    const sourcePath = `${ExternalDirectoryPath}/e2e_test.jpg`;
+    const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
+    try {
+      await copyFile( sourcePath, destPath );
+      return {
+        path: destPath,
+        metadata: { Orientation: 1 },
+      };
+    } catch ( err ) {
+      console.log( "Error copying test photo on Android:", err );
+      return null;
+    }
+  }
+
+  return CameraRoll.getPhotos( {
+    first: 20,
+    assetType: "Photos",
+  } )
+    .then( async r => {
+      /*
+          Basically, here, we are reading the newest twenty photos from the simulators gallery
+          and return the oldest one of those. Copy it to a new path and treat it as a new photo.
+        */
+      const testPhoto = r.edges[r.edges.length - 1].node.image;
+      let oldUri = testPhoto.uri;
+      if ( testPhoto.uri.includes( "ph://" ) ) {
+        let id = testPhoto.uri.replace( "ph://", "" );
+        id = id.substring( 0, id.indexOf( "/" ) );
+        oldUri = `assets-library://asset/asset.jpg?id=${id}&ext=jpg`;
+        console.log( `Converted file uri to ${oldUri}` );
+      }
+      const encodedUri = encodeURI( oldUri );
+      const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
+      const newPath = await copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
+      const photo = { uri: newPath, predictions: [] };
+      if ( typeof photo !== "object" ) {
+        console.log( "photo is not an object", typeof photo );
+        return null;
+      }
+      // Not sure if this is required
+      callbacks.onDidCapturePhoto?.();
+      return {
+        ...testPhoto,
+        path: newPath,
+        metadata: {
+          Orientation: testPhoto.orientation,
+        },
+      };
+    } )
+    .catch( err => {
+      console.log( "Error getting photos", err );
+      return null;
+    } );
+};
+
+export const mockUsePhotoOutput = () => ( {
+  capturePhotoToFile: mockCapturePhotoToFile,
+} );
