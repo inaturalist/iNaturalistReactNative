@@ -145,6 +145,14 @@ const FrameProcessorCamera = ( {
   const geoModelCellLocation = hasUserLocation
     ? InatVision.getCellLocation( userLocation )
     : null;
+  const cellLat = geoModelCellLocation?.latitude;
+  const cellLng = geoModelCellLocation?.longitude;
+  const cellElev = geoModelCellLocation?.elevation;
+  const hasCellLocation
+    = typeof cellLat === "number"
+    && typeof cellLng === "number"
+    && typeof cellElev === "number";
+
   const asyncRunner = useAsyncRunner( );
   const frameOutput = useFrameOutput( {
     allowDeferredStart: true,
@@ -171,7 +179,8 @@ const FrameProcessorCamera = ( {
           // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
           // react-native-worklets-core documentation for what is supported in those worklets.
           const timeBefore = Date.now( );
-          const result = InatVision.inatVision( frame, {
+
+          const options = {
             version: modelVersion,
             modelPath,
             taxonomyPath,
@@ -180,12 +189,17 @@ const FrameProcessorCamera = ( {
             cropRatio: CROP_RATIO,
             useGeomodel,
             geomodelPath,
-            location: {
-              latitude: geoModelCellLocation?.latitude,
-              longitude: geoModelCellLocation?.longitude,
-              elevation: geoModelCellLocation?.elevation,
-            },
-          } );
+          };
+
+          if ( useGeomodel && hasCellLocation ) {
+            options.location = {
+              latitude: cellLat,
+              longitude: cellLng,
+              elevation: cellElev,
+            };
+          }
+
+          const result = InatVision.inatVision( frame, options );
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
           scheduleOnRN( handleResults, result, timeTaken );
