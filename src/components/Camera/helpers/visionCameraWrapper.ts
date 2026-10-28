@@ -2,6 +2,7 @@
 // so we can mock them for e2e tests in simulators without camera.
 import {
   Camera,
+  useAsyncRunner,
   useCameraDevice,
   useCameraDevices,
   useFrameOutput,
@@ -10,6 +11,7 @@ import {
 
 export {
   Camera,
+  useAsyncRunner,
   useCameraDevice,
   useCameraDevices,
   useFrameOutput,
