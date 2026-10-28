@@ -30,7 +30,6 @@ import {
   taxonomyPath,
 } from "sharedHelpers/mlModel";
 import { logStage } from "sharedHelpers/sentinelFiles";
-import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 import useStore from "stores/useStore";
