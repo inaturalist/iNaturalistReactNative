@@ -22,6 +22,7 @@ import {
 import Reanimated from "react-native-reanimated";
 import type {
   CameraDevice,
+  CameraFrameOutput,
   CameraPhotoOutput,
   CameraProps,
   CameraRef,
@@ -38,7 +39,7 @@ interface Props {
   cameraRef: RefObject<CameraRef | null>;
   cameraScreen: "standard" | "ai";
   device: CameraDevice;
-  frameProcessor?: ReadonlyFrameProcessor;
+  frameOutput: CameraFrameOutput;
   onCameraError: ( error: CameraRuntimeError ) => void;
   panToZoom: PanGesture;
   pinchToZoom: PinchGesture;
@@ -54,7 +55,7 @@ const CameraView = ( {
   cameraRef,
   cameraScreen,
   device,
-  frameProcessor,
+  frameOutput,
   onCameraError,
   panToZoom,
   pinchToZoom,
@@ -111,15 +112,13 @@ const CameraView = ( {
           animatedProps={animatedProps}
           device={device}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
-          frameProcessor={frameProcessor}
           enableNativeZoomGesture={false}
           isActive={isActive}
           onError={onError}
-          pixelFormat="yuv"
           orientationSource="device"
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
-          outputs={[photoOutput]}
+          outputs={[photoOutput, frameOutput]}
           constraints={[
             // {
             //   videoAspectRatio:

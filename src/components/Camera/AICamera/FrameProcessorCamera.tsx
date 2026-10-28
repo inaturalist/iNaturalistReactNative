@@ -1,8 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
-import {
-  useFrameProcessor,
-} from "components/Camera/helpers/visionCameraWrapper";
+import { useFrameOutput } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import type { RefObject } from "react";
@@ -23,6 +21,7 @@ import type {
   CameraRef,
   CameraRuntimeError,
 } from "react-native-vision-camera";
+import { scheduleOnRN } from "react-native-worklets";
 import {
   geomodelPath,
   modelPath,
@@ -141,62 +140,55 @@ const FrameProcessorCamera = ( {
   const geoModelCellLocation = hasUserLocation
     ? InatVision.getCellLocation( userLocation )
     : null;
-  const frameProcessor = useFrameProcessor(
-    frame => {
+  const frameOutput = useFrameOutput( {
+    allowDeferredStart: true,
+    enablePhysicalBufferRotation: true,
+    pixelFormat: "yuv",
+    onFrame( frame ) {
       "worklet";
 
-      if ( takingPhoto ) {
-        return;
-      }
-      const timestamp = Date.now();
-      // If there is no lastTimestamp, i.e. the first time this runs do not compare
-      if ( lastTimestamp ) {
-        const timeSinceLastFrame = timestamp - lastTimestamp;
-        if ( timeSinceLastFrame < 1000 / FPS ) {
+      try {
+        if ( takingPhoto ) {
           return;
         }
-      }
-
-      patchedRunAsync( frame, ( ) => {
-        "worklet";
-
+        const timestamp = Date.now();
+        // If there is no lastTimestamp, i.e. the first time this runs do not compare
+        if ( lastTimestamp ) {
+          const timeSinceLastFrame = timestamp - lastTimestamp;
+          if ( timeSinceLastFrame < 1000 / FPS ) {
+            return;
+          }
+        }
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
         // react-native-worklets-core documentation for what is supported in those worklets.
         const timeBefore = Date.now( );
-        try {
-          const result = InatVision.inatVision( frame, {
-            version: modelVersion,
-            modelPath,
-            taxonomyPath,
-            confidenceThreshold: CONFIDENCE_THRESHOLD,
-            numStoredResults: NUM_STORED_RESULTS,
-            cropRatio: CROP_RATIO,
-            useGeomodel,
-            geomodelPath,
-            location: {
-              latitude: geoModelCellLocation?.latitude,
-              longitude: geoModelCellLocation?.longitude,
-              elevation: geoModelCellLocation?.elevation,
-            },
-          } );
-          const timeAfter = Date.now();
-          const timeTaken = timeAfter - timeBefore;
-          handleResults( result, timeTaken );
-        } catch ( classifierError ) {
-          console.log( `Error: ${classifierError.message}` );
-          handleError( classifierError );
-        }
-      } );
+        const result = InatVision.inatVision( frame, {
+          version: modelVersion,
+          modelPath,
+          taxonomyPath,
+          confidenceThreshold: CONFIDENCE_THRESHOLD,
+          numStoredResults: NUM_STORED_RESULTS,
+          cropRatio: CROP_RATIO,
+          useGeomodel,
+          geomodelPath,
+          location: {
+            latitude: geoModelCellLocation?.latitude,
+            longitude: geoModelCellLocation?.longitude,
+            elevation: geoModelCellLocation?.elevation,
+          },
+        } );
+        const timeAfter = Date.now();
+        const timeTaken = timeAfter - timeBefore;
+        scheduleOnRN( handleResults, result, timeTaken );
+      } catch ( classifierError ) {
+        console.log( `Error: ${classifierError.message}` );
+        handleError( classifierError );
+        scheduleOnRN( handleError, classifierError );
+      } finally {
+        frame.dispose();
+      }
     },
-    [
-      patchedRunAsync,
-      modelVersion,
-      takingPhoto,
-      lastTimestamp,
-      useGeomodel,
-      geoModelCellLocation,
-    ],
-  );
+  } );
 
   return (
     <CameraView
@@ -204,7 +196,6 @@ const FrameProcessorCamera = ( {
       cameraRef={cameraRef}
       cameraScreen="ai"
       device={device}
-      frameProcessor={frameProcessor}
       onCameraError={async error => {
         onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
@@ -213,6 +204,7 @@ const FrameProcessorCamera = ( {
       pinchToZoom={pinchToZoom}
       inactive={inactive}
       photoOutput={photoOutput}
+      frameOutput={frameOutput}
     />
   );
 };
