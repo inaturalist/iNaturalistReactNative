@@ -1,4 +1,5 @@
 import type React from "react";
+import type { RefObject } from "react";
 import {
   useCallback, useMemo, useState,
 } from "react";
@@ -24,7 +25,7 @@ export interface Coordinates {
   y: number;
 }
 
-const useFocusTap = ( cameraRef: CameraRef ) => {
+const useFocusTap = ( cameraRef: RefObject<CameraRef | null> ) => {
   const [tappedCoordinates, setTappedCoordinates] = useState<Coordinates | null>( null );
   const focusOpacity = useSharedValue( 0 );
   const focusLeft = useSharedValue( 0 );
