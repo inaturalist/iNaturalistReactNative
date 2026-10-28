@@ -137,7 +137,6 @@ const FrameProcessorCamera = ( {
     onClassifierError( error );
   } );
 
-  const patchedRunAsync = usePatchedRunAsync( );
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
     ? hasUserLocation
