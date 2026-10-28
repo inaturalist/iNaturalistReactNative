@@ -2,7 +2,6 @@ import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
 import {
   Camera,
-  useCameraFormat,
 } from "components/Camera/helpers/visionCameraWrapper";
 import useFocusTap from "components/Camera/hooks/useFocusTap";
 import type { RefObject } from "react";
@@ -87,20 +86,6 @@ const CameraView = ( {
   const standardVideoAspectRatio = 4 / 3;
   const standardPhotoAspectRatio = 4 / 3;
   // Select a format that provides the highest resolution for photos and videos
-  const format = useCameraFormat( device, [
-    {
-      videoAspectRatio: cameraScreen === "standard"
-        ? standardVideoAspectRatio
-        : aiVideoAspectRatio,
-    },
-    {
-      photoAspectRatio: cameraScreen === "standard"
-        ? standardPhotoAspectRatio
-        : aiPhotoAspectRatio,
-    },
-    { photoResolution: "max" },
-    { videoResolution: "max" },
-  ] );
 
   const onError = useCallback(
     ( error: CameraRuntimeError ) => {
@@ -173,7 +158,6 @@ const CameraView = ( {
           animatedProps={animatedProps}
           device={device}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
-          format={format}
           frameProcessor={frameProcessor}
           enableNativeZoomGesture={false}
           isActive={isActive}
@@ -184,6 +168,21 @@ const CameraView = ( {
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
           outputs={[photoOutput]}
+          constraints={[
+            // {
+            //   videoAspectRatio:
+            //     cameraScreen === "standard"
+            //       ? standardVideoAspectRatio
+            //       : aiVideoAspectRatio,
+            // },
+            // {
+            //   photoAspectRatio:
+            //     cameraScreen === "standard"
+            //       ? standardPhotoAspectRatio
+            //       : aiPhotoAspectRatio,
+            // },
+            { resolutionBias: photoOutput },
+          ]}
         />
       </GestureDetector>
       <FocusSquare
