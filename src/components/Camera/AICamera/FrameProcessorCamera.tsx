@@ -1,6 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
-import { useFrameOutput } from "components/Camera/helpers/visionCameraWrapper";
+import {
+  useAsyncRunner,
+  useFrameOutput,
+} from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import type { RefObject } from "react";
@@ -140,6 +143,7 @@ const FrameProcessorCamera = ( {
   const geoModelCellLocation = hasUserLocation
     ? InatVision.getCellLocation( userLocation )
     : null;
+  const asyncRunner = useAsyncRunner( );
   const frameOutput = useFrameOutput( {
     allowDeferredStart: true,
     enablePhysicalBufferRotation: true,
@@ -147,44 +151,52 @@ const FrameProcessorCamera = ( {
     onFrame( frame ) {
       "worklet";
 
-      try {
-        if ( takingPhoto ) {
-          return;
-        }
-        const timestamp = Date.now();
-        // If there is no lastTimestamp, i.e. the first time this runs do not compare
-        if ( lastTimestamp ) {
-          const timeSinceLastFrame = timestamp - lastTimestamp;
-          if ( timeSinceLastFrame < 1000 / FPS ) {
+      const wasHandled = asyncRunner.runAsync( ( ) => {
+        "worklet";
+
+        try {
+          if ( takingPhoto ) {
             return;
           }
+          const timestamp = Date.now();
+          // If there is no lastTimestamp, i.e. the first time this runs do not compare
+          if ( lastTimestamp ) {
+            const timeSinceLastFrame = timestamp - lastTimestamp;
+            if ( timeSinceLastFrame < 1000 / FPS ) {
+              return;
+            }
+          }
+          // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
+          // react-native-worklets-core documentation for what is supported in those worklets.
+          const timeBefore = Date.now( );
+          const result = InatVision.inatVision( frame, {
+            version: modelVersion,
+            modelPath,
+            taxonomyPath,
+            confidenceThreshold: CONFIDENCE_THRESHOLD,
+            numStoredResults: NUM_STORED_RESULTS,
+            cropRatio: CROP_RATIO,
+            useGeomodel,
+            geomodelPath,
+            location: {
+              latitude: geoModelCellLocation?.latitude,
+              longitude: geoModelCellLocation?.longitude,
+              elevation: geoModelCellLocation?.elevation,
+            },
+          } );
+          const timeAfter = Date.now();
+          const timeTaken = timeAfter - timeBefore;
+          scheduleOnRN( handleResults, result, timeTaken );
+        } catch ( classifierError ) {
+          console.log( `Error: ${classifierError.message}` );
+          handleError( classifierError );
+          scheduleOnRN( handleError, classifierError );
+        } finally {
+          frame.dispose();
         }
-        // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
-        // react-native-worklets-core documentation for what is supported in those worklets.
-        const timeBefore = Date.now( );
-        const result = InatVision.inatVision( frame, {
-          version: modelVersion,
-          modelPath,
-          taxonomyPath,
-          confidenceThreshold: CONFIDENCE_THRESHOLD,
-          numStoredResults: NUM_STORED_RESULTS,
-          cropRatio: CROP_RATIO,
-          useGeomodel,
-          geomodelPath,
-          location: {
-            latitude: geoModelCellLocation?.latitude,
-            longitude: geoModelCellLocation?.longitude,
-            elevation: geoModelCellLocation?.elevation,
-          },
-        } );
-        const timeAfter = Date.now();
-        const timeTaken = timeAfter - timeBefore;
-        scheduleOnRN( handleResults, result, timeTaken );
-      } catch ( classifierError ) {
-        console.log( `Error: ${classifierError.message}` );
-        handleError( classifierError );
-        scheduleOnRN( handleError, classifierError );
-      } finally {
+      } );
+      if ( !wasHandled ) {
+        // `asyncRunner` is busy - drop this Frame!
         frame.dispose();
       }
     },
