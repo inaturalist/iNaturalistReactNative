@@ -41,9 +41,8 @@ export class mockCamera extends React.PureComponent {
   }
 
   /*
-    Every time the component updates we are running the frame processor that is a prop
-    to the camera component. We are running the frame processor with a mocked frame that
-    does not include any kind of image data at all.
+    Every time the component updates we invoke the frame output's onFrame callback
+    with a mocked frame that does not include any kind of image data at all.
     Running it only on component update means it only is called a few times and not
     every second (or so - depending on fps). This is enough to satisfy the e2e test
     though because the mocked prediction needs to appear only once to be found by the
@@ -51,11 +50,10 @@ export class mockCamera extends React.PureComponent {
     the test never finishes.
   */
   componentDidUpdate() {
-    const { frameProcessor, isActive } = this.props;
-    if ( isActive === false || !frameProcessor ) {
-      return;
-    }
-    frameProcessor.frameProcessor( mockFrame );
+    const { outputs } = this.props;
+    outputs?.forEach( output => {
+      output?.onFrame?.( mockFrame );
+    } );
   }
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
@@ -101,12 +99,7 @@ export class mockCamera extends React.PureComponent {
         }
         const encodedUri = encodeURI( oldUri );
         const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
-        const newPath = await copyAssetsFileIOS(
-          encodedUri,
-          destPath,
-          0,
-          0,
-        );
+        const newPath = await copyAssetsFileIOS( encodedUri, destPath, 0, 0 );
         const photo = { uri: newPath, predictions: [] };
         if ( typeof photo !== "object" ) {
           console.log( "photo is not an object", typeof photo );
