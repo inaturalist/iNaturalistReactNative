@@ -3,7 +3,6 @@ import {
   mockSortDevices,
   mockUseCameraDevice,
   mockUseCameraDevices,
-  mockUseCameraFormat,
 } from "tests/vision-camera/vision-camera";
 
 export const Camera = mockCamera;
