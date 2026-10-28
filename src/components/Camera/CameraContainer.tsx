@@ -3,6 +3,7 @@ import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
   useCameraDevice,
   useCameraDevices,
+  usePhotoOutput,
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -241,6 +242,7 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
+  const photoOutput = usePhotoOutput( );
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
     // Set the camera to inactive immediately after taking the photo,
@@ -324,6 +326,7 @@ const CameraContainer = ( ) => {
         userLocation={userLocationForGeomodel}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
+        photoOutput={photoOutput}
       />
       {renderLocationPermissionsGate( {
         onRequestGranted: ( ) => console.log( "granted in location permission gate" ),
