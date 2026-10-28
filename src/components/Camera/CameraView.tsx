@@ -72,7 +72,7 @@ const CameraView = ( {
     animatedStyle,
     tapToFocus,
     tappedCoordinates,
-  } = useFocusTap( cameraRef, device.supportsFocus );
+  } = useFocusTap( cameraRef );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
