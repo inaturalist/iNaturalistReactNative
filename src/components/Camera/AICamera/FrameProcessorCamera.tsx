@@ -23,7 +23,6 @@ import type {
   CameraRef,
   CameraRuntimeError,
 } from "react-native-vision-camera";
-import { Worklets } from "react-native-worklets-core";
 import {
   geomodelPath,
   modelPath,
@@ -116,7 +115,7 @@ const FrameProcessorCamera = ( {
     };
   }, [navigation, resetCameraOnFocus] );
 
-  const handleResults = Worklets.createRunOnJS( ( result: Result, timeTaken: number ) => {
+  const handleResults = ( result: Result, timeTaken: number ) => {
     setLastTimestamp( result.timestamp );
     framesProcessingTime.current.push( timeTaken );
     if ( framesProcessingTime.current.length === 10 ) {
@@ -125,11 +124,11 @@ const FrameProcessorCamera = ( {
       framesProcessingTime.current = [];
     }
     onTaxaDetected( result );
-  } );
+  };
 
-  const handleError = Worklets.createRunOnJS( ( error: CameraRuntimeError ) => {
+  const handleError = ( error: CameraRuntimeError ) => {
     onClassifierError( error );
-  } );
+  };
 
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
