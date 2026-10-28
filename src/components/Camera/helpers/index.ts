@@ -15,11 +15,18 @@ const handleCameraError = ( error: CameraRuntimeError ) => {
   Alert.alert( "error", JSON.stringify( error ) );
 };
 
+const handleClassifierError = ( error: CameraRuntimeError ) => {
+  // When we hit this error, there is an error with the classifier.
+  logger.error( "handleClassifierError: ", JSON.stringify( error ) );
+  Alert.alert( "error", JSON.stringify( error ) );
+};
+
 const handleLog = ( event: Event ) => {
   logger.debug( event.log );
 };
 
 export {
   handleCameraError,
+  handleClassifierError,
   handleLog,
 };

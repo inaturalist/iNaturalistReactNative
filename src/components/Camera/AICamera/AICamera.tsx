@@ -31,6 +31,7 @@ import colors from "styles/tailwindColors";
 import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
+  handleClassifierError,
   handleLog,
 } from "../helpers";
 import AICameraButtons from "./AICameraButtons";
@@ -242,6 +243,7 @@ const AICamera = ( {
             userLocation={userLocation}
             useLocation={useLocation}
             photoOutput={photoOutput}
+            onClassifierError={handleClassifierError}
           />
         </View>
       )}

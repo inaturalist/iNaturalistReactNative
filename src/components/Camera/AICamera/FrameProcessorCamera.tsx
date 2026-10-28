@@ -52,6 +52,7 @@ interface Props {
   userLocation?: UserLocation | null;
   useLocation: boolean;
   photoOutput: CameraPhotoOutput;
+  onClassifierError: ( error: CameraRuntimeError ) => void;
 }
 
 const FPS = 1;
@@ -74,6 +75,7 @@ const FrameProcessorCamera = ( {
   userLocation,
   useLocation,
   photoOutput,
+  onClassifierError,
 }: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
