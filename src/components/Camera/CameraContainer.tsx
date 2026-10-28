@@ -14,10 +14,8 @@ import React, {
   useState,
 } from "react";
 import { Alert, StatusBar } from "react-native";
-import type {
-  CameraRef,
-  CapturePhotoSettings,
-} from "react-native-vision-camera";
+import type { CameraRef, CapturePhotoSettings } from "react-native-vision-camera";
+import { CommonResolutions } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
 import { hasWriteMediaPermission } from "sharedHelpers/permissions";
@@ -246,6 +244,7 @@ const CameraContainer = ( ) => {
 
   const photoOutput = usePhotoOutput( {
     qualityPrioritization: "quality",
+    targetResolution: CommonResolutions.HIGHEST_16_9,
   } );
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
