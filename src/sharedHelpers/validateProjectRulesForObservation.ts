@@ -132,9 +132,16 @@ const evaluateRule = (
       return statusFrom( observationTaxonId( observation ) != null );
     case "in_taxon?":
       return evaluateInTaxon( observation, rule );
+    case "observed_in_place?":
+      return isGeoreferenced( observation )
+        ? "unknown"
+        : "fail";
+    case "on_list?":
+      return observationTaxonId( observation ) == null
+        ? "fail"
+        : "unknown";
     default:
-      // Needs data only the server has, e.g. place geometry, project list
-      // taxa, or membership settings
+      // Needs data only the server has, e.g. membership settings
       return "unknown";
   }
 };

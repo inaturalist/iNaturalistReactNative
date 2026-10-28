@@ -293,6 +293,16 @@ describe( "AddToProjects", ( ) => {
       ];
     } );
 
+    beforeEach( ( ) => {
+      useStore.setState( {
+        currentObservation: {
+          ...useStore.getState( ).currentObservation,
+          latitude: 37.7,
+          longitude: -122.4,
+        },
+      } );
+    } );
+
     afterAll( ( ) => {
       rulesProject.projectObservationFields = originalFields;
       rulesProject.project_observation_rules = [];

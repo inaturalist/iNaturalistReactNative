@@ -73,7 +73,7 @@ describe( "validateProjectRules", ( ) => {
     } );
   } );
 
-  describe( "server-only rules", ( ) => {
+  describe( "rules the server confirms", ( ) => {
     test.each( [
       ["coordinates_shareable_by_project_curators?"],
       ["observed_in_place?"],
@@ -86,6 +86,13 @@ describe( "validateProjectRules", ( ) => {
         taxon: sanderling,
       } );
       expect( statusFor( obs, operator ) ).toBe( "unknown" );
+    } );
+
+    test.each( [
+      ["observed_in_place?", "without a location", { taxon: sanderling }],
+      ["on_list?", "without a taxon", { latitude: 37.7, longitude: -122.4 }],
+    ] )( "%s should fail %s", ( operator, _description, overrides ) => {
+      expect( statusFor( observation( overrides ), operator ) ).toBe( "fail" );
     } );
   } );
 
@@ -203,7 +210,8 @@ describe( "validateProjectRulesForObservation", ( ) => {
   } );
 
   it( "should not block on rules only the server can check", ( ) => {
-    const result = validateProjectRulesForObservation( observation( ), [
+    const obs = observation( { latitude: 37.7, longitude: -122.4, taxon: sanderling } );
+    const result = validateProjectRulesForObservation( obs, [
       project( [rule( "on_list?" ), rule( "observed_in_place?" )] ),
     ] );
     expect( result.valid ).toBe( true );
