@@ -160,6 +160,25 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).uuids ).toEqual( ["a"] );
   } );
 
+  it( "keeps loading the section the user was reading when a fast scroll overshoots into the "
+    + "unfetched sections below it", async ( ) => {
+    const { result } = renderSectionsHook( );
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).uuids ).toEqual(
+        ["a", "b"],
+      );
+    } );
+
+    act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.AVES ) );
+
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
+    expect( paramsOfLastSearch( ) ).toMatchObject( {
+      iconic_taxa: [ICONIC_TAXA_GROUP.PLANTAE],
+      page: 2,
+    } );
+    expect( result.current.sections.get( ICONIC_TAXA_GROUP.AVES ).isActivated ).toBe( false );
+  } );
+
   it( "skips categories the server has no observations for", async ( ) => {
     searchObservations.mockResolvedValue( pageOf( ["a"] ) );
     const { result } = renderSectionsHook( );
