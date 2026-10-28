@@ -1,5 +1,4 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
   useCameraDevice,
   useCameraDevices,
@@ -16,6 +15,7 @@ import React, {
 } from "react";
 import { Alert, StatusBar } from "react-native";
 import type {
+  CameraRef,
   TakePhotoOptions,
 } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
@@ -142,7 +142,7 @@ const CameraContainer = ( ) => {
   const confirmPhotosInProgressRef = useRef( false );
   const addEvidence = params?.addEvidence;
 
-  const camera = useRef<Camera>( null );
+  const camera = useRef<CameraRef>( null );
 
   useEffect( () => {
     const generateSentinelFile = async ( ) => {

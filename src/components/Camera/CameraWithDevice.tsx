@@ -1,9 +1,9 @@
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import { View } from "components/styledComponents";
-import type { RefObject } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import type { CameraDevice, CameraPhotoOutput, TakePhotoOptions } from "react-native-vision-camera";
+import type {
+  CameraDevice, CameraPhotoOutput, CameraRef, TakePhotoOptions,
+} from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 
@@ -16,7 +16,7 @@ const isTablet = DeviceInfo.isTablet( );
 interface Props {
   cameraType: "AI" | "Standard";
   device: CameraDevice;
-  camera: RefObject<Camera | null>;
+  camera: CameraRef;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
   confirmPhotosInProgress: boolean;

@@ -2,12 +2,10 @@ import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
-import type { RefObject } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -17,7 +15,9 @@ import React, {
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDevice, CameraPhotoOutput, TakePhotoOptions } from "react-native-vision-camera";
+import type {
+  CameraDevice, CameraPhotoOutput, CameraRef, TakePhotoOptions,
+} from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -42,7 +42,7 @@ const isTablet = DeviceInfo.isTablet( );
 export const MAX_PHOTOS_ALLOWED = 20;
 
 interface Props {
-  camera: RefObject<Camera | null>;
+  camera: CameraRef;
   device: CameraDevice;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;

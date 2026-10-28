@@ -1,4 +1,3 @@
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import type React from "react";
 import {
   useCallback, useMemo, useState,
@@ -15,6 +14,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import type { CameraRef } from "react-native-vision-camera";
 
 // This is dictated by the size of the FocusSquare.tsx, which is 66px.
 const HALF_SIZE_FOCUS_BOX = 33;
@@ -24,7 +24,7 @@ export interface Coordinates {
   y: number;
 }
 
-const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: boolean ) => {
+const useFocusTap = ( cameraRef: CameraRef, supportsFocus: boolean ) => {
   const [tappedCoordinates, setTappedCoordinates] = useState<Coordinates | null>( null );
   const focusOpacity = useSharedValue( 0 );
   const focusLeft = useSharedValue( 0 );

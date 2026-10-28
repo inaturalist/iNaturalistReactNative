@@ -1,19 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
-import type { RefObject } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDevice, CameraPhotoOutput, TakePhotoOptions } from "react-native-vision-camera";
+import type {
+  CameraDevice, CameraPhotoOutput, CameraRef, TakePhotoOptions,
+} from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
 import { completeSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
@@ -64,7 +64,7 @@ const getResultContainerClassName = ( insetsTop: number ) => {
 // };
 
 interface Props {
-  camera: RefObject<Camera | null>;
+  camera: CameraRef;
   device: CameraDevice;
   flipCamera: ( ) => void;
   isLandscapeMode: boolean;

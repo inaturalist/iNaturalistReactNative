@@ -21,7 +21,12 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type {
-  CameraDevice, CameraPhotoOutput, CameraProps, CameraRuntimeError, ReadonlyFrameProcessor,
+  CameraDevice,
+  CameraPhotoOutput,
+  CameraProps,
+  CameraRef,
+  CameraRuntimeError,
+  ReadonlyFrameProcessor,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
@@ -30,7 +35,7 @@ const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
 
 interface Props {
   animatedProps: CameraProps;
-  cameraRef: React.RefObject<Camera | null>;
+  cameraRef: CameraRef;
   cameraScreen: "standard" | "ai";
   device: CameraDevice;
   frameProcessor?: ReadonlyFrameProcessor;

@@ -1,12 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
   useFrameProcessor,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
-import type { RefObject } from "react";
 import React, {
   useEffect,
   useRef,
@@ -21,6 +19,7 @@ import type {
   CameraDevice,
   CameraPhotoOutput,
   CameraProps,
+  CameraRef,
   CameraRuntimeError,
 } from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
@@ -38,7 +37,7 @@ import type { Result } from "vision-camera-plugin-inatvision";
 
 interface Props {
   animatedProps: CameraProps;
-  cameraRef: RefObject<Camera | null>;
+  cameraRef: CameraRef;
   device: CameraDevice;
   onCameraError: ( error: CameraRuntimeError ) => void;
   onCaptureError: ( error: CameraRuntimeError ) => void;
