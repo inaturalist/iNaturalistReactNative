@@ -189,7 +189,6 @@ const FrameProcessorCamera = ( {
           scheduleOnRN( handleResults, result, timeTaken );
         } catch ( classifierError ) {
           console.log( `Error: ${classifierError.message}` );
-          handleError( classifierError );
           scheduleOnRN( handleError, classifierError );
         } finally {
           frame.dispose();
