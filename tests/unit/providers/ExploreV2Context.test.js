@@ -44,6 +44,29 @@ describe( "initialStateFromEntryParams", ( ) => {
     expect( state.speciesSortBy ).toBe( initialExploreV2State.speciesSortBy );
     expect( state.filters ).toEqual( defaultExploreV2Filters );
   } );
+
+  const search = {
+    subject: { type: "taxon", taxon: { id: 1, name: "Plantae" } },
+    location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+    sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST,
+    speciesSortBy: SPECIES_SORT.COUNT_ASC,
+    filters: { ...defaultExploreV2Filters, casual: true },
+  };
+
+  it( "seeds the whole search from the search param", ( ) => {
+    expect( initialStateFromEntryParams( { search } ) ).toEqual( {
+      ...initialExploreV2State,
+      ...search,
+    } );
+  } );
+
+  it( "applies activeTab on top of a search", ( ) => {
+    expect( initialStateFromEntryParams( { search, activeTab: SPECIES_TAB } ) ).toEqual( {
+      ...initialExploreV2State,
+      ...search,
+      activeTab: SPECIES_TAB,
+    } );
+  } );
 } );
 
 describe( "exploreV2Reducer", ( ) => {

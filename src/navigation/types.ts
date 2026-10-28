@@ -12,12 +12,14 @@ import type {
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type {
   ExploreV2LocationState,
+  ExploreV2Search,
   ExploreV2Subject,
   ExploreV2Tab,
 } from "providers/ExploreV2Context";
 import type { SharedData } from "sharedHooks/useShare";
 
 export interface ExploreV2EntryParams {
+  search?: ExploreV2Search;
   subject?: ExploreV2Subject | null;
   location?: ExploreV2LocationState;
   activeTab?: ExploreV2Tab;
