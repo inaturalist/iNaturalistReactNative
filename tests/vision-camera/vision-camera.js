@@ -154,3 +154,4 @@ export const mockUseAsyncRunner = () => ( {
     return true;
   },
 } );
+export const mockUseFrameOutput = options => options;

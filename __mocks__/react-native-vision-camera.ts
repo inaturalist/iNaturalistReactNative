@@ -4,6 +4,7 @@ import {
   mockUseAsyncRunner,
   mockUseCameraDevice,
   mockUseCameraDevices,
+  mockUseFrameOutput,
   mockUsePhotoOutput,
 } from "tests/vision-camera/vision-camera";
 
@@ -12,5 +13,5 @@ export const sortDevices = mockSortDevices;
 export const useAsyncRunner = mockUseAsyncRunner;
 export const useCameraDevice = mockUseCameraDevice;
 export const useCameraDevices = mockUseCameraDevices;
-export const useFrameOutput = jest.fn( );
+export const useFrameOutput = mockUseFrameOutput;
 export const usePhotoOutput = mockUsePhotoOutput;
