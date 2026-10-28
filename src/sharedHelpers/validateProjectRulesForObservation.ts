@@ -61,7 +61,12 @@ const statusFrom = ( passes: boolean ): ProjectRuleStatus => (
     : "fail"
 );
 
-const isCaptive = ( observation: RealmObservationPojo ) => observation.captive_flag === true;
+// captive_flag is the owner's vote and captive the server's result. Rails
+// ignores an uploaded captive_flag of false, so a local "wild" can't
+// override a captive result
+const isCaptive = ( observation: RealmObservationPojo ) => (
+  observation.captive_flag === true || observation.captive === true
+);
 
 const isGeoreferenced = ( observation: RealmObservationPojo ) => (
   typeof observation.latitude === "number" && typeof observation.longitude === "number"

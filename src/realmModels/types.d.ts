@@ -189,6 +189,7 @@ interface RealmIdentification extends RealmObject {
 export interface RealmObservationPojo {
   _created_at?: Date;
   _synced_at?: Date;
+  captive?: boolean | null;
   captive_flag: boolean | null;
   comments: RealmComment[];
   comments_viewed?: boolean;

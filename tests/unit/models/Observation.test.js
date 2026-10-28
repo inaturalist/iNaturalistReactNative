@@ -99,6 +99,27 @@ describe( "Observation", ( ) => {
       );
     } );
 
+    it( "should store the server's captive without setting the owner's captive_flag", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", { captive: true } );
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", mockRemoteObservation.uuid );
+      expect( obs.captive ).toBe( true );
+      expect( obs.captive_flag ).toBeNull( );
+    } );
+
+    it( "should keep captive from a detail fetch through a list fetch that omits it", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", { captive: true } );
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      // Shaped like a MyObs list fetch, which doesn't request captive
+      const { captive: _captive, ...listObservation } = mockRemoteObservation;
+      Observation.upsertRemoteObservations( [listObservation], global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", mockRemoteObservation.uuid );
+      expect( obs.captive ).toBe( true );
+    } );
+
     it( "should not wipe a stored taxon photo when the taxon has no default_photo", ( ) => {
       const taxonId = 47126;
       const photoUrl = "https://example.com/plantae/square.jpg";
