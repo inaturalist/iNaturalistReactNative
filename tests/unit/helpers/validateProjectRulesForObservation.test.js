@@ -116,6 +116,11 @@ describe( "validateProjectRules", ( ) => {
         time_observed_at: "2024-05-01T16:30:00Z",
       }],
       ["when captive", "fail", { captive_flag: true }],
+      ["when identified as human", "fail", { taxon: { id: 43584, name: "Homo sapiens" } }],
+      ["when identified as genus Homo", "fail", { taxon: { id: 43583, name: "Homo" } }],
+      ["when identified as a genus whose name starts with Homo", "pass", {
+        taxon: { id: 99999, name: "Homoeosoma" },
+      }],
       ["without evidence", "fail", { observationPhotos: [] }],
       ["without a location", "fail", { latitude: null, longitude: null }],
       ["without a date", "fail", { observed_on_string: null }],

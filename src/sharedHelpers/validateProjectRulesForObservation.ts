@@ -84,7 +84,14 @@ const hasDate = ( observation: RealmObservationPojo ) => (
   || !!observation.observed_on
 );
 
+// Matches Rails Observation#human?, which makes an observation casual
+const isHuman = ( observation: RealmObservationPojo ) => {
+  const name = observation.taxon?.name;
+  return name === "Homo" || !!name?.startsWith( "Homo " );
+};
+
 const isVerifiable = ( observation: RealmObservationPojo ) => !isCaptive( observation )
+  && !isHuman( observation )
   && hasMedia( observation )
   && isGeoreferenced( observation )
   && hasDate( observation );
