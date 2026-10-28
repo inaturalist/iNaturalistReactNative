@@ -12,17 +12,20 @@ import {
   mockUseAsyncRunner,
   mockUseCameraDevice,
   mockUseCameraDevices,
+  mockUsePhotoOutput,
 } from "tests/vision-camera/vision-camera";
 
 const Camera = mockCamera;
 const useAsyncRunner = mockUseAsyncRunner;
 const useCameraDevice = mockUseCameraDevice;
 const useCameraDevices = mockUseCameraDevices;
+const usePhotoOutput = mockUsePhotoOutput;
 
 export {
   Camera,
   useAsyncRunner,
   useCameraDevice,
   useCameraDevices,
-  useFrameOutput
+  useFrameOutput,
+  usePhotoOutput
 };
