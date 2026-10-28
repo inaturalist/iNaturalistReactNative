@@ -127,8 +127,8 @@ export class mockCamera extends React.PureComponent {
 
 export const mockSortDevices = ( _left, _right ) => 1;
 
-const device = {
-  physicalDevices: ["wide-angle-camera"],
+const mockDevice = {
+  devices: ["wide-angle-camera"],
   hasFlash: true,
   hasTorch: true,
   id: "1",
@@ -145,13 +145,18 @@ const device = {
   supportsRawCapture: true,
 };
 
-export const mockUseCameraDevice = _deviceType => device;
-export const mockUseCameraDevices = () => [device];
+// Stable identities. A fresh object or function on each call changes hook
+// dependencies (camera focus reset, location permission) and re-renders forever,
+// so Detox never sees the app go idle.
+export const mockUseCameraDevice = _deviceType => mockDevice;
+export const mockUseCameraDevices = () => [mockDevice];
 
-export const mockUseAsyncRunner = () => ( {
+const mockAsyncRunner = {
   runAsync: cb => {
     cb();
     return true;
   },
-} );
+};
+export const mockUseAsyncRunner = () => mockAsyncRunner;
+
 export const mockUseFrameOutput = options => options;
