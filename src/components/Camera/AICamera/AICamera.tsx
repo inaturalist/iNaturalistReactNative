@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
+import type { CameraDevice, CameraPhotoOutput, TakePhotoOptions } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
 import { completeSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
@@ -75,6 +75,7 @@ interface Props {
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
   requestLocationPermissions: () => void;
+  photoOutput: CameraPhotoOutput;
 }
 
 const AICamera = ( {
@@ -89,6 +90,7 @@ const AICamera = ( {
   userLocation,
   hasLocationPermissions,
   requestLocationPermissions,
+  photoOutput,
 }: Props ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -244,6 +246,7 @@ const AICamera = ( {
             resetCameraOnFocus={resetCameraOnFocus}
             userLocation={userLocation}
             useLocation={useLocation}
+            photoOutput={photoOutput}
           />
         </View>
       )}

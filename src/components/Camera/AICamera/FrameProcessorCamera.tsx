@@ -19,6 +19,7 @@ import type {
 } from "react-native-gesture-handler";
 import type {
   CameraDevice,
+  CameraPhotoOutput,
   CameraProps,
   CameraRuntimeError,
 } from "react-native-vision-camera";
@@ -52,6 +53,7 @@ interface Props {
   resetCameraOnFocus: () => void;
   userLocation?: UserLocation | null;
   useLocation: boolean;
+  photoOutput: CameraPhotoOutput;
 }
 
 const FPS = 1;
@@ -76,6 +78,7 @@ const FrameProcessorCamera = ( {
   resetCameraOnFocus,
   userLocation,
   useLocation,
+  photoOutput,
 }: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
@@ -229,6 +232,7 @@ const FrameProcessorCamera = ( {
       panToZoom={panToZoom}
       pinchToZoom={pinchToZoom}
       inactive={inactive}
+      photoOutput={photoOutput}
     />
   );
 };

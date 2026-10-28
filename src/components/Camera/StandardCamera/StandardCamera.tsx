@@ -17,7 +17,7 @@ import React, {
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
+import type { CameraDevice, CameraPhotoOutput, TakePhotoOptions } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -54,6 +54,7 @@ interface Props {
   takePhotoOptions: TakePhotoOptions;
   newPhotoUris: string[];
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
+  photoOutput: CameraPhotoOutput;
 }
 
 const StandardCamera = ( {
@@ -69,6 +70,7 @@ const StandardCamera = ( {
   takePhotoOptions,
   newPhotoUris,
   setNewPhotoUris,
+  photoOutput,
 }: Props ) => {
   "use no memo";
 
@@ -232,6 +234,7 @@ const StandardCamera = ( {
               onDeviceNotSupported={handleDeviceNotSupported}
               panToZoom={panToZoom}
               pinchToZoom={pinchToZoom}
+              photoOutput={photoOutput}
             />
           )}
           <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />

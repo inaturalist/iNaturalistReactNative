@@ -3,7 +3,7 @@ import { View } from "components/styledComponents";
 import type { RefObject } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
+import type { CameraDevice, CameraPhotoOutput, TakePhotoOptions } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 
@@ -29,6 +29,7 @@ interface Props {
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
   requestLocationPermissions: () => void;
+  photoOutput: CameraPhotoOutput;
 }
 
 const CameraWithDevice = ( {
@@ -47,6 +48,7 @@ const CameraWithDevice = ( {
   userLocation,
   hasLocationPermissions,
   requestLocationPermissions,
+  photoOutput,
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -73,6 +75,7 @@ const CameraWithDevice = ( {
             newPhotoUris={newPhotoUris}
             setNewPhotoUris={setNewPhotoUris}
             takePhotoOptions={takePhotoOptions}
+            photoOutput={photoOutput}
           />
         )
         : (
@@ -88,6 +91,7 @@ const CameraWithDevice = ( {
             userLocation={userLocation}
             hasLocationPermissions={hasLocationPermissions}
             requestLocationPermissions={requestLocationPermissions}
+            photoOutput={photoOutput}
           />
         )}
     </View>

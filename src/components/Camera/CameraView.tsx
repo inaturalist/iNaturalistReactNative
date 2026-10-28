@@ -21,7 +21,7 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type {
-  CameraDevice, CameraProps, CameraRuntimeError, ReadonlyFrameProcessor,
+  CameraDevice, CameraPhotoOutput, CameraProps, CameraRuntimeError, ReadonlyFrameProcessor,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
@@ -42,6 +42,7 @@ interface Props {
   pinchToZoom: PinchGesture;
   resizeMode?: "cover" | "contain";
   inactive?: boolean;
+  photoOutput: CameraPhotoOutput;
 }
 
 // A container for the Camera component
@@ -60,6 +61,7 @@ const CameraView = ( {
   pinchToZoom,
   resizeMode,
   inactive,
+  photoOutput,
 }: Props ) => {
   const {
     animatedStyle,
@@ -179,6 +181,7 @@ const CameraView = ( {
           pixelFormat="yuv"
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
+          outputs={[photoOutput]}
         />
       </GestureDetector>
       <FocusSquare
