@@ -163,7 +163,6 @@ const CameraView = ( {
           isActive={isActive}
           onError={onError}
           outputOrientation="device"
-          photoQualityBalance="quality"
           pixelFormat="yuv"
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}

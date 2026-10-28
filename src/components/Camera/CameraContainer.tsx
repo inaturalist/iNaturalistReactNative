@@ -242,7 +242,9 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
-  const photoOutput = usePhotoOutput( );
+  const photoOutput = usePhotoOutput( {
+    qualityPrioritization: "quality",
+  } );
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
 
