@@ -245,11 +245,13 @@ const CameraContainer = ( ) => {
   const photoOutput = usePhotoOutput( );
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
+
     // Set the camera to inactive immediately after taking the photo,
-    // this does leave a short period of time where the camera preview is still active
-    // after taking the photo which we might to revisit if it doesn't look good.
-    const cameraPhoto = await camera?.current?.takePhoto( takePhotoOptions );
-    if ( options?.inactivateCallback ) options.inactivateCallback();
+    const cameraPhoto = await photoOutput.capturePhotoToFile( takePhotoOptions, {
+      onDidCapturePhoto: ( ) => {
+        if ( options?.inactivateCallback ) options.inactivateCallback();
+      },
+    } );
     await logStageIfAICamera( "take_photo_complete" );
     if ( !cameraPhoto ) {
       await logStageIfAICamera( "take_photo_error" );
