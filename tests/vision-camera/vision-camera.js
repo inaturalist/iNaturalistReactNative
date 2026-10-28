@@ -153,3 +153,10 @@ const device = {
 
 export const mockUseCameraDevice = _deviceType => device;
 export const mockUseCameraDevices = () => [device];
+
+export const mockUseAsyncRunner = () => ( {
+  runAsync: cb => {
+    cb();
+    return true;
+  },
+} );
