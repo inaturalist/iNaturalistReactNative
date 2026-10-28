@@ -94,10 +94,7 @@ const CameraView = ( {
   // which the Camera overflows its view
   return (
     <>
-      <GestureDetector
-        gesture={gesture}
-        className="overflow-hidden"
-      >
+      <GestureDetector gesture={gesture} className="overflow-hidden">
         <ReanimatedCamera
           // Shared props between StandardCamera and AICamera
           ref={cameraRef}
@@ -111,9 +108,7 @@ const CameraView = ( {
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
           outputs={[photoOutput, frameOutput]}
-          constraints={[
-            { resolutionBias: photoOutput },
-          ]}
+          constraints={[{ resolutionBias: photoOutput }]}
         />
       </GestureDetector>
       <FocusSquare
