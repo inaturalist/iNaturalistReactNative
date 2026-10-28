@@ -173,9 +173,9 @@ const CameraView = ( {
           animatedProps={animatedProps}
           device={device}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
-          enableZoomGesture={false}
           format={format}
           frameProcessor={frameProcessor}
+          enableNativeZoomGesture={false}
           isActive={isActive}
           onError={onError}
           outputOrientation="device"
