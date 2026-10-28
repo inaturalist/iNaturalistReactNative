@@ -7,6 +7,7 @@ import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
+import type { RefObject } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
@@ -64,7 +65,7 @@ const getResultContainerClassName = ( insetsTop: number ) => {
 // };
 
 interface Props {
-  camera: CameraRef;
+  camera: RefObject<CameraRef | null>;
   device: CameraDevice;
   flipCamera: ( ) => void;
   isLandscapeMode: boolean;

@@ -5,6 +5,7 @@ import {
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
+import type { RefObject } from "react";
 import React, {
   useEffect,
   useRef,
@@ -37,7 +38,7 @@ import type { Result } from "vision-camera-plugin-inatvision";
 
 interface Props {
   animatedProps: CameraProps;
-  cameraRef: CameraRef;
+  cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
   onCameraError: ( error: CameraRuntimeError ) => void;
   onCaptureError: ( error: CameraRuntimeError ) => void;

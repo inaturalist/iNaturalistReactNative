@@ -1,4 +1,5 @@
 import { View } from "components/styledComponents";
+import type { RefObject } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type {
@@ -16,7 +17,7 @@ const isTablet = DeviceInfo.isTablet( );
 interface Props {
   cameraType: "AI" | "Standard";
   device: CameraDevice;
-  camera: CameraRef;
+  camera: RefObject<CameraRef | null>;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
   confirmPhotosInProgress: boolean;

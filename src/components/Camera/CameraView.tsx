@@ -5,6 +5,7 @@ import {
   useCameraFormat,
 } from "components/Camera/helpers/visionCameraWrapper";
 import useFocusTap from "components/Camera/hooks/useFocusTap";
+import type { RefObject } from "react";
 import React, {
   useCallback,
 } from "react";
@@ -35,7 +36,7 @@ const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
 
 interface Props {
   animatedProps: CameraProps;
-  cameraRef: CameraRef;
+  cameraRef: RefObject<CameraRef | null>;
   cameraScreen: "standard" | "ai";
   device: CameraDevice;
   frameProcessor?: ReadonlyFrameProcessor;
