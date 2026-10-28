@@ -40,9 +40,6 @@ interface Props {
   device: CameraDevice;
   frameProcessor?: ReadonlyFrameProcessor;
   onCameraError: ( error: CameraRuntimeError ) => void;
-  onCaptureError: ( error: CameraRuntimeError ) => void;
-  onClassifierError: ( error: CameraRuntimeError ) => void;
-  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
   panToZoom: PanGesture;
   pinchToZoom: PinchGesture;
   resizeMode?: "cover" | "contain";
@@ -59,9 +56,6 @@ const CameraView = ( {
   device,
   frameProcessor,
   onCameraError,
-  onCaptureError,
-  onClassifierError,
-  onDeviceNotSupported,
   panToZoom,
   pinchToZoom,
   resizeMode,
@@ -88,53 +82,12 @@ const CameraView = ( {
   // Select a format that provides the highest resolution for photos and videos
 
   const onError = useCallback(
-    ( error: CameraRuntimeError ) => {
+    ( error: Error ) => {
       // { code: string, message: string, cause?: {} }
       console.log( "error", error );
-      // If there is no error code, log the error
-      // and return because we don't know what to do with it
-      if ( !error.code ) {
-        console.log( "Camera runtime error without error code:" );
-        console.log( "error", error );
-        return;
-      }
-
-      // If it is a "device/" error, return the error code
-      if ( error.code.includes( "device/" ) ) {
-        console.log( "error :>> ", error );
-        onDeviceNotSupported( error );
-        return;
-      }
-
-      if ( error.code.includes( "capture/" ) ) {
-        console.log( "error :>> ", error );
-        onCaptureError( error );
-        return;
-      }
-
-      // If the error code is "frame-processor/unavailable" handle the error as classifier error
-      if ( error.code === "frame-processor/unavailable" ) {
-        onClassifierError( error );
-        return;
-      }
-
-      if ( error.code.includes( "permission/" ) ) {
-        console.log( "error :>> ", error );
-        if ( error.code === "permission/camera-permission-denied" ) {
-          // No camera permission
-          // In Seek we do not have a PermissionGate wrapper component,
-          // so we need to handle this error there.
-          // Here we can just log it for now, it should in principle never be hit,
-          // because if we don't have permission the screen is not shown.
-          return;
-        }
-      }
       onCameraError( error );
     },
     [
-      onClassifierError,
-      onDeviceNotSupported,
-      onCaptureError,
       onCameraError,
     ],
   );

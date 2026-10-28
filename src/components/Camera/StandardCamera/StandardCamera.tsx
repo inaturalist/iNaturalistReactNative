@@ -28,9 +28,6 @@ import useStore from "stores/useStore";
 import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
-  handleCaptureError,
-  handleClassifierError,
-  handleDeviceNotSupported,
 } from "../helpers";
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
@@ -230,9 +227,6 @@ const StandardCamera = ( {
               cameraScreen="standard"
               device={device}
               onCameraError={handleCameraError}
-              onCaptureError={handleCaptureError}
-              onClassifierError={handleClassifierError}
-              onDeviceNotSupported={handleDeviceNotSupported}
               panToZoom={panToZoom}
               pinchToZoom={pinchToZoom}
               photoOutput={photoOutput}

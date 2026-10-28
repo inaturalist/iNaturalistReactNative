@@ -41,9 +41,6 @@ interface Props {
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
   onCameraError: ( error: CameraRuntimeError ) => void;
-  onCaptureError: ( error: CameraRuntimeError ) => void;
-  onClassifierError: ( error: CameraRuntimeError ) => void;
-  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
   onLog: ( event: { log: string } ) => void;
   onTaxaDetected: ( result: Result ) => void;
   panToZoom: PanGesture;
@@ -66,9 +63,6 @@ const FrameProcessorCamera = ( {
   cameraRef,
   device,
   onCameraError,
-  onCaptureError,
-  onClassifierError,
-  onDeviceNotSupported,
   onLog,
   onTaxaDetected,
   panToZoom,
@@ -215,18 +209,6 @@ const FrameProcessorCamera = ( {
       onCameraError={async error => {
         onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
-      }}
-      onCaptureError={async error => {
-        onCaptureError( error );
-        await logStage( sentinelFileName, "camera_capture_error" );
-      }}
-      onClassifierError={async error => {
-        onClassifierError( error );
-        await logStage( sentinelFileName, "camera_classifier_error" );
-      }}
-      onDeviceNotSupported={async error => {
-        onDeviceNotSupported( error );
-        await logStage( sentinelFileName, "camera_device_not_supported_error" );
       }}
       panToZoom={panToZoom}
       pinchToZoom={pinchToZoom}

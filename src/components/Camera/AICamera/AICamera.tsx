@@ -31,9 +31,6 @@ import colors from "styles/tailwindColors";
 import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
-  handleCaptureError,
-  handleClassifierError,
-  handleDeviceNotSupported,
   handleLog,
 } from "../helpers";
 import AICameraButtons from "./AICameraButtons";
@@ -234,9 +231,6 @@ const AICamera = ( {
             cameraRef={camera}
             device={device}
             onTaxaDetected={handleTaxaDetected}
-            onClassifierError={handleClassifierError}
-            onDeviceNotSupported={handleDeviceNotSupported}
-            onCaptureError={handleCaptureError}
             onCameraError={handleCameraError}
             onLog={handleLog}
             animatedProps={animatedProps}
