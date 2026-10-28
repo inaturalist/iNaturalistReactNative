@@ -4,14 +4,14 @@ import {
   Camera,
   useCameraDevice,
   useCameraDevices,
+  useFrameOutput,
   usePhotoOutput,
-  // useFrameProcessor,
 } from "react-native-vision-camera";
 
 export {
   Camera,
   useCameraDevice,
   useCameraDevices,
+  useFrameOutput,
   usePhotoOutput,
-  // useFrameProcessor,
 };
