@@ -242,9 +242,12 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
+  const targetResolution = cameraType === "AI"
+    ? CommonResolutions.HIGHEST_16_9
+    : CommonResolutions.HIGHEST_4_3;
   const photoOutput = usePhotoOutput( {
     qualityPrioritization: "quality",
-    targetResolution: CommonResolutions.HIGHEST_16_9,
+    targetResolution,
   } );
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );

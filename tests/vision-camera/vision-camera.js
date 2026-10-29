@@ -67,6 +67,7 @@ export const mockSortDevices = ( _left, _right ) => 1;
 // Mirrors react-native-vision-camera/lib/utils/CommonResolutions (used by CameraContainer).
 export const CommonResolutions = {
   HIGHEST_16_9: { width: 9000, height: 16000 },
+  HIGHEST_4_3: { width: 30000, height: 40000 },
 };
 
 const mockDevice = {
