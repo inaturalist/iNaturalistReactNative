@@ -25,7 +25,6 @@ import type {
   CameraFrameOutput,
   CameraPhotoOutput,
   CameraRef,
-  CameraRuntimeError,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
@@ -34,7 +33,7 @@ interface Props {
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
   frameOutput: CameraFrameOutput;
-  onCameraError: ( error: CameraRuntimeError ) => void;
+  onCameraError: ( error: Error ) => void;
   panToZoom: PanGesture;
   pinchToZoom: PinchGesture;
   resizeMode?: "cover" | "contain";

@@ -22,7 +22,6 @@ import type {
   CameraDevice,
   CameraPhotoOutput,
   CameraRef,
-  CameraRuntimeError,
 } from "react-native-vision-camera";
 import { scheduleOnRN } from "react-native-worklets";
 import {
@@ -40,7 +39,7 @@ import type { Result } from "vision-camera-plugin-inatvision";
 interface Props {
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
-  onCameraError: ( error: CameraRuntimeError ) => void;
+  onCameraError: ( error: Error ) => void;
   onLog: ( event: { log: string } ) => void;
   onTaxaDetected: ( result: Result ) => void;
   panToZoom: PanGesture;
@@ -51,7 +50,7 @@ interface Props {
   userLocation?: UserLocation | null;
   useLocation: boolean;
   photoOutput: CameraPhotoOutput;
-  onClassifierError: ( error: CameraRuntimeError ) => void;
+  onClassifierError: ( error: Error ) => void;
   zoom: SharedValue<number>;
 }
 
@@ -130,7 +129,7 @@ const FrameProcessorCamera = ( {
     onTaxaDetected( result );
   };
 
-  const handleError = ( error: CameraRuntimeError ) => {
+  const handleError = ( error: Error ) => {
     onClassifierError( error );
   };
 
