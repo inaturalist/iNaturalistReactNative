@@ -32,6 +32,7 @@ const mockFrame = {
 };
 
 const style = { flex: 1, backgroundColor: "red" };
+
 export class mockCamera extends React.PureComponent {
   static async getAvailableCameraDevices() {
     return [
@@ -41,18 +42,36 @@ export class mockCamera extends React.PureComponent {
     ];
   }
 
+  framesDispatched = false;
+
   /*
-    Every time the component updates we invoke the frame output's onFrame callback
-    with a mocked frame that does not include any kind of image data at all.
-    Running it only on component update means it only is called a few times and not
-    every second (or so - depending on fps). This is enough to satisfy the e2e test
-    though because the mocked prediction needs to appear only once to be found by the
-    test matcher. I tried running it with a timer every second but since it never idles
-    the test never finishes.
+    Deliver one mocked frame when the camera becomes active. Do not invoke onFrame on
+    every parent re-render (e.g. after setResult from a prediction) or Detox never
+    idles and the AI camera e2e test hits the 900s Jest timeout.
   */
-  componentDidUpdate() {
-    const { outputs } = this.props;
-    outputs?.forEach( output => {
+  componentDidMount() {
+    this.props.onStarted?.();
+    this.maybeDispatchMockFrame();
+  }
+
+  componentDidUpdate( prevProps ) {
+    if ( prevProps.isActive && !this.props.isActive ) {
+      this.framesDispatched = false;
+    }
+    this.maybeDispatchMockFrame();
+  }
+
+  maybeDispatchMockFrame() {
+    const { isActive, outputs } = this.props;
+    if ( !isActive || this.framesDispatched ) {
+      return;
+    }
+    const hasFrameOutput = outputs?.some( output => typeof output?.onFrame === "function" );
+    if ( !hasFrameOutput ) {
+      return;
+    }
+    this.framesDispatched = true;
+    outputs.forEach( output => {
       output?.onFrame?.( mockFrame );
     } );
   }
