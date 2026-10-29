@@ -19,25 +19,19 @@ import {
   Gesture,
   GestureDetector,
 } from "react-native-gesture-handler";
-import Reanimated from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
 import type {
   CameraDevice,
   CameraFrameOutput,
   CameraPhotoOutput,
-  CameraProps,
   CameraRef,
   CameraRuntimeError,
-  ReadonlyFrameProcessor,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
 
-const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
-
 interface Props {
-  animatedProps: CameraProps;
   cameraRef: RefObject<CameraRef | null>;
-  cameraScreen: "standard" | "ai";
   device: CameraDevice;
   frameOutput: CameraFrameOutput;
   onCameraError: ( error: CameraRuntimeError ) => void;
@@ -46,14 +40,13 @@ interface Props {
   resizeMode?: "cover" | "contain";
   inactive?: boolean;
   photoOutput: CameraPhotoOutput;
+  zoom: SharedValue<number>;
 }
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and AICamera
 const CameraView = ( {
-  animatedProps,
   cameraRef,
-  cameraScreen,
   device,
   frameOutput,
   onCameraError,
@@ -62,12 +55,10 @@ const CameraView = ( {
   resizeMode,
   inactive,
   photoOutput,
+  zoom,
 }: Props ) => {
-  const {
-    animatedStyle,
-    tapToFocus,
-    tappedCoordinates,
-  } = useFocusTap( cameraRef );
+  const { animatedStyle, tapToFocus, tappedCoordinates }
+    = useFocusTap( cameraRef );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
@@ -80,9 +71,7 @@ const CameraView = ( {
       console.log( "error", error );
       onCameraError( error );
     },
-    [
-      onCameraError,
-    ],
+    [onCameraError],
   );
 
   const gesture
@@ -95,10 +84,9 @@ const CameraView = ( {
   return (
     <>
       <GestureDetector gesture={gesture} className="overflow-hidden">
-        <ReanimatedCamera
+        <Camera
           // Shared props between StandardCamera and AICamera
           ref={cameraRef}
-          animatedProps={animatedProps}
           device={device}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableNativeZoomGesture={false}
@@ -109,6 +97,7 @@ const CameraView = ( {
           style={StyleSheet.absoluteFill}
           outputs={[photoOutput, frameOutput]}
           constraints={[{ resolutionBias: photoOutput }]}
+          zoom={zoom}
         />
       </GestureDetector>
       <FocusSquare

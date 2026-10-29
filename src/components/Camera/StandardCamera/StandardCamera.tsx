@@ -74,13 +74,13 @@ const StandardCamera = ( {
 
   const hasFlash = device?.hasFlash;
   const {
-    animatedProps,
     handleZoomButtonPress,
     panToZoom,
     pinchToZoom,
     resetZoom,
     showZoomButton,
     zoomTextValue,
+    zoom,
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
@@ -222,7 +222,6 @@ const StandardCamera = ( {
         <View className="relative flex-1">
           {device && (
             <CameraView
-              animatedProps={animatedProps}
               cameraRef={camera}
               cameraScreen="standard"
               device={device}
@@ -230,6 +229,7 @@ const StandardCamera = ( {
               panToZoom={panToZoom}
               pinchToZoom={pinchToZoom}
               photoOutput={photoOutput}
+              zoom={zoom}
             />
           )}
           <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />

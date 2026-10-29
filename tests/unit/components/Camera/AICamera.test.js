@@ -52,7 +52,7 @@ jest.mock( "components/Camera/AICamera/hooks/usePredictions", () => ( {
 jest.mock( "components/Camera/hooks/useZoom", () => ( {
   __esModule: true,
   default: () => ( {
-    animatedProps: {},
+    zoom: 1,
   }
   ),
 } ) );

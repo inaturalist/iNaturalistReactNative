@@ -17,10 +17,10 @@ import type {
   PanGesture,
   PinchGesture,
 } from "react-native-gesture-handler";
+import type { SharedValue } from "react-native-reanimated";
 import type {
   CameraDevice,
   CameraPhotoOutput,
-  CameraProps,
   CameraRef,
   CameraRuntimeError,
 } from "react-native-vision-camera";
@@ -38,7 +38,6 @@ import useStore from "stores/useStore";
 import type { Result } from "vision-camera-plugin-inatvision";
 
 interface Props {
-  animatedProps: CameraProps;
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
   onCameraError: ( error: CameraRuntimeError ) => void;
@@ -53,6 +52,7 @@ interface Props {
   useLocation: boolean;
   photoOutput: CameraPhotoOutput;
   onClassifierError: ( error: CameraRuntimeError ) => void;
+  zoom: SharedValue<number>;
 }
 
 const FPS = 1;
@@ -61,7 +61,6 @@ const NUM_STORED_RESULTS = 5;
 const CROP_RATIO = 1.0;
 
 const FrameProcessorCamera = ( {
-  animatedProps,
   cameraRef,
   device,
   onCameraError,
@@ -76,6 +75,7 @@ const FrameProcessorCamera = ( {
   useLocation,
   photoOutput,
   onClassifierError,
+  zoom,
 }: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
@@ -219,7 +219,6 @@ const FrameProcessorCamera = ( {
 
   return (
     <CameraView
-      animatedProps={animatedProps}
       cameraRef={cameraRef}
       cameraScreen="ai"
       device={device}
@@ -232,6 +231,7 @@ const FrameProcessorCamera = ( {
       inactive={inactive}
       photoOutput={photoOutput}
       frameOutput={frameOutput}
+      zoom={zoom}
     />
   );
 };

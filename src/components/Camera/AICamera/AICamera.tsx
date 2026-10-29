@@ -99,13 +99,13 @@ const AICamera = ( {
   const { isDebug } = useDebugMode( );
   const { isDefaultMode } = useLayoutPrefs( );
   const {
-    animatedProps,
     handleZoomButtonPress,
     panToZoom,
     pinchToZoom,
     showZoomButton,
     zoomTextValue,
     resetZoom,
+    zoom,
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
@@ -234,7 +234,6 @@ const AICamera = ( {
             onTaxaDetected={handleTaxaDetected}
             onCameraError={handleCameraError}
             onLog={handleLog}
-            animatedProps={animatedProps}
             panToZoom={panToZoom}
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
@@ -244,6 +243,7 @@ const AICamera = ( {
             useLocation={useLocation}
             photoOutput={photoOutput}
             onClassifierError={handleClassifierError}
+            zoom={zoom}
           />
         </View>
       )}
