@@ -3,7 +3,6 @@ import indexOf from "lodash/indexOf";
 import last from "lodash/last";
 import {
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -80,14 +79,6 @@ const useZoom = ( device: CameraDevice ) => {
     ) ),
     [maxZoomWithPinch, minZoom, neutralZoom, zoomButtonOptions],
   );
-
-  useEffect( ( ) => {
-    const newInitialZoom = !isVirtualDevice
-      ? minZoom
-      : neutralZoom;
-    zoom.set( newInitialZoom );
-    startZoom.set( newInitialZoom );
-  }, [isVirtualDevice, minZoom, neutralZoom, zoom, startZoom] );
 
   const handleZoomButtonPress = ( ) => {
     if ( zoomTextValue === last( zoomButtonOptions ) ) {
