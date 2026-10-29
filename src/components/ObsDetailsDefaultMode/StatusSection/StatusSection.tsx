@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   Body2,
@@ -45,9 +46,15 @@ const StatusSection = ( { observation }: Props ) => {
     };
   };
   const { title, body } = qualityGradeText( );
+  const isEligibleForResearchGrade = qualityGrade === "research" || qualityGrade === "needs_id";
 
   return (
-    <View className="mx-4 mt-8">
+    <View
+      className={classnames( "px-[15px] py-5", {
+        "bg-lightGreen": isEligibleForResearchGrade,
+        "bg-lightGray": !isEligibleForResearchGrade,
+      } )}
+    >
       <View className="flex-row items-center gap-x-3">
         <Heading3 className="text-base shrink">{title}</Heading3>
         {qualityGrade === "research" && (
