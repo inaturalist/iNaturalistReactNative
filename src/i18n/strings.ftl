@@ -167,6 +167,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+# Explanation on observation details for an observation with casual quality grade
+Because-this-observation-is-of-a-pet-garden-plant-or-zoo-animal = Because this observation is of a pet, garden plant, or zoo animal, it is not eligible for research grade.
 # Display name for the iconic taxa category for aves
 Birds = Birds
 BLOG = BLOG
@@ -980,6 +982,8 @@ Offline-suggestions-may-differ-from-online = Offline suggestions may differ from
 OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
+# Explanation on observation details for an observation with needs ID quality grade
+Once-enough-people-agree-on-the-identification = Once enough people agree on the identification, this observation can become research grade.
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
 One-or-more-projects-still-need-required-info = One or more projects still need required info. Leave and only the completed ones will be saved.
 # Adjective, as in geoprivacy
@@ -1196,7 +1200,6 @@ Required = Required
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
 RESEARCH-GRADE--quality-grade = RESEARCH GRADE
-Research-Grade-Status = Research Grade Status
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1397,6 +1400,8 @@ That-username-is-unavailable = That username is unavailable
 The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident. It may be one of the IDs below.
 # Text on Match screen when there are no suggestions found at all for a user photo
 The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
+# Explanation on observation details for an observation with Research Grade quality grade
+The-community-agrees-on-an-identification = The community agrees on an identification, and this observation can now more easily be used to make new discoveries and protect nature.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
@@ -1415,10 +1420,13 @@ This-is-your-identification-other-people-may-help-confirm-it = This is your iden
 This-may-take-a-few-seconds = This may take a few seconds.
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
-This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
-This-observation-is-research-grade-and-can-be-used-by-scientists = This observation is research grade and can be used by scientists!
+# Title on observation details for an observation with casual quality grade
+This-observation-is-casual = This observation is casual.
+# Title on observation details for an observation with Research Grade quality grade
+This-observation-is-Research-Grade = This observation is Research Grade
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
-This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
+# Title on observation details for an observation with needs ID quality grade
+This-observation-needs-more-identifications--status-title = This observation needs more identifications
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
