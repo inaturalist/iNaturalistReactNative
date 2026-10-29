@@ -55,6 +55,16 @@ subprojects { sub ->
                     && it.android.defaultConfig.minSdkVersion.apiLevel < rootProject.ext.minSdkVersion) {
                     it.android.defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
                 }
+                // vision-camera-plugin-inatvision ships libc++_shared via CMake; Detox
+                // assembleAndroidTest merges native libs and fails on duplicates.
+                it.android {
+                    packaging {
+                        jniLibs {
+                            // Native modules + Detox androidTest merge duplicate RN .so copies.
+                            pickFirsts += ['**/*.so']
+                        }
+                    }
+                }
             }
         }
     }
