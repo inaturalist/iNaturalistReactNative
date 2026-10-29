@@ -361,10 +361,10 @@ date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
-# Label for observations sort order
+# Label for observations or species sort order
 Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
-# Label for observations sort order
+# Label for observations or species sort order
 Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 # Label for controls over a range of dates
@@ -1353,6 +1353,10 @@ sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organi
 Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = Species
+# Description of the Date Observed: Oldest species sort order
+Species-first-observed-least-recently-appear-first = Species first observed least recently appear first
+# Description of the Date Observed: Newest species sort order
+Species-first-observed-recently-appear-first = Species first observed recently appear first
 Species-I-havent-observed = Species I haven't observed
 Species-View = Species View
 Species-with-the-least-observations-appear-first = Species with the least observations appear first

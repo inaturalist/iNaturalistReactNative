@@ -5,6 +5,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiSpeciesCountDetails } from "api/types";
+import { fetchTaxaObserved } from "api/users";
 import type { MyObservationsStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import {
@@ -25,8 +26,11 @@ import type { RealmObservation } from "realmModels/types";
 import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
+  earliestObservedOn,
+  isSpeciesCountsSort,
   sortSpeciesCounts,
-  speciesSortToApiParams,
+  speciesSortToSpeciesCountsParams,
+  speciesSortToTaxaObservedParams,
 } from "sharedHelpers/speciesSort";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
@@ -396,15 +400,35 @@ const MyObservationsResults = ( ) => {
 
     return leafTaxonIds.map( id => {
       const obs = localObs.filter( o => o.taxon.id === id );
-      return { count: obs.length, taxon: obs[0].taxon };
+      return {
+        count: obs.length,
+        taxon: obs[0].taxon,
+        first_observed_on: earliestObservedOn( obs ),
+      };
     } );
   }, [currentUser, activeTab, realm, leafTaxonIds] );
 
-  // Map the selected sort option to API params
-  const sortAPIParams = useMemo(
-    () => speciesSortToApiParams( myObsState.speciesSort ),
-    [myObsState.speciesSort],
-  );
+  // Count sorts use species_counts. Date sorts use taxa_observed, which can sort by first
+  // observed date but is more expensive, so we only call it when that sort is chosen
+  const { fetchSpecies, speciesParams } = useMemo( ( ) => {
+    const sort = myObsState.speciesSort;
+    if ( isSpeciesCountsSort( sort ) ) {
+      return {
+        fetchSpecies: fetchSpeciesCounts<ApiSpeciesCountDetails>,
+        speciesParams: {
+          user_id: currentUser?.id,
+          ...speciesSortToSpeciesCountsParams( sort ),
+        },
+      };
+    }
+    return {
+      fetchSpecies: fetchTaxaObserved,
+      speciesParams: {
+        id: currentUser?.id,
+        ...speciesSortToTaxaObservedParams( sort ),
+      },
+    };
+  }, [currentUser?.id, myObsState.speciesSort] );
 
   const {
     data: remoteObservedTaxaCounts,
@@ -414,11 +438,10 @@ const MyObservationsResults = ( ) => {
     totalResults: numTotalTaxaRemote,
     refetch: refetchTaxa,
   } = useInfiniteScroll(
-    `MyObsSimple-fetchSpeciesCounts-${currentUser?.id}-${myObsState.speciesSort}`,
-    fetchSpeciesCounts<ApiSpeciesCountDetails>,
+    `MyObsSimple-fetchSpecies-${currentUser?.id}-${myObsState.speciesSort}`,
+    fetchSpecies,
     {
-      user_id: currentUser?.id,
-      ...sortAPIParams,
+      ...speciesParams,
       ...( myObsState.searchedTaxon?.id
         ? { taxon_id: myObsState.searchedTaxon.id }
         : {} ),
@@ -539,6 +562,7 @@ const MyObservationsResults = ( ) => {
       isConnected={isConnected}
       isFetchingNextPage={isFetchingNextPageForList}
       isFetchingTaxa={isFetchingTaxa}
+      isLoadingTaxa={isLoadingTaxa}
       justFinishedSignup={justFinishedSignup}
       layout={layout}
       listRef={listRef}
