@@ -66,7 +66,13 @@ const CameraView = ( {
 
   const onError = useCallback(
     ( error: Error ) => {
-      // { code: string, message: string, cause?: {} }
+      // TODO: on Android there is an error upon every camera start. Apparently out useZoom hook
+      // tries to set the zoom value before the camera is active. Re-visit this after vision-camera
+      // v5 has some more maturity
+      const message = error?.message ?? "";
+      if ( message.includes( "Camera is not active" ) ) {
+        return;
+      }
       console.log( "error", error );
       onCameraError( error );
     },
