@@ -119,8 +119,7 @@ const mockCapturePhotoToFile = async ( _settings, callbacks = {} ) => {
     try {
       await copyFile( sourcePath, destPath );
       return {
-        path: destPath,
-        metadata: { Orientation: 1 },
+        filePath: destPath,
       };
     } catch ( err ) {
       console.log( "Error copying test photo on Android:", err );
@@ -156,11 +155,7 @@ const mockCapturePhotoToFile = async ( _settings, callbacks = {} ) => {
       // Not sure if this is required
       callbacks.onDidCapturePhoto?.();
       return {
-        ...testPhoto,
-        path: newPath,
-        metadata: {
-          Orientation: testPhoto.orientation,
-        },
+        filePath: newPath,
       };
     } )
     .catch( err => {
