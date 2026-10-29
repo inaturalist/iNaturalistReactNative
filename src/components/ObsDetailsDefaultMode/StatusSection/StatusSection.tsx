@@ -1,13 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   Body2,
+  Button,
   Heading3,
   INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
+import { useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 enum QUALITY_GRADE {
@@ -20,10 +24,14 @@ interface Props {
   observation: {
     qualityGrade?: QUALITY_GRADE;
     quality_grade?: QUALITY_GRADE;
+    uuid: string;
   };
 }
 
 const StatusSection = ( { observation }: Props ) => {
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
+  const currentUser = useCurrentUser( );
+
   if ( !observation ) return null;
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
@@ -62,6 +70,16 @@ const StatusSection = ( { observation }: Props ) => {
         )}
       </View>
       <Body2 className="mt-[9px]">{body}</Body2>
+      {currentUser && (
+        <Button
+          className="mt-[17px] bg-transparent"
+          testID="StatusSection.DQA"
+          text={t( "DATA-QUALITY-ASSESSMENT" )}
+          onPress={( ) => navigation.navigate( "DataQualityAssessment", {
+            observationUUID: observation.uuid,
+          } )}
+        />
+      )}
     </View>
   );
 };
