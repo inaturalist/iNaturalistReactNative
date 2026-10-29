@@ -1,0 +1,6 @@
+FIXED
+* Minor bug fixes
+* Restore most-faved sorting in Explore
+
+UPDATED
+* Show project rules for traditional projects
