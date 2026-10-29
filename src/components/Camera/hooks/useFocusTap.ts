@@ -1,4 +1,3 @@
-import type React from "react";
 import type { RefObject } from "react";
 import {
   useCallback, useMemo, useState,
