@@ -160,21 +160,22 @@ const FrameProcessorCamera = ( {
     onFrame( frame ) {
       "worklet";
 
+      // Skip before runAsync so a dropped frame does not occupy the runner.
+      if ( takingPhoto ) {
+        frame.dispose();
+        return;
+      }
+      const timestamp = Date.now();
+      // If there is no lastTimestamp, i.e. the first time this runs do not compare
+      if ( lastTimestamp && timestamp - lastTimestamp < 1000 / FPS ) {
+        frame.dispose();
+        return;
+      }
+
       const wasHandled = asyncRunner.runAsync( ( ) => {
         "worklet";
 
         try {
-          if ( takingPhoto ) {
-            return;
-          }
-          const timestamp = Date.now();
-          // If there is no lastTimestamp, i.e. the first time this runs do not compare
-          if ( lastTimestamp ) {
-            const timeSinceLastFrame = timestamp - lastTimestamp;
-            if ( timeSinceLastFrame < 1000 / FPS ) {
-              return;
-            }
-          }
           // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
           // react-native-worklets-core documentation for what is supported in those worklets.
           const timeBefore = Date.now( );
