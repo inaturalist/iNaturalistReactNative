@@ -57,7 +57,7 @@ const CameraView = ( {
   zoom,
 }: Props ) => {
   const { animatedStyle, tapToFocus, tappedCoordinates }
-    = useFocusTap( cameraRef );
+    = useFocusTap( cameraRef, device.supportsFocusMetering );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
