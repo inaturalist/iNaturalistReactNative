@@ -1,4 +1,5 @@
 import {
+  CommonResolutions,
   mockCamera,
   mockSortDevices,
   mockUseAsyncRunner,
@@ -9,6 +10,7 @@ import {
 } from "tests/vision-camera/vision-camera";
 
 export const Camera = mockCamera;
+export { CommonResolutions };
 export const sortDevices = mockSortDevices;
 export const useAsyncRunner = mockUseAsyncRunner;
 export const useCameraDevice = mockUseCameraDevice;
