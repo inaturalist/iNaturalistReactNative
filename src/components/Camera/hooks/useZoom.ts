@@ -30,6 +30,7 @@ const PAN_ZOOM_MIN_DISTANCE = -100;
 const PAN_ZOOM_MAX_DISTANCE = 100;
 
 const useZoom = ( device: CameraDevice ) => {
+  const { maxZoom, minZoom, isVirtualDevice } = device;
   const initialZoomTextValue = "1";
   const zoomButtonOptions = useMemo( () => {
     const options = [initialZoomTextValue];
@@ -43,12 +44,12 @@ const useZoom = ( device: CameraDevice ) => {
     }
     return options;
   }, [device?.physicalDevices] );
-  const minZoom = device?.minZoom ?? 1;
-  const neutralZoom = device?.neutralZoom ?? 2;
-  const maxZoomWithPinch = Math.min( device.maxZoom ?? 1, MAX_ZOOM_FACTOR );
-  const initialZoom = !device?.isMultiCam
+  const neutralZoom = 1;
+  const maxZoomWithPinch = Math.min( maxZoom ?? 1, MAX_ZOOM_FACTOR );
+  const initialZoom = !isVirtualDevice
     ? minZoom
     : neutralZoom;
+
   const zoom = useSharedValue( initialZoom );
   const startZoom = useSharedValue( initialZoom );
   const [zoomTextValue, setZoomTextValue] = useState( initialZoomTextValue );
@@ -77,12 +78,12 @@ const useZoom = ( device: CameraDevice ) => {
   );
 
   useEffect( ( ) => {
-    const newInitialZoom = !device?.isMultiCam
+    const newInitialZoom = !isVirtualDevice
       ? minZoom
       : neutralZoom;
     zoom.set( newInitialZoom );
     startZoom.set( newInitialZoom );
-  }, [device?.isMultiCam, minZoom, neutralZoom, zoom, startZoom] );
+  }, [isVirtualDevice, minZoom, neutralZoom, zoom, startZoom] );
 
   const handleZoomButtonPress = ( ) => {
     if ( zoomTextValue === last( zoomButtonOptions ) ) {
@@ -183,7 +184,7 @@ const useZoom = ( device: CameraDevice ) => {
     panToZoom,
     pinchToZoom,
     resetZoom,
-    showZoomButton: device?.isMultiCam,
+    showZoomButton: isVirtualDevice,
     zoomTextValue,
     zoom,
   };
