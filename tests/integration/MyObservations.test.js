@@ -11,6 +11,8 @@ import { initialMyObservationsState } from "providers/MyObservationsContext";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
+import { authenticatedQueryKey } from "sharedHooks/useAuthenticatedQuery";
+import { CURRENT_USER_SPECIES_COUNT_QUERY_KEY } from "sharedHooks/useCurrentUserSpeciesCount";
 import useStore, { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -461,6 +463,43 @@ describe( "MyObservations", ( ) => {
           } );
           expect( await screen.findByText( "3" ) ).toBeVisible( );
           expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 499 );
+        } );
+
+        describe( "sharing the species count with the profile", ( ) => {
+          const sharedSpeciesCount = ( ) => queryClient.getQueryData( authenticatedQueryKey(
+            [CURRENT_USER_SPECIES_COUNT_QUERY_KEY, mockUser.id],
+            { userLoggedIn: true },
+          ) )?.total_results;
+          const countOnlyRequests = ( ) => inatjs.observations.speciesCounts.mock.calls
+            .filter( ( [params] ) => params.per_page === 0 );
+
+          it( "stores the species list total without fetching the count separately", async ( ) => {
+            inatjs.observations.speciesCounts.mockClear( );
+            inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 783 ) );
+            renderAppWithComponent( <MyObservationsContainer /> );
+            expect( await screen.findByText( "783" ) ).toBeVisible( );
+            await waitFor( ( ) => {
+              expect( sharedSpeciesCount( ) ).toEqual( 783 );
+            } );
+            expect( countOnlyRequests( ) ).toHaveLength( 0 );
+          } );
+
+          it( "does not store a species total filtered by a taxon search", async ( ) => {
+            const searchedTaxon = factory( "RemoteTaxon" );
+            useStore.setState( {
+              myObservations: {
+                ...initialMyObservationsState,
+                searchedTaxon: { id: searchedTaxon.id, name: searchedTaxon.name },
+              },
+            } );
+            inatjs.observations.search.mockResolvedValue( makeResponse( [
+              factory( "RemoteObservation", { taxon: searchedTaxon } ),
+            ] ) );
+            inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 3 ) );
+            renderAppWithComponent( <MyObservationsContainer /> );
+            expect( await screen.findByText( "3" ) ).toBeVisible( );
+            expect( sharedSpeciesCount( ) ).toBeUndefined( );
+          } );
         } );
       } );
 

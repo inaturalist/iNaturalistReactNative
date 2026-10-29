@@ -1,6 +1,10 @@
 import { waitFor } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import useCurrentUserSpeciesCount from "sharedHooks/useCurrentUserSpeciesCount";
+import { authenticatedQueryKey } from "sharedHooks/useAuthenticatedQuery";
+import useCurrentUserSpeciesCount, {
+  CURRENT_USER_SPECIES_COUNT_QUERY_KEY,
+  setCurrentUserSpeciesCount,
+} from "sharedHooks/useCurrentUserSpeciesCount";
 import { makeResponse } from "tests/factory";
 import { queryClient, renderHookInApp } from "tests/helpers/render";
 
@@ -65,5 +69,33 @@ describe( "useCurrentUserSpeciesCount", ( ) => {
     const { result } = renderHookInApp( ( ) => useCurrentUserSpeciesCount( { enabled: false } ) );
     expect( result.current ).toBeNull( );
     expect( countRequests( ) ).toHaveLength( 0 );
+  } );
+
+  describe( "setCurrentUserSpeciesCount", ( ) => {
+    const storedCount = ( ) => queryClient.getQueryData( authenticatedQueryKey(
+      [CURRENT_USER_SPECIES_COUNT_QUERY_KEY, mockUserId],
+      { userLoggedIn: true },
+    ) )?.total_results;
+
+    it( "stores a count fetched after the one already stored", ( ) => {
+      setCurrentUserSpeciesCount( queryClient, mockUserId, 779, 1000 );
+      setCurrentUserSpeciesCount( queryClient, mockUserId, 783, 2000 );
+      expect( storedCount( ) ).toEqual( 783 );
+    } );
+
+    it( "ignores a count fetched before the one already stored", ( ) => {
+      setCurrentUserSpeciesCount( queryClient, mockUserId, 783, 2000 );
+      setCurrentUserSpeciesCount( queryClient, mockUserId, 779, 1000 );
+      expect( storedCount( ) ).toEqual( 783 );
+    } );
+
+    it( "is read by the hook without fetching", async ( ) => {
+      setCurrentUserSpeciesCount( queryClient, mockUserId, 790, Date.now( ) );
+      const { result } = renderHookInApp( ( ) => useCurrentUserSpeciesCount( ) );
+      await waitFor( ( ) => {
+        expect( result.current ).toEqual( 790 );
+      } );
+      expect( countRequests( ) ).toHaveLength( 0 );
+    } );
   } );
 } );

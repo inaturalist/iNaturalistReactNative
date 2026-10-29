@@ -3,6 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import { useQueryClient } from "@tanstack/react-query";
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import {
@@ -37,6 +38,7 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import { setCurrentUserSpeciesCount } from "sharedHooks/useCurrentUserSpeciesCount";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -404,6 +406,7 @@ const MyObservationsResults = ( ) => {
 
   const {
     data: remoteObservedTaxaCounts,
+    dataUpdatedAt: remoteObservedTaxaCountsUpdatedAt,
     isFetching: isLoadingTaxa,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
@@ -479,6 +482,31 @@ const MyObservationsResults = ( ) => {
       zustandStorage.setItem( "numOfUserSpecies", freshSpeciesCount );
     }
   }, [freshSpeciesCount, numOfUserSpecies] );
+
+  // Share the species list's total with the current user's species count so their profile can
+  // show it without fetching it again. Search results are filtered, so they don't count
+  const queryClient = useQueryClient( );
+  useEffect( ( ) => {
+    if (
+      currentUserId
+      && !hasActiveSearch
+      && typeof numTotalTaxaRemote === "number"
+      && remoteObservedTaxaCountsUpdatedAt
+    ) {
+      setCurrentUserSpeciesCount(
+        queryClient,
+        currentUserId,
+        numTotalTaxaRemote,
+        remoteObservedTaxaCountsUpdatedAt,
+      );
+    }
+  }, [
+    currentUserId,
+    hasActiveSearch,
+    numTotalTaxaRemote,
+    queryClient,
+    remoteObservedTaxaCountsUpdatedAt,
+  ] );
 
   useEffect( () => {
     const newObservationCount = observationIds.length - prevObservationsLength.current;

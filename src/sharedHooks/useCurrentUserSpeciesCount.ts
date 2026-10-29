@@ -1,6 +1,7 @@
+import type { QueryClient } from "@tanstack/react-query";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiResponse } from "api/types";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useAuthenticatedQuery, { authenticatedQueryKey } from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 export const CURRENT_USER_SPECIES_COUNT_QUERY_KEY = "currentUserSpeciesCount";
@@ -8,6 +9,32 @@ export const CURRENT_USER_SPECIES_COUNT_QUERY_KEY = "currentUserSpeciesCount";
 // species_counts isn't cached on the server and is expensive for users with many observations,
 // so screens share this count and will only refetch it when it's older than this value
 const CURRENT_USER_SPECIES_COUNT_STALE_TIME = 5 * 60 * 1000; // 5 min
+
+// Store a species count that was fetched some other way (e.g. as the total of My Observations'
+// species list) so screens using this hook can show it without fetching it again. fetchedAt is
+// when that other response was fetched; we only store it if it's newer than the count we have,
+// so re-rendering an older cached response doesn't make an old count look fresh
+export const setCurrentUserSpeciesCount = (
+  queryClient: QueryClient,
+  userId: number,
+  totalResults: number,
+  fetchedAt: number,
+) => {
+  const queryKey = authenticatedQueryKey(
+    [CURRENT_USER_SPECIES_COUNT_QUERY_KEY, userId],
+    { userLoggedIn: true },
+  );
+  const cachedUpdatedAt = queryClient.getQueryState( queryKey )?.dataUpdatedAt ?? 0;
+  if ( fetchedAt <= cachedUpdatedAt ) return;
+
+  const response: ApiResponse<object> = {
+    total_results: totalResults,
+    page: 1,
+    per_page: 0,
+    results: [],
+  };
+  queryClient.setQueryData( queryKey, response, { updatedAt: fetchedAt } );
+};
 
 interface Options {
   enabled?: boolean;
