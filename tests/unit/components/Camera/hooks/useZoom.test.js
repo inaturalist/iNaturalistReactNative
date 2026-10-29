@@ -115,6 +115,44 @@ describe( "useZoom", ( ) => {
     expect( result.current.zoomTextValue ).toEqual( ".5" );
   } );
 
+  it( "labels iOS switch factors as 0.5× and 1×", ( ) => {
+    const device = {
+      ...iPhoneDevice,
+      physicalDevices: [
+        { type: "ultra-wide-angle" },
+        { type: "wide-angle" },
+      ],
+      zoomLensSwitchFactors: [2],
+    };
+    const { result } = renderHook( ( ) => useZoom( device ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "0.5" );
+
+    act( ( ) => result.current.handleZoomButtonPress( ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+    expect( withSpring ).toHaveBeenLastCalledWith( 2 );
+
+    act( ( ) => result.current.handleZoomButtonPress( ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "0.5" );
+    expect( withSpring ).toHaveBeenLastCalledWith( 1 );
+  } );
+
+  it( "labels a 5× telephoto from its switch factor instead of 3×", ( ) => {
+    const device = {
+      ...iPhoneDevice,
+      zoomLensSwitchFactors: [2, 10],
+    };
+    const { result } = renderHook( ( ) => useZoom( device ) );
+
+    act( ( ) => result.current.handleZoomButtonPress( ) );
+    act( ( ) => result.current.handleZoomButtonPress( ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "5" );
+    expect( withSpring ).toHaveBeenLastCalledWith( 10 );
+  } );
+
   it( "hides the zoom button after flipping to a single-camera (front-facing)", ( ) => {
     const frontDevice = {
       physicalDevices: [{ type: "wide-angle" }],
