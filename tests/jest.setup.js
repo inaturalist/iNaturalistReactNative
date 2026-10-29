@@ -70,6 +70,10 @@ jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 // preset's resolver, so we mock the package instead.
 jest.mock( "react-native-worklets", () => require( "react-native-worklets/src/mock" ) );
 
+jest.mock( "react-native-vision-camera", () => (
+  jest.requireActual( "../__mocks__/react-native-vision-camera" )
+) );
+
 // Reanimated 4.4 + draggable-flatlist: prebuilt scroll handlers in node_modules
 // lack __closure on some renders, crashing useHandler in Jest (Object.keys on
 // undefined). FlatList stand-in is enough for evidence-list integration tests.
