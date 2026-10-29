@@ -599,6 +599,9 @@ class Observation extends Realm.Object {
       _updated_at: "date?",
       uuid: "string",
       application: "Application?",
+      // the server's captive/cultivated result from everyone's votes; read
+      // only. captive_flag is the owner's own vote, which the app uploads
+      captive: "bool?",
       captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable

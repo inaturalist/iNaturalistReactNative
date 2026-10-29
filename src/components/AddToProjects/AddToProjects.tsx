@@ -28,15 +28,15 @@ import type { RealmProject } from "realmModels/types";
 import buildProjectObservationSelection, {
   areProjectIdSetsEqual,
 } from "sharedHelpers/buildProjectObservationSelection";
-// eslint-disable-next-line max-len
-import type { ProjectFieldValidationError } from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
+import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import useSyncJoinedProjects from "./hooks/useSyncJoinedProjects";
 import ObservationFieldInput from "./ObservationFieldInput";
+import ProjectRuleRow from "./ProjectRuleRow";
 
 const { useQuery } = RealmContext;
 
@@ -49,11 +49,8 @@ const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
 function getCompletedProjectIds(
   selectedProjectIds: Set<number>,
-  validationErrors: ProjectFieldValidationError[],
+  invalidProjectIds: Set<number>,
 ): Set<number> {
-  const invalidProjectIds = new Set(
-    validationErrors.map( error => error.projectId ),
-  );
   return new Set(
     [...selectedProjectIds].filter(
       projectId => !invalidProjectIds.has( projectId ),
@@ -95,7 +92,15 @@ const AddToProjects = ( ) => {
   const validationResult = useMemo(
     () => {
       const selectedProjects = joinedProjects.filter( jp => selectedProjectIds.has( jp.id ) );
-      return validateProjectFieldsForObservation( currentObservation, selectedProjects );
+      const fields = validateProjectFieldsForObservation( currentObservation, selectedProjects );
+      const rules = validateProjectRulesForObservation( currentObservation, selectedProjects );
+      return {
+        fieldErrors: fields.errors,
+        invalidProjectIds: new Set(
+          [...fields.errors, ...rules.errors].map( error => error.projectId ),
+        ),
+        ruleGroups: rules.groups,
+      };
     },
     [currentObservation, joinedProjects, selectedProjectIds],
   );
@@ -172,13 +177,13 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onSave = useCallback( ( ) => {
-    if ( validationResult.valid ) {
+    if ( validationResult.invalidProjectIds.size === 0 ) {
       commitProjectSelection( );
       navigation.goBack( );
     } else {
       setShowMissingInfoSheet( true );
     }
-  }, [commitProjectSelection, navigation, validationResult.valid] );
+  }, [commitProjectSelection, navigation, validationResult.invalidProjectIds] );
 
   const onKeepEditing = useCallback( ( ) => {
     setShowMissingInfoSheet( false );
@@ -190,7 +195,7 @@ const AddToProjects = ( ) => {
     // Get which projects have completed all required inputs, i.e. no validation errors
     const completedProjectIds = getCompletedProjectIds(
       selectedProjectIds,
-      validationResult.errors,
+      validationResult.invalidProjectIds,
     );
 
     // Remove incomplete projects' POs
@@ -210,16 +215,18 @@ const AddToProjects = ( ) => {
     navigation,
     selectedProjectIds,
     updateObservationKeys,
-    validationResult.errors,
+    validationResult.invalidProjectIds,
   ] );
 
   const renderExpanded = useCallback(
     ( item: RealmProject, projectValid: boolean ) => {
       const hasRequiredFields = item.projectObservationFields.some( pof => pof.required );
+      const ruleGroups = validationResult.ruleGroups
+        .filter( group => group.projectId === item.id );
 
       return (
         <View className="bg-lightGrayOpaque">
-          {hasRequiredFields && (
+          {( hasRequiredFields || ruleGroups.length > 0 ) && (
             !projectValid
               ? (
                 <View className="px-4 py-2.5 flex-row justify-center items-center">
@@ -246,11 +253,14 @@ const AddToProjects = ( ) => {
                 </View>
               )
           )}
+          {ruleGroups.map( group => (
+            <ProjectRuleRow key={group.operator} group={group} />
+          ) )}
           {item.projectObservationFields.map( pof => (
             <ObservationFieldInput
               key={pof.id}
               projectObservationField={pof}
-              isValid={!validationResult.errors.some(
+              isValid={!validationResult.fieldErrors.some(
                 error => error.obsFieldId === pof.obsField?.id,
               )}
             />
@@ -285,10 +295,9 @@ const AddToProjects = ( ) => {
   const renderProject: ListRenderItem<RealmProject> = useCallback(
     ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
-      const canExpand = item.projectObservationFields.length > 0;
-      const projectValid = !validationResult.errors.some(
-        error => error.projectId === item?.id,
-      );
+      const canExpand = item.projectObservationFields.length > 0
+        || validationResult.ruleGroups.some( group => group.projectId === item.id );
+      const projectValid = !validationResult.invalidProjectIds.has( item.id );
 
       return (
         <View>
