@@ -71,21 +71,22 @@ export const CommonResolutions = {
 };
 
 const mockDevice = {
-  devices: ["wide-angle-camera"],
   hasFlash: true,
   hasTorch: true,
   id: "1",
-  isMultiCam: true,
+  isVirtualDevice: true,
   maxZoom: 12.931958198547363,
   minZoom: 1,
-  name: "front (1)",
-  position: "front",
-  supportsDepthCapture: false,
-  supportsFocus: true,
+  name: "back (mock)",
+  physicalDevices: [
+    { type: "ultra-wide-angle" },
+    { type: "wide-angle" },
+    { type: "telephoto" },
+  ],
+  position: "back",
   supportsFocusMetering: true,
   supportsLowLightBoost: false,
-  supportsParallelVideoProcessing: true,
-  supportsRawCapture: true,
+  zoomLensSwitchFactors: [2, 6],
 };
 
 // Stable identities. A fresh object or function on each call changes hook
