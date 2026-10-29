@@ -126,12 +126,8 @@ describe( "useZoom", ( ) => {
     };
     const { result } = renderHook( ( ) => useZoom( device ) );
 
-    expect( result.current.zoomTextValue ).toEqual( "0.5" );
-
-    act( ( ) => result.current.handleZoomButtonPress( ) );
-
     expect( result.current.zoomTextValue ).toEqual( "1" );
-    expect( withSpring ).toHaveBeenLastCalledWith( 2 );
+    expect( result.current.zoom.get( ) ).toEqual( 2 );
 
     act( ( ) => result.current.handleZoomButtonPress( ) );
 
@@ -146,7 +142,8 @@ describe( "useZoom", ( ) => {
     };
     const { result } = renderHook( ( ) => useZoom( device ) );
 
-    act( ( ) => result.current.handleZoomButtonPress( ) );
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+
     act( ( ) => result.current.handleZoomButtonPress( ) );
 
     expect( result.current.zoomTextValue ).toEqual( "5" );

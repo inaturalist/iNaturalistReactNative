@@ -58,6 +58,7 @@ const lensButtons = (
     }
     return {
       usesSwitchFactors: false,
+      wideZoom: clamp( 1, minZoom, ceiling ),
       zoomButtonOptions,
       zoomButtonValues: zoomButtonOptions.map( option => clamp(
         Number( option ),
@@ -77,6 +78,7 @@ const lensButtons = (
   const zoomButtonValues = [...new Set( stops )];
   return {
     usesSwitchFactors: true,
+    wideZoom: clamp( wideZoom, minZoom, ceiling ),
     zoomButtonOptions: zoomButtonValues.map(
       stop => formatZoomLabel( stop / wideZoom ),
     ),
@@ -87,19 +89,21 @@ const lensButtons = (
 const useZoom = ( device: CameraDevice ) => {
   const { maxZoom, minZoom, isVirtualDevice } = device;
   const initialZoomTextValue = "1";
-  const neutralZoom = 1;
   const maxZoomWithPinch = Math.min( maxZoom ?? 1, MAX_ZOOM_FACTOR );
-  const initialZoom = !isVirtualDevice
-    ? minZoom
-    : neutralZoom;
   const {
     usesSwitchFactors,
+    wideZoom,
     zoomButtonOptions,
     zoomButtonValues,
   } = useMemo(
     ( ) => lensButtons( device, minZoom, maxZoomWithPinch ),
     [device, maxZoomWithPinch, minZoom],
   );
+  // Virtual cameras open on the wide lens (1×). On iOS that is the first
+  // switch factor, not minZoom, which is the ultra-wide 0.5× stop.
+  const initialZoom = !isVirtualDevice
+    ? minZoom
+    : wideZoom;
 
   const zoom = useSharedValue( initialZoom );
   const startZoom = useSharedValue( initialZoom );
