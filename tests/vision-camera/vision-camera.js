@@ -73,7 +73,6 @@ const mockDevice = {
   maxZoom: 12.931958198547363,
   minZoom: 1,
   name: "front (1)",
-  neutralZoom: 1,
   position: "front",
   supportsDepthCapture: false,
   supportsFocus: true,

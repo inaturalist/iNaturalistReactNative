@@ -34,11 +34,15 @@ const useZoom = ( device: CameraDevice ) => {
   const initialZoomTextValue = "1";
   const zoomButtonOptions = useMemo( () => {
     const options = [initialZoomTextValue];
-    if ( device?.physicalDevices?.includes( "ultra-wide-angle-camera" ) ) {
+    if ( device?.physicalDevices?.some(
+      physicalDevice => physicalDevice.type === "ultra-wide-angle",
+    ) ) {
       // Add a 0.5x zoom option for ultra-wide-angle cameras to front of array
       options.unshift( ".5" );
     }
-    if ( device?.physicalDevices?.includes( "telephoto-camera" ) ) {
+    if ( device?.physicalDevices?.some(
+      physicalDevice => physicalDevice.type === "telephoto",
+    ) ) {
       // Add a 3x zoom option for telephoto cameras to end of array
       options.push( "3" );
     }
