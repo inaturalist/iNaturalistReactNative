@@ -2,10 +2,12 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import {
   Body2,
   Heading3,
+  INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
+import colors from "styles/tailwindColors";
 
 enum QUALITY_GRADE {
   RESEARCH = "research",
@@ -46,7 +48,12 @@ const StatusSection = ( { observation }: Props ) => {
 
   return (
     <View className="mx-4 mt-8">
-      <Heading3 className="text-base">{title}</Heading3>
+      <View className="flex-row items-center gap-x-3">
+        <Heading3 className="text-base shrink">{title}</Heading3>
+        {qualityGrade === "research" && (
+          <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />
+        )}
+      </View>
       <Body2 className="mt-[9px]">{body}</Body2>
     </View>
   );
