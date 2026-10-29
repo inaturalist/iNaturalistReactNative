@@ -32,7 +32,7 @@ import FocusSquare from "./FocusSquare";
 interface Props {
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
-  frameOutput: CameraFrameOutput;
+  frameOutput?: CameraFrameOutput;
   onCameraError: ( error: Error ) => void;
   panToZoom: PanGesture;
   pinchToZoom: PinchGesture;
@@ -73,6 +73,10 @@ const CameraView = ( {
     [onCameraError],
   );
 
+  const outputs = frameOutput
+    ? [photoOutput, frameOutput]
+    : [photoOutput];
+
   const gesture
     = Platform.OS === "android"
       ? Gesture.Simultaneous( tapToFocus, pinchToZoom )
@@ -94,7 +98,7 @@ const CameraView = ( {
           orientationSource="device"
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
-          outputs={[photoOutput, frameOutput]}
+          outputs={outputs}
           constraints={[{ resolutionBias: photoOutput }]}
           zoom={zoom}
         />
