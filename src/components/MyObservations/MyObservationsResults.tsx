@@ -38,11 +38,15 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
-import { setCurrentUserSpeciesCount } from "sharedHooks/useCurrentUserSpeciesCount";
+import {
+  markCurrentUserSpeciesCountStale,
+  setCurrentUserSpeciesCount,
+} from "sharedHooks/useCurrentUserSpeciesCount";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import {
+  UPLOAD_COMPLETE,
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
@@ -507,6 +511,22 @@ const MyObservationsResults = ( ) => {
     queryClient,
     remoteObservedTaxaCountsUpdatedAt,
   ] );
+
+  // Uploads and deletions can add or remove species, so the shared count needs refreshing
+  useEffect( ( ) => {
+    if ( uploadStatus === UPLOAD_COMPLETE ) {
+      markCurrentUserSpeciesCountStale( queryClient );
+    }
+  }, [queryClient, uploadStatus] );
+  // deletionsCompletedAt keeps its last value, so only react when it changes, not on mount
+  const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
+  const prevDeletionsCompletedAt = useRef( deletionsCompletedAt );
+  useEffect( ( ) => {
+    if ( deletionsCompletedAt && deletionsCompletedAt !== prevDeletionsCompletedAt.current ) {
+      markCurrentUserSpeciesCountStale( queryClient );
+    }
+    prevDeletionsCompletedAt.current = deletionsCompletedAt;
+  }, [deletionsCompletedAt, queryClient] );
 
   useEffect( () => {
     const newObservationCount = observationIds.length - prevObservationsLength.current;

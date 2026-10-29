@@ -36,6 +36,14 @@ export const setCurrentUserSpeciesCount = (
   queryClient.setQueryData( queryKey, response, { updatedAt: fetchedAt } );
 };
 
+// Call this after something in the app changes the user's observations (eg an upload or deletion).
+export const markCurrentUserSpeciesCountStale = ( queryClient: QueryClient ) => {
+  queryClient.invalidateQueries( {
+    queryKey: [CURRENT_USER_SPECIES_COUNT_QUERY_KEY],
+    refetchType: "none",
+  } );
+};
+
 interface Options {
   enabled?: boolean;
 }

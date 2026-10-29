@@ -1,7 +1,9 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import {
+  act, fireEvent, screen, waitFor,
+} from "@testing-library/react-native";
 import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import i18next from "i18next";
@@ -13,6 +15,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
 import { authenticatedQueryKey } from "sharedHooks/useAuthenticatedQuery";
 import { CURRENT_USER_SPECIES_COUNT_QUERY_KEY } from "sharedHooks/useCurrentUserSpeciesCount";
+import { UPLOAD_COMPLETE, UPLOAD_PENDING } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -499,6 +502,53 @@ describe( "MyObservations", ( ) => {
             renderAppWithComponent( <MyObservationsContainer /> );
             expect( await screen.findByText( "3" ) ).toBeVisible( );
             expect( sharedSpeciesCount( ) ).toBeUndefined( );
+          } );
+
+          describe( "after the user's observations change", ( ) => {
+            const sharedSpeciesCountState = ( ) => queryClient.getQueryState(
+              authenticatedQueryKey(
+                [CURRENT_USER_SPECIES_COUNT_QUERY_KEY, mockUser.id],
+                { userLoggedIn: true },
+              ),
+            );
+
+            const renderWithSharedCount = async ( ) => {
+              inatjs.observations.speciesCounts.mockResolvedValue(
+                mockRemoteCountsResponse( 783 ),
+              );
+              renderAppWithComponent( <MyObservationsContainer /> );
+              await waitFor( ( ) => {
+                expect( sharedSpeciesCount( ) ).toEqual( 783 );
+              } );
+              expect( sharedSpeciesCountState( ).isInvalidated ).toBe( false );
+              inatjs.observations.speciesCounts.mockClear( );
+            };
+
+            afterEach( ( ) => {
+              useStore.setState( { uploadStatus: UPLOAD_PENDING, deletionsCompletedAt: null } );
+            } );
+
+            it( "marks the shared count stale, without refetching, after an upload", async ( ) => {
+              await renderWithSharedCount( );
+              act( ( ) => {
+                useStore.setState( { uploadStatus: UPLOAD_COMPLETE } );
+              } );
+              await waitFor( ( ) => {
+                expect( sharedSpeciesCountState( ).isInvalidated ).toBe( true );
+              } );
+              expect( countOnlyRequests( ) ).toHaveLength( 0 );
+            } );
+
+            it( "marks the shared count stale, without refetching, after deletions", async ( ) => {
+              await renderWithSharedCount( );
+              act( ( ) => {
+                useStore.setState( { deletionsCompletedAt: new Date( ) } );
+              } );
+              await waitFor( ( ) => {
+                expect( sharedSpeciesCountState( ).isInvalidated ).toBe( true );
+              } );
+              expect( countOnlyRequests( ) ).toHaveLength( 0 );
+            } );
           } );
         } );
       } );

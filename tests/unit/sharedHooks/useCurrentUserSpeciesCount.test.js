@@ -3,6 +3,7 @@ import inatjs from "inaturalistjs";
 import { authenticatedQueryKey } from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUserSpeciesCount, {
   CURRENT_USER_SPECIES_COUNT_QUERY_KEY,
+  markCurrentUserSpeciesCountStale,
   setCurrentUserSpeciesCount,
 } from "sharedHooks/useCurrentUserSpeciesCount";
 import { makeResponse } from "tests/factory";
@@ -96,6 +97,20 @@ describe( "useCurrentUserSpeciesCount", ( ) => {
         expect( result.current ).toEqual( 790 );
       } );
       expect( countRequests( ) ).toHaveLength( 0 );
+    } );
+  } );
+
+  describe( "markCurrentUserSpeciesCountStale", ( ) => {
+    it( "doesn't refetch right away, but the next read does", async ( ) => {
+      setCurrentUserSpeciesCount( queryClient, mockUserId, 779, Date.now( ) );
+      markCurrentUserSpeciesCountStale( queryClient );
+      expect( countRequests( ) ).toHaveLength( 0 );
+
+      const { result } = renderHookInApp( ( ) => useCurrentUserSpeciesCount( ) );
+      await waitFor( ( ) => {
+        expect( result.current ).toEqual( 783 );
+      } );
+      expect( countRequests( ) ).toHaveLength( 1 );
     } );
   } );
 } );
