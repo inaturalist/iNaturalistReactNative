@@ -223,7 +223,6 @@ const StandardCamera = ( {
           {device && (
             <CameraView
               cameraRef={camera}
-              cameraScreen="standard"
               device={device}
               onCameraError={handleCameraError}
               panToZoom={panToZoom}
