@@ -306,8 +306,6 @@ CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
-# Label for button that navigates users to the data quality screen
-Data-Quality-Assessment = Data Quality Assessment
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
 Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
 # Data Quality Assessment section label: whether or not the observation date is accurate
