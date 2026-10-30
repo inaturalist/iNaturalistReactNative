@@ -233,16 +233,16 @@ const AICamera = ( {
             device={device}
             onTaxaDetected={handleTaxaDetected}
             onCameraError={handleCameraError}
+            onClassifierError={handleClassifierError}
             onLog={handleLog}
             panToZoom={panToZoom}
+            photoOutput={photoOutput}
             pinchToZoom={pinchToZoom}
             takingPhoto={takingPhoto}
             inactive={inactive}
             resetCameraOnFocus={resetCameraOnFocus}
             userLocation={userLocation}
             useLocation={useLocation}
-            photoOutput={photoOutput}
-            onClassifierError={handleClassifierError}
             zoom={zoom}
           />
         </View>

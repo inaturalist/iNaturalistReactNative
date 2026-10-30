@@ -41,34 +41,34 @@ export const MAX_PHOTOS_ALLOWED = 20;
 
 interface Props {
   camera: RefObject<CameraRef | null>;
+  confirmPhotosInProgress: boolean;
   device: CameraDevice;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
-  confirmPhotosInProgress: boolean;
   isLandscapeMode: boolean;
-  toggleFlash: ( ) => void;
-  takingPhoto: boolean;
+  newPhotoUris: string[];
+  photoOutput: CameraPhotoOutput;
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
   takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   takePhotoOptions: CapturePhotoSettings;
-  newPhotoUris: string[];
-  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
-  photoOutput: CameraPhotoOutput;
+  takingPhoto: boolean;
+  toggleFlash: ( ) => void;
 }
 
 const StandardCamera = ( {
   camera,
+  confirmPhotosInProgress,
   device,
   flipCamera,
   handleCheckmarkPress,
-  confirmPhotosInProgress,
   isLandscapeMode,
-  toggleFlash,
-  takingPhoto,
+  newPhotoUris,
+  photoOutput,
+  setNewPhotoUris,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  newPhotoUris,
-  setNewPhotoUris,
-  photoOutput,
+  takingPhoto,
+  toggleFlash,
 }: Props ) => {
   "use no memo";
 
@@ -226,8 +226,8 @@ const StandardCamera = ( {
               device={device}
               onCameraError={handleCameraError}
               panToZoom={panToZoom}
-              pinchToZoom={pinchToZoom}
               photoOutput={photoOutput}
+              pinchToZoom={pinchToZoom}
               zoom={zoom}
             />
           )}

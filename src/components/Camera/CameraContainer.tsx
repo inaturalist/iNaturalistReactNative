@@ -325,6 +325,7 @@ const CameraContainer = ( ) => {
         flipCamera={flipCamera}
         handleCheckmarkPress={handleNavigation}
         confirmPhotosInProgress={confirmPhotosInProgress}
+        photoOutput={photoOutput}
         toggleFlash={toggleFlash}
         takingPhoto={takingPhoto}
         takePhotoAndStoreUri={takePhotoAndStoreUri}
@@ -334,7 +335,6 @@ const CameraContainer = ( ) => {
         userLocation={userLocationForGeomodel}
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
-        photoOutput={photoOutput}
       />
       {renderLocationPermissionsGate( {
         onRequestGranted: ( ) => console.log( "granted in location permission gate" ),

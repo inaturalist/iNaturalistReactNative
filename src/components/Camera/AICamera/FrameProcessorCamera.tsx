@@ -40,17 +40,17 @@ interface Props {
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
   onCameraError: ( error: Error ) => void;
+  onClassifierError: ( error: Error ) => void;
   onLog: ( event: { log: string } ) => void;
   onTaxaDetected: ( result: Result ) => void;
   panToZoom: PanGesture;
+  photoOutput: CameraPhotoOutput;
   pinchToZoom: PinchGesture;
   takingPhoto: boolean;
   inactive?: boolean;
   resetCameraOnFocus: () => void;
   userLocation?: UserLocation | null;
   useLocation: boolean;
-  photoOutput: CameraPhotoOutput;
-  onClassifierError: ( error: Error ) => void;
   zoom: SharedValue<number>;
 }
 
@@ -63,17 +63,17 @@ const FrameProcessorCamera = ( {
   cameraRef,
   device,
   onCameraError,
+  onClassifierError,
   onLog,
   onTaxaDetected,
   panToZoom,
+  photoOutput,
   pinchToZoom,
   takingPhoto,
   inactive,
   resetCameraOnFocus,
   userLocation,
   useLocation,
-  photoOutput,
-  onClassifierError,
   zoom,
 }: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -177,7 +177,7 @@ const FrameProcessorCamera = ( {
 
         try {
           // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
-          // react-native-worklets-core documentation for what is supported in those worklets.
+          // react-native-vision-camera documentation for what is supported in those worklets.
           const timeBefore = Date.now( );
 
           const options = {
@@ -220,17 +220,16 @@ const FrameProcessorCamera = ( {
   return (
     <CameraView
       cameraRef={cameraRef}
-      cameraScreen="ai"
       device={device}
+      frameOutput={frameOutput}
+      inactive={inactive}
       onCameraError={async error => {
         onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
       }}
       panToZoom={panToZoom}
-      pinchToZoom={pinchToZoom}
-      inactive={inactive}
       photoOutput={photoOutput}
-      frameOutput={frameOutput}
+      pinchToZoom={pinchToZoom}
       zoom={zoom}
     />
   );

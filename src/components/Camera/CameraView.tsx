@@ -33,12 +33,12 @@ interface Props {
   cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
   frameOutput?: CameraFrameOutput;
+  inactive?: boolean;
   onCameraError: ( error: Error ) => void;
   panToZoom: PanGesture;
+  photoOutput: CameraPhotoOutput;
   pinchToZoom: PinchGesture;
   resizeMode?: "cover" | "contain";
-  inactive?: boolean;
-  photoOutput: CameraPhotoOutput;
   zoom: SharedValue<number>;
 }
 
@@ -48,12 +48,12 @@ const CameraView = ( {
   cameraRef,
   device,
   frameOutput,
+  inactive,
   onCameraError,
   panToZoom,
+  photoOutput,
   pinchToZoom,
   resizeMode,
-  inactive,
-  photoOutput,
   zoom,
 }: Props ) => {
   const { animatedStyle, tapToFocus, tappedCoordinates }
@@ -96,16 +96,16 @@ const CameraView = ( {
         <Camera
           // Shared props between StandardCamera and AICamera
           ref={cameraRef}
+          constraints={[{ resolutionBias: photoOutput }]}
           device={device}
           // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableNativeZoomGesture={false}
           isActive={isActive}
           onError={onError}
           orientationSource="device"
+          outputs={outputs}
           resizeMode={resizeMode || "cover"}
           style={StyleSheet.absoluteFill}
-          outputs={outputs}
-          constraints={[{ resolutionBias: photoOutput }]}
           zoom={zoom}
         />
       </GestureDetector>

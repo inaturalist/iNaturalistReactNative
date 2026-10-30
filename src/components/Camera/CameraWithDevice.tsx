@@ -15,41 +15,41 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 const isTablet = DeviceInfo.isTablet( );
 
 interface Props {
-  cameraType: "AI" | "Standard";
-  device: CameraDevice;
   camera: RefObject<CameraRef | null>;
+  cameraType: "AI" | "Standard";
+  confirmPhotosInProgress: boolean;
+  device: CameraDevice;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
-  confirmPhotosInProgress: boolean;
-  toggleFlash: ( ) => void;
-  takingPhoto: boolean;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
-  newPhotoUris: string[];
-  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
-  takePhotoOptions: CapturePhotoSettings;
-  userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
-  requestLocationPermissions: () => void;
+  newPhotoUris: string[];
   photoOutput: CameraPhotoOutput;
+  requestLocationPermissions: () => void;
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
+  takePhotoOptions: CapturePhotoSettings;
+  takingPhoto: boolean;
+  toggleFlash: ( ) => void;
+  userLocation: UserLocation | null;
 }
 
 const CameraWithDevice = ( {
-  cameraType,
-  device,
   camera,
+  cameraType,
+  confirmPhotosInProgress,
+  device,
   flipCamera,
   handleCheckmarkPress,
-  confirmPhotosInProgress,
-  toggleFlash,
-  takingPhoto,
-  takePhotoAndStoreUri,
-  newPhotoUris,
-  setNewPhotoUris,
-  takePhotoOptions,
-  userLocation,
   hasLocationPermissions,
-  requestLocationPermissions,
+  newPhotoUris,
   photoOutput,
+  requestLocationPermissions,
+  setNewPhotoUris,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  takingPhoto,
+  toggleFlash,
+  userLocation,
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -65,18 +65,18 @@ const CameraWithDevice = ( {
         ? (
           <StandardCamera
             camera={camera}
+            confirmPhotosInProgress={confirmPhotosInProgress}
             device={device}
             flipCamera={flipCamera}
             handleCheckmarkPress={handleCheckmarkPress}
-            confirmPhotosInProgress={confirmPhotosInProgress}
             isLandscapeMode={isLandscapeMode}
-            toggleFlash={toggleFlash}
-            takingPhoto={takingPhoto}
-            takePhotoAndStoreUri={takePhotoAndStoreUri}
             newPhotoUris={newPhotoUris}
-            setNewPhotoUris={setNewPhotoUris}
-            takePhotoOptions={takePhotoOptions}
             photoOutput={photoOutput}
+            setNewPhotoUris={setNewPhotoUris}
+            takePhotoAndStoreUri={takePhotoAndStoreUri}
+            takePhotoOptions={takePhotoOptions}
+            takingPhoto={takingPhoto}
+            toggleFlash={toggleFlash}
           />
         )
         : (
@@ -84,15 +84,15 @@ const CameraWithDevice = ( {
             camera={camera}
             device={device}
             flipCamera={flipCamera}
+            hasLocationPermissions={hasLocationPermissions}
             isLandscapeMode={isLandscapeMode}
-            toggleFlash={toggleFlash}
-            takingPhoto={takingPhoto}
+            photoOutput={photoOutput}
+            requestLocationPermissions={requestLocationPermissions}
             takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
+            takingPhoto={takingPhoto}
+            toggleFlash={toggleFlash}
             userLocation={userLocation}
-            hasLocationPermissions={hasLocationPermissions}
-            requestLocationPermissions={requestLocationPermissions}
-            photoOutput={photoOutput}
           />
         )}
     </View>
