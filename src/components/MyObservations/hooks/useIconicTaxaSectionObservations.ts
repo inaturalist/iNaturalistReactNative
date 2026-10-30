@@ -1,3 +1,4 @@
+import type { Query } from "@tanstack/react-query";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -270,11 +271,54 @@ const useIconicTaxaSectionObservations = ( {
     } );
   }, [currentUser?.id, queryClient, sortParams] );
 
+  // Reloads only the first page of each open section the user has loaded, so a refresh costs one
+  // request per open section rather than one per page they've scrolled through. Pull-to-refresh can
+  // only happen at the top of the list, so dropping the depth shouldn't matter, and the
+  // deeper pages load again one at a time as they scroll back down.
   const refreshSections = useCallback( ( ) => {
+    const kept = orderedCounts
+      .map( ( { category } ) => category )
+      .filter( category => pagesByCategory[category]
+        && !collapsedCategories.has( category ) );
+
+    if ( Object.keys( requestedPages ).length > 0 ) {
+      setPages( Object.fromEntries( kept.map( category => [category, 1] ) ) );
+    }
+
     // Scoped to the current user and sort selection. Pages cached under another sort, or
     // another user, would otherwise refire the moment they were rendered again.
-    queryClient.invalidateQueries( { queryKey: [QUERY_KEY, currentUser?.id, sortParams] } );
-  }, [currentUser?.id, queryClient, sortParams] );
+    const queryKey = [QUERY_KEY, currentUser?.id, sortParams];
+    // A page's key goes on to its category and then its page number
+    const categoryOf = ( query: Query ) => query.queryKey[3];
+    const pageOf = ( query: Query ) => query.queryKey[4];
+
+    // Removed rather than marked stale
+    queryClient.removeQueries( {
+      queryKey,
+      predicate: query => {
+        const page = pageOf( query );
+        return typeof page === "number" && page > 1;
+      },
+    } );
+    // A plain invalidate would refetch every mounted page right away, before the reset above
+    // unmounts the deeper ones. Mark them stale instead, and refetch only the first pages.
+    queryClient.invalidateQueries( { queryKey, refetchType: "none" } );
+    queryClient.refetchQueries( {
+      queryKey,
+      type: "active",
+      predicate: query => pageOf( query ) === 1
+        && kept.some( category => category === categoryOf( query ) ),
+    } );
+  }, [
+    collapsedCategories,
+    currentUser?.id,
+    orderedCounts,
+    pagesByCategory,
+    queryClient,
+    requestedPages,
+    setPages,
+    sortParams,
+  ] );
 
   return {
     sections,

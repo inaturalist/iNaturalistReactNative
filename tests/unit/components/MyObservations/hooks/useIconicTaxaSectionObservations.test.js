@@ -45,9 +45,9 @@ const orderedCounts = [
 
 const pageOf = uuids => ( { results: uuids.map( uuid => ( { uuid } ) ) } );
 
-const renderSectionsHook = ( overrides = {} ) => {
+const renderSectionsHook = ( overrides = {}, { gcTime = 0 } = {} ) => {
   const queryClient = new QueryClient( {
-    defaultOptions: { queries: { retry: false, gcTime: 0 } },
+    defaultOptions: { queries: { retry: false, gcTime } },
   } );
   const wrapper = ( { children } ) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
@@ -302,8 +302,122 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
 
     act( ( ) => result.current.refreshSections( ) );
 
-    expect( invalidateQueries ).toHaveBeenCalledWith( {
+    expect( invalidateQueries ).toHaveBeenCalledWith( expect.objectContaining( {
       queryKey: [QUERY_KEY, mockUser.id, { order_by: "created_at", order: "desc" }],
+    } ) );
+  } );
+
+  describe( "refreshing", ( ) => {
+    const plantaeSection = result => result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE );
+
+    const loadNextPlantaePage = async ( result, expectedCalls ) => {
+      act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( expectedCalls ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+    };
+
+    const searchedPages = ( ) => searchObservations.mock.calls
+      .map( ( [params] ) => [params.iconic_taxa[0], params.page] );
+
+    // A distinct observation per page, so what's loaded shows how deep each section is
+    beforeEach( ( ) => {
+      searchObservations.mockImplementation( params => Promise.resolve(
+        pageOf( [`${params.iconic_taxa[0]}-${params.page}`] ),
+      ) );
+    } );
+
+    it( "reloads only the first page of each open section, however deep the user had "
+      + "scrolled", async ( ) => {
+      const { result } = renderSectionsHook( );
+      await waitFor( ( ) => expect( plantaeSection( result ).isActivated ).toBe( true ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+      await loadNextPlantaePage( result, 2 );
+      await loadNextPlantaePage( result, 3 );
+      act( ( ) => result.current.advanceFrontier( new Set( ) ) );
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 4 ) );
+      await waitFor( ( ) => {
+        expect( result.current.sections.get( ICONIC_TAXA_GROUP.AVES ).isFetching ).toBe( false );
+      } );
+      searchObservations.mockClear( );
+
+      act( ( ) => result.current.refreshSections( ) );
+
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
+      expect( searchedPages( ) ).toEqual( expect.arrayContaining( [
+        [ICONIC_TAXA_GROUP.PLANTAE, 1],
+        [ICONIC_TAXA_GROUP.AVES, 1],
+      ] ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+      expect( searchObservations ).toHaveBeenCalledTimes( 2 );
+    } );
+
+    it( "leaves sections the user never opened unloaded", async ( ) => {
+      const { result } = renderSectionsHook( {
+        orderedCounts: [
+          { category: ICONIC_TAXA_GROUP.PLANTAE, count: 45 },
+          { category: ICONIC_TAXA_GROUP.AVES, count: 30 },
+        ],
+      } );
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+      searchObservations.mockClear( );
+
+      act( ( ) => result.current.refreshSections( ) );
+
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+      expect( searchedPages( ) ).toEqual( [[ICONIC_TAXA_GROUP.PLANTAE, 1]] );
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.AVES ).isActivated ).toBe( false );
+    } );
+
+    it( "doesn't refetch a collapsed section, and loads it from the first page when it's "
+      + "reopened", async ( ) => {
+      const { result, rerender } = renderSectionsHook( );
+      await waitFor( ( ) => expect( plantaeSection( result ).isActivated ).toBe( true ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+      act( ( ) => result.current.advanceFrontier( new Set( ) ) );
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
+      await waitFor( ( ) => {
+        expect( result.current.sections.get( ICONIC_TAXA_GROUP.AVES ).isFetching ).toBe( false );
+      } );
+      rerender( { collapsedCategories: new Set( [ICONIC_TAXA_GROUP.AVES] ) } );
+      searchObservations.mockClear( );
+
+      act( ( ) => result.current.refreshSections( ) );
+
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+      expect( searchedPages( ) ).toEqual( [[ICONIC_TAXA_GROUP.PLANTAE, 1]] );
+
+      rerender( { collapsedCategories: new Set( ) } );
+      act( ( ) => result.current.activateCategory( ICONIC_TAXA_GROUP.AVES ) );
+
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
+      expect( searchedPages( )[1] ).toEqual( [ICONIC_TAXA_GROUP.AVES, 1] );
+    } );
+
+    it( "loads the dropped pages again one at a time as the user scrolls back down", async ( ) => {
+      const { result } = renderSectionsHook( {}, { gcTime: Infinity } );
+      await waitFor( ( ) => expect( plantaeSection( result ).isActivated ).toBe( true ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+      await loadNextPlantaePage( result, 2 );
+      act( ( ) => result.current.refreshSections( ) );
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 3 ) );
+      await waitFor( ( ) => expect( plantaeSection( result ).isFetching ).toBe( false ) );
+      expect( plantaeSection( result ).uuids ).toEqual( [`${ICONIC_TAXA_GROUP.PLANTAE}-1`] );
+      searchObservations.mockImplementationOnce( ( ) => new Promise( ( ) => { } ) );
+
+      act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 4 ) );
+      expect( paramsOfLastSearch( ) ).toMatchObject( {
+        iconic_taxa: [ICONIC_TAXA_GROUP.PLANTAE],
+        page: 2,
+      } );
+      expect( plantaeSection( result ).isFetching ).toBe( true );
+
+      act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
+      // a request would only reach searchObservations after awaiting the JWT
+      await act( ( ) => new Promise( resolve => { setTimeout( resolve, 50 ); } ) );
+
+      expect( searchObservations ).toHaveBeenCalledTimes( 4 );
     } );
   } );
 
