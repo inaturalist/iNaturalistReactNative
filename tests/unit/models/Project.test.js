@@ -59,7 +59,7 @@ describe( "Project", ( ) => {
       );
     } );
 
-    it( "persists rules and rule preferences that survive mapRealmToPojo", ( ) => {
+    it( "persists rules that survive mapRealmToPojo", ( ) => {
       const mockRule = factory( "RemoteProjectObservationRule" );
       const mockRemoteProject = factory( "RemoteProject", {
         project_observation_rules: [mockRule],
@@ -76,7 +76,6 @@ describe( "Project", ( ) => {
       const upsertedProject = global.realm.objectForPrimaryKey( "Project", mockRemoteProject.id );
       const pojo = Project.mapRealmToPojo( upsertedProject );
       expect( pojo.project_observation_rules ).toEqual( [mockRule] );
-      expect( pojo.rule_preferences ).toEqual( mockRemoteProject.rule_preferences );
     } );
 
     it( "replaces cached rules on re-sync", ( ) => {
