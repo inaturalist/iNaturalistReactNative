@@ -11,23 +11,26 @@ jest.mock( "react-native-reanimated", ( ) => {
   };
 } );
 
-// A triple-camera iPhone: the wide-angle camera sits at zoom factor 2 within the virtual
-// multi-camera device, so 1x is 2 and 3x is 6.
+// A triple-camera iPhone virtual device (VC5 display zoom: wide lens at factor 1).
 const iPhoneDevice = {
-  physicalDevices: ["ultra-wide-angle-camera", "wide-angle-camera", "telephoto-camera"],
-  isMultiCam: true,
+  physicalDevices: [
+    { type: "ultra-wide-angle" },
+    { type: "wide-angle" },
+    { type: "telephoto" },
+  ],
+  isVirtualDevice: true,
   minZoom: 1,
-  neutralZoom: 2,
   maxZoom: 63,
 };
 
-// An Android device with the same lenses. Android always reports neutralZoom as 1, so 3x
-// is 3 — the case that used to resolve to 1 and leave the camera unzoomed (MOB-1660).
 const androidDevice = {
-  physicalDevices: ["ultra-wide-angle-camera", "wide-angle-camera", "telephoto-camera"],
-  isMultiCam: true,
+  physicalDevices: [
+    { type: "ultra-wide-angle" },
+    { type: "wide-angle" },
+    { type: "telephoto" },
+  ],
+  isVirtualDevice: true,
   minZoom: 0.5,
-  neutralZoom: 1,
   maxZoom: 10,
 };
 
@@ -58,7 +61,7 @@ describe( "useZoom", ( ) => {
     act( ( ) => result.current.handleZoomButtonPress( ) );
 
     expect( result.current.zoomTextValue ).toEqual( "3" );
-    expect( withSpring ).toHaveBeenLastCalledWith( 6 );
+    expect( withSpring ).toHaveBeenLastCalledWith( 3 );
   } );
 
   it( "cycles back to the ultra-wide option after the last one", ( ) => {
@@ -74,7 +77,7 @@ describe( "useZoom", ( ) => {
   it( "wraps out to ultra-wide, then back to 1x, without a telephoto camera", ( ) => {
     const device = {
       ...androidDevice,
-      physicalDevices: ["ultra-wide-angle-camera", "wide-angle-camera"],
+      physicalDevices: [{ type: "ultra-wide-angle" }, { type: "wide-angle" }],
     };
     const { result } = renderHook( ( ) => useZoom( device ) );
 
@@ -93,7 +96,7 @@ describe( "useZoom", ( ) => {
   it( "zooms in on a device with a telephoto but no ultra-wide camera", ( ) => {
     const device = {
       ...androidDevice,
-      physicalDevices: ["wide-angle-camera", "telephoto-camera"],
+      physicalDevices: [{ type: "wide-angle" }, { type: "telephoto" }],
       minZoom: 1,
     };
     const { result } = renderHook( ( ) => useZoom( device ) );
@@ -112,12 +115,46 @@ describe( "useZoom", ( ) => {
     expect( result.current.zoomTextValue ).toEqual( ".5" );
   } );
 
+  it( "labels iOS switch factors as 0.5× and 1×", ( ) => {
+    const device = {
+      ...iPhoneDevice,
+      physicalDevices: [
+        { type: "ultra-wide-angle" },
+        { type: "wide-angle" },
+      ],
+      zoomLensSwitchFactors: [2],
+    };
+    const { result } = renderHook( ( ) => useZoom( device ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+    expect( result.current.zoom.get( ) ).toEqual( 2 );
+
+    act( ( ) => result.current.handleZoomButtonPress( ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "0.5" );
+    expect( withSpring ).toHaveBeenLastCalledWith( 1 );
+  } );
+
+  it( "labels a 5× telephoto from its switch factor instead of 3×", ( ) => {
+    const device = {
+      ...iPhoneDevice,
+      zoomLensSwitchFactors: [2, 10],
+    };
+    const { result } = renderHook( ( ) => useZoom( device ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+
+    act( ( ) => result.current.handleZoomButtonPress( ) );
+
+    expect( result.current.zoomTextValue ).toEqual( "5" );
+    expect( withSpring ).toHaveBeenLastCalledWith( 10 );
+  } );
+
   it( "hides the zoom button after flipping to a single-camera (front-facing)", ( ) => {
     const frontDevice = {
-      physicalDevices: ["wide-angle-camera"],
-      isMultiCam: false,
+      physicalDevices: [{ type: "wide-angle" }],
+      isVirtualDevice: false,
       minZoom: 1,
-      neutralZoom: 1,
       maxZoom: 10,
     };
     const { result, rerender } = renderHook( device => useZoom( device ), {

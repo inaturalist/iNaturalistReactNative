@@ -2,16 +2,18 @@
 // so we can mock them for e2e tests in simulators without camera.
 import {
   Camera,
+  useAsyncRunner,
   useCameraDevice,
   useCameraDevices,
-  useCameraFormat,
-  useFrameProcessor,
+  useFrameOutput,
+  usePhotoOutput,
 } from "react-native-vision-camera";
 
 export {
   Camera,
+  useAsyncRunner,
   useCameraDevice,
   useCameraDevices,
-  useCameraFormat,
-  useFrameProcessor,
+  useFrameOutput,
+  usePhotoOutput,
 };

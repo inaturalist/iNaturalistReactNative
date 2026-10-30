@@ -3,7 +3,6 @@ import indexOf from "lodash/indexOf";
 import last from "lodash/last";
 import {
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -13,11 +12,10 @@ import {
 import {
   Extrapolation,
   interpolate,
-  useAnimatedProps,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import type { CameraDevice, CameraProps } from "react-native-vision-camera";
+import type { CameraDevice } from "react-native-vision-camera";
 import { scheduleOnRN } from "react-native-worklets";
 
 // This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
@@ -30,62 +28,120 @@ const SCALE_FULL_ZOOM = 3;
 const PAN_ZOOM_MIN_DISTANCE = -100;
 const PAN_ZOOM_MAX_DISTANCE = 100;
 
-const useZoom = ( device: CameraDevice ) => {
-  const initialZoomTextValue = "1";
-  const zoomButtonOptions = useMemo( () => {
-    const options = [initialZoomTextValue];
-    if ( device?.physicalDevices?.includes( "ultra-wide-angle-camera" ) ) {
-      // Add a 0.5x zoom option for ultra-wide-angle cameras to front of array
-      options.unshift( ".5" );
-    }
-    if ( device?.physicalDevices?.includes( "telephoto-camera" ) ) {
-      // Add a 3x zoom option for telephoto cameras to end of array
-      options.push( "3" );
-    }
-    return options;
-  }, [device?.physicalDevices] );
-  const minZoom = device?.minZoom ?? 1;
-  const neutralZoom = device?.neutralZoom ?? 2;
-  const maxZoomWithPinch = Math.min( device.maxZoom ?? 1, MAX_ZOOM_FACTOR );
-  const initialZoom = !device?.isMultiCam
-    ? minZoom
-    : neutralZoom;
-  const zoom = useSharedValue( initialZoom );
-  const startZoom = useSharedValue( initialZoom );
-  const [zoomTextValue, setZoomTextValue] = useState( initialZoomTextValue );
+const formatZoomLabel = ( value: number ) => String( Math.round( value * 10 ) / 10 );
 
-  // goal here is to turn the display labels (some subset of .5, 1, 3) into the zoom factor for
-  // zoom.set so the result matches what the native camera shows for that label
-  //
-  // The labels are magnifications relative to the main wide lens. neutralZoom is the zoom
-  // factor at which that main lens is active, so factor = neutralZoom * label.
-  // ios/android anchor their zoom scales differently, which is why neutralZoom differs:
-  //   - Android puts the wide lens at 1.0 and the ultra-wide below it (minZoom ~0.5-0.67),
-  //     so neutralZoom is always 1 and the labels already are the zoom factors.
-  //   - iOS puts the widest lens at 1.0, so on any iPhone with an ultra-wide the default lens
-  //     sits at 2.0 and neutralZoom is 2. Without an ultra-wide it is 1.
-  // The clamp keeps requests inside the device's real range
-  //
-  // notably 3x is that threshold for handing off to the telephoto lens on the 15 Pro
-  // but for more recent Pros, that threshold is 5x so maybe we want to account for that someday
-  const zoomButtonValues = useMemo(
-    ( ) => zoomButtonOptions.map( option => clamp(
-      neutralZoom * Number( option ),
-      minZoom,
-      maxZoomWithPinch,
-    ) ),
-    [maxZoomWithPinch, minZoom, neutralZoom, zoomButtonOptions],
+// The first switch factor is the wide lens. iOS often reports that handoff as
+// video zoom 2, which is shown as 1×, so each label is the stop divided by it.
+// Ultra-wide sits at minZoom, below that factor. An empty list (Android 5.2.2)
+// still uses the physical cameras.
+const lensButtons = (
+  device: CameraDevice,
+  minZoom: number,
+  ceiling: number,
+) => {
+  const factors = [...( device.zoomLensSwitchFactors ?? [] )]
+    .filter( factor => factor > 0 && factor >= minZoom && factor <= ceiling )
+    .sort( ( a, b ) => a - b );
+  const hasUltraWide = minZoom < 1 || device.physicalDevices?.some(
+    physicalDevice => physicalDevice.type === "ultra-wide-angle",
   );
 
-  useEffect( ( ) => {
-    const newInitialZoom = !device?.isMultiCam
-      ? minZoom
-      : neutralZoom;
-    zoom.set( newInitialZoom );
-    startZoom.set( newInitialZoom );
-  }, [device?.isMultiCam, minZoom, neutralZoom, zoom, startZoom] );
+  if ( factors.length === 0 ) {
+    const zoomButtonOptions = ["1"];
+    if ( hasUltraWide ) {
+      zoomButtonOptions.unshift( ".5" );
+    }
+    if ( device.physicalDevices?.some(
+      physicalDevice => physicalDevice.type === "telephoto",
+    ) ) {
+      zoomButtonOptions.push( "3" );
+    }
+    return {
+      usesSwitchFactors: false,
+      wideZoom: clamp( 1, minZoom, ceiling ),
+      zoomButtonOptions,
+      zoomButtonValues: zoomButtonOptions.map( option => clamp(
+        Number( option ),
+        minZoom,
+        ceiling,
+      ) ),
+    };
+  }
+
+  const wideZoom = hasUltraWide
+    ? factors[0]
+    : 1;
+  const stops = [...factors];
+  if ( minZoom < stops[0] ) {
+    stops.unshift( minZoom );
+  }
+  const zoomButtonValues = [...new Set( stops )];
+  return {
+    usesSwitchFactors: true,
+    wideZoom: clamp( wideZoom, minZoom, ceiling ),
+    zoomButtonOptions: zoomButtonValues.map(
+      stop => formatZoomLabel( stop / wideZoom ),
+    ),
+    zoomButtonValues,
+  };
+};
+
+const useZoom = ( device: CameraDevice ) => {
+  const { maxZoom, minZoom, isVirtualDevice } = device;
+  const initialZoomTextValue = "1";
+  const maxZoomWithPinch = Math.min( maxZoom ?? 1, MAX_ZOOM_FACTOR );
+  const {
+    usesSwitchFactors,
+    wideZoom,
+    zoomButtonOptions,
+    zoomButtonValues,
+  } = useMemo(
+    ( ) => lensButtons( device, minZoom, maxZoomWithPinch ),
+    [device, maxZoomWithPinch, minZoom],
+  );
+  // Virtual cameras open on the wide lens (1×). On iOS that is the first
+  // switch factor, not minZoom, which is the ultra-wide 0.5× stop.
+  const initialZoom = !isVirtualDevice
+    ? minZoom
+    : wideZoom;
+
+  const zoom = useSharedValue( initialZoom );
+  const startZoom = useSharedValue( initialZoom );
+
+  const labelForDeviceZoom = ( deviceZoom: number ) => {
+    const closest = zoomButtonValues.reduce(
+      ( best, value, index ) => (
+        Math.abs( value - deviceZoom ) < Math.abs( zoomButtonValues[best] - deviceZoom )
+          ? index
+          : best
+      ),
+      0,
+    );
+    return zoomButtonOptions[closest] ?? initialZoomTextValue;
+  };
+  const [zoomTextValue, setZoomTextValue] = useState(
+    ( ) => ( usesSwitchFactors
+      ? labelForDeviceZoom( initialZoom )
+      : initialZoomTextValue ),
+  );
 
   const handleZoomButtonPress = ( ) => {
+    if ( usesSwitchFactors && zoomButtonValues.length > 1 ) {
+      const currentIndex = zoomButtonValues.reduce(
+        ( best, value, index ) => (
+          Math.abs( value - zoom.get( ) ) < Math.abs( zoomButtonValues[best] - zoom.get( ) )
+            ? index
+            : best
+        ),
+        0,
+      );
+      const nextIndex = ( currentIndex + 1 ) % zoomButtonValues.length;
+      const nextZoom = zoomButtonValues[nextIndex];
+      const nextLabel = zoomButtonOptions[nextIndex];
+      zoom.set( withSpring( nextZoom ) );
+      setZoomTextValue( nextLabel );
+      return;
+    }
     if ( zoomTextValue === last( zoomButtonOptions ) ) {
       zoom.set( withSpring( zoomButtonValues[0] ) );
       setZoomTextValue( zoomButtonOptions[0] );
@@ -102,9 +158,26 @@ const useZoom = ( device: CameraDevice ) => {
   }, [startZoom, zoom] );
 
   const resetZoom = useCallback( ( ) => {
+    const closest = zoomButtonValues.reduce(
+      ( best, value, index ) => (
+        Math.abs( value - initialZoom ) < Math.abs( zoomButtonValues[best] - initialZoom )
+          ? index
+          : best
+      ),
+      0,
+    );
     zoom.set( initialZoom );
-    setZoomTextValue( initialZoomTextValue );
-  }, [initialZoom, initialZoomTextValue, zoom] );
+    setZoomTextValue( usesSwitchFactors
+      ? ( zoomButtonOptions[closest] ?? initialZoomTextValue )
+      : initialZoomTextValue );
+  }, [
+    initialZoom,
+    initialZoomTextValue,
+    usesSwitchFactors,
+    zoom,
+    zoomButtonOptions,
+    zoomButtonValues,
+  ] );
 
   const updateZoomTextValue = useCallback( ( newZoom: number ) => {
     // Compare against the zoom factors the buttons map to, not the labels themselves: a
@@ -132,10 +205,6 @@ const useZoom = ( device: CameraDevice ) => {
 
     scheduleOnRN( updateZoomTextValue, newZoom );
   }, [maxZoomWithPinch, minZoom, updateZoomTextValue, startZoom, zoom] );
-
-  const animatedProps = useAnimatedProps<CameraProps>(
-    () => ( { zoom: zoom.get( ) } ),
-  );
 
   const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
     .runOnJS( true )
@@ -184,13 +253,13 @@ const useZoom = ( device: CameraDevice ) => {
     } );
 
   return {
-    animatedProps,
     handleZoomButtonPress,
     panToZoom,
     pinchToZoom,
     resetZoom,
-    showZoomButton: device?.isMultiCam,
+    showZoomButton: isVirtualDevice,
     zoomTextValue,
+    zoom,
   };
 };
 

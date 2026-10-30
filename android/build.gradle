@@ -55,6 +55,18 @@ subprojects { sub ->
                     && it.android.defaultConfig.minSdkVersion.apiLevel < rootProject.ext.minSdkVersion) {
                     it.android.defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
                 }
+                // This was necessary when migrating to react-native-vision-camera version 5.2.2 to build for Detox.
+                // Maybe periodically check if after updates to vision-camera or Detox we still need this.
+                // According to Cursor: vision-camera-plugin-inatvision ships libc++_shared via CMake; Detox
+                // assembleAndroidTest merges native libs and fails on duplicates.
+                it.android {
+                    packaging {
+                        jniLibs {
+                            // Native modules + Detox androidTest merge duplicate RN .so copies.
+                            pickFirsts += ['**/*.so']
+                        }
+                    }
+                }
             }
         }
     }

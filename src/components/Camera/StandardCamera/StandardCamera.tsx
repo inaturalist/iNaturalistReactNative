@@ -2,7 +2,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Pressable, View } from "components/styledComponents";
@@ -17,7 +16,9 @@ import React, {
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
+import type {
+  CameraDevice, CameraPhotoOutput, CameraRef, CapturePhotoSettings,
+} from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -27,9 +28,6 @@ import useStore from "stores/useStore";
 import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
-  handleCaptureError,
-  handleClassifierError,
-  handleDeviceNotSupported,
 } from "../helpers";
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
@@ -42,45 +40,47 @@ const isTablet = DeviceInfo.isTablet( );
 export const MAX_PHOTOS_ALLOWED = 20;
 
 interface Props {
-  camera: RefObject<Camera | null>;
+  camera: RefObject<CameraRef | null>;
+  confirmPhotosInProgress: boolean;
   device: CameraDevice;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
-  confirmPhotosInProgress: boolean;
   isLandscapeMode: boolean;
-  toggleFlash: ( ) => void;
-  takingPhoto: boolean;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
-  takePhotoOptions: TakePhotoOptions;
   newPhotoUris: string[];
+  photoOutput: CameraPhotoOutput;
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
+  takePhotoOptions: CapturePhotoSettings;
+  takingPhoto: boolean;
+  toggleFlash: ( ) => void;
 }
 
 const StandardCamera = ( {
   camera,
+  confirmPhotosInProgress,
   device,
   flipCamera,
   handleCheckmarkPress,
-  confirmPhotosInProgress,
   isLandscapeMode,
-  toggleFlash,
-  takingPhoto,
+  newPhotoUris,
+  photoOutput,
+  setNewPhotoUris,
   takePhotoAndStoreUri,
   takePhotoOptions,
-  newPhotoUris,
-  setNewPhotoUris,
+  takingPhoto,
+  toggleFlash,
 }: Props ) => {
   "use no memo";
 
   const hasFlash = device?.hasFlash;
   const {
-    animatedProps,
     handleZoomButtonPress,
     panToZoom,
     pinchToZoom,
     resetZoom,
     showZoomButton,
     zoomTextValue,
+    zoom,
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
@@ -222,16 +222,13 @@ const StandardCamera = ( {
         <View className="relative flex-1">
           {device && (
             <CameraView
-              animatedProps={animatedProps}
               cameraRef={camera}
-              cameraScreen="standard"
               device={device}
               onCameraError={handleCameraError}
-              onCaptureError={handleCaptureError}
-              onClassifierError={handleClassifierError}
-              onDeviceNotSupported={handleDeviceNotSupported}
               panToZoom={panToZoom}
+              photoOutput={photoOutput}
               pinchToZoom={pinchToZoom}
+              zoom={zoom}
             />
           )}
           <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />

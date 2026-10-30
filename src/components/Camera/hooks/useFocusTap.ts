@@ -1,5 +1,4 @@
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
-import type React from "react";
+import type { RefObject } from "react";
 import {
   useCallback, useMemo, useState,
 } from "react";
@@ -15,6 +14,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import type { CameraRef } from "react-native-vision-camera";
 
 // This is dictated by the size of the FocusSquare.tsx, which is 66px.
 const HALF_SIZE_FOCUS_BOX = 33;
@@ -24,7 +24,10 @@ export interface Coordinates {
   y: number;
 }
 
-const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: boolean ) => {
+const useFocusTap = (
+  cameraRef: RefObject<CameraRef | null>,
+  supportsFocusMetering: boolean,
+) => {
   const [tappedCoordinates, setTappedCoordinates] = useState<Coordinates | null>( null );
   const focusOpacity = useSharedValue( 0 );
   const focusLeft = useSharedValue( 0 );
@@ -38,17 +41,14 @@ const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: 
 
   type TapEvent = GestureStateChangeEvent<TapGestureHandlerEventPayload>;
   const onFocus = useCallback( async ( { x, y }: TapEvent ) => {
-    // If the device doesn't support focus, we don't want the camera to focus
-    if ( !supportsFocus ) {
-      return;
-    }
-    cameraRef?.current?.focus( { x, y } );
+    if ( !supportsFocusMetering ) { return; }
+    cameraRef?.current?.focusTo( { x, y } );
     focusLeft.set( x - HALF_SIZE_FOCUS_BOX );
     focusTop.set( y - HALF_SIZE_FOCUS_BOX );
     focusOpacity.set( 1 );
     setTappedCoordinates( { x, y } );
     focusOpacity.set( withTiming( 0, { duration: 2000 } ) );
-  }, [cameraRef, focusLeft, focusTop, focusOpacity, supportsFocus] );
+  }, [cameraRef, focusLeft, focusOpacity, focusTop, supportsFocusMetering] );
 
   const tapToFocus = useMemo( ( ) => Gesture.Tap( )
     .runOnJS( true )

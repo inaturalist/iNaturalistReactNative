@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
-  useFrameProcessor,
+  useAsyncRunner,
+  useFrameOutput,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
@@ -17,12 +17,13 @@ import type {
   PanGesture,
   PinchGesture,
 } from "react-native-gesture-handler";
+import type { SharedValue } from "react-native-reanimated";
 import type {
   CameraDevice,
-  CameraProps,
-  CameraRuntimeError,
+  CameraPhotoOutput,
+  CameraRef,
 } from "react-native-vision-camera";
-import { Worklets } from "react-native-worklets-core";
+import { scheduleOnRN } from "react-native-worklets";
 import {
   geomodelPath,
   modelPath,
@@ -30,29 +31,27 @@ import {
   taxonomyPath,
 } from "sharedHelpers/mlModel";
 import { logStage } from "sharedHelpers/sentinelFiles";
-import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 import useStore from "stores/useStore";
 import type { Result } from "vision-camera-plugin-inatvision";
 
 interface Props {
-  animatedProps: CameraProps;
-  cameraRef: RefObject<Camera | null>;
+  cameraRef: RefObject<CameraRef | null>;
   device: CameraDevice;
-  onCameraError: ( error: CameraRuntimeError ) => void;
-  onCaptureError: ( error: CameraRuntimeError ) => void;
-  onClassifierError: ( error: CameraRuntimeError ) => void;
-  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
+  onCameraError: ( error: Error ) => void;
+  onClassifierError: ( error: Error ) => void;
   onLog: ( event: { log: string } ) => void;
   onTaxaDetected: ( result: Result ) => void;
   panToZoom: PanGesture;
+  photoOutput: CameraPhotoOutput;
   pinchToZoom: PinchGesture;
   takingPhoto: boolean;
   inactive?: boolean;
   resetCameraOnFocus: () => void;
   userLocation?: UserLocation | null;
   useLocation: boolean;
+  zoom: SharedValue<number>;
 }
 
 const FPS = 1;
@@ -61,22 +60,21 @@ const NUM_STORED_RESULTS = 5;
 const CROP_RATIO = 1.0;
 
 const FrameProcessorCamera = ( {
-  animatedProps,
   cameraRef,
   device,
   onCameraError,
-  onCaptureError,
   onClassifierError,
-  onDeviceNotSupported,
   onLog,
   onTaxaDetected,
   panToZoom,
+  photoOutput,
   pinchToZoom,
   takingPhoto,
   inactive,
   resetCameraOnFocus,
   userLocation,
   useLocation,
+  zoom,
 }: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
@@ -120,7 +118,7 @@ const FrameProcessorCamera = ( {
     };
   }, [navigation, resetCameraOnFocus] );
 
-  const handleResults = Worklets.createRunOnJS( ( result: Result, timeTaken: number ) => {
+  const handleResults = ( result: Result, timeTaken: number ) => {
     setLastTimestamp( result.timestamp );
     framesProcessingTime.current.push( timeTaken );
     if ( framesProcessingTime.current.length === 10 ) {
@@ -129,48 +127,60 @@ const FrameProcessorCamera = ( {
       framesProcessingTime.current = [];
     }
     onTaxaDetected( result );
-  } );
+  };
 
-  const handleError = Worklets.createRunOnJS( ( error: CameraRuntimeError ) => {
+  const handleError = ( error: Error ) => {
     onClassifierError( error );
-  } );
+  };
 
-  const patchedRunAsync = usePatchedRunAsync( );
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
     ? hasUserLocation
     : ( useLocation && hasUserLocation );
   // The vision-plugin has a function to look up the location of the user in a h3 gridded world
   // unfortunately, I was not able to run this new function in the worklets directly,
-  // so we need to do this here before calling the useFrameProcessor hook.
+  // so we need to do this here before calling the useFrameOutput hook.
   // For predictions from file this function runs in the vision-plugin code directly.
   const geoModelCellLocation = hasUserLocation
     ? InatVision.getCellLocation( userLocation )
     : null;
-  const frameProcessor = useFrameProcessor(
-    frame => {
+  const cellLat = geoModelCellLocation?.latitude;
+  const cellLng = geoModelCellLocation?.longitude;
+  const cellElev = geoModelCellLocation?.elevation;
+  const hasCellLocation
+    = typeof cellLat === "number"
+    && typeof cellLng === "number"
+    && typeof cellElev === "number";
+
+  const asyncRunner = useAsyncRunner( );
+  const frameOutput = useFrameOutput( {
+    allowDeferredStart: true,
+    enablePhysicalBufferRotation: true,
+    pixelFormat: "yuv",
+    onFrame( frame ) {
       "worklet";
 
+      // Skip before runAsync so a dropped frame does not occupy the runner.
       if ( takingPhoto ) {
+        frame.dispose();
         return;
       }
       const timestamp = Date.now();
       // If there is no lastTimestamp, i.e. the first time this runs do not compare
-      if ( lastTimestamp ) {
-        const timeSinceLastFrame = timestamp - lastTimestamp;
-        if ( timeSinceLastFrame < 1000 / FPS ) {
-          return;
-        }
+      if ( lastTimestamp && timestamp - lastTimestamp < 1000 / FPS ) {
+        frame.dispose();
+        return;
       }
 
-      patchedRunAsync( frame, ( ) => {
+      const wasHandled = asyncRunner.runAsync( ( ) => {
         "worklet";
 
-        // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
-        // react-native-worklets-core documentation for what is supported in those worklets.
-        const timeBefore = Date.now( );
         try {
-          const result = InatVision.inatVision( frame, {
+          // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
+          // react-native-vision-camera documentation for what is supported in those worklets.
+          const timeBefore = Date.now( );
+
+          const options = {
             version: modelVersion,
             modelPath,
             taxonomyPath,
@@ -179,57 +189,48 @@ const FrameProcessorCamera = ( {
             cropRatio: CROP_RATIO,
             useGeomodel,
             geomodelPath,
-            location: {
-              latitude: geoModelCellLocation?.latitude,
-              longitude: geoModelCellLocation?.longitude,
-              elevation: geoModelCellLocation?.elevation,
-            },
-          } );
+          };
+
+          if ( useGeomodel && hasCellLocation ) {
+            options.location = {
+              latitude: cellLat,
+              longitude: cellLng,
+              elevation: cellElev,
+            };
+          }
+
+          const result = InatVision.inatVision( frame, options );
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
-          handleResults( result, timeTaken );
+          scheduleOnRN( handleResults, result, timeTaken );
         } catch ( classifierError ) {
           console.log( `Error: ${classifierError.message}` );
-          handleError( classifierError );
+          scheduleOnRN( handleError, classifierError );
+        } finally {
+          frame.dispose();
         }
       } );
+      if ( !wasHandled ) {
+        // `asyncRunner` is busy - drop this Frame!
+        frame.dispose();
+      }
     },
-    [
-      patchedRunAsync,
-      modelVersion,
-      takingPhoto,
-      lastTimestamp,
-      useGeomodel,
-      geoModelCellLocation,
-    ],
-  );
+  } );
 
   return (
     <CameraView
-      animatedProps={animatedProps}
       cameraRef={cameraRef}
-      cameraScreen="ai"
       device={device}
-      frameProcessor={frameProcessor}
+      frameOutput={frameOutput}
+      inactive={inactive}
       onCameraError={async error => {
         onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
       }}
-      onCaptureError={async error => {
-        onCaptureError( error );
-        await logStage( sentinelFileName, "camera_capture_error" );
-      }}
-      onClassifierError={async error => {
-        onClassifierError( error );
-        await logStage( sentinelFileName, "camera_classifier_error" );
-      }}
-      onDeviceNotSupported={async error => {
-        onDeviceNotSupported( error );
-        await logStage( sentinelFileName, "camera_device_not_supported_error" );
-      }}
       panToZoom={panToZoom}
+      photoOutput={photoOutput}
       pinchToZoom={pinchToZoom}
-      inactive={inactive}
+      zoom={zoom}
     />
   );
 };

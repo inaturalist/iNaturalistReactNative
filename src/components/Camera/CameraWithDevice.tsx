@@ -1,9 +1,10 @@
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import { View } from "components/styledComponents";
 import type { RefObject } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
+import type {
+  CameraDevice, CameraPhotoOutput, CameraRef, CapturePhotoSettings,
+} from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 
@@ -14,39 +15,41 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 const isTablet = DeviceInfo.isTablet( );
 
 interface Props {
+  camera: RefObject<CameraRef | null>;
   cameraType: "AI" | "Standard";
+  confirmPhotosInProgress: boolean;
   device: CameraDevice;
-  camera: RefObject<Camera | null>;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
-  confirmPhotosInProgress: boolean;
-  toggleFlash: ( ) => void;
-  takingPhoto: boolean;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
-  newPhotoUris: string[];
-  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
-  takePhotoOptions: TakePhotoOptions;
-  userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
+  newPhotoUris: string[];
+  photoOutput: CameraPhotoOutput;
   requestLocationPermissions: () => void;
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
+  takePhotoOptions: CapturePhotoSettings;
+  takingPhoto: boolean;
+  toggleFlash: ( ) => void;
+  userLocation: UserLocation | null;
 }
 
 const CameraWithDevice = ( {
-  cameraType,
-  device,
   camera,
+  cameraType,
+  confirmPhotosInProgress,
+  device,
   flipCamera,
   handleCheckmarkPress,
-  confirmPhotosInProgress,
-  toggleFlash,
-  takingPhoto,
-  takePhotoAndStoreUri,
-  newPhotoUris,
-  setNewPhotoUris,
-  takePhotoOptions,
-  userLocation,
   hasLocationPermissions,
+  newPhotoUris,
+  photoOutput,
   requestLocationPermissions,
+  setNewPhotoUris,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  takingPhoto,
+  toggleFlash,
+  userLocation,
 }: Props ) => {
   const { isLandscapeMode } = useDeviceOrientation( );
   const flexDirection = isTablet && isLandscapeMode
@@ -62,17 +65,18 @@ const CameraWithDevice = ( {
         ? (
           <StandardCamera
             camera={camera}
+            confirmPhotosInProgress={confirmPhotosInProgress}
             device={device}
             flipCamera={flipCamera}
             handleCheckmarkPress={handleCheckmarkPress}
-            confirmPhotosInProgress={confirmPhotosInProgress}
             isLandscapeMode={isLandscapeMode}
-            toggleFlash={toggleFlash}
-            takingPhoto={takingPhoto}
-            takePhotoAndStoreUri={takePhotoAndStoreUri}
             newPhotoUris={newPhotoUris}
+            photoOutput={photoOutput}
             setNewPhotoUris={setNewPhotoUris}
+            takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
+            takingPhoto={takingPhoto}
+            toggleFlash={toggleFlash}
           />
         )
         : (
@@ -80,14 +84,15 @@ const CameraWithDevice = ( {
             camera={camera}
             device={device}
             flipCamera={flipCamera}
+            hasLocationPermissions={hasLocationPermissions}
             isLandscapeMode={isLandscapeMode}
-            toggleFlash={toggleFlash}
-            takingPhoto={takingPhoto}
+            photoOutput={photoOutput}
+            requestLocationPermissions={requestLocationPermissions}
             takePhotoAndStoreUri={takePhotoAndStoreUri}
             takePhotoOptions={takePhotoOptions}
+            takingPhoto={takingPhoto}
+            toggleFlash={toggleFlash}
             userLocation={userLocation}
-            hasLocationPermissions={hasLocationPermissions}
-            requestLocationPermissions={requestLocationPermissions}
           />
         )}
     </View>

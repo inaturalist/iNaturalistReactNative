@@ -1,8 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
   useCameraDevice,
   useCameraDevices,
+  usePhotoOutput,
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -14,9 +14,8 @@ import React, {
   useState,
 } from "react";
 import { Alert, StatusBar } from "react-native";
-import type {
-  TakePhotoOptions,
-} from "react-native-vision-camera";
+import type { CameraRef, CapturePhotoSettings } from "react-native-vision-camera";
+import { CommonResolutions } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
 import { hasWriteMediaPermission } from "sharedHelpers/permissions";
@@ -101,9 +100,9 @@ const CameraContainer = ( ) => {
   // https://react-native-vision-camera.com/docs/guides/devices#selecting-multi-cams
   const device = useCameraDevice( cameraPosition, {
     physicalDevices: [
-      "ultra-wide-angle-camera",
-      "wide-angle-camera",
-      "telephoto-camera",
+      "ultra-wide-angle",
+      "wide-angle",
+      "telephoto",
     ],
   } );
   const devices = useCameraDevices( );
@@ -133,15 +132,17 @@ const CameraContainer = ( ) => {
     // We had this set to true in Seek but received many reports of it not respecting OS-wide sound
     // level and scared away wildlife. So maybe better to just disable it.
     enableShutterSound: false,
-    ...( hasFlash && { flash: "off" } as const ),
+    ...( hasFlash && { flashMode: "off" } as const ),
   } as const;
-  const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
+  const [takePhotoOptions, setTakePhotoOptions] = useState<CapturePhotoSettings>(
+    initialPhotoOptions,
+  );
   const [takingPhoto, setTakingPhoto] = useState( false );
   const [confirmPhotosInProgress, setconfirmPhotosInProgress] = useState( false );
   const confirmPhotosInProgressRef = useRef( false );
   const addEvidence = params?.addEvidence;
 
-  const camera = useRef<Camera>( null );
+  const camera = useRef<CameraRef>( null );
 
   useEffect( () => {
     const generateSentinelFile = async ( ) => {
@@ -204,7 +205,7 @@ const CameraContainer = ( ) => {
   const toggleFlash = ( ) => {
     setTakePhotoOptions( {
       ...takePhotoOptions,
-      flash: takePhotoOptions.flash === "on"
+      flashMode: takePhotoOptions.flashMode === "on"
         ? "off"
         : "on",
     } );
@@ -241,13 +242,22 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
+  const targetResolution = cameraType === "AI"
+    ? CommonResolutions.HIGHEST_16_9
+    : CommonResolutions.HIGHEST_4_3;
+  const photoOutput = usePhotoOutput( {
+    qualityPrioritization: "quality",
+    targetResolution,
+  } );
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
+
     // Set the camera to inactive immediately after taking the photo,
-    // this does leave a short period of time where the camera preview is still active
-    // after taking the photo which we might to revisit if it doesn't look good.
-    const cameraPhoto = await camera?.current?.takePhoto( takePhotoOptions );
-    if ( options?.inactivateCallback ) options.inactivateCallback();
+    const cameraPhoto = await photoOutput.capturePhotoToFile( takePhotoOptions, {
+      onDidCapturePhoto: ( ) => {
+        if ( options?.inactivateCallback ) options.inactivateCallback();
+      },
+    } );
     await logStageIfAICamera( "take_photo_complete" );
     if ( !cameraPhoto ) {
       await logStageIfAICamera( "take_photo_error" );
@@ -315,6 +325,7 @@ const CameraContainer = ( ) => {
         flipCamera={flipCamera}
         handleCheckmarkPress={handleNavigation}
         confirmPhotosInProgress={confirmPhotosInProgress}
+        photoOutput={photoOutput}
         toggleFlash={toggleFlash}
         takingPhoto={takingPhoto}
         takePhotoAndStoreUri={takePhotoAndStoreUri}
