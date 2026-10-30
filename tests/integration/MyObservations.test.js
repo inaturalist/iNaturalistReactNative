@@ -1,19 +1,25 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import {
+  act, fireEvent, screen, waitFor,
+} from "@testing-library/react-native";
 import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import flatten from "lodash/flatten";
+import { initialMyObservationsState } from "providers/MyObservationsContext";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
-import { zustandStorage } from "stores/useStore";
+import { authenticatedQueryKey } from "sharedHooks/useAuthenticatedQuery";
+import { CURRENT_USER_SPECIES_COUNT_QUERY_KEY } from "sharedHooks/useCurrentUserSpeciesCount";
+import { UPLOAD_COMPLETE, UPLOAD_PENDING } from "stores/createUploadObservationsSlice";
+import useStore, { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
-import { renderAppWithComponent } from "tests/helpers/render";
+import { queryClient, renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -396,6 +402,155 @@ describe( "MyObservations", ( ) => {
         } );
 
         expect( inatjs.observations.deleted ).toHaveBeenCalled();
+      } );
+
+      describe( "observation and species counts", ( ) => {
+        const mockRemoteCountsResponse = totalResults => ( {
+          ...makeResponse( ),
+          total_results: totalResults,
+        } );
+
+        beforeEach( ( ) => {
+          queryClient.clear( );
+          zustandStorage.setItem( "numOfUserObservations", 1026 );
+          zustandStorage.setItem( "numOfUserSpecies", 499 );
+        } );
+
+        afterEach( ( ) => {
+          queryClient.clear( );
+          inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+          inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );
+          useStore.setState( { myObservations: initialMyObservationsState } );
+        } );
+
+        it( "shows server counts lower than the stored counts and stores them", async ( ) => {
+          inatjs.observations.search.mockResolvedValue( mockRemoteCountsResponse( 812 ) );
+          inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 461 ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          expect( await screen.findByText( "812" ) ).toBeVisible( );
+          expect( await screen.findByText( "461" ) ).toBeVisible( );
+          await waitFor( ( ) => {
+            expect( zustandStorage.getItem( "numOfUserObservations" ) ).toEqual( 812 );
+          } );
+          expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 461 );
+        } );
+
+        it( "shows stored counts while server counts are unavailable", async ( ) => {
+          inatjs.observations.search.mockReturnValue( new Promise( ( ) => { } ) );
+          inatjs.observations.speciesCounts.mockReturnValue( new Promise( ( ) => { } ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          expect( await screen.findByText( "1,026" ) ).toBeVisible( );
+          expect( screen.getByText( "499" ) ).toBeVisible( );
+          expect( zustandStorage.getItem( "numOfUserObservations" ) ).toEqual( 1026 );
+          expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 499 );
+        } );
+
+        it( "does not store a species count filtered by a taxon search", async ( ) => {
+          const searchedTaxon = factory( "RemoteTaxon" );
+          useStore.setState( {
+            myObservations: {
+              ...initialMyObservationsState,
+              searchedTaxon: { id: searchedTaxon.id, name: searchedTaxon.name },
+            },
+          } );
+          inatjs.observations.search.mockResolvedValue( makeResponse( [
+            factory( "RemoteObservation", { taxon: searchedTaxon } ),
+          ] ) );
+          inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 3 ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          await waitFor( ( ) => {
+            expect( inatjs.observations.speciesCounts ).toHaveBeenCalledWith(
+              expect.objectContaining( { taxon_id: searchedTaxon.id } ),
+              expect.anything( ),
+            );
+          } );
+          expect( await screen.findByText( "3" ) ).toBeVisible( );
+          expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 499 );
+        } );
+
+        describe( "sharing the species count with the profile", ( ) => {
+          const sharedSpeciesCount = ( ) => queryClient.getQueryData( authenticatedQueryKey(
+            [CURRENT_USER_SPECIES_COUNT_QUERY_KEY, mockUser.id],
+            { userLoggedIn: true },
+          ) )?.total_results;
+          const countOnlyRequests = ( ) => inatjs.observations.speciesCounts.mock.calls
+            .filter( ( [params] ) => params.per_page === 0 );
+
+          it( "stores the species list total without fetching the count separately", async ( ) => {
+            inatjs.observations.speciesCounts.mockClear( );
+            inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 783 ) );
+            renderAppWithComponent( <MyObservationsContainer /> );
+            expect( await screen.findByText( "783" ) ).toBeVisible( );
+            await waitFor( ( ) => {
+              expect( sharedSpeciesCount( ) ).toEqual( 783 );
+            } );
+            expect( countOnlyRequests( ) ).toHaveLength( 0 );
+          } );
+
+          it( "does not store a species total filtered by a taxon search", async ( ) => {
+            const searchedTaxon = factory( "RemoteTaxon" );
+            useStore.setState( {
+              myObservations: {
+                ...initialMyObservationsState,
+                searchedTaxon: { id: searchedTaxon.id, name: searchedTaxon.name },
+              },
+            } );
+            inatjs.observations.search.mockResolvedValue( makeResponse( [
+              factory( "RemoteObservation", { taxon: searchedTaxon } ),
+            ] ) );
+            inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 3 ) );
+            renderAppWithComponent( <MyObservationsContainer /> );
+            expect( await screen.findByText( "3" ) ).toBeVisible( );
+            expect( sharedSpeciesCount( ) ).toBeUndefined( );
+          } );
+
+          describe( "after the user's observations change", ( ) => {
+            const sharedSpeciesCountState = ( ) => queryClient.getQueryState(
+              authenticatedQueryKey(
+                [CURRENT_USER_SPECIES_COUNT_QUERY_KEY, mockUser.id],
+                { userLoggedIn: true },
+              ),
+            );
+
+            const renderWithSharedCount = async ( ) => {
+              inatjs.observations.speciesCounts.mockResolvedValue(
+                mockRemoteCountsResponse( 783 ),
+              );
+              renderAppWithComponent( <MyObservationsContainer /> );
+              await waitFor( ( ) => {
+                expect( sharedSpeciesCount( ) ).toEqual( 783 );
+              } );
+              expect( sharedSpeciesCountState( ).isInvalidated ).toBe( false );
+              inatjs.observations.speciesCounts.mockClear( );
+            };
+
+            afterEach( ( ) => {
+              useStore.setState( { uploadStatus: UPLOAD_PENDING, deletionsCompletedAt: null } );
+            } );
+
+            it( "marks the shared count stale, without refetching, after an upload", async ( ) => {
+              await renderWithSharedCount( );
+              act( ( ) => {
+                useStore.setState( { uploadStatus: UPLOAD_COMPLETE } );
+              } );
+              await waitFor( ( ) => {
+                expect( sharedSpeciesCountState( ).isInvalidated ).toBe( true );
+              } );
+              expect( countOnlyRequests( ) ).toHaveLength( 0 );
+            } );
+
+            it( "marks the shared count stale, without refetching, after deletions", async ( ) => {
+              await renderWithSharedCount( );
+              act( ( ) => {
+                useStore.setState( { deletionsCompletedAt: new Date( ) } );
+              } );
+              await waitFor( ( ) => {
+                expect( sharedSpeciesCountState( ).isInvalidated ).toBe( true );
+              } );
+              expect( countOnlyRequests( ) ).toHaveLength( 0 );
+            } );
+          } );
+        } );
       } );
 
       describe( "on screen focus", () => {
