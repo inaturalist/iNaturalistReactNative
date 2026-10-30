@@ -282,8 +282,8 @@ export type BaseTabStackParamList = {
     userId?: number;
     login?: string;
   };
-  // From DQAButton
-  // { observationUUID }
+  // From StatusSection and DetailsTab
+  // { observationUUID: observation.uuid }
   DataQualityAssessment: { observationUUID: string };
   Projects: undefined;
   // From LoginForm
