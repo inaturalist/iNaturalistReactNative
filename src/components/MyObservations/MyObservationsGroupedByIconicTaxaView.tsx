@@ -150,8 +150,8 @@ const MyObservationsGroupedByIconicTaxaView = ( {
 
   // #region managing sticky header toggling and scroll position
 
-  // Row index to put back at the top of the screen once a collapse has re-rendered
-  const pinHeaderRowRef = useRef<number | null>( null );
+  // Section whose header to put back at the top of the screen once a collapse has re-rendered
+  const pinHeaderCategoryRef = useRef<ICONIC_TAXA_GROUP | null>( null );
 
   const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
     const isCollapsing = !collapsedCategories.has( category );
@@ -172,7 +172,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       row => row.type === "header" && row.header.category === category,
     );
     if ( headerRow >= 0 && headerRow < firstVisibleIndexRef.current ) {
-      pinHeaderRowRef.current = headerRow;
+      pinHeaderCategoryRef.current = category;
     }
 
     advanceFrontier( categories );
@@ -185,11 +185,17 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   ] );
 
   useEffect( ( ) => {
-    const index = pinHeaderRowRef.current;
-    if ( index === null ) return;
-    pinHeaderRowRef.current = null;
+    const category = pinHeaderCategoryRef.current;
+    if ( category === null ) return;
+    if ( ![...sections.values( )].some( section => section.isFetching ) ) {
+      pinHeaderCategoryRef.current = null;
+    }
+    const index = rows.findIndex(
+      row => row.type === "header" && row.header.category === category,
+    );
+    if ( index < 0 ) return;
     listRef.current?.scrollToIndex( { animated: false, index, viewPosition: 0 } );
-  }, [rows] );
+  }, [rows, sections] );
   // #endregion
 
   const [refreshing, setRefreshing] = useState( false );

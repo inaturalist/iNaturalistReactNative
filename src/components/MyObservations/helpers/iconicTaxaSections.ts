@@ -126,3 +126,32 @@ export function sectionRangeAtRow(
 ): IconicTaxaSectionRange | undefined {
   return ranges.find( range => row >= range.headerRow && row <= range.lastRow );
 }
+
+export type DeepenDecision =
+  | { action: "deepen"; category: ICONIC_TAXA_GROUP }
+  | { action: "advance" }
+  | { action: "wait" };
+
+// Decides what to load when the user nears the end of the section they've landed in.
+//
+// A fast scroll can overshoot into the never-fetched headers below the section the user was
+// reading, so this walks up to the nearest fetched section and lets it decide: deepen it if it
+// has more, wait if it errored, advance once it's exhausted. It stops there rather than
+// searching further up, since a partly loaded section far above would load off-screen.
+export function categoryToDeepen(
+  orderedCategories: ICONIC_TAXA_GROUP[],
+  sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>,
+  collapsedCategories: Set<ICONIC_TAXA_GROUP>,
+  landedOn: ICONIC_TAXA_GROUP,
+): DeepenDecision {
+  for ( let i = orderedCategories.indexOf( landedOn ); i >= 0; i -= 1 ) {
+    const category = orderedCategories[i];
+    const section = sections.get( category );
+    if ( !collapsedCategories.has( category ) && section?.isActivated ) {
+      if ( section.isError ) return { action: "wait" };
+      if ( section.hasMore ) return { action: "deepen", category };
+      return { action: "advance" };
+    }
+  }
+  return { action: "advance" };
+}
