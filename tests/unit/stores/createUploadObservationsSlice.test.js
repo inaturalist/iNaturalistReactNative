@@ -116,4 +116,45 @@ describe( "setTotalToolbarIncrements", ( ) => {
 
     expect( useStore.getState().totalToolbarIncrements ).toBe( 1.5 );
   } );
+
+  it( "does not count a previously synced observation photo that is unchanged", ( ) => {
+    const observation = factory( "LocalObservation", {
+      observationPhotos: [syncedObsPhoto( { needsSync: jest.fn( () => false ) } )],
+      observationSounds: [],
+      projectObservations: [],
+    } );
+
+    useStore.getState().setTotalToolbarIncrements( [observation] );
+
+    expect( useStore.getState().totalToolbarIncrements ).toBe( 1 );
+  } );
+
+  it( "adds 1 increment per unsynced observation sound", ( ) => {
+    const observation = factory( "LocalObservation", {
+      observationPhotos: [],
+      observationSounds: [factory( "LocalObservationSound", {
+        wasSynced: jest.fn( () => false ),
+      } )],
+      projectObservations: [],
+    } );
+
+    useStore.getState().setTotalToolbarIncrements( [observation] );
+
+    expect( useStore.getState().totalToolbarIncrements ).toBe( 2 );
+  } );
+
+  it( "does not count a previously synced observation sound", ( ) => {
+    const observation = factory( "LocalObservation", {
+      observationPhotos: [],
+      observationSounds: [factory( "LocalObservationSound", {
+        wasSynced: jest.fn( () => true ),
+        needsSync: jest.fn( () => true ),
+      } )],
+      projectObservations: [],
+    } );
+
+    useStore.getState().setTotalToolbarIncrements( [observation] );
+
+    expect( useStore.getState().totalToolbarIncrements ).toBe( 1 );
+  } );
 } );

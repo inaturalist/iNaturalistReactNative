@@ -378,5 +378,90 @@ describe( "Observation", ( ) => {
       expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
       expect( obs.observationFieldValues[0]._synced_at ).toEqual( syncedAt );
     } );
+
+    describe( "with synced photos", ( ) => {
+      const updatedAt = new Date( "2020-01-01" );
+      const syncedAt = new Date( "2020-01-02" );
+
+      const seedSyncedObsWithPhotos = ( photoOverrides = [] ) => {
+        const obsUuid = uuid.v4( );
+        safeRealmWrite( global.realm, ( ) => {
+          global.realm.create( "Observation", {
+            uuid: obsUuid,
+            captive_flag: false,
+            _updated_at: updatedAt,
+            _synced_at: syncedAt,
+            observationPhotos: [0, 1, 2].map( position => ( {
+              uuid: uuid.v4( ),
+              position,
+              _updated_at: updatedAt,
+              _synced_at: syncedAt,
+              photo: { id: position + 1, url: `https://example.org/${position}.jpg` },
+              ...photoOverrides[position],
+            } ) ),
+          } );
+        }, "seed synced obs with photos for save test" );
+        return global.realm.objectForPrimaryKey( "Observation", obsUuid ).toJSON( );
+      };
+
+      const savedPhotos = async obs => {
+        const saved = await Observation.saveLocalObservationForUpload( obs, global.realm );
+        return saved.observationPhotos;
+      };
+
+      it( "does not mark photos for sync on an unrelated edit", async ( ) => {
+        const obs = seedSyncedObsWithPhotos( );
+
+        const photos = await savedPhotos( { ...obs, captive_flag: true } );
+
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [false, false, false] );
+        expect( global.realm.objectForPrimaryKey( "Observation", obs.uuid ).needsSync( ) )
+          .toBe( true );
+      } );
+
+      it( "marks only photos whose position changed for sync", async ( ) => {
+        const obs = seedSyncedObsWithPhotos( );
+        const reordered = obs.observationPhotos.map( op => ( {
+          ...op,
+          position: 2 - op.position,
+        } ) );
+
+        const photos = await savedPhotos( { ...obs, observationPhotos: reordered } );
+
+        const needsSyncByPosition = Object.fromEntries(
+          photos.map( op => [op.position, op.needsSync( )] ),
+        );
+        expect( needsSyncByPosition ).toEqual( { 0: true, 1: false, 2: true } );
+      } );
+
+      it( "adding a photo leaves existing synced photos unmarked", async ( ) => {
+        const obs = seedSyncedObsWithPhotos( );
+        const newPhoto = {
+          _created_at: new Date( ),
+          _updated_at: new Date( ),
+          uuid: uuid.v4( ),
+          position: 3,
+          photo: { localFilePath: "new.jpg" },
+        };
+
+        const photos = await savedPhotos( {
+          ...obs,
+          observationPhotos: [...obs.observationPhotos, newPhoto],
+        } );
+
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [false, false, false, true] );
+      } );
+
+      it( "keeps a photo change from an earlier save pending", async ( ) => {
+        const obs = seedSyncedObsWithPhotos( [
+          undefined,
+          { _updated_at: new Date( "2020-01-03" ) },
+        ] );
+
+        const photos = await savedPhotos( { ...obs, captive_flag: true } );
+
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [false, true, false] );
+      } );
+    } );
   } );
 } );
