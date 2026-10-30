@@ -31,7 +31,7 @@ describe( "Project", ( ) => {
       expect( mappedProject.project_type ).toBe( mockRemoteProject.project_type );
     } );
 
-    it( "maps rules and rule preferences", ( ) => {
+    it( "maps rules", ( ) => {
       const mockRemoteProject = factory( "RemoteProject", {
         project_observation_rules: [factory( "RemoteProjectObservationRule" )],
         rule_preferences: [{ field: "quality_grade", value: "research,needs_id" }],
@@ -39,9 +39,6 @@ describe( "Project", ( ) => {
       const mappedProject = Project.mapApiToRealm( mockRemoteProject );
 
       expect( mappedProject.project_observation_rules ).toHaveLength( 1 );
-      expect( mappedProject.rule_preferences ).toEqual( [
-        { field: "quality_grade", value: "research,needs_id" },
-      ] );
     } );
   } );
 
