@@ -75,17 +75,14 @@ export interface RealmProjectObservationField extends RealmObject {
 export interface RealmProjectObservationRule extends RealmObject {
   id: number;
   operand_id?: number;
-  operand_type?: string;
   operator: string;
   place_display_name?: string;
-  project_title?: string;
   taxon_ancestor_ids: number[];
   taxon_default_photo_url?: string;
   taxon_name?: string;
   taxon_preferred_common_name?: string;
   taxon_rank?: string;
   taxon_rank_level?: number;
-  user_login?: string;
 }
 
 export interface RealmProject extends RealmObject {
