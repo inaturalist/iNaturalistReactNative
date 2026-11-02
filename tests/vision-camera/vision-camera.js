@@ -137,6 +137,7 @@ const mockCapturePhotoToFile = async ( _settings, callbacks = {} ) => {
     const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
     try {
       await copyFile( sourcePath, destPath );
+      callbacks.onDidCapturePhoto?.();
       return {
         filePath: destPath,
       };
