@@ -3,6 +3,7 @@ import indexOf from "lodash/indexOf";
 import last from "lodash/last";
 import {
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -167,17 +168,23 @@ const useZoom = ( device: CameraDevice ) => {
       0,
     );
     zoom.set( initialZoom );
+    startZoom.set( initialZoom );
     setZoomTextValue( usesSwitchFactors
       ? ( zoomButtonOptions[closest] ?? initialZoomTextValue )
       : initialZoomTextValue );
   }, [
     initialZoom,
     initialZoomTextValue,
+    startZoom,
     usesSwitchFactors,
     zoom,
     zoomButtonOptions,
     zoomButtonValues,
   ] );
+
+  useEffect( () => {
+    resetZoom();
+  }, [device.id, resetZoom] );
 
   const updateZoomTextValue = useCallback( ( newZoom: number ) => {
     // Compare against the zoom factors the buttons map to, not the labels themselves: a

@@ -136,7 +136,6 @@ const StandardCamera = ( {
   }, [deletePhotoFromObservation, newPhotoUris, setNewPhotoUris] );
 
   const onFlipCamera = () => {
-    resetZoom( );
     flipCamera( );
   };
 

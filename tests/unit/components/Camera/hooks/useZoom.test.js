@@ -152,18 +152,64 @@ describe( "useZoom", ( ) => {
 
   it( "hides the zoom button after flipping to a single-camera (front-facing)", ( ) => {
     const frontDevice = {
+      id: "front",
       physicalDevices: [{ type: "wide-angle" }],
       isVirtualDevice: false,
       minZoom: 1,
       maxZoom: 10,
     };
     const { result, rerender } = renderHook( device => useZoom( device ), {
-      initialProps: iPhoneDevice,
+      initialProps: { ...iPhoneDevice, id: "back" },
     } );
     expect( result.current.showZoomButton ).toBe( true );
 
     rerender( frontDevice );
 
     expect( result.current.showZoomButton ).toBe( false );
+  } );
+
+  it( "resets zoom for the new device when flipping front and back", ( ) => {
+    const backDevice = {
+      id: "back",
+      physicalDevices: [
+        { type: "ultra-wide-angle" },
+        { type: "wide-angle" },
+        { type: "telephoto" },
+      ],
+      isVirtualDevice: true,
+      minZoom: 1,
+      maxZoom: 63,
+      zoomLensSwitchFactors: [2],
+    };
+    const frontDevice = {
+      id: "front",
+      physicalDevices: [{ type: "wide-angle" }],
+      isVirtualDevice: false,
+      minZoom: 1,
+      maxZoom: 10,
+    };
+    const { result, rerender } = renderHook( device => useZoom( device ), {
+      initialProps: backDevice,
+    } );
+
+    expect( result.current.zoom.get( ) ).toEqual( 2 );
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+
+    act( () => result.current.handleZoomButtonPress( ) );
+
+    expect( result.current.zoom.get( ) ).toEqual( 1 );
+    expect( result.current.zoomTextValue ).toEqual( "0.5" );
+
+    rerender( frontDevice );
+
+    expect( result.current.zoom.get( ) ).toEqual( 1 );
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+    expect( result.current.showZoomButton ).toBe( false );
+
+    rerender( backDevice );
+
+    expect( result.current.zoom.get( ) ).toEqual( 2 );
+    expect( result.current.zoomTextValue ).toEqual( "1" );
+    expect( result.current.showZoomButton ).toBe( true );
   } );
 } );

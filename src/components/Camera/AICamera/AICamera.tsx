@@ -151,7 +151,6 @@ const AICamera = ( {
   const insets = useSafeAreaInsets( );
 
   const onFlipCamera = () => {
-    resetZoom( );
     flipCamera( );
   };
 
