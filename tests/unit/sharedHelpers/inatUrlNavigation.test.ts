@@ -8,14 +8,14 @@ describe( "parseInatUrl", ( ) => {
   it( "parses a people login URL as a user target", ( ) => {
     expect( parseInatUrl( "https://www.inaturalist.org/people/example" ) ).toEqual( {
       type: "user",
-      login: "example",
+      id: "example",
     } );
   } );
 
-  it( "parses a numeric people URL as a userId target", ( ) => {
+  it( "parses a numeric people URL as a user target with a numeric id segment", ( ) => {
     expect( parseInatUrl( "https://www.inaturalist.org/people/123" ) ).toEqual( {
       type: "user",
-      userId: 123,
+      id: "123",
     } );
   } );
 
@@ -41,19 +41,17 @@ describe( "parseInatUrl", ( ) => {
 } );
 
 describe( "openInatUrl", ( ) => {
-  it( "pushes UserProfile with login for a people login URL", async ( ) => {
+  it( "does not handle a people login URL in-app", async ( ) => {
     const dispatch = jest.fn( );
     const navigation = { dispatch } as never;
 
     const handled = await openInatUrl(
-      { type: "user", login: "example" },
+      { type: "user", id: "example" },
       navigation,
     );
 
-    expect( handled ).toBe( true );
-    expect( dispatch ).toHaveBeenCalledWith(
-      StackActions.push( "UserProfile", { login: "example" } ),
-    );
+    expect( handled ).toBe( false );
+    expect( dispatch ).not.toHaveBeenCalled( );
   } );
 
   it( "pushes UserProfile with userId for a numeric people URL", async ( ) => {
@@ -61,7 +59,7 @@ describe( "openInatUrl", ( ) => {
     const navigation = { dispatch } as never;
 
     const handled = await openInatUrl(
-      { type: "user", userId: 123 },
+      { type: "user", id: "123" },
       navigation,
     );
 
