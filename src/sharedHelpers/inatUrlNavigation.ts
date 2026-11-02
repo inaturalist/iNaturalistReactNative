@@ -11,6 +11,8 @@ const ALLOWED_HOSTS = [
   "staging.inaturalist.org",
 ];
 
+const RESERVED_PEOPLE_SEGMENTS = new Set( ["new", "leaderboard"] );
+
 export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
@@ -48,12 +50,16 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
     case "projects":
       return { type: "project", id: firstSegment };
     case "people": {
-      // Only /people/:login_or_id — deeper member routes (followers, following,
-      // edit, etc.) should fall through to the browser.
+      // Only /people/:login_or_id — collection routes (new, leaderboard),
+      // deeper member routes (followers, following, edit, etc.) fall through
+      // to the browser.
       if ( segments.length !== 2 ) {
         return null;
       }
       const loginOrId = decodeURIComponent( firstSegment );
+      if ( RESERVED_PEOPLE_SEGMENTS.has( loginOrId ) ) {
+        return null;
+      }
       if ( /^\d+$/.test( loginOrId ) ) {
         return { type: "user", userId: Number( loginOrId ) };
       }
