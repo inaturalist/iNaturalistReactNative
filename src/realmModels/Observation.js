@@ -344,7 +344,14 @@ class Observation extends Realm.Object {
       : evidence );
 
     const taxon = obs.taxon || null;
-    const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
+    const observationPhotos = obs.observationPhotos?.map( obsPhoto => {
+      const existingObsPhoto = existingObservation?.observationPhotos
+        ?.find( op => op.uuid === obsPhoto.uuid );
+      if ( existingObsPhoto && existingObsPhoto.position === obsPhoto.position ) {
+        return obsPhoto;
+      }
+      return { ...obsPhoto, ...timestamps };
+    } );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
     const projectObservations = Observation.prepareEmbedsForLocalSave(
       obs.projectObservations,
