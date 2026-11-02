@@ -31,6 +31,13 @@ describe( "parseInatUrl", ( ) => {
       parseInatUrl( "https://www.inaturalist.org/people/example/following" ),
     ).toBeNull( );
   } );
+
+  it( "returns null for reserved /people/ collection routes", ( ) => {
+    expect( parseInatUrl( "https://www.inaturalist.org/people/new" ) ).toBeNull( );
+    expect(
+      parseInatUrl( "https://www.inaturalist.org/people/leaderboard" ),
+    ).toBeNull( );
+  } );
 } );
 
 describe( "openInatUrl", ( ) => {
