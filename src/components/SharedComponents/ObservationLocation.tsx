@@ -3,7 +3,7 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import { Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
@@ -71,37 +71,6 @@ const ObservationLocation = ( {
       displayLocation = t( "No-Location" );
     }
   }
-  const showGeoprivacy = useCallback( ( ) => {
-    let displayPrivacy = displayGeoprivacy;
-    if ( displayPrivacy === "private" ) {
-      displayPrivacy = "Private";
-    }
-    if ( displayPrivacy === "obscured" ) {
-      displayPrivacy = "Obscured";
-    }
-    if ( displayPrivacy === null || displayPrivacy === "open" ) {
-      displayPrivacy = "Open";
-    }
-    const geoprivacyInner = (
-      <View className="flex-row gap-x-[2px]">
-        <Body4
-          className="text-darkGray"
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {t( "Geoprivacy-status", { status: t( displayPrivacy ) } )}
-        </Body4>
-      </View>
-    );
-    return (
-      <ContentWithIcon icon="globe-outline" size={14} classNameMargin="mt-[11px]">
-        { geoprivacyInner }
-      </ContentWithIcon>
-    );
-  }, [
-    displayGeoprivacy,
-    t,
-  ] );
 
   const inner = useMemo( ( ) => (
     <View className="flex-1 flex-col gap-y-[11px]">
@@ -153,7 +122,19 @@ const ObservationLocation = ( {
       }}
     >
       <ContentWithIcon icon={locationIcon()} size={13}>{ inner }</ContentWithIcon>
-      {( details || withGeoprivacy ) && showGeoprivacy()}
+      {( details || withGeoprivacy ) && (
+        <ContentWithIcon icon="globe-outline" size={14} classNameMargin="mt-[11px]">
+          <View className="flex-row gap-x-[2px]">
+            <Body4
+              className="text-darkGray"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {t( "Geoprivacy-status", { status: displayGeoprivacy } )}
+            </Body4>
+          </View>
+        </ContentWithIcon>
+      )}
     </View>
   );
 };
