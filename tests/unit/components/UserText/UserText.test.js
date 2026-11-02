@@ -166,17 +166,18 @@ describe( "people URL links", ( ) => {
     Linking.openURL.mockRestore( );
   } );
 
-  it( "opens UserProfile for an existing people anchor", async ( ) => {
+  it( "opens UserProfile for a numeric people anchor", async ( ) => {
     const actor = userEvent.setup( );
+    const href = "https://www.inaturalist.org/people/7957834";
     const testText = (
-      "<a href=\"https://www.inaturalist.org/people/example\">@example</a>"
+      `<a href="${href}">Mary Jantsch</a>`
     );
     render( <UserText text={testText} /> );
 
     await actor.press( screen.getByRole( "link" ) );
 
     expect( mockDispatch ).toHaveBeenCalledWith(
-      StackActions.push( "UserProfile", { login: "example" } ),
+      StackActions.push( "UserProfile", { userId: 7957834 } ),
     );
     expect( Linking.openURL ).not.toHaveBeenCalled( );
   } );
