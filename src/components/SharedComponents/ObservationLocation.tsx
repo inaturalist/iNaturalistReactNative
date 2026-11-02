@@ -4,6 +4,10 @@ import { Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
+import {
+  GEOPRIVACY_OBSCURED,
+  GEOPRIVACY_PRIVATE,
+} from "realmModels/geoprivacy";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
@@ -36,12 +40,14 @@ const ObservationLocation = ( {
   );
 
   const displayGeoprivacy = useMemo( ( ) => {
-    if ( geoprivacy === "obscured" ) {
-      return t( "Obscured" );
-    } if ( geoprivacy === "private" ) {
-      return t( "Private" );
+    let status = t( "Open" );
+    if ( geoprivacy === GEOPRIVACY_OBSCURED ) {
+      status = t( "Obscured" );
     }
-    return t( "Open" );
+    if ( geoprivacy === GEOPRIVACY_PRIVATE ) {
+      status = t( "Private" );
+    }
+    return status;
   }, [geoprivacy, t] );
 
   const displayCoords = useMemo( ( ) => {
