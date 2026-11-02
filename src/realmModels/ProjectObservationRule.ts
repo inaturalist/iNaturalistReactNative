@@ -3,8 +3,8 @@ import type { ApiProjectObservationRule } from "api/types";
 import type { RealmProjectObservationRule } from "realmModels/types";
 
 // Operand details are flattened into scalars rather than linked to the Taxon
-// table so caching rules doesn't create rows there. Place is kept as a
-// display-name scalar for observed_in_place? checks.
+// table so caching rules doesn't create rows there. Place display name is
+// persisted only so observed_in_place? round-trips keep a place object.
 class ProjectObservationRule extends Realm.Object {
   static mapApiToRealm( apiRule: ApiProjectObservationRule ) {
     return {
