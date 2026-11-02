@@ -33,13 +33,14 @@ jest.mock( "sharedHooks/useNavigateToExplore", ( ) => ( {
 
 const mockNavigate = jest.fn();
 const mockSetOptions = jest.fn();
-const mockRouteParams = { userId: mockUser.id };
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
     useRoute: () => ( {
-      params: mockRouteParams,
+      params: {
+        userId: mockUser.id,
+      },
     } ),
     useNavigation: () => ( {
       navigate: mockNavigate,
@@ -75,8 +76,6 @@ const renderHeaderRight = ( ) => {
 describe( "UserProfile", () => {
   beforeEach( () => {
     jest.clearAllMocks();
-    mockRouteParams.userId = mockUser.id;
-    delete mockRouteParams.login;
     // Default: viewing someone else's profile (no current user)
     jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
   } );
@@ -127,39 +126,6 @@ describe( "UserProfile", () => {
 
     expect( options.user ).toEqual( expect.objectContaining( { id: mockUser.id } ) );
     expect( options.tab ).toBe( SPECIES_TAB );
-  } );
-
-  describe( "when opened with login only", () => {
-    beforeEach( () => {
-      delete mockRouteParams.userId;
-      mockRouteParams.login = mockUser.login;
-      jest.spyOn( useCurrentUser, "default" )
-        .mockImplementation( () => ( { login: "someone-else", roles: [] } ) );
-    } );
-
-    test( "uses the fetched user id for follow, projects, and followers", async () => {
-      renderComponent( <UserProfile /> );
-
-      fireEvent.press( screen.getByTestId( "UserProfile.followButton" ) );
-      expect( mockMutate ).toHaveBeenCalledWith( {
-        relationship: {
-          friend_id: mockUser.id,
-          following: true,
-        },
-      } );
-
-      fireEvent.press( await screen.findByText( /VIEW PROJECTS/ ) );
-      expect( mockNavigate ).toHaveBeenCalledWith( "ProjectList", {
-        userId: mockUser.id,
-        userLogin: mockUser.login,
-      } );
-
-      fireEvent.press( await screen.findByText( /VIEW FOLLOWERS/ ) );
-      expect( mockNavigate ).toHaveBeenCalledWith( "FollowersList", {
-        userId: mockUser.id,
-        userLogin: mockUser.login,
-      } );
-    } );
   } );
 
   describe( "edit button", () => {

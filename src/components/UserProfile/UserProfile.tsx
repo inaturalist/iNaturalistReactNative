@@ -119,14 +119,10 @@ const UserProfile = ( ) => {
     return null;
   }
 
-  // Prefer the fetched user id so login-only navigation (mentions, /people/:login
-  // links) still drives follow, projects, and people lists.
-  const profileUserId = user.id;
-
   let hasRelationshipWithCurrentUser;
   if ( relationships?.length > 0 ) {
     hasRelationshipWithCurrentUser = relationships.find(
-      relationship => relationship.friendUser.id === profileUserId,
+      relationship => relationship.friendUser.id === userId,
     );
   }
 
@@ -139,7 +135,7 @@ const UserProfile = ( ) => {
   const onJournalPostsPressed = ( ) => {
     navigation.navigate( "Journal", {
       userIcon: User.uri( user ),
-      userId: profileUserId,
+      userId: user?.id,
       userLogin: user?.login,
     } );
   };
@@ -148,7 +144,7 @@ const UserProfile = ( ) => {
     <ScrollViewWrapper testID="UserProfile">
       <View
         className="items-center"
-        testID={`UserProfile.${profileUserId}`}
+        testID={`UserProfile.${userId}`}
       >
         <UserIcon uri={User.uri( user )} large />
         <Heading1 className="mt-3" selectable>{user?.login}</Heading1>
@@ -171,7 +167,7 @@ const UserProfile = ( ) => {
             <FollowButtonContainer
               refetchRelationship={refetch}
               relationship={hasRelationshipWithCurrentUser}
-              userId={profileUserId}
+              userId={userId}
               setShowLoginSheet={setShowLoginSheet}
               currentUser={currentUser}
               setShowUnfollowSheet={setShowUnfollowSheet}
@@ -191,7 +187,7 @@ const UserProfile = ( ) => {
           <Button
             text={t( "VIEW-PROJECTS" )}
             onPress={( ) => navigation.navigate( "ProjectList", {
-              userId: profileUserId,
+              userId,
               userLogin: user.login,
             } )}
           />
@@ -203,7 +199,7 @@ const UserProfile = ( ) => {
           <Button
             text={t( "VIEW-FOLLOWERS" )}
             onPress={( ) => navigation.navigate( "FollowersList", {
-              userId: profileUserId,
+              userId,
               userLogin: user.login,
             } )}
           />
@@ -211,7 +207,7 @@ const UserProfile = ( ) => {
             className="mt-6"
             text={t( "VIEW-FOLLOWING" )}
             onPress={( ) => navigation.navigate( "FollowingList", {
-              userId: profileUserId,
+              userId,
               userLogin: user.login,
             } )}
           />
