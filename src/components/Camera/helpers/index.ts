@@ -10,14 +10,16 @@ interface Event {
 
 const handleClassifierError = ( error: Error ) => {
   // When we hit this error, there is an error with the classifier.
-  logger.error( "handleClassifierError: ", JSON.stringify( error ) );
-  Alert.alert( "error", JSON.stringify( error ) );
+  const message = error?.message || String( error );
+  logger.error( "handleClassifierError: ", message );
+  Alert.alert( "error", message );
 };
 
 const handleCameraError = ( error: Error ) => {
   // This error is thrown when it does not fit in any of the above categories.
-  logger.error( "handleCameraError ", JSON.stringify( error ) );
-  Alert.alert( "error", JSON.stringify( error ) );
+  const message = error?.message || String( error );
+  logger.error( "handleCameraError ", message );
+  Alert.alert( "error", message );
 };
 
 const handleLog = ( event: Event ) => {
