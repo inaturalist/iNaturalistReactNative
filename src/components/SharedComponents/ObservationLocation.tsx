@@ -39,16 +39,13 @@ const ObservationLocation = ( {
     [observation],
   );
 
-  const displayGeoprivacy = useMemo( ( ) => {
-    let status = t( "Open" );
-    if ( geoprivacy === GEOPRIVACY_OBSCURED ) {
-      status = t( "Obscured" );
-    }
-    if ( geoprivacy === GEOPRIVACY_PRIVATE ) {
-      status = t( "Private" );
-    }
-    return status;
-  }, [geoprivacy, t] );
+  let displayGeoprivacy = t( "Open" );
+  if ( geoprivacy === GEOPRIVACY_OBSCURED ) {
+    displayGeoprivacy = t( "Obscured" );
+  }
+  if ( geoprivacy === GEOPRIVACY_PRIVATE ) {
+    displayGeoprivacy = t( "Private" );
+  }
 
   const displayCoords = useMemo( ( ) => {
     if (
