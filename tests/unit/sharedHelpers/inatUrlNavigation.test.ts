@@ -22,6 +22,15 @@ describe( "parseInatUrl", ( ) => {
   it( "returns null for a non-iNaturalist host", ( ) => {
     expect( parseInatUrl( "https://example.com/people/example" ) ).toBeNull( );
   } );
+
+  it( "returns null for deeper /people/ member routes", ( ) => {
+    expect(
+      parseInatUrl( "https://www.inaturalist.org/people/example/followers" ),
+    ).toBeNull( );
+    expect(
+      parseInatUrl( "https://www.inaturalist.org/people/example/following" ),
+    ).toBeNull( );
+  } );
 } );
 
 describe( "openInatUrl", ( ) => {

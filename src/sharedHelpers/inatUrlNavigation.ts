@@ -48,6 +48,11 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
     case "projects":
       return { type: "project", id: firstSegment };
     case "people": {
+      // Only /people/:login_or_id — deeper member routes (followers, following,
+      // edit, etc.) should fall through to the browser.
+      if ( segments.length !== 2 ) {
+        return null;
+      }
       const loginOrId = decodeURIComponent( firstSegment );
       if ( /^\d+$/.test( loginOrId ) ) {
         return { type: "user", userId: Number( loginOrId ) };
