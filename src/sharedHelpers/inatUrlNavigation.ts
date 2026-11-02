@@ -76,9 +76,10 @@ export async function openInatUrl(
   parsed: InatUrlTarget,
   navigation: NavigationProp<ParamListBase>,
 ): Promise<boolean> {
-  switch ( parsed.type ) {
+  const { type, id } = parsed;
+  switch ( type ) {
     case "taxon": {
-      const taxonID = parseNumericId( parsed.id );
+      const taxonID = parseNumericId( id );
       if ( taxonID ) {
         navigation.dispatch( StackActions.push( "TaxonDetails", { id: taxonID } ) );
         return true;
@@ -86,7 +87,7 @@ export async function openInatUrl(
       return false;
     }
     case "project": {
-      const projectId = parseNumericId( parsed.id );
+      const projectId = parseNumericId( id );
       if ( projectId ) {
         navigation.dispatch( StackActions.push( "ProjectDetails", { id: projectId } ) );
         return true;
@@ -94,7 +95,7 @@ export async function openInatUrl(
       // Currently, ProjectDetails can not handle slugs as nav param to display a project.
       // Lookup of a project ID by a given slug is adapted from observations below.
       const searchParams = {
-        q: parsed.id,
+        q: id,
         fields: {
           slug: true,
         },
@@ -104,9 +105,7 @@ export async function openInatUrl(
         api_token: apiToken,
       };
       const { results } = await searchProjects( searchParams, options );
-      const project = results?.find(
-        ( result: { slug?: string } ) => result.slug === parsed.id,
-      );
+      const project = results?.find( ( result: { slug?: string } ) => result.slug === id );
       if ( project?.id ) {
         navigation.dispatch( StackActions.push( "ProjectDetails", { id: project.id } ) );
         return true;
@@ -114,7 +113,7 @@ export async function openInatUrl(
       return false;
     }
     case "observation": {
-      const observationId = parseNumericId( parsed.id );
+      const observationId = parseNumericId( id );
       // Currently, ObsDetails can only handle a uuid as nav param. So, we do the same thing we do
       // in useLinking, get a UUID for the ID from the link via the API.
       const searchParams = { id: observationId };
