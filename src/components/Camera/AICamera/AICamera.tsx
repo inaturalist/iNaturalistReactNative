@@ -69,7 +69,7 @@ interface Props {
   isLandscapeMode: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string | undefined>;
   takePhotoOptions: CapturePhotoSettings;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
@@ -169,13 +169,16 @@ const AICamera = ( {
       : null;
     setAICameraSuggestion( visionResult );
 
-    await takePhotoAndStoreUri( {
-      replaceExisting: true,
-      inactivateCallback: () => setInactive( true ),
-      navigateImmediately: true,
-      visionResult,
-    } );
-    setHasTakenPhoto( false );
+    try {
+      await takePhotoAndStoreUri( {
+        replaceExisting: true,
+        inactivateCallback: () => setInactive( true ),
+        navigateImmediately: true,
+        visionResult,
+      } );
+    } finally {
+      setHasTakenPhoto( false );
+    }
   }, [
     showPrediction,
     setAICameraSuggestion,

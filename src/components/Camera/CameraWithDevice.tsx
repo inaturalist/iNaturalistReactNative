@@ -26,7 +26,7 @@ interface Props {
   photoOutput: CameraPhotoOutput;
   requestLocationPermissions: () => void;
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string | undefined>;
   takePhotoOptions: CapturePhotoSettings;
   takingPhoto: boolean;
   toggleFlash: ( ) => void;

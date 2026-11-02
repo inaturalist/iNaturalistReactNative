@@ -26,6 +26,7 @@ import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebas
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
+import { handleCameraError } from "./helpers";
 import savePhotoToDocumentsDirectory from "./helpers/savePhotoToDocumentsDirectory";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 
@@ -249,28 +250,41 @@ const CameraContainer = ( ) => {
     qualityPrioritization: "quality",
     targetResolution,
   } );
-  const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
+  const takePhotoAndStoreUri = async (
+    options: SavePhotoOptions,
+  ): Promise<string | undefined> => {
     setTakingPhoto( true );
+    let storedUri: string | undefined;
 
-    // Set the camera to inactive immediately after taking the photo,
-    const cameraPhoto = await photoOutput.capturePhotoToFile( takePhotoOptions, {
-      onDidCapturePhoto: ( ) => {
-        if ( options?.inactivateCallback ) options.inactivateCallback();
-      },
-    } );
-    await logStageIfAICamera( "take_photo_complete" );
-    if ( !cameraPhoto ) {
+    try {
+      // Set the camera to inactive immediately after taking the photo,
+      const cameraPhoto = await photoOutput.capturePhotoToFile( takePhotoOptions, {
+        onDidCapturePhoto: ( ) => {
+          if ( options?.inactivateCallback ) options.inactivateCallback();
+        },
+      } );
+      await logStageIfAICamera( "take_photo_complete" );
+      if ( !cameraPhoto ) {
+        throw new Error( "Failed to take photo: missing camera" );
+      }
+      const uri = await savePhotoToDocumentsDirectory( cameraPhoto );
+      const newPhotoState = await updateTakePhotoStore( uri, options );
+      if ( options?.navigateImmediately ) {
+        await handleNavigation( newPhotoState, options?.visionResult );
+      }
+      setNewPhotoUris( [...newPhotoUris, uri] );
+      storedUri = uri;
+    } catch ( captureError ) {
+      const error = captureError instanceof Error
+        ? captureError
+        : new Error( String( captureError ) );
       await logStageIfAICamera( "take_photo_error" );
-      throw new Error( "Failed to take photo: missing camera" );
+      handleCameraError( error );
+    } finally {
+      setTakingPhoto( false );
     }
-    const uri = await savePhotoToDocumentsDirectory( cameraPhoto );
-    const newPhotoState = await updateTakePhotoStore( uri, options );
-    if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
-    if ( options?.navigateImmediately ) {
-      await handleNavigation( newPhotoState, options?.visionResult );
-    }
-    setNewPhotoUris( [...newPhotoUris, uri] );
-    return uri;
+
+    return storedUri;
   };
 
   useEffect( () => {
