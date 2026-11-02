@@ -105,10 +105,10 @@ const ObservationLocation = ( {
   ] );
 
   const locationIcon = () => {
-    if ( geoprivacy === "private" || taxonGeoprivacy === "private" ) {
+    if ( geoprivacy === GEOPRIVACY_PRIVATE || taxonGeoprivacy === GEOPRIVACY_PRIVATE ) {
       return "private";
     }
-    if ( geoprivacy === "obscured" || taxonGeoprivacy === "obscured" ) {
+    if ( geoprivacy === GEOPRIVACY_OBSCURED || taxonGeoprivacy === GEOPRIVACY_OBSCURED ) {
       return "obscured";
     }
     return "location";
