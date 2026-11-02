@@ -3,7 +3,6 @@ import type { ApiProjectSummaryWithPOF } from "api/types";
 import { UpdateMode } from "realm";
 import ProjectObservationField from "realmModels/ProjectObservationField";
 import ProjectObservationRule from "realmModels/ProjectObservationRule";
-import ProjectRulePreference from "realmModels/ProjectRulePreference";
 import type { RealmProject } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -20,9 +19,6 @@ class Project extends Realm.Object {
       projectObservationFields: pofs,
       project_observation_rules: ( apiProject.project_observation_rules || [] ).map(
         rule => ProjectObservationRule.mapApiToRealm( rule ),
-      ),
-      rule_preferences: ( apiProject.rule_preferences || [] ).map(
-        pref => ProjectRulePreference.mapApiToRealm( pref ),
       ),
       // Leaving this here explicitly as a reminder to potentially need to refactor project_type
       // into projectType across the entire codebase for consistency with other data models
@@ -61,8 +57,6 @@ class Project extends Realm.Object {
       project_observation_rules: realmProject.project_observation_rules
         .map( rule => ProjectObservationRule.mapRealmToPojo( rule ) ),
       project_type: realmProject.project_type,
-      rule_preferences: realmProject.rule_preferences
-        .map( pref => ProjectRulePreference.mapRealmToPojo( pref ) ),
       title: realmProject.title,
     };
   }
@@ -76,7 +70,6 @@ class Project extends Realm.Object {
       projectObservationFields: "ProjectObservationField[]",
       project_observation_rules: "ProjectObservationRule[]",
       project_type: "string?",
-      rule_preferences: "ProjectRulePreference[]",
       title: "string?",
     },
   };

@@ -88,18 +88,12 @@ export interface RealmProjectObservationRule extends RealmObject {
   user_login?: string;
 }
 
-export interface RealmProjectRulePreference extends RealmObject {
-  field: string;
-  value?: string | number | boolean | null;
-}
-
 export interface RealmProject extends RealmObject {
   icon?: string;
   id: number;
   projectObservationFields: RealmProjectObservationField[];
   project_observation_rules: RealmProjectObservationRule[];
   project_type?: string;
-  rule_preferences: RealmProjectRulePreference[];
   title?: string;
 }
 
