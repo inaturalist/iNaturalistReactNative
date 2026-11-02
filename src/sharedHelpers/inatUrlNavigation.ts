@@ -17,8 +17,7 @@ export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
   | { type: "project"; id: string }
-  | { type: "user"; userId: number }
-  | { type: "user"; login: string };
+  | { type: "user"; id: string };
 
 function parseNumericId( segment: string ): number | null {
   // Matches IDs like "1234" and also slugs that start with a number ID "1234-taxon-name"
@@ -50,20 +49,16 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
     case "projects":
       return { type: "project", id: firstSegment };
     case "people": {
-      // Only /people/:login_or_id — collection routes (new, leaderboard),
-      // deeper member routes (followers, following, edit, etc.) fall through
-      // to the browser.
+      // Only /people/:login_or_id shall pass.
+      // Collection routes (new, leaderboard) or deeper member routes (followers, following,
+      // edit, etc.) fall through to the browser.
       if ( segments.length !== 2 ) {
         return null;
       }
-      const loginOrId = decodeURIComponent( firstSegment );
-      if ( RESERVED_PEOPLE_SEGMENTS.has( loginOrId ) ) {
+      if ( RESERVED_PEOPLE_SEGMENTS.has( firstSegment ) ) {
         return null;
       }
-      if ( /^\d+$/.test( loginOrId ) ) {
-        return { type: "user", userId: Number( loginOrId ) };
-      }
-      return { type: "user", login: loginOrId };
+      return { type: "user", id: firstSegment };
     }
     default:
       return null;
@@ -131,12 +126,12 @@ export async function openInatUrl(
       return false;
     }
     case "user": {
-      if ( "userId" in parsed ) {
-        navigation.dispatch( StackActions.push( "UserProfile", { userId: parsed.userId } ) );
-      } else {
-        navigation.dispatch( StackActions.push( "UserProfile", { login: parsed.login } ) );
+      const userId = parseNumericId( id );
+      if ( userId ) {
+        navigation.dispatch( StackActions.push( "UserProfile", { userId } ) );
+        return true;
       }
-      return true;
+      return false;
     }
     default:
       return false;
