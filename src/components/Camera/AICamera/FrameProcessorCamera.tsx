@@ -129,8 +129,9 @@ const FrameProcessorCamera = ( {
     onTaxaDetected( result );
   };
 
-  const handleError = ( error: Error ) => {
+  const handleError = async ( error: Error ) => {
     onClassifierError( error );
+    await logStage( sentinelFileName, "camera_classifier_error" );
   };
 
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
