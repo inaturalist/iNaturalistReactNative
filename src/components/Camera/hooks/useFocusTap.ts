@@ -15,6 +15,10 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import type { CameraRuntimeError } from "react-native-vision-camera";
+import { log } from "sharedHelpers/logger";
+
+const logger = log.extend( "useFocusTap" );
 
 // This is dictated by the size of the FocusSquare.tsx, which is 66px.
 const HALF_SIZE_FOCUS_BOX = 33;
@@ -42,7 +46,14 @@ const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: 
     if ( !supportsFocus ) {
       return;
     }
-    cameraRef?.current?.focus( { x, y } );
+    cameraRef?.current?.focus( { x, y } )?.catch( ( focusError: CameraRuntimeError ) => {
+      // On Android, tapping again before the previous focus settles cancels it.
+      // That's expected and harmless, so don't report it as an error.
+      if ( focusError?.code === "capture/focus-canceled" ) {
+        return;
+      }
+      logger.error( "Failed to focus camera", focusError );
+    } );
     focusLeft.set( x - HALF_SIZE_FOCUS_BOX );
     focusTop.set( y - HALF_SIZE_FOCUS_BOX );
     focusOpacity.set( 1 );
