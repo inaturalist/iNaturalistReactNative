@@ -1,7 +1,6 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
 import type Realm from "realm";
-import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmObservationPhoto,
@@ -9,14 +8,10 @@ import type {
   RealmPhoto,
   RealmSound,
 } from "realmModels/types";
-import compressPhotoForUpload from "sharedHelpers/compressPhotoForUpload";
-import { log } from "sharedHelpers/logger";
-import { unlink } from "sharedHelpers/util";
 import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 import markRecordUploaded from "uploaders/utils/realmSync";
-
-const logger = log.extend( "mediaUploader" );
+import withPhotoUploadCopy from "uploaders/utils/withPhotoUploadCopy";
 
 export type EvidenceType = "Photo" | "ObservationPhoto" | "Sound" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";
@@ -94,28 +89,6 @@ interface MediaItems {
   unsyncedObservationSounds: RealmObservationSound[];
 }
 
-const compressPhotoUri = async ( evidence: Evidence ): Promise<string | null> => {
-  const localFilePath = "localFilePath" in evidence
-    ? evidence.localFilePath
-    : undefined;
-  const localUri = Photo.getLocalPhotoUri( localFilePath );
-  if ( !localUri ) return null;
-  try {
-    return await compressPhotoForUpload( localUri );
-  } catch ( compressionError ) {
-    logger.error( "Failed to compress photo for upload", compressionError );
-    return null;
-  }
-};
-
-const discardCompressedPhoto = async ( compressedUri: string | null ) => {
-  try {
-    await unlink( compressedUri );
-  } catch ( unlinkError ) {
-    logger.error( "Failed to remove compressed photo after upload", unlinkError );
-  }
-};
-
 const uploadSingleEvidence = async (
   evidence: Evidence,
   type: EvidenceType,
@@ -126,53 +99,42 @@ const uploadSingleEvidence = async (
   observationUUID: string,
   realm: Realm,
 ): Promise<MediaApiResponse | null> => {
-  const compressedUri = ( type === "Photo" && action === "upload" )
-    ? await compressPhotoUri( evidence )
-    : null;
+  const send = ( photoUploadUri?: string ) => createOrUpdateEvidence(
+    apiEndpoint,
+    prepareMediaForUpload( evidence, type, action, observationId, photoUploadUri ),
+    options,
+  );
+  const evidenceUUID = evidence.uuid;
 
-  try {
-    const params = prepareMediaForUpload(
-      evidence,
-      type,
-      action,
-      observationId,
-      compressedUri,
-    );
-    const evidenceUUID = evidence.uuid;
+  // Determine if this is an upload or an attachment operation
+  // for progress tracking
+  const isAttachOperation = observationId != null;
+  const evidenceProgress = trackEvidenceUpload( observationUUID );
 
-    // Determine if this is an upload or an attachment operation
-    // for progress tracking
-    const isAttachOperation = observationId != null;
-    const evidenceProgress = trackEvidenceUpload( observationUUID );
+  // New photos go up as a smaller copy made just for this request
+  const response = type === "Photo" && action === "upload" && "localFilePath" in evidence
+    ? await withPhotoUploadCopy( evidence.localFilePath, send )
+    : await send( );
 
-    const response = await createOrUpdateEvidence(
-      apiEndpoint,
-      params,
-      options,
-    );
-
-    if ( !response ) {
-      throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
-    }
-
-    if ( response && observationUUID ) {
-      // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
-        record: evidence,
-      } );
-      if ( isAttachOperation ) {
-        // This is attaching evidence to an observation
-        evidenceProgress.attached( );
-      } else {
-        // This is uploading evidence
-        evidenceProgress.uploaded( );
-      }
-    }
-
-    return response;
-  } finally {
-    await discardCompressedPhoto( compressedUri );
+  if ( !response ) {
+    throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
   }
+
+  if ( response && observationUUID ) {
+    // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
+    markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
+      record: evidence,
+    } );
+    if ( isAttachOperation ) {
+      // This is attaching evidence to an observation
+      evidenceProgress.attached( );
+    } else {
+      // This is uploading evidence
+      evidenceProgress.uploaded( );
+    }
+  }
+
+  return response;
 };
 
 interface Operation {

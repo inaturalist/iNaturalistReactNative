@@ -1,7 +1,5 @@
 import mockNodePath from "path";
 
-export const MOCK_RESIZER_CACHE_PATH = "/mock/cache";
-
 export default ( {
   createResizedImage: jest.fn(
     async (
@@ -14,7 +12,7 @@ export default ( {
       outputPath,
     ) => {
       const filename = mockNodePath.basename( path );
-      return { uri: mockNodePath.join( outputPath || MOCK_RESIZER_CACHE_PATH, filename ) };
+      return { uri: mockNodePath.join( outputPath, filename ) };
     },
   ),
 } );

@@ -1,27 +1,21 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
-import compressPhotoForUpload from "sharedHelpers/compressPhotoForUpload";
-import { unlink } from "sharedHelpers/util";
 import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
+import withPhotoUploadCopy from "uploaders/utils/withPhotoUploadCopy";
 
 jest.mock( "api/observations" );
 jest.mock( "inaturalistjs" );
-jest.mock( "sharedHelpers/compressPhotoForUpload" );
-jest.mock( "sharedHelpers/util", () => ( {
-  ...jest.requireActual( "sharedHelpers/util" ),
-  unlink: jest.fn(),
-} ) );
 jest.mock( "uploaders/dataTransformation/prepareMediaForUpload" );
 jest.mock( "uploaders/utils/realmSync" );
 jest.mock( "uploaders/utils/progressTracker" );
+jest.mock( "uploaders/utils/withPhotoUploadCopy" );
 
 const mockedCreateOrUpdateEvidence = jest.mocked( createOrUpdateEvidence );
 const mockedPrepareMediaForUpload = jest.mocked( prepareMediaForUpload );
 const mockedTrackEvidenceUpload = jest.mocked( trackEvidenceUpload );
-const mockedCompressPhotoForUpload = jest.mocked( compressPhotoForUpload );
-const mockedUnlink = jest.mocked( unlink );
+const mockedWithPhotoUploadCopy = jest.mocked( withPhotoUploadCopy );
 
 describe( "mediaUploader", () => {
   beforeEach( () => {
@@ -166,7 +160,7 @@ describe( "mediaUploader", () => {
         "ObservationPhoto",
         "attach",
         observationUUID,
-        null,
+        undefined,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
@@ -174,7 +168,7 @@ describe( "mediaUploader", () => {
         "ObservationSound",
         "attach",
         observationUUID,
-        null,
+        undefined,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
@@ -182,7 +176,7 @@ describe( "mediaUploader", () => {
         "ObservationPhoto",
         "update",
         observationUUID,
-        null,
+        undefined,
       );
 
       expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
@@ -307,53 +301,46 @@ describe( "mediaUploader", () => {
     } );
   } );
 
-  describe( "photo compression", () => {
-    const compressedUri = "file://document/directory/path/compressedPhotoUploads/photo1.jpg";
-    const observationWithLocalPhoto = () => ( {
-      uuid: "obs-uuid-123",
-      observationPhotos: [
-        {
-          wasSynced: () => false,
-          photo: {
-            uuid: "photo-uuid-1",
-            localFilePath: "file://document/directory/path/photoUploads/photo1.jpg",
-          },
-        },
-      ],
-      observationSounds: [],
+  describe( "photo upload copies", () => {
+    const localFilePath = "file://document/directory/path/photoUploads/photo1.jpg";
+    const copyUri = "file://caches/directory/path/photoUploadCopies/copy.jpg";
+
+    beforeEach( () => {
+      mockedWithPhotoUploadCopy.mockImplementation( ( _path, upload ) => upload( copyUri ) );
     } );
 
-    it( "should delete the compressed copy once the photo has been uploaded", async () => {
-      mockedCompressPhotoForUpload.mockResolvedValue( compressedUri );
+    it( "should send a new photo as an upload copy of its stored file", async () => {
+      const photo = { uuid: "photo-uuid-1", localFilePath };
+      const observation = {
+        uuid: "obs-uuid-123",
+        observationPhotos: [{ wasSynced: () => false, photo }],
+        observationSounds: [],
+      };
 
-      await uploadObservationMedia( observationWithLocalPhoto(), {}, {} );
+      await uploadObservationMedia( observation, {}, {} );
 
-      expect( mockedUnlink ).toHaveBeenCalledWith( compressedUri );
-    } );
-
-    it( "should delete the compressed copy even when the upload fails", async () => {
-      mockedCompressPhotoForUpload.mockResolvedValue( compressedUri );
-      mockedCreateOrUpdateEvidence.mockRejectedValue( new Error( "API Error" ) );
-
-      await expect( uploadObservationMedia( observationWithLocalPhoto(), {}, {} ) )
-        .rejects.toThrow( "API Error" );
-
-      expect( mockedUnlink ).toHaveBeenCalledWith( compressedUri );
-    } );
-
-    it( "should still upload the original photo when compression fails", async () => {
-      mockedCompressPhotoForUpload.mockRejectedValue( new Error( "Resizer Error" ) );
-
-      await uploadObservationMedia( observationWithLocalPhoto(), {}, {} );
-
-      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
+      expect( mockedWithPhotoUploadCopy )
+        .toHaveBeenCalledWith( localFilePath, expect.any( Function ) );
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
-        expect.anything(),
+        photo,
         "Photo",
         "upload",
         null,
-        null,
+        copyUri,
       );
+    } );
+
+    it( "should not make upload copies when attaching or updating photos", async () => {
+      const mediaItems = {
+        unsyncedObservationPhotos: [{ uuid: "obs-photo-1", photo: { localFilePath } }],
+        modifiedObservationPhotos: [{ uuid: "obs-photo-2", photo: { localFilePath } }],
+        unsyncedObservationSounds: [],
+      };
+
+      await attachMediaToObservation( "obs-uuid-123", mediaItems, {}, {} );
+
+      expect( mockedWithPhotoUploadCopy ).not.toHaveBeenCalled( );
+      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 2 );
     } );
   } );
 

@@ -20,6 +20,7 @@ import {
   clearGalleryPhotos,
   clearRollbackPhotos,
   clearRotatedOriginalPhotosDirectory,
+  clearStalePhotoUploadCopies,
   clearSyncedMediaForUpload,
 } from "sharedHelpers/clearCaches";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
@@ -109,6 +110,7 @@ const useDeferredStartup = ( ) => {
     const id6 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
     const id7 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
     const id8 = deferTask( "clearRollbackPhotos", clearRollbackPhotos );
+    const id12 = deferTask( "clearStalePhotoUploadCopies", clearStalePhotoUploadCopies );
 
     const id9 = deferTask( "cleanupLogFiles", cleanupLogFiles );
     const id10 = deferTask( "warmIntlCache", () => {
@@ -139,6 +141,7 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id9 );
       cancelIdleCallback( id10 );
       cancelIdleCallback( id11 );
+      cancelIdleCallback( id12 );
     };
   }, [i18n, realm] );
 };

@@ -38,10 +38,12 @@ class ObservationPhoto extends Realm.Object {
     return localObsPhoto;
   }
 
-  static mapPhotoForUpload( photo: RealmPhoto, uploadUri?: string | null ) {
+  // `uri` is the file to send, which may be a temporary copy; the name stays
+  // the stored photo's filename either way
+  static mapPhotoForUpload( photo: RealmPhoto, uri: string ) {
     return {
       file: new FileUpload( {
-        uri: uploadUri || Photo.getLocalPhotoUri( photo.localFilePath ),
+        uri,
         name: photo.localFilePath?.split( "/" ).pop( ),
         type: "image/jpeg",
       } ),
