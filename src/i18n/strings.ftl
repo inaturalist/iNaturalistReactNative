@@ -543,6 +543,9 @@ EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
 EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 EXPLORE-OBSERVERS = EXPLORE OBSERVERS
 EXPLORE-SPECIES = EXPLORE SPECIES
+# Screen reader label for a fail status icon on a project rule, required
+# observation field, or project summary banner. Not shown on screen.
+Failed = Failed
 Failed-to-delete-sound = Failed to delete sound
 # Error message with log in fails
 Failed-to-log-in = Failed to log in
@@ -1025,6 +1028,9 @@ OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 # Tab on notifications showing notifications about content created by others.
 # Should be 16 characters or fewer or it will be ellipsized.
 OTHERS--notifications = OTHERS
+# Screen reader label for a pass status icon on a project rule, required
+# observation field, or project summary banner. Not shown on screen.
+Passed = Passed
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
