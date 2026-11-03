@@ -237,5 +237,10 @@
     "*.rb": [
       "bundle exec rubocop --force-exclusion --parallel"
     ]
+  },
+  "allowScripts": {
+    "detox@20.51.3": true,
+    "realm@20.2.0": true,
+    "fsevents@2.3.2": true,
   }
 }
