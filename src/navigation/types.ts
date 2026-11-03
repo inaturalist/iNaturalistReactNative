@@ -426,7 +426,17 @@ export type BaseNoBottomTabStackParamList = {
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
-  SoundRecorder: undefined;
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  // From AddEvidenceSheet
+  // { addEvidence: true }
+  SoundRecorder: {
+    addEvidence?: boolean;
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
+  };
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
   GroupPhotos: { lastScreen: "PhotoSharing" };

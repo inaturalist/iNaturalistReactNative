@@ -491,6 +491,8 @@ Edit-identification = Edit identification
 EDIT-LOCATION = EDIT LOCATION
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Edit location
+# Traditional project membership: edit curator access to hidden observation coordinates (not device GPS)
+EDIT-LOCATION-PERMISSIONS = EDIT LOCATION PERMISSIONS
 Edit-Observation = Edit Observation
 Edit-your-profile-change-your-settings = Edit your profile, change your notifications settings, and manage all other parts of your account.
 # Accessibility hint for button that edits an observation's taxon
@@ -776,6 +778,8 @@ Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 # Display name for the iconic taxa category for mammalia
 Mammals = Mammals
+# Project detail section heading when the current user is a member
+MANAGE-MEMBERSHIP = MANAGE MEMBERSHIP
 MAP = MAP
 Map-Area = Map Area
 # Month of March
@@ -812,6 +816,18 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+must-be-captive-cultivated = must be captive / cultivated
+must-be-georeferenced = must be georeferenced
+must-be-identified = must be identified
+must-be-in-taxon = must be in taxon { $name }
+must-be-observed-in-place = must be observed in { $placeName }
+must-be-on-list = must be on list
+must-be-verifiable = must be verifiable
+must-be-wild = must be wild
+must-have-a-photo = must have a photo
+must-have-a-sound = must have a sound
+must-have-media = must have media
+must-have-observation-field-x-filled-out = must have observation field "{ $name }" filled out
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -934,6 +950,8 @@ Observations-added-recently-appear-first = Observations added recently appear fi
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
 # Description for observations sort order
+Observations-with-the-most-faves-appear-first = Observations with the most faves appear first
+# Description for observations sort order
 Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
 # Description for observations sort order
 Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
@@ -950,6 +968,7 @@ OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 OBSERVED-AT--label = OBSERVED AT
 # This label is used in ObsDetails to describe the observation location
 OBSERVED-IN--label = OBSERVED IN
+observer-must-allow-project-curators-to-view-coordinates = observer must allow project curators to view coordinates
 Observers = Observers
 # Section in Explore that shows people who added observations given a set of search filters
 Observers-View = Observers View
@@ -978,6 +997,8 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 # Accessibility hint for search button in Explore header that navigates to the search interface
 Opens-search-interface = Opens search interface.
+# Connector placed between any number of alternative project rule sentences, e.g. "must be observed in Germany or must be observed in France"
+or--project-rule = or
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
@@ -1034,6 +1055,8 @@ PROJECT = PROJECT
 PROJECT-ADMINS = PROJECT ADMINS
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+# Heading for the rules section on the project detail page
+PROJECT-RULES = PROJECT RULES
 project-start-time-datetime = Start time: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS

@@ -5,14 +5,15 @@ import {
 } from "api/fields";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import {
-  fetchMembership,
+  fetchProjectMembership,
   fetchProjectPostsCount,
   fetchProjects,
   joinProject,
   leaveProject,
 } from "api/projects";
+import { updateProjectUser } from "api/projectUsers";
 import type {
-  ApiObservationsSearchResponse, ApiProject, ApiResponse,
+  ApiObservationsSearchResponse, ApiProject,
 } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
@@ -23,7 +24,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
-import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
+import type { COORDINATE_ACCESS } from "./Sheets/CoordinateAccessSheet";
 import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 
 const logger = log.extend( "ProjectDetailsContainer" );
@@ -42,6 +43,7 @@ const ProjectDetailsContainer = ( ) => {
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
       fields: PROJECT_DETAIL_FIELDS,
+      rule_details: true,
       ttl: -1,
     }, optsWithAuth ),
   );
@@ -79,7 +81,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
-  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data: speciesCounts } = useAuthenticatedQuery(
     speciesCountsQueryKey,
     ( ) => fetchSpeciesCounts( {
       project_id: id,
@@ -88,10 +90,10 @@ const ProjectDetailsContainer = ( ) => {
     } ),
   );
 
-  const membershipQueryKey = ["fetchMembership", id];
-  const { data: currentMembership } = useAuthenticatedQuery<number>(
+  const membershipQueryKey = ["fetchProjectMembership", id];
+  const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
-    optsWithAuth => fetchMembership( {
+    optsWithAuth => fetchProjectMembership( {
       id,
       ttl: -1,
     }, optsWithAuth ),
@@ -153,6 +155,20 @@ const ProjectDetailsContainer = ( ) => {
     leaveProjectMutate( mutationParams );
   };
 
+  const { mutate: updateCoordinateAccessMutate } = useAuthenticatedMutation(
+    ( mutationParams, optsWithAuth ) => updateProjectUser( mutationParams, optsWithAuth ),
+    {
+      onError: error => {
+        logger.error(
+          "could not update project user coordinate access: ",
+          ( project as ApiProject ).id,
+          error,
+        );
+      },
+      onSettled: ( ) => setLoading( false ),
+    },
+  );
+
   const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
     if ( currentUser ) {
       setLoading( true );
@@ -173,6 +189,18 @@ const ProjectDetailsContainer = ( ) => {
     }
   };
 
+  const handleUpdateCoordinateAccess = ( access: COORDINATE_ACCESS ) => {
+    if ( !currentMembership || !currentMembership.results[0] ) {
+      return;
+    }
+    const currentMembershipID = currentMembership.results[0].id;
+    setLoading( true );
+    updateCoordinateAccessMutate( {
+      id: currentMembershipID,
+      project_user: { preferred_curator_coordinate_access: access },
+    } );
+  };
+
   const enrichedProject = useMemo( ( ) => {
     if ( !project ) return null;
 
@@ -183,6 +211,8 @@ const ProjectDetailsContainer = ( ) => {
       icon: project.icon,
       id: project.id,
       membership_model: project.membership_model,
+      project_observation_fields: project.project_observation_fields,
+      project_observation_rules: project.project_observation_rules,
       project_type: project.project_type,
       rule_preferences: project.rule_preferences,
       title: project.title,
@@ -190,7 +220,7 @@ const ProjectDetailsContainer = ( ) => {
       journal_posts_count: projectPosts,
       observations_count: projectStats?.total_results,
       species_count: speciesCounts?.total_results,
-      current_user_is_member: currentMembership === 1,
+      current_user_is_member: currentMembership?.total_results === 1,
       current_user_observations_count: usersObservations?.total_results,
     };
   }, [
@@ -198,7 +228,7 @@ const ProjectDetailsContainer = ( ) => {
     projectPosts,
     projectStats?.total_results,
     speciesCounts?.total_results,
-    currentMembership,
+    currentMembership?.total_results,
     usersObservations?.total_results,
   ] );
 
@@ -208,6 +238,7 @@ const ProjectDetailsContainer = ( ) => {
       joinProject={handleJoinProjectPress}
       leaveProject={handleLeaveProjectPress}
       loadingProjectMembership={loading}
+      updateCoordinateAccess={handleUpdateCoordinateAccess}
     />
   );
 };

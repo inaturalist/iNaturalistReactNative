@@ -17,6 +17,7 @@ export { default as useInterval } from "./useInterval";
 export { default as useKeyboardInfo } from "./useKeyboardInfo";
 export { default as useLastScreen } from "./useLastScreen";
 export { default as useLayoutPrefs } from "./useLayoutPrefs";
+export { default as useListItemObservation } from "./useListItemObservation";
 export { default as useLocalObservation } from "./useLocalObservation";
 export { default as useLocationPermission } from "./useLocationPermission";
 export { default as useNavigateToObsEdit } from "./useNavigateToObsEdit";

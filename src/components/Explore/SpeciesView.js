@@ -1,5 +1,6 @@
 // @flow
 
+import { SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem";
 import i18n from "i18next";
@@ -47,14 +48,10 @@ const SpeciesView = ( {
   // query all of current users seen species if "not by me" explore filter
   const { data: seenByCurrentUserAll } = useQuery(
     ["fetchSpeciesCountsAll"],
-    ( ) => fetchSpeciesCounts( {
+    ( ) => fetchSpeciesCounts( { // ApiSpeciesCountSummary
       user_id: currentUser?.id,
       ttl: -1,
-      fields: {
-        taxon: {
-          id: true,
-        },
-      },
+      fields: SPECIES_COUNTS_SUMMARY_FIELDS,
     } ),
     {
       enabled: ( !!currentUser && !!excludeUser ),
@@ -95,14 +92,10 @@ const SpeciesView = ( {
 
   const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxonIds],
-    ( ) => fetchSpeciesCounts( {
+    ( ) => fetchSpeciesCounts( { // ApiSpeciesCountSummary
       user_id: currentUser?.id,
       taxon_id: taxonIds,
-      fields: {
-        taxon: {
-          id: true,
-        },
-      },
+      fields: SPECIES_COUNTS_SUMMARY_FIELDS,
     } ),
     {
       enabled: !!( taxonIds.length > 0 && currentUser ),

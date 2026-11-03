@@ -16,8 +16,6 @@ import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import SaveSearchButton
   from "components/Explore/ExploreV2/components/SaveSearchButton";
-import ExploreV2DebugSheet
-  from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import type { NearbyCoords }
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import buildExploreV2QueryParams
@@ -46,9 +44,10 @@ import { View } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo, useState } from "react";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import {
-  OBSERVATIONS_SORT_OPTIONS,
+  ADVANCED_SEARCH_OBSERVATIONS_SORT_OPTIONS,
+  EXPLORE_OBSERVATIONS_SORT_OPTIONS,
+  OBSERVATIONS_SORT,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
@@ -104,7 +103,13 @@ const ExploreResults = ( ) => {
 
   const showMap = layout === "map";
 
-  const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
+  // A standard search or a saved search can carry Most faved out of advanced mode, so keep
+  // it listed while it's the active sort
+  const observationsSortOptions = advancedSearchMode
+    || state.sortBy === OBSERVATIONS_SORT.MOST_FAVED
+    ? ADVANCED_SEARCH_OBSERVATIONS_SORT_OPTIONS
+    : EXPLORE_OBSERVATIONS_SORT_OPTIONS;
+  const sortOptions = observationsSortOptions.reduce(
     ( acc, sortBy ) => {
       const { label, text } = observationsSortLabels[sortBy];
       acc[sortBy] = {
@@ -374,12 +379,7 @@ const ExploreResults = ( ) => {
     if ( needsPermission ) {
       return renderPermissionPrompt( );
     }
-    return (
-      <>
-        {renderTabContent( )}
-        <ExploreV2DebugSheet />
-      </>
-    );
+    return renderTabContent( );
   };
 
   return (

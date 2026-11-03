@@ -1,3 +1,4 @@
+import type { ApiUntypedParams } from "api/types";
 import { fetchUserMe, updateUsers } from "api/users";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
@@ -19,7 +20,7 @@ const useWorkQueue = ( ) => {
 
   // we probably don't want this user mutation logic in the useWorkQueue in the long run
   const { mutate: updateUserMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => {
+    ( params: ApiUntypedParams, optsWithAuth ) => {
       logger.info( `Sending API request to update user with params: ${JSON.stringify( params )}` );
       return updateUsers( params, optsWithAuth );
     },

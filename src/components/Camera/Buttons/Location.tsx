@@ -1,11 +1,11 @@
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
-import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  rotatableAnimatedStyle: ViewStyle;
+  rotatableAnimatedStyle: AnimatedStyle;
   toggleLocation: ( ) => void;
   useLocation?: boolean;
 }

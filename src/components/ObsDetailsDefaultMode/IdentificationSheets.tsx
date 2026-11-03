@@ -229,7 +229,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     mutate: createIdentificationMutate,
     isPending: isCreateIdPending,
   } = useAuthenticatedMutation(
-    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    createIdentification,
     {
       onSuccess: data => {
         handleIdentificationMutationSuccess( data );
@@ -371,7 +371,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [doSuggestId] );
 
   const { mutate: createCommentMutate } = useAuthenticatedMutation(
-    ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
+    createComment,
     {
       onSuccess: data => handleCommentMutationSuccess( data ),
       onError: ( e: Error ) => {

@@ -73,24 +73,10 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
   } );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
-  const { resolvedValue: newsEnabled, setOverride: setNewsEnabled }
-    = useFeatureFlagForDebug( FeatureFlag.NewsEnabled );
   const {
     resolvedValue: traditionalProjectsEnabled,
     setOverride: setTraditionalProjectsEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.TraditionalProjectsEnabled );
-  const {
-    resolvedValue: searchMyObservationsEnabled,
-    setOverride: setSearchMyObservationsEnabled,
-  } = useFeatureFlagForDebug( FeatureFlag.SearchMyObservationsEnabled );
-  const {
-    resolvedValue: sortMyObservationsEnabled,
-    setOverride: setSortMyObservationsEnabled,
-  } = useFeatureFlagForDebug( FeatureFlag.SortMyObservationsEnabled );
-  const {
-    resolvedValue: myObservationsMapViewEnabled,
-    setOverride: setMyObservationsMapViewEnabled,
-  } = useFeatureFlagForDebug( FeatureFlag.MyObservationsMapViewEnabled );
   const {
     resolvedValue: myObservationsSmallGridViewEnabled,
     setOverride: setMyObservationsSmallGridViewEnabled,
@@ -170,48 +156,12 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             },
           },
           {
-            id: "news",
-            type: "toggle",
-            title: "Blog",
-            value: newsEnabled,
-            onUpdate: () => {
-              setNewsEnabled( !newsEnabled );
-            },
-          },
-          {
             id: "traditional-projects",
             type: "toggle",
             title: "TraditionalProjects",
             value: traditionalProjectsEnabled,
             onUpdate: () => {
               setTraditionalProjectsEnabled( !traditionalProjectsEnabled );
-            },
-          },
-          {
-            id: "search-my-observations",
-            type: "toggle",
-            title: "Search My Observations",
-            value: searchMyObservationsEnabled,
-            onUpdate: () => {
-              setSearchMyObservationsEnabled( !searchMyObservationsEnabled );
-            },
-          },
-          {
-            id: "sort-my-observations",
-            type: "toggle",
-            title: "Sort My Observations",
-            value: sortMyObservationsEnabled,
-            onUpdate: () => {
-              setSortMyObservationsEnabled( !sortMyObservationsEnabled );
-            },
-          },
-          {
-            id: "my-observations-map-view",
-            type: "toggle",
-            title: "My Observations Map View",
-            value: myObservationsMapViewEnabled,
-            onUpdate: () => {
-              setMyObservationsMapViewEnabled( !myObservationsMapViewEnabled );
             },
           },
           {
@@ -233,16 +183,8 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       navigation,
       exploreV2Enabled,
       setExploreV2Enabled,
-      newsEnabled,
-      setNewsEnabled,
       traditionalProjectsEnabled,
       setTraditionalProjectsEnabled,
-      searchMyObservationsEnabled,
-      setSearchMyObservationsEnabled,
-      sortMyObservationsEnabled,
-      setSortMyObservationsEnabled,
-      myObservationsMapViewEnabled,
-      setMyObservationsMapViewEnabled,
       myObservationsSmallGridViewEnabled,
       setMyObservationsSmallGridViewEnabled,
     ],

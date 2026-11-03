@@ -189,6 +189,15 @@ describe( "buildExploreV2QueryParams", ( ) => {
       expect( params.order_by ).toBe( "observed_on" );
       expect( params.order ).toBe( "asc" );
     } );
+
+    it( "MOST_FAVED → votes desc", ( ) => {
+      const params = buildExploreV2QueryParams( {
+        ...initialExploreV2State,
+        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
+      } );
+      expect( params.order_by ).toBe( "votes" );
+      expect( params.order ).toBe( "desc" );
+    } );
   } );
 
   it( "always sets per_page to 20 and verifiable to true", ( ) => {

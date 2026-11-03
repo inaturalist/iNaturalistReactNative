@@ -6,11 +6,12 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
+import type { UserPojo } from "realmModels/User";
 
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
-const useLinking = ( currentUser?: object ) => {
+const useLinking = ( currentUser: UserPojo | null ) => {
   const navigation = useNavigation( );
   const [observationId, setObservationId] = useState<string | null>( null );
 

@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import { LIMITED_TAXON_FIELDS } from "api/fields";
 
 import Photo from "./Photo";
 
@@ -19,27 +20,7 @@ class Taxon extends Realm.Object {
     rank_level: true,
   };
 
-  static LIMITED_TAXON_FIELDS = {
-    ancestor_ids: true,
-    default_photo: {
-      id: true,
-      url: true,
-    },
-    representative_photo: {
-      id: true,
-      url: true,
-    },
-    iconic_taxon_name: true,
-    name: true,
-    preferred_common_name: true,
-    rank: true,
-    rank_level: true,
-    taxon_photos: {
-      photo: {
-        url: true,
-      },
-    },
-  };
+  static LIMITED_TAXON_FIELDS = LIMITED_TAXON_FIELDS;
 
   static STATEOFMATTER_LEVEL = 100;
 

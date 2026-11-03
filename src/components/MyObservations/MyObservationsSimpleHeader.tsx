@@ -13,12 +13,8 @@ import type { MyObservationsStackScreenProps } from "navigation/types";
 import { useMyObservations } from "providers/MyObservationsContext";
 import React from "react";
 import { Alert } from "react-native";
-import type {
-  RealmUser,
-} from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import { useTranslation } from "sharedHooks";
-import useFeatureFlag from "sharedHooks/useFeatureFlag";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import {
   MANUAL_SYNC_IN_PROGRESS,
 } from "stores/createSyncObservationsSlice";
@@ -33,7 +29,7 @@ import colors from "styles/tailwindColors";
 import SimpleUploadBannerContainer from "./SimpleUploadBannerContainer";
 
 interface Props {
-  currentUser?: RealmUser;
+  currentUser: UserPojo | null;
   numUploadableObservations: number;
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
@@ -49,9 +45,6 @@ const MyObservationsSimpleHeader = ( {
   const navigation = useNavigation<
     MyObservationsStackScreenProps<"MyObservationsResults">["navigation"]
   >( );
-  const searchMyObservationsEnabled = useFeatureFlag(
-    FeatureFlag.SearchMyObservationsEnabled,
-  );
   const { state: myObsState } = useMyObservations( );
   const searchActive = myObsState.searchedTaxon !== null;
 
@@ -110,18 +103,16 @@ const MyObservationsSimpleHeader = ( {
           : <Heading3>{ t( "My-Observations" ) }</Heading3>}
         {currentUser && (
           <View className="flex-row items-center">
-            {searchMyObservationsEnabled && (
-              <INatIconButton
-                icon="magnifying-glass"
-                className="mr-[7px]"
-                onPress={handleSearchButtonPress}
-                color={searchActive
-                  ? colors.inatGreen
-                  : colors.darkGray}
-                accessibilityLabel={t( "Opens-search-interface" )}
-                size={20}
-              />
-            )}
+            <INatIconButton
+              icon="magnifying-glass"
+              className="mr-[7px]"
+              onPress={handleSearchButtonPress}
+              color={searchActive
+                ? colors.inatGreen
+                : colors.darkGray}
+              accessibilityLabel={t( "Opens-search-interface" )}
+              size={20}
+            />
             <RotatingINatIconButton
               icon={
                 showsExclamation

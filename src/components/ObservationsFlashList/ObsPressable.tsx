@@ -1,16 +1,14 @@
 import type { ApiObservation } from "api/types";
 import { Pressable } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import React, { useMemo } from "react";
 import RealmObservation from "realmModels/Observation";
+import type { RealmObservation as RealmObservationType } from "realmModels/types";
 import type { UserPojo } from "realmModels/User";
-import { useLayoutPrefs, useTranslation } from "sharedHooks";
+import { useLayoutPrefs, useListItemObservation, useTranslation } from "sharedHooks";
 
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 import SmallGridObsItem from "./SmallGridObsItem";
-
-const { useObject } = RealmContext;
 
 interface Props {
   currentUser: UserPojo | null;
@@ -22,6 +20,9 @@ interface Props {
   isSimpleObsStatus?: boolean;
   hideRGLabel?: boolean;
   apiObservation?: ApiObservation;
+  // A caller that already reads the observation from Realm passes it here, so this doesn't
+  // subscribe to it a second time
+  observation?: RealmObservationType | null;
   onUploadButtonPress: ( ) => void;
   onItemPress: ( ) => void;
   // only meaningful for layout === "grid"
@@ -47,6 +48,7 @@ const ObsPressable = ( {
   isSimpleObsStatus,
   hideRGLabel,
   apiObservation,
+  observation: observationProp,
   onUploadButtonPress,
   onItemPress,
   gridItemStyle,
@@ -59,7 +61,15 @@ const ObsPressable = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDefaultMode } = useLayoutPrefs( );
-  const rawRealmObs = useObject<{ uuid: string }>( "Observation", uuid );
+  // Only subscribe when nothing else supplies the observation
+  const subscribedRealmObs = useListItemObservation(
+    apiObservation || observationProp !== undefined
+      ? null
+      : uuid,
+  );
+  const rawRealmObs = observationProp !== undefined
+    ? observationProp
+    : subscribedRealmObs;
   const mappedRealmObs = useMemo( () => {
     if ( rawRealmObs === null ) {
       return null;

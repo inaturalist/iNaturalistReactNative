@@ -17,7 +17,7 @@ interface Props extends PropsWithChildren {
   user: {
     id: number;
     icon_url?: string;
-    login: string;
+    login?: string;
   };
   isConnected: boolean;
   TextComponent: React.FC<TextProps>;

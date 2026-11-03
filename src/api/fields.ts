@@ -13,6 +13,38 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
   required: true,
 };
 
+// Operand objects (taxon, place, etc.) are only returned with rule_details: true
+const PROJECT_OBSERVATION_RULE_FIELDS = {
+  id: true,
+  operand_id: true,
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
+  operand_type: true,
+  operator: true,
+  place: {
+    display_name: true,
+    id: true,
+  },
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
+  project: {
+    id: true,
+    title: true,
+  },
+  taxon: {
+    // TODO: MOB-1946 this should be changed to request a persitable taxon
+    ancestor_ids: true,
+    id: true,
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true,
+  },
+  // TODO: MOB-1945 this can be deleted from here and from realm persistence
+  user: {
+    id: true,
+    login: true,
+  },
+};
+
 export const PROJECT_SUMMARY_FIELDS = {
   icon: true,
   id: true,
@@ -39,12 +71,14 @@ export const PROJECT_DETAIL_FIELDS = {
   membership_model: true,
   place_id: true,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
+  project_observation_rules: PROJECT_OBSERVATION_RULE_FIELDS,
   user_ids: true,
 };
 
 export const PROJECT_SUMMARY_POF_FIELDS = {
   ...PROJECT_SUMMARY_FIELDS,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
+  project_observation_rules: PROJECT_OBSERVATION_RULE_FIELDS,
 };
 
 export const PROJECT_FIELDS_ALL = "all";
@@ -84,4 +118,45 @@ export const ICONIC_TAXA_COUNTS_FIELDS = {
   taxon: {
     name: true,
   },
+};
+
+export const SPECIES_COUNTS_SUMMARY_FIELDS = {
+  taxon: {
+    id: true,
+  },
+};
+
+export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
+  taxon: {
+    iconic_taxon_name: true,
+    id: true,
+    name: true,
+    preferred_common_name: true,
+  },
+};
+
+export const LIMITED_TAXON_FIELDS = {
+  ancestor_ids: true,
+  default_photo: {
+    id: true,
+    url: true,
+  },
+  representative_photo: {
+    id: true,
+    url: true,
+  },
+  iconic_taxon_name: true,
+  name: true,
+  preferred_common_name: true,
+  rank: true,
+  rank_level: true,
+  taxon_photos: {
+    photo: {
+      url: true,
+    },
+  },
+};
+
+export const SPECIES_COUNTS_DETAILS_FIELDS = {
+  taxon: LIMITED_TAXON_FIELDS,
 };

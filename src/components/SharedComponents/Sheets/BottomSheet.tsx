@@ -11,6 +11,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
@@ -34,7 +35,7 @@ interface Props {
   hidden?: boolean;
   hideCloseButton?: boolean;
   headerText?: string;
-  onLayout?: ( event: object ) => void;
+  onLayout?: ( event: LayoutChangeEvent ) => void;
   // OnPressClose *does* get called whenever bottom sheet is dismissed
   onPressClose?: ( ) => void;
   snapPoints?: string[];

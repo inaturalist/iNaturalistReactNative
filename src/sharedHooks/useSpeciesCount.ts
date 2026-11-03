@@ -1,5 +1,5 @@
 import { fetchSpeciesCounts } from "api/observations";
-import type { ApiParams, ApiResponse } from "api/types";
+import type { ApiParams } from "api/types";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 export interface SpeciesCountParams extends ApiParams {
@@ -26,7 +26,7 @@ const useSpeciesCount = (
 ): number | null => {
   const countParams = { ...params, per_page: 0, ttl: -1 };
 
-  const { data } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data } = useAuthenticatedQuery(
     [keyPrefix, countParams],
     optsWithAuth => fetchSpeciesCounts( countParams, optsWithAuth ),
     { enabled },

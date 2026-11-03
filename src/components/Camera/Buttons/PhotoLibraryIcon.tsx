@@ -4,12 +4,12 @@ import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { INatIconButton } from "components/SharedComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React from "react";
-import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  rotatableAnimatedStyle: ViewStyle;
+  rotatableAnimatedStyle: AnimatedStyle;
   completeSentinelFile: ( ) => Promise<void>;
   disabled?: boolean;
 }

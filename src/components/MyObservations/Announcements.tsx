@@ -136,8 +136,7 @@ const Announcements = ( {
 
   const { mutate: dismissAnnouncementMutate }
   = useAuthenticatedMutation(
-    // TS TODO: uAM doesn't yet know how to type mutations
-    ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
+    dismissAnnouncement,
     {
       onSuccess: () => {
         invalidateAnnouncementsQueries();

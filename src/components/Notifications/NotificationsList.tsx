@@ -10,14 +10,14 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
-import type { RealmUser } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
 interface Props {
-  currentUser: RealmUser | null;
+  currentUser: UserPojo | null;
   data: Notification[];
   followingTabIsActive: boolean;
   isError?: boolean;

@@ -65,6 +65,16 @@ const mockProject = factory( "RemoteProject", {
   user_ids: [faker.number.int()],
 } );
 
+const mockAssessmentProject = factory( "RemoteProject", {
+  title: faker.lorem.sentence(),
+  project_type: "assessment",
+} );
+
+const mockCollectionProject = factory( "RemoteProject", {
+  title: faker.lorem.sentence(),
+  project_type: "collection",
+} );
+
 async function selectProjectAndExpand( projectId ) {
   const projectRow = await waitFor( ( ) => {
     const row = screen.getByTestId( `AddToProjects.project.${projectId}` );
@@ -102,7 +112,11 @@ async function fillRequiredTextField( value, obsField ) {
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
-  inatjs.users.projects.mockResolvedValue( makeResponse( [mockProject] ) );
+  inatjs.users.projects.mockResolvedValue( makeResponse( [
+    mockProject,
+    mockAssessmentProject,
+    mockCollectionProject,
+  ] ) );
 } );
 
 beforeEach( () => {
@@ -142,6 +156,18 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByTestId( "add-to-projects" ) ).toBeVisible();
     expect( screen.getByText( "ADD TO PROJECTS" ) ).toBeVisible();
   }
+
+  it( "lists assessment and traditional projects but not collection projects", async () => {
+    await navigateToAddToProjectsViaObsEdit( mockObservations );
+
+    expect(
+      await screen.findByTestId( `AddToProjects.project.${mockAssessmentProject.id}` ),
+    ).toBeVisible( );
+    expect( screen.getByTestId( `AddToProjects.project.${mockProject.id}` ) ).toBeVisible( );
+    expect(
+      screen.queryByTestId( `AddToProjects.project.${mockCollectionProject.id}` ),
+    ).toBeNull( );
+  } );
 
   it( "persists PO and OFV to Realm after chooser save and ObsEdit save", async () => {
     await navigateToAddToProjectsViaObsEdit( mockObservations );

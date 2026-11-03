@@ -6,11 +6,11 @@ import {
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Pressable } from "components/styledComponents";
 import React from "react";
-import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  rotatableAnimatedStyle: ViewStyle;
+  rotatableAnimatedStyle: AnimatedStyle;
   handleZoomButtonPress: ( ) => void;
   zoomClassName?: string;
   zoomTextValue: string;

@@ -5,8 +5,14 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   textClassName?: string;
-  currentUser: { id: number };
-  observation: object;
+  currentUser: { id: number } | null;
+  observation: {
+    obscured?: boolean;
+    privateLatitude?: number;
+    user: {
+      id: number;
+    };
+  };
 }
 
 const ObscurationExplanation = ( { textClassName, currentUser, observation }: Props ) => {

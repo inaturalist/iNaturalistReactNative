@@ -1,4 +1,4 @@
-import fetchIconicTaxaCounts from "api/observationsTyped";
+import { fetchIconicTaxaCounts } from "api/observations";
 import type { IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { orderIconicTaxaCounts } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";

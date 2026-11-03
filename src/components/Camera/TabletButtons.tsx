@@ -4,7 +4,7 @@ import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
@@ -47,7 +47,7 @@ interface Props {
   hasFlash?: boolean;
   hasPhotoLibraryButton?: boolean;
   photosTaken?: boolean;
-  rotatableAnimatedStyle: ViewStyle;
+  rotatableAnimatedStyle: AnimatedStyle;
   showPrediction?: boolean;
   showZoomButton: boolean;
   takePhoto: ( ) => Promise<void>;

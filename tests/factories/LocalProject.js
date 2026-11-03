@@ -7,6 +7,8 @@ export default define( "LocalProject", faker => ( {
   icon: faker.image.url(),
   id: faker.number.int(),
   projectObservationFields: [pofFactory( "LocalProjectObservationField" )],
+  project_observation_rules: [],
   project_type: "",
+  rule_preferences: [],
   title: faker.lorem.sentence(),
 } ) );

@@ -8,10 +8,10 @@ Wrapper-based API abstraction built on `inaturalistjs`, combined with React Quer
 
 | File | Purpose |
 |------|---------|
-| `src/api/observations.js` | Observation CRUD, search, faves, subscriptions (see its `export` block for the full list) |
-| `src/api/taxa.js` | Taxon fetch and search with field optimization |
-| `src/api/users.js` | User profiles, blocking/muting |
-| `src/api/projects.js` | Project search, membership |
+| `src/api/observations.ts` | Observation CRUD, search, faves, subscriptions (see its `export` block for the full list) |
+| `src/api/taxa.ts` | Taxon fetch and search with field optimization |
+| `src/api/users.ts` | User profiles, blocking/muting |
+| `src/api/projects.ts` | Project search, membership |
 | `src/api/search.ts` | Cross-resource search |
 | `src/api/error.ts` | Custom error classes (INatApiError, 401, 429) and handleError |
 | `src/api/types.d.ts` | TypeScript interfaces for API responses |

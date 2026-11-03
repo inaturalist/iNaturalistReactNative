@@ -2,15 +2,14 @@ import { INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import type { GestureResponderEvent } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 interface Props {
   sizeClassName: string;
-  onLongPress?: ( _event: GestureResponderEvent ) => void;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onLongPress?: ( ) => void;
+  onPress: ( ) => void;
   accessibilityLabel?: string;
   accessibilityHint?: string;
   iconName?: string;
@@ -25,9 +24,9 @@ const GradientButton = ( {
   iconName,
   iconSize,
 }: Props ) => {
-  const handleLongPress = ( event: GestureResponderEvent ) => {
+  const handleLongPress = ( ) => {
     if ( onLongPress ) {
-      onLongPress( event );
+      onLongPress( );
     }
   };
 

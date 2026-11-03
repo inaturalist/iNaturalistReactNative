@@ -1,9 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ProjectRulePreference } from "api/types";
+import type {
+  ApiProjectObservationField,
+  ApiProjectObservationRule,
+  ApiProjectType,
+  ProjectRulePreference,
+} from "api/types";
 import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
+import isTraditionalProject from "components/Projects/helpers/isTraditionalProject";
 import {
+  Body2,
   Body4,
   Button,
   Heading1,
@@ -24,15 +31,17 @@ import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import { openExternalWebBrowser } from "sharedHelpers/util";
-import { useFeatureFlag, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
-import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
-import JoinSheet from "./Sheets/JoinSheet";
+import buildProjectRuleSentences from "./helpers/projectRuleSentences";
+import type {
+  COORDINATE_ACCESS,
+} from "./Sheets/CoordinateAccessSheet";
+import CoordinateAccessSheet from "./Sheets/CoordinateAccessSheet";
 import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 import LeaveSheet from "./Sheets/LeaveSheet";
 
@@ -41,6 +50,7 @@ const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/gene
 const NONE = "NONE";
 const JOIN = "JOIN";
 const LEAVE = "LEAVE";
+const EDIT_COORDINATE_ACCESS = "EDIT_COORDINATE_ACCESS";
 
 const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
@@ -62,7 +72,9 @@ interface Project {
   membership_model: "inviteonly" | "open" | null;
   members_count?: number;
   observations_count?: number;
-  project_type: "collection" | "umbrella" | "";
+  project_observation_fields?: ApiProjectObservationField[];
+  project_observation_rules?: ApiProjectObservationRule[];
+  project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   species_count?: number;
   title: string;
@@ -73,6 +85,7 @@ interface Props {
   leaveProject: ( _keep?: LEAVE_KEEP ) => void;
   loadingProjectMembership: boolean;
   project: Project | null;
+  updateCoordinateAccess: ( _access: COORDINATE_ACCESS ) => void;
 }
 
 const ProjectDetails = ( {
@@ -80,9 +93,8 @@ const ProjectDetails = ( {
   leaveProject,
   loadingProjectMembership,
   project,
+  updateCoordinateAccess,
 }: Props ) => {
-  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
-
   const { t, i18n } = useTranslation( );
   const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
   const navigateToExplore = useNavigateToExplore( );
@@ -136,6 +148,12 @@ const ProjectDetails = ( {
   const userTextStyle = { lineHeight: 26 };
 
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
+  const isTraditional = isTraditionalProject( project.project_type );
+  const projectRuleSentences = buildProjectRuleSentences(
+    project.project_observation_rules,
+    project.project_observation_fields,
+    t,
+  );
 
   const displayBriefcase = ( ) => (
     <INatIcon
@@ -207,7 +225,6 @@ const ProjectDetails = ( {
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
           onJournalPostsPressed={onJournalPostsPressed}
-          newsEnabled={newsEnabled}
         />
         <View className="mt-8">
           <Heading4 className="mb-3">{t( "ABOUT" )}</Heading4>
@@ -234,6 +251,16 @@ const ProjectDetails = ( {
             } )}
           </View>
         )}
+        {project.project_type === "" && (
+          <View className="mt-8">
+            <Heading4 className="mb-3">{t( "PROJECT-RULES" )}</Heading4>
+            {projectRuleSentences.map( sentence => (
+              <Body2 key={sentence} className="mb-1">
+                {`• ${sentence}`}
+              </Body2>
+            ) )}
+          </View>
+        )}
         {project.project_type === "collection" && (
           <View className="mt-8">
             <Heading4 className="mb-3">
@@ -258,7 +285,7 @@ const ProjectDetails = ( {
           <Heading4 className="mb-3">
             {!project.current_user_is_member
               ? t( "JOIN-PROJECT" )
-              : t( "LEAVE-PROJECT" )}
+              : t( "MANAGE-MEMBERSHIP" )}
           </Heading4>
           {!project.current_user_is_member
             ? (
@@ -277,13 +304,25 @@ const ProjectDetails = ( {
               />
             )
             : (
-              <Button
-                level="neutral"
-                text={t( "LEAVE" )}
-                onPress={( ) => setOpenSheet( LEAVE )}
-                loading={loadingProjectMembership}
-                disabled={loadingProjectMembership}
-              />
+              <>
+                {isTraditional && (
+                  <Button
+                    level="neutral"
+                    className="mb-3"
+                    text={t( "EDIT-LOCATION-PERMISSIONS" )}
+                    onPress={( ) => setOpenSheet( EDIT_COORDINATE_ACCESS )}
+                    loading={loadingProjectMembership}
+                    disabled={loadingProjectMembership}
+                  />
+                )}
+                <Button
+                  level="neutral"
+                  text={t( "LEAVE-PROJECT" )}
+                  onPress={( ) => setOpenSheet( LEAVE )}
+                  loading={loadingProjectMembership}
+                  disabled={loadingProjectMembership}
+                />
+              </>
             )}
         </View>
         <AboutProjectType projectType={project.project_type} />
@@ -295,17 +334,31 @@ const ProjectDetails = ( {
           {t( "View-in-browser" )}
         </Body4>
       </View>
-      {openSheet === JOIN && project.project_type === "" && (
-        <JoinSheet
+      {openSheet === JOIN && isTraditional && (
+        <CoordinateAccessSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
             joinProject( coordinateAccess );
             setOpenSheet( NONE );
           }}
+          confirmText={t( "CONFIRM-AND-JOIN" )}
           loading={loadingProjectMembership}
+          testID="JoinSheet"
         />
       )}
-      {openSheet === JOIN && project.project_type !== "" && (
+      {openSheet === EDIT_COORDINATE_ACCESS && isTraditional && (
+        <CoordinateAccessSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
+            updateCoordinateAccess( coordinateAccess );
+            setOpenSheet( NONE );
+          }}
+          confirmText={t( "CONFIRM" )}
+          loading={loadingProjectMembership}
+          testID="EditCoordinateAccessSheet"
+        />
+      )}
+      {openSheet === JOIN && !isTraditional && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
@@ -320,7 +373,7 @@ const ProjectDetails = ( {
           buttonType="primary"
         />
       )}
-      {openSheet === LEAVE && project.project_type === "" && (
+      {openSheet === LEAVE && isTraditional && (
         <LeaveSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( keep: LEAVE_KEEP ) => {
@@ -331,7 +384,7 @@ const ProjectDetails = ( {
           observationsCount={project.current_user_observations_count}
         />
       )}
-      {openSheet === LEAVE && project.project_type !== "" && (
+      {openSheet === LEAVE && !isTraditional && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
