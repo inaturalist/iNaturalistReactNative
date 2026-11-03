@@ -333,6 +333,22 @@ describe( "AddToProjects", ( ) => {
         .toBeVisible( );
     } );
 
+    it( "labels the pass and fail icons for screen readers", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect( within( ruleRow( "identified?" ) ).getByLabelText( "Failed" ) )
+        .toBeVisible( );
+      expect( within( ruleRow( "wild?" ) ).getByLabelText( "Passed" ) )
+        .toBeVisible( );
+      // Banner fail icon plus any failing rule rows
+      expect( screen.getAllByLabelText( "Failed" ).length ).toBeGreaterThanOrEqual( 2 );
+      expect(
+        screen.getByText( "To add to this project, all required fields must be filled" ),
+      ).toBeVisible( );
+    } );
+
     it( "shows no icon for rules only the server can check", async ( ) => {
       renderAddToProjects( );
 
@@ -342,6 +358,8 @@ describe( "AddToProjects", ( ) => {
       expect( placeRow.getByText( "Required" ) ).toBeVisible( );
       expect( placeRow.queryByText( iconGlyph( "triangle-exclamation" ) ) ).toBeNull( );
       expect( placeRow.queryByText( iconGlyph( "checkmark-circle" ) ) ).toBeNull( );
+      expect( placeRow.queryByLabelText( "Passed" ) ).toBeNull( );
+      expect( placeRow.queryByLabelText( "Failed" ) ).toBeNull( );
     } );
 
     it( "lists the rule taxa without making them pressable", async ( ) => {
@@ -380,6 +398,9 @@ describe( "AddToProjects", ( ) => {
       expect(
         screen.getByText( "All required fields have been filled" ),
       ).toBeVisible( );
+      // Banner pass icon plus passing rule rows
+      expect( screen.getAllByLabelText( "Passed" ).length ).toBeGreaterThanOrEqual( 2 );
+      expect( screen.queryByLabelText( "Failed" ) ).toBeNull( );
       await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
 
       expect(
@@ -439,6 +460,8 @@ describe( "AddToProjects", ( ) => {
       expect(
         screen.getByText( "To add to this project, all required fields must be filled" ),
       ).toBeVisible( );
+      // Banner fail icon plus the empty required field
+      expect( screen.getAllByLabelText( "Failed" ).length ).toBeGreaterThanOrEqual( 2 );
     } );
 
     it( "shows completed required-fields banner when all required fields are filled", async ( ) => {
@@ -466,6 +489,9 @@ describe( "AddToProjects", ( ) => {
       expect(
         screen.getByText( "All required fields have been filled" ),
       ).toBeVisible( );
+      // Banner pass icon plus the filled required field
+      expect( screen.getAllByLabelText( "Passed" ).length ).toBeGreaterThanOrEqual( 2 );
+      expect( screen.queryByLabelText( "Failed" ) ).toBeNull( );
     } );
 
     it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {

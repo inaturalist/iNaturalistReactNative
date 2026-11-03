@@ -98,6 +98,8 @@ describe( "ObservationFieldInput", ( ) => {
     );
 
     expect( screen.getByText( mockPOF.obsField.name ) ).toBeVisible();
+    expect( screen.queryByLabelText( "Passed" ) ).toBeNull( );
+    expect( screen.queryByLabelText( "Failed" ) ).toBeNull( );
   } );
 
   it( "shows validation passed icons for required fields", ( ) => {
@@ -108,6 +110,7 @@ describe( "ObservationFieldInput", ( ) => {
 
     expect( screen.getByText( "Required" ) ).toBeVisible( );
     expect( screen.getByText( iconGlyph( "checkmark-circle" ) ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Passed" ) ).toBeVisible( );
   } );
 
   it( "shows validation failed icons for required fields", ( ) => {
@@ -118,6 +121,7 @@ describe( "ObservationFieldInput", ( ) => {
 
     expect( screen.getByText( "Required" ) ).toBeVisible( );
     expect( screen.getByText( iconGlyph( "triangle-exclamation" ) ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Failed" ) ).toBeVisible( );
   } );
 
   it( "renders a select picker when text has multiple allowed values", ( ) => {
