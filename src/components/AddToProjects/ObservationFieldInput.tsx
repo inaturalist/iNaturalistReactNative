@@ -62,6 +62,7 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
             {isValid
               ? (
                 <INatIcon
+                  accessibilityLabel={t( "Meets-requirement--label" )}
                   name="checkmark-circle"
                   color={colors.inatGreen}
                   size={19}
@@ -69,6 +70,7 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
               )
               : (
                 <INatIcon
+                  accessibilityLabel={t( "Does-not-meet-requirement--label" )}
                   name="triangle-exclamation"
                   color={colors.warningRed}
                   size={19}

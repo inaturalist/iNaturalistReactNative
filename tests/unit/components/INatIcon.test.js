@@ -17,6 +17,33 @@ describe( "INatIcon", () => {
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
+
+  it( "forwards an accessibility label so screen readers read it", () => {
+    render(
+      <INatIcon
+        accessibilityLabel="Meets requirement"
+        name={iconName}
+        size={20}
+      />,
+    );
+
+    expect( screen.getByLabelText( "Meets requirement" ) ).toBeVisible( );
+  } );
+
+  it( "hides itself from screen readers when told to", () => {
+    render(
+      <INatIcon
+        accessibilityElementsHidden
+        importantForAccessibility="no"
+        name={iconName}
+        size={20}
+      />,
+    );
+
+    const icon = screen.toJSON( );
+    expect( icon ).toHaveProperty( "props.accessibilityElementsHidden", true );
+    expect( icon ).toHaveProperty( "props.importantForAccessibility", "no" );
+  } );
 } );
 
 describe( "glyphmap", () => {

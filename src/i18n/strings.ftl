@@ -476,6 +476,9 @@ Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 # Curator hidden-coordinate access when joining a traditional project
 Do-you-want-private-coordinates-visible-to-curators = Do you want to make your private/obscured observation coordinates visible to the project curators?
+# Screen reader label for the icon on a project rule or required observation
+# field that this observation does not satisfy
+Does-not-meet-requirement--label = Does not meet requirement
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete
@@ -800,6 +803,9 @@ MEDIA = MEDIA
 Media--project-rule = Media
 # label in project requirements
 Media-Type = Media Type
+# Screen reader label for the icon on a project rule or required observation
+# field that this observation satisfies
+Meets-requirement--label = Meets requirement
 MEMBERS-WITHOUT-NUMBER =
     { $count ->
         [one] MEMBER
