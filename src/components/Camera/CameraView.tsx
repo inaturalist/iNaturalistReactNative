@@ -28,6 +28,7 @@ import type {
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
+import { logSessionConfig } from "./helpers/captureResolutionSpike";
 
 interface Props {
   cameraRef: RefObject<CameraRef | null>;
@@ -102,6 +103,7 @@ const CameraView = ( {
           enableNativeZoomGesture={false}
           isActive={isActive}
           onError={onError}
+          onSessionConfigSelected={config => logSessionConfig( config, photoOutput )}
           orientationSource="device"
           outputs={outputs}
           resizeMode={resizeMode || "cover"}

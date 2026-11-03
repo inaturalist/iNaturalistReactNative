@@ -15,7 +15,6 @@ import React, {
 } from "react";
 import { Alert, StatusBar } from "react-native";
 import type { CameraRef, CapturePhotoSettings } from "react-native-vision-camera";
-import { CommonResolutions } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
 import { hasWriteMediaPermission } from "sharedHelpers/permissions";
@@ -27,6 +26,12 @@ import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
 import { handleCameraError } from "./helpers";
+import {
+  logCapturedPhoto,
+  logSupportedPhotoResolutions,
+  SPIKE_PHOTO_QUALITY,
+  spikeTargetResolution,
+} from "./helpers/captureResolutionSpike";
 import savePhotoToDocumentsDirectory from "./helpers/savePhotoToDocumentsDirectory";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
 
@@ -243,13 +248,16 @@ const CameraContainer = ( ) => {
     return newCameraState;
   };
 
-  const targetResolution = cameraType === "AI"
-    ? CommonResolutions.HIGHEST_16_9
-    : CommonResolutions.HIGHEST_4_3;
+  const targetResolution = spikeTargetResolution( cameraType );
   const photoOutput = usePhotoOutput( {
     qualityPrioritization: "quality",
     targetResolution,
+    ...( SPIKE_PHOTO_QUALITY !== undefined && { quality: SPIKE_PHOTO_QUALITY } ),
   } );
+
+  useEffect( ( ) => {
+    logSupportedPhotoResolutions( activeDevice );
+  }, [activeDevice] );
   const takePhotoAndStoreUri = async (
     options: SavePhotoOptions,
   ): Promise<string | undefined> => {
@@ -258,6 +266,7 @@ const CameraContainer = ( ) => {
 
     try {
       // Set the camera to inactive immediately after taking the photo,
+      const captureStart = performance.now( );
       const cameraPhoto = await photoOutput.capturePhotoToFile( takePhotoOptions, {
         onDidCapturePhoto: ( ) => {
           if ( options?.inactivateCallback ) options.inactivateCallback();
@@ -267,7 +276,9 @@ const CameraContainer = ( ) => {
       if ( !cameraPhoto ) {
         throw new Error( "Failed to take photo: missing camera" );
       }
+      const captureMs = performance.now( ) - captureStart;
       const uri = await savePhotoToDocumentsDirectory( cameraPhoto );
+      logCapturedPhoto( uri, photoOutput, cameraType, captureMs );
       const newPhotoState = await updateTakePhotoStore( uri, options );
       if ( options?.navigateImmediately ) {
         await handleNavigation( newPhotoState, options?.visionResult );
