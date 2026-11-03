@@ -14,6 +14,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
 import {
   I18nManager, Platform, Text,
@@ -166,7 +167,7 @@ const ComputerVisionStats = () => {
 };
 
 const DebugTools = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<TabStackScreenProps<"Debug">["navigation"]>();
   const toggleDebugMode = useStore( state => state.layout.toggleDebugMode );
 
   const toggleRTLandLTR = async () => {
@@ -198,6 +199,11 @@ const DebugTools = () => {
       />
       {__DEV__ && (
         <>
+          <Button
+            onPress={() => navigation.navigate( "SuggestionsHarness" )}
+            text="SUGGESTIONS HARNESS"
+            className="mb-5"
+          />
           <Button
             onPress={() => navigation.navigate( "UILibrary" )}
             text="UI LIBRARY"

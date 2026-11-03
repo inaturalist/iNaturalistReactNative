@@ -45,7 +45,7 @@ interface UseOnlineSuggestionsResponse {
   refetch: () => void;
 }
 
-interface OnlineSuggestionsApiResponse {
+export interface OnlineSuggestionsApiResponse {
   results: UseSuggestionsOnlineSuggestion[];
   common_ancestor?: Omit<UseSuggestionsOnlineSuggestion, "combined_score">;
 }
@@ -55,7 +55,7 @@ export interface OnlineSuggestionsQueryResponse {
   common_ancestor?: UseSuggestionsOnlineSuggestion;
 }
 
-const shimApiResponseForCommonAncestor
+export const shimApiResponseForCommonAncestor
   = ( apiSuggestions: OnlineSuggestionsApiResponse ): OnlineSuggestionsQueryResponse => {
     // TODO MOB-1081: maybe we can catch this shim earlier?
     // general context: https://github.com/inaturalist/iNaturalistReactNative/blob/505980d3359876a0af383f2ffcc481921f0eb778/src/components/Match/calculateConfidence.ts#L10-L12
