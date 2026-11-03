@@ -2,13 +2,53 @@ import type { ObjectSchema } from "realm";
 import Realm from "realm";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
-import type { RealmUser } from "./types";
-
 export interface TaxonNamesSettings {
   prefers_common_names: boolean;
   prefers_scientific_name_first: boolean;
 }
-class User extends Realm.Object {
+
+export interface UserPojo {
+  id: number;
+  identifications_count?: number;
+  icon_url?: string;
+  locale?: string;
+  login?: string;
+  name?: string;
+  observations_count?: number;
+  prefers_common_names?: boolean;
+  prefers_community_taxa?: boolean;
+  prefers_scientific_name_first?: boolean;
+  roles: string[];
+  signedIn?: boolean;
+}
+
+// eslint-disable-next-line no-use-before-define
+class User extends Realm.Object<User> {
+  // Unset optional properties read back as null, not undefined
+  declare id: number;
+
+  declare identifications_count: number | null;
+
+  declare icon_url: string | null;
+
+  declare locale: string | null;
+
+  declare login: string | null;
+
+  declare name: string | null;
+
+  declare observations_count: number | null;
+
+  declare prefers_common_names: boolean | null;
+
+  declare prefers_community_taxa: boolean | null;
+
+  declare prefers_scientific_name_first: boolean | null;
+
+  declare roles: Realm.List<string>;
+
+  declare signedIn: boolean | null;
+
   static FIELDS = {
     identifications_count: true,
     icon_url: true,
@@ -38,31 +78,32 @@ class User extends Realm.Object {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
 
-  static currentUser( realm: Realm ): RealmUser | undefined {
-    return realm.objects<RealmUser>( "User" ).filtered( "signedIn == true" )[0];
+  static currentUser( realm: Realm ): User | undefined {
+    return realm.objects( User ).filtered( "signedIn == true" )[0];
   }
 
   /**
    * Maps a live Realm User into a plain object
    *
    * @param user - a live Realm User
-   * @returns plain user snapshot, or null
+   * @returns plain user snapshot, or null. Unset fields are undefined rather than null so
+   * consumers' default props and `?:` types apply
    */
-  static mapRealmToPojo( user?: RealmUser | null ) {
+  static mapRealmToPojo( user?: User | null ): UserPojo | null {
     if ( !user ) return null;
     return {
       id: user.id,
-      identifications_count: user.identifications_count,
-      icon_url: user.icon_url,
-      locale: user.locale,
-      login: user.login,
-      name: user.name,
-      observations_count: user.observations_count,
-      prefers_common_names: user.prefers_common_names,
-      prefers_community_taxa: user.prefers_community_taxa,
-      prefers_scientific_name_first: user.prefers_scientific_name_first,
+      identifications_count: user.identifications_count ?? undefined,
+      icon_url: user.icon_url ?? undefined,
+      locale: user.locale ?? undefined,
+      login: user.login ?? undefined,
+      name: user.name ?? undefined,
+      observations_count: user.observations_count ?? undefined,
+      prefers_common_names: user.prefers_common_names ?? undefined,
+      prefers_community_taxa: user.prefers_community_taxa ?? undefined,
+      prefers_scientific_name_first: user.prefers_scientific_name_first ?? undefined,
       roles: Array.from( user.roles || [] ),
-      signedIn: user.signedIn,
+      signedIn: user.signedIn ?? undefined,
     };
   }
 
@@ -98,7 +139,5 @@ class User extends Realm.Object {
     },
   };
 }
-
-export type UserPojo = NonNullable<ReturnType<typeof User.mapRealmToPojo>>;
 
 export default User;

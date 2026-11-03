@@ -1,3 +1,5 @@
+import type User from "realmModels/User";
+
 // https://github.com/inaturalist/iNaturalistAPI/blob/08e3aade068c50e02d0caf7a59c69ea87b70bc6e/lib/views/swagger_v1.yml.ejs#L2319-L2333
 export type License =
   | "cc-by"
@@ -156,28 +158,13 @@ export interface RealmTaxon extends RealmObject {
   taxonPhotos?: RealmTaxonPhoto[];
 }
 
-export interface RealmUser extends RealmObject {
-  id: number;
-  identifications_count?: number;
-  icon_url?: string;
-  locale?: string;
-  login?: string;
-  name?: string;
-  observations_count?: number;
-  prefers_common_names?: boolean;
-  prefers_community_taxa?: boolean;
-  prefers_scientific_name_first?: boolean;
-  roles?: string[];
-  signedIn?: boolean;
-}
-
 interface RealmComment extends RealmObject {
-  user: RealmUser;
+  user: User;
 }
 
 interface RealmIdentification extends RealmObject {
   current: boolean;
-  user: RealmUser;
+  user: User;
 }
 
 export interface RealmObservationPojo {
@@ -214,7 +201,7 @@ export interface RealmObservationPojo {
   time_observed_at?: string;
   timeObservedAt?: string;
   uploadErrorMessage?: string | null;
-  user: RealmUser;
+  user: User;
   uuid: string;
 }
 
