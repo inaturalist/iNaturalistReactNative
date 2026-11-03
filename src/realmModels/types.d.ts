@@ -80,16 +80,12 @@ export interface RealmProjectObservationRule extends RealmObject {
   place_display_name?: string;
   project_title?: string;
   taxon_ancestor_ids: number[];
+  taxon_default_photo_url?: string;
   taxon_name?: string;
   taxon_preferred_common_name?: string;
   taxon_rank?: string;
   taxon_rank_level?: number;
   user_login?: string;
-}
-
-export interface RealmProjectRulePreference extends RealmObject {
-  field: string;
-  value?: string | number | boolean | null;
 }
 
 export interface RealmProject extends RealmObject {
@@ -98,7 +94,6 @@ export interface RealmProject extends RealmObject {
   projectObservationFields: RealmProjectObservationField[];
   project_observation_rules: RealmProjectObservationRule[];
   project_type?: string;
-  rule_preferences: RealmProjectRulePreference[];
   title?: string;
 }
 
@@ -188,6 +183,7 @@ interface RealmIdentification extends RealmObject {
 export interface RealmObservationPojo {
   _created_at?: Date;
   _synced_at?: Date;
+  captive?: boolean | null;
   captive_flag: boolean | null;
   comments: RealmComment[];
   comments_viewed?: boolean;

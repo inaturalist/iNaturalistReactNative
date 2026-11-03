@@ -11,9 +11,9 @@ const savePhotoToDocumentsDirectory = async (
 ) => {
   const path = rotatedOriginalPhotosPath;
   await mkdir( path );
-  const filename = cameraPhoto.path.split( "/" ).at( -1 );
+  const filename = cameraPhoto.filePath.split( "/" ).at( -1 );
   const newPath = `file://${path}/${filename}`;
-  await moveFile( cameraPhoto.path, newPath );
+  await moveFile( cameraPhoto.filePath, newPath );
   return newPath;
 };
 

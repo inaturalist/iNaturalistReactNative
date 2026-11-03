@@ -104,6 +104,7 @@ inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 inatjs.users.projects.mockResolvedValue( makeResponse( ) );
+inatjs.users.taxaObserved.mockResolvedValue( makeResponse( ) );
 inatjs.project_observations.create.mockResolvedValue( makeResponse( ) );
 inatjs.project_observations.update.mockResolvedValue( makeResponse( ) );
 inatjs.project_observations.delete.mockResolvedValue( undefined );

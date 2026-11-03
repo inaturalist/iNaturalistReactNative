@@ -1,6 +1,7 @@
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
 import {
   buildIconicTaxaRows,
+  categoryToDeepen,
   sectionRangeAtRow,
   sectionRowRanges,
 } from "components/MyObservations/helpers/iconicTaxaSections";
@@ -151,5 +152,87 @@ describe( "sectionRangeAtRow", ( ) => {
     expect( sectionRangeAtRow( ranges, 0 )?.category ).toBe( ICONIC_TAXA_GROUP.PLANTAE );
     expect( sectionRangeAtRow( ranges, 2 )?.category ).toBe( ICONIC_TAXA_GROUP.PLANTAE );
     expect( sectionRangeAtRow( ranges, 4 )?.category ).toBe( ICONIC_TAXA_GROUP.AVES );
+  } );
+} );
+
+describe( "categoryToDeepen", ( ) => {
+  const {
+    PLANTAE, AVES, INSECTA, FUNGI,
+  } = ICONIC_TAXA_GROUP;
+  const orderedCategories = [PLANTAE, AVES, INSECTA, FUNGI];
+
+  // Every category gets a section, the way the hook exposes them: the ones given here have been
+  // fetched, and the rest haven't
+  const sectionsWith = (
+    overrides: Partial<Record<ICONIC_TAXA_GROUP, Partial<IconicTaxaSectionState>>>,
+  ) => new Map( orderedCategories.map( category => [
+    category,
+    overrides[category]
+      ? section( overrides[category] )
+      : section( { isActivated: false } ),
+  ] ) );
+
+  const decide = (
+    landedOn: ICONIC_TAXA_GROUP,
+    overrides: Partial<Record<ICONIC_TAXA_GROUP, Partial<IconicTaxaSectionState>>>,
+    collapsedCategories = new Set<ICONIC_TAXA_GROUP>( ),
+  ) => categoryToDeepen(
+    orderedCategories,
+    sectionsWith( overrides ),
+    collapsedCategories,
+    landedOn,
+  );
+
+  it( "deepens the section the user was reading when a fast scroll lands in the unloaded "
+    + "headers below it", ( ) => {
+    expect( decide( INSECTA, { [PLANTAE]: { uuids: ["a"], hasMore: true } } ) )
+      .toEqual( { action: "deepen", category: PLANTAE } );
+  } );
+
+  it( "deepens the section the user landed in when it has more to load", ( ) => {
+    expect( decide( PLANTAE, { [PLANTAE]: { uuids: ["a"], hasMore: true } } ) )
+      .toEqual( { action: "deepen", category: PLANTAE } );
+  } );
+
+  it( "starts the next category once the section above the landing point is exhausted", ( ) => {
+    expect( decide( INSECTA, { [PLANTAE]: { uuids: ["a"], hasMore: false } } ) )
+      .toEqual( { action: "advance" } );
+  } );
+
+  it( "starts the next category when nothing at or above the landing point has been "
+    + "fetched", ( ) => {
+    expect( decide( AVES, {} ) ).toEqual( { action: "advance" } );
+  } );
+
+  it( "stops at the nearest fetched section rather than deepening a partly loaded one further "
+    + "up", ( ) => {
+    // Plantae was collapsed partway through and reopened, so it sits above an exhausted Aves
+    expect( decide( FUNGI, {
+      [PLANTAE]: { uuids: ["a"], hasMore: true },
+      [AVES]: { uuids: ["b"], hasMore: false },
+    } ) ).toEqual( { action: "advance" } );
+  } );
+
+  it( "walks past collapsed sections on the way up", ( ) => {
+    expect( decide(
+      INSECTA,
+      {
+        [PLANTAE]: { uuids: ["a"], hasMore: true },
+        [AVES]: { uuids: ["b"], hasMore: false },
+      },
+      new Set( [AVES] ),
+    ) ).toEqual( { action: "deepen", category: PLANTAE } );
+  } );
+
+  it( "waits on an errored section rather than skipping past it", ( ) => {
+    expect( decide( INSECTA, { [PLANTAE]: { uuids: ["a"], hasMore: true, isError: true } } ) )
+      .toEqual( { action: "wait" } );
+  } );
+
+  it( "walks past a section whose only tiles are unsynced local observations", ( ) => {
+    // The server has nothing under Aves, so it's never fetched, even though rows for its
+    // unsynced observations are on screen
+    expect( decide( AVES, { [PLANTAE]: { uuids: ["a"], hasMore: true } } ) )
+      .toEqual( { action: "deepen", category: PLANTAE } );
   } );
 } );

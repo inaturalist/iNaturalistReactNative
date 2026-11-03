@@ -80,13 +80,13 @@ const countEvidenceIncrements = (
 ): number => {
   const evidenceToUpload = upload?.[evidence];
   if ( evidenceToUpload && evidenceToUpload.length > 0 ) {
-    const evidenceNeedsUpdate = evidenceToUpload
-      .filter( e => e.wasSynced( ) ).length;
     const evidenceNeedsSync = evidenceToUpload
       .filter( e => !e.wasSynced( ) ).length;
-    // since we're incrementing by half when evidence is attached to
-    // an observation, we also want to count half the total increments for previously
-    // synced evidence
+    // the uploader only sends an update (a half increment) for previously synced
+    // photos that changed; previously synced sounds are never updated
+    const evidenceNeedsUpdate = evidence === "observationPhotos"
+      ? evidenceToUpload.filter( e => e.wasSynced( ) && e.needsSync( ) ).length
+      : 0;
     return evidenceNeedsSync + ( evidenceNeedsUpdate / 2 );
   }
   return 0;

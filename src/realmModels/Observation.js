@@ -344,7 +344,14 @@ class Observation extends Realm.Object {
       : evidence );
 
     const taxon = obs.taxon || null;
-    const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
+    const observationPhotos = obs.observationPhotos?.map( obsPhoto => {
+      const existingObsPhoto = existingObservation?.observationPhotos
+        ?.find( op => op.uuid === obsPhoto.uuid );
+      if ( existingObsPhoto && existingObsPhoto.position === obsPhoto.position ) {
+        return obsPhoto;
+      }
+      return { ...obsPhoto, ...timestamps };
+    } );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
     const projectObservations = Observation.prepareEmbedsForLocalSave(
       obs.projectObservations,
@@ -599,6 +606,9 @@ class Observation extends Realm.Object {
       _updated_at: "date?",
       uuid: "string",
       application: "Application?",
+      // the server's captive/cultivated result from everyone's votes; read
+      // only. captive_flag is the owner's own vote, which the app uploads
+      captive: "bool?",
       captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable

@@ -12,12 +12,12 @@ import i18n from "i18next";
 import React, { useCallback, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
-import type { SpeciesSortAPIParams } from "sharedHelpers/speciesSort";
+import type { SpeciesCountsSortAPIParams } from "sharedHelpers/speciesSort";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useGridLayout from "sharedHooks/useGridLayout";
 import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
 
-export type SpeciesCountQueryParams = ExploreV2BaseQueryParams & SpeciesSortAPIParams;
+export type SpeciesCountQueryParams = ExploreV2BaseQueryParams & SpeciesCountsSortAPIParams;
 
 interface SpeciesCountResult {
   count: number;

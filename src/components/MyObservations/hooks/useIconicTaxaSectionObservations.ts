@@ -1,7 +1,9 @@
+import type { Query } from "@tanstack/react-query";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
+import { categoryToDeepen } from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
@@ -42,13 +44,15 @@ interface Result {
   advanceFrontier: ( _closed: Set<ICONIC_TAXA_GROUP> ) => void;
   // request the first page for a specific category when the user opens it
   activateCategory: ( _category: ICONIC_TAXA_GROUP ) => void;
-  // The caller knows only that the user is near the end of one category's tiles;
-  // so we need to manage the following states:
+  // The caller knows only that the user is near the end of one category's tiles, which, if they're
+  // scrolling fast, could be be a never-fetched section below the one they were scrolling through.
+  // Decided by the nearest fetched, open section at or above it (see categoryToDeepen):
   //
   //   something already in flight     -> nothing, so scrolling can't stack up requests
-  //   errored, or collapsed           -> nothing; a failed section waits for retryCategory
-  //   the category has pages left     -> fetch its next page
-  //   never fetched, or fully loaded  -> start the next category that has anything to fetch
+  //   landed on a collapsed category  -> nothing
+  //   errored                         -> nothing; a failed section waits for retryCategory
+  //   it has pages left               -> fetch its next page
+  //   fully loaded, or none above     -> start the next category that has anything to fetch
   nearingEndOfSection: ( category: ICONIC_TAXA_GROUP ) => void;
   retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   refreshSections: ( ) => void;
@@ -235,21 +239,27 @@ const useIconicTaxaSectionObservations = ( {
 
   // See the Result type above for the full set of cases this decides between
   const nearingEndOfSection = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
-    if ( anyFetching ) return;
-    const section = sections.get( category );
-    if ( section?.isError || collapsedCategories.has( category ) ) return;
-    if ( !section?.isActivated || !section.hasMore ) {
+    if ( anyFetching || collapsedCategories.has( category ) ) return;
+    const decision = categoryToDeepen(
+      orderedCounts.map( counted => counted.category ),
+      sections,
+      collapsedCategories,
+      category,
+    );
+    if ( decision.action === "wait" ) return;
+    if ( decision.action === "advance" ) {
       advanceFrontier( collapsedCategories );
       return;
     }
     setPages( {
       ...pagesByCategory,
-      [category]: ( pagesByCategory[category] ?? 0 ) + 1,
+      [decision.category]: ( pagesByCategory[decision.category] ?? 0 ) + 1,
     } );
   }, [
     advanceFrontier,
     anyFetching,
     collapsedCategories,
+    orderedCounts,
     pagesByCategory,
     sections,
     setPages,
@@ -261,11 +271,54 @@ const useIconicTaxaSectionObservations = ( {
     } );
   }, [currentUser?.id, queryClient, sortParams] );
 
+  // Reloads only the first page of each open section the user has loaded, so a refresh costs one
+  // request per open section rather than one per page they've scrolled through. Pull-to-refresh can
+  // only happen at the top of the list, so dropping the depth shouldn't matter, and the
+  // deeper pages load again one at a time as they scroll back down.
   const refreshSections = useCallback( ( ) => {
+    const kept = orderedCounts
+      .map( ( { category } ) => category )
+      .filter( category => pagesByCategory[category]
+        && !collapsedCategories.has( category ) );
+
+    if ( Object.keys( requestedPages ).length > 0 ) {
+      setPages( Object.fromEntries( kept.map( category => [category, 1] ) ) );
+    }
+
     // Scoped to the current user and sort selection. Pages cached under another sort, or
     // another user, would otherwise refire the moment they were rendered again.
-    queryClient.invalidateQueries( { queryKey: [QUERY_KEY, currentUser?.id, sortParams] } );
-  }, [currentUser?.id, queryClient, sortParams] );
+    const queryKey = [QUERY_KEY, currentUser?.id, sortParams];
+    // A page's key goes on to its category and then its page number
+    const categoryOf = ( query: Query ) => query.queryKey[3];
+    const pageOf = ( query: Query ) => query.queryKey[4];
+
+    // Removed rather than marked stale
+    queryClient.removeQueries( {
+      queryKey,
+      predicate: query => {
+        const page = pageOf( query );
+        return typeof page === "number" && page > 1;
+      },
+    } );
+    // A plain invalidate would refetch every mounted page right away, before the reset above
+    // unmounts the deeper ones. Mark them stale instead, and refetch only the first pages.
+    queryClient.invalidateQueries( { queryKey, refetchType: "none" } );
+    queryClient.refetchQueries( {
+      queryKey,
+      type: "active",
+      predicate: query => pageOf( query ) === 1
+        && kept.some( category => category === categoryOf( query ) ),
+    } );
+  }, [
+    collapsedCategories,
+    currentUser?.id,
+    orderedCounts,
+    pagesByCategory,
+    queryClient,
+    requestedPages,
+    setPages,
+    sortParams,
+  ] );
 
   return {
     sections,
