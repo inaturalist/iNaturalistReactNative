@@ -1,3 +1,9 @@
+/** @type {import('react-native-worklets/plugin').PluginOptions} */
+const workletsPluginOptions = {
+  bundleMode: true,
+  strictGlobal: true,
+};
+
 module.exports = {
   presets: ["module:@react-native/babel-preset", "nativewind/babel"],
   plugins: [
@@ -26,7 +32,7 @@ module.exports = {
       },
     }],
     // Reanimated 4: use worklets plugin (must be listed last). See migration 3.x -> 4.x.
-    "react-native-worklets/plugin",
+    ["react-native-worklets/plugin", workletsPluginOptions],
   ],
   env: {
     production: {
