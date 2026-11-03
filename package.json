@@ -242,5 +242,10 @@
     "detox@20.51.3": true,
     "realm@20.2.0": true,
     "fsevents@2.3.2": true,
+    "@firebase/util@1.14.0": false,
+    "core-js@3.46.0": false,
+    "dtrace-provider": false,
+    "hyochan-welcome@1.0.1": false,
+    "protobufjs@7.6.6": false
   }
 }
