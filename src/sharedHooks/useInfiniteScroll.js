@@ -18,6 +18,7 @@ const useInfiniteScroll = (
 
   const {
     data,
+    dataUpdatedAt,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
@@ -58,6 +59,7 @@ const useInfiniteScroll = (
 
   return {
     data: allResults,
+    dataUpdatedAt,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
