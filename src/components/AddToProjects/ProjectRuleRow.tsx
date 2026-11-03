@@ -1,5 +1,5 @@
 import {
-  Body1, Body4, DisplayTaxon, INatIcon,
+  Body1, Body4, DisplayTaxon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TFunction } from "i18next";
@@ -9,7 +9,8 @@ import type {
   ProjectRuleStatus,
 } from "sharedHelpers/validateProjectRulesForObservation";
 import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
+
+import RuleStatusIcon from "./RuleStatusIcon";
 
 interface Props {
   group: ProjectRuleGroup;
@@ -46,12 +47,14 @@ const ruleHeader = ( operator: string, t: TFunction ) => {
   }
 };
 
+// An unknown rule is one only the server can check, so it gets no icon and
+// nothing for a screen reader to announce
 const renderStatusIcon = ( status: ProjectRuleStatus ) => {
   switch ( status ) {
     case "pass":
-      return <INatIcon name="checkmark-circle" color={colors.inatGreen} size={19} />;
+      return <RuleStatusIcon passed />;
     case "fail":
-      return <INatIcon name="triangle-exclamation" color={colors.warningRed} size={19} />;
+      return <RuleStatusIcon passed={false} />;
     default:
       return null;
   }
