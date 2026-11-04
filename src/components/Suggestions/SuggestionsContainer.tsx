@@ -299,7 +299,8 @@ const SuggestionsContainer = ( ) => {
     // used when offline text is tapped to try to get online
     // suggestions
     if ( !isConnected ) { return; }
-    resetTimeout( );
+    // An explicit retry will get a longer timeout than the initial request
+    resetTimeout( { isRetry: true } );
     dispatch(
       {
         type: "SET_ONLINE_FETCH_STATUS",
