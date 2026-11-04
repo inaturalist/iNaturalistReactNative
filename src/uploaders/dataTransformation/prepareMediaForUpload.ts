@@ -7,10 +7,15 @@ function prepareMediaForUpload(
   type: EvidenceType,
   action: ActionType,
   observationId?: number | null,
+  photoUploadUri?: string,
 ): object {
   if ( type === "Photo" ) {
     if ( action === "upload" ) {
-      return ObservationPhoto.mapPhotoForUpload( media );
+      // Assert inputs
+      if ( !photoUploadUri ) {
+        throw new Error( "A file uri is required for uploading photos" );
+      }
+      return ObservationPhoto.mapPhotoForUpload( media, photoUploadUri );
     }
   } else if ( type === "ObservationPhoto" ) {
     if ( action === "attach" ) {

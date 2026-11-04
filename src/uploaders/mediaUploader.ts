@@ -11,6 +11,7 @@ import type {
 import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 import markRecordUploaded from "uploaders/utils/realmSync";
+import withPhotoUploadCopy from "uploaders/utils/withPhotoUploadCopy";
 
 export type EvidenceType = "Photo" | "ObservationPhoto" | "Sound" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";
@@ -98,11 +99,10 @@ const uploadSingleEvidence = async (
   observationUUID: string,
   realm: Realm,
 ): Promise<MediaApiResponse | null> => {
-  const params = prepareMediaForUpload(
-    evidence,
-    type,
-    action,
-    observationId,
+  const send = ( photoUploadUri?: string ) => createOrUpdateEvidence(
+    apiEndpoint,
+    prepareMediaForUpload( evidence, type, action, observationId, photoUploadUri ),
+    options,
   );
   const evidenceUUID = evidence.uuid;
 
@@ -111,11 +111,10 @@ const uploadSingleEvidence = async (
   const isAttachOperation = observationId != null;
   const evidenceProgress = trackEvidenceUpload( observationUUID );
 
-  const response = await createOrUpdateEvidence(
-    apiEndpoint,
-    params,
-    options,
-  );
+  // New photos go up as a smaller copy made just for this request
+  const response = type === "Photo" && action === "upload" && "localFilePath" in evidence
+    ? await withPhotoUploadCopy( evidence.localFilePath, send )
+    : await send( );
 
   if ( !response ) {
     throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );

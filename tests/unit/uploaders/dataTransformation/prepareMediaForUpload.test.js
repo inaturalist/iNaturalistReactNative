@@ -81,17 +81,20 @@ describe( "prepareMediaForUpload", () => {
     } );
   } );
 
-  test( "should map Photo upload", () => {
+  test( "should map Photo upload with the given file uri", () => {
     const observationId = null;
+    const uploadCopyUri = "file://caches/photoUploadCopies/copy.jpg";
     const result = prepareMediaForUpload(
       mockPhoto,
       "Photo",
       "upload",
       observationId,
+      uploadCopyUri,
     );
 
     expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
       mockPhoto,
+      uploadCopyUri,
     );
 
     expect( result ).toEqual( {
@@ -101,6 +104,11 @@ describe( "prepareMediaForUpload", () => {
         type: "image/jpeg",
       } ),
     } );
+  } );
+
+  test( "should throw for a Photo upload without a file uri", () => {
+    expect( () => prepareMediaForUpload( mockPhoto, "Photo", "upload", null ) )
+      .toThrow( "A file uri is required for uploading photos" );
   } );
 
   test( "should map ObservationPhoto attachment", () => {

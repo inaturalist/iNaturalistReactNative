@@ -2,6 +2,7 @@ import { copyAssetsFileIOS, mkdir } from "@dr.pogodin/react-native-fs";
 import { Realm } from "@realm/react";
 import type { ApiPhoto } from "api/types";
 import { photoUploadPath } from "appConstants/paths";
+import { PHOTO_MAX_WIDTH } from "appConstants/photos";
 import { Platform } from "react-native";
 import type { RealmPhoto } from "realmModels/types";
 import resizeImage from "sharedHelpers/resizeImage";
@@ -26,7 +27,7 @@ class Photo extends Realm.Object {
   }
 
   static async resizeImageForUpload( pathOrUri: string ): Promise<string> {
-    const width = 2048;
+    const width = PHOTO_MAX_WIDTH;
     await mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
 

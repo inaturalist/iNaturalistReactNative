@@ -1,6 +1,8 @@
+import { exists, readDir } from "@dr.pogodin/react-native-fs";
 import {
   computerVisionPath,
   photoLibraryPhotosPath,
+  photoUploadCopiesPath,
   photoUploadPath,
   rollbackPhotosPath,
   rotatedOriginalPhotosPath,
@@ -8,6 +10,7 @@ import {
 } from "appConstants/paths";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory";
+import { unlink } from "sharedHelpers/util";
 
 // TODO replace when Realm classes are properly typed
 interface RealmObservation {
@@ -84,10 +87,25 @@ const clearRollbackPhotos = async ( ) => {
   await removeAllFilesFromDirectory( rollbackPhotosPath );
 };
 
+// Upload copies are deleted as soon as their upload finishes, so anything left
+// here was orphaned by a crash or a killed app. The age check keeps this from
+// deleting a copy that an upload started since launch is still sending.
+const STALE_UPLOAD_COPY_MS = 60 * 60 * 1000;
+
+const clearStalePhotoUploadCopies = async ( ) => {
+  if ( !( await exists( photoUploadCopiesPath ) ) ) return;
+  const cutoff = Date.now( ) - STALE_UPLOAD_COPY_MS;
+  const files = await readDir( photoUploadCopiesPath );
+  await Promise.all( files
+    .filter( file => ( file.mtime?.getTime( ) ?? 0 ) < cutoff )
+    .map( file => unlink( file.path ) ) );
+};
+
 export {
   clearComputerVisionPhotos,
   clearGalleryPhotos,
   clearRollbackPhotos,
   clearRotatedOriginalPhotosDirectory,
+  clearStalePhotoUploadCopies,
   clearSyncedMediaForUpload,
 };

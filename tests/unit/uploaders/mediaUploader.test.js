@@ -3,16 +3,19 @@ import inatjs from "inaturalistjs";
 import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
+import withPhotoUploadCopy from "uploaders/utils/withPhotoUploadCopy";
 
 jest.mock( "api/observations" );
 jest.mock( "inaturalistjs" );
 jest.mock( "uploaders/dataTransformation/prepareMediaForUpload" );
 jest.mock( "uploaders/utils/realmSync" );
 jest.mock( "uploaders/utils/progressTracker" );
+jest.mock( "uploaders/utils/withPhotoUploadCopy" );
 
 const mockedCreateOrUpdateEvidence = jest.mocked( createOrUpdateEvidence );
 const mockedPrepareMediaForUpload = jest.mocked( prepareMediaForUpload );
 const mockedTrackEvidenceUpload = jest.mocked( trackEvidenceUpload );
+const mockedWithPhotoUploadCopy = jest.mocked( withPhotoUploadCopy );
 
 describe( "mediaUploader", () => {
   beforeEach( () => {
@@ -157,6 +160,7 @@ describe( "mediaUploader", () => {
         "ObservationPhoto",
         "attach",
         observationUUID,
+        undefined,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
@@ -164,6 +168,7 @@ describe( "mediaUploader", () => {
         "ObservationSound",
         "attach",
         observationUUID,
+        undefined,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
@@ -171,6 +176,7 @@ describe( "mediaUploader", () => {
         "ObservationPhoto",
         "update",
         observationUUID,
+        undefined,
       );
 
       expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
@@ -292,6 +298,49 @@ describe( "mediaUploader", () => {
 
       expect( trackEvidenceUpload ).toHaveBeenCalledWith( "obs-uuid-123" );
       expect( mockProgress.attached ).toHaveBeenCalled();
+    } );
+  } );
+
+  describe( "photo upload copies", () => {
+    const localFilePath = "file://document/directory/path/photoUploads/photo1.jpg";
+    const copyUri = "file://caches/directory/path/photoUploadCopies/copy.jpg";
+
+    beforeEach( () => {
+      mockedWithPhotoUploadCopy.mockImplementation( ( _path, upload ) => upload( copyUri ) );
+    } );
+
+    it( "should send a new photo as an upload copy of its stored file", async () => {
+      const photo = { uuid: "photo-uuid-1", localFilePath };
+      const observation = {
+        uuid: "obs-uuid-123",
+        observationPhotos: [{ wasSynced: () => false, photo }],
+        observationSounds: [],
+      };
+
+      await uploadObservationMedia( observation, {}, {} );
+
+      expect( mockedWithPhotoUploadCopy )
+        .toHaveBeenCalledWith( localFilePath, expect.any( Function ) );
+      expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
+        photo,
+        "Photo",
+        "upload",
+        null,
+        copyUri,
+      );
+    } );
+
+    it( "should not make upload copies when attaching or updating photos", async () => {
+      const mediaItems = {
+        unsyncedObservationPhotos: [{ uuid: "obs-photo-1", photo: { localFilePath } }],
+        modifiedObservationPhotos: [{ uuid: "obs-photo-2", photo: { localFilePath } }],
+        unsyncedObservationSounds: [],
+      };
+
+      await attachMediaToObservation( "obs-uuid-123", mediaItems, {}, {} );
+
+      expect( mockedWithPhotoUploadCopy ).not.toHaveBeenCalled( );
+      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 2 );
     } );
   } );
 
