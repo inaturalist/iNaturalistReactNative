@@ -71,7 +71,11 @@ const NotificationsList = ( {
   const emptyComponent = useMemo( ( ) => {
     // Offline/retry when disconnected or request fails
     if ( isConnected === false || isError ) {
-      return <OfflineNotice onPress={reload} />;
+      return (
+        <View className="flex-1">
+          <OfflineNotice onPress={reload} />
+        </View>
+      );
     }
 
     if ( isInitialLoading ) {
