@@ -1,6 +1,11 @@
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import type { ICONIC_TAXA_GROUP, IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 
+// Shared by section pages and counts so they go stale together (hasMore comes from the count).
+// Long enough that a remount doesn't refetch every loaded page, or overwrite a count adjusted
+// locally with one from a search index that hasn't caught up.
+export const ICONIC_TAXA_STALE_TIME = 1000 * 60 * 5;
+
 // This is what one iconic-taxa section knows about its own server results. Owned by
 // useIconicTaxaSectionObservations; the functions here only read it.
 export interface IconicTaxaSectionState {

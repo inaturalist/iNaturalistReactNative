@@ -3,7 +3,10 @@ import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
-import { categoryToDeepen } from "components/MyObservations/helpers/iconicTaxaSections";
+import {
+  categoryToDeepen,
+  ICONIC_TAXA_STALE_TIME,
+} from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
@@ -12,16 +15,13 @@ import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import { useCurrentUser, useStateResetOn } from "sharedHooks";
+import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
 export const QUERY_KEY = "useIconicTaxaSectionObservations";
 
 export const PER_PAGE = 20;
-
-// Pages stay cached long enough to survive leaving and coming back to the tab. Without this,
-// React Query's default of 0 would refetch every page a heavy user has loaded on every remount.
-const STALE_TIME = 1000 * 60 * 5;
 
 type IconicTaxonPage = string[];
 
@@ -85,6 +85,12 @@ const useIconicTaxaSectionObservations = ( {
   const sortParams = useMemo( ( ) => observationSortToApiParams( sortBy ), [sortBy] );
   const sortKey = `${sortParams.order_by}-${sortParams.order}`;
 
+  // Cached pages still list an observation the user has deleted, and the search index can keep
+  // returning it for a few seconds after, so deleted uuids are filtered out every time the
+  // sections are built rather than removed from the cache once
+  const locallyDeletedUuids = useStore( state => state.locallyDeletedObservationUuids );
+  const deletedUuids = useMemo( ( ) => new Set( locallyDeletedUuids ), [locallyDeletedUuids] );
+
   // Changing sort invalidates every page, so this starts over rather than re-requesting them
   // all under the new order
   const [requestedPages, setPages] = useStateResetOn( sortKey, NOTHING_REQUESTED );
@@ -142,7 +148,8 @@ const useIconicTaxaSectionObservations = ( {
 
     // Offset pagination can repeat an observation across pages if the underlying set shifts
     // between requests, and a repeated uuid would be a duplicate key in the list
-    const uuids = [...new Set( pages.flatMap( page => page.data ?? [] ) )];
+    const uuids = [...new Set( pages.flatMap( page => page.data ?? [] ) )]
+      .filter( uuid => !deletedUuids.has( uuid ) );
 
     return {
       category,
@@ -152,7 +159,7 @@ const useIconicTaxaSectionObservations = ( {
       isError: pages.some( page => page.isError ),
       hasMore: highestPage * PER_PAGE < count,
     };
-  } ), [orderedCounts, pageIndexesByCategory, pagesByCategory] );
+  } ), [deletedUuids, orderedCounts, pageIndexesByCategory, pagesByCategory] );
 
   const results = useQueries( {
     queries: descriptors.map( ( { category, page } ) => ( {
@@ -177,7 +184,13 @@ const useIconicTaxaSectionObservations = ( {
           fields: Observation.ADVANCED_MODE_LIST_FIELDS,
           ttl: -1,
         }, { api_token: apiToken } );
-        const observations = response?.results || [];
+        // Read at fetch time, since a delete can land while this page is in flight. Skipped
+        // before the Realm write so a lagging index can't recreate an observation that's
+        // already been deleted locally.
+        const { locallyDeletedObservationUuids } = useStore.getState( );
+        const observations = ( response?.results || [] ).filter(
+          ( { uuid }: { uuid: string } ) => !locallyDeletedObservationUuids.includes( uuid ),
+        );
         // Deliberately not caught: tiles hydrate from Realm by uuid, so a page whose
         // observations didn't make it into Realm can't render. Failing the query puts the
         // section into its error state, with a retry, instead of a run of blank tiles.
@@ -185,7 +198,7 @@ const useIconicTaxaSectionObservations = ( {
         return observations.map( ( { uuid }: { uuid: string } ) => uuid );
       },
       enabled: enabled && !!currentUser,
-      staleTime: STALE_TIME,
+      staleTime: ICONIC_TAXA_STALE_TIME,
       // Every page a user has scrolled through stays mounted, so a single global event would
       // fan out into one request per loaded page, all at once — 50 parallel observation
       // searches for someone deep in a large category who backgrounds the app or walks through

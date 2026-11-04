@@ -1,7 +1,14 @@
+import type { QueryClient } from "@tanstack/react-query";
 import { fetchIconicTaxaCounts } from "api/observations";
-import type { IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
+import { ICONIC_TAXA_STALE_TIME } from "components/MyObservations/helpers/iconicTaxaSections";
+import type {
+  ICONIC_TAXA_GROUP,
+  IconicTaxaGroupCount,
+} from "sharedHelpers/iconicTaxaGroupOrder";
 import { orderIconicTaxaCounts } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+
+export const QUERY_KEY = "useIconicTaxaObservationCounts";
 
 // Every category at zero, in the tie-break order, for before the counts land
 const NO_COUNTS = orderIconicTaxaCounts( [] );
@@ -30,17 +37,33 @@ const useIconicTaxaObservationCounts = (
   const params = { user_id: currentUser?.id, ttl: -1 };
 
   const { data, isLoading, refetch } = useAuthenticatedQuery<IconicTaxaGroupCount[]>(
-    ["useIconicTaxaObservationCounts", currentUser?.id],
+    [QUERY_KEY, currentUser?.id],
     async optsWithAuth => {
       const response = await fetchIconicTaxaCounts( params, {
         api_token: optsWithAuth.api_token ?? undefined,
       } );
       return orderIconicTaxaCounts( response?.results ?? [] );
     },
-    { enabled: enabled && !!currentUser },
+    { enabled: enabled && !!currentUser, staleTime: ICONIC_TAXA_STALE_TIME },
   );
 
   return { counts: data ?? NO_COUNTS, isLoading, refetch };
 };
 
 export default useIconicTaxaObservationCounts;
+
+// Adjusts one category's cached count for a change the user just made locally.
+// Sections aren't reordered.
+export function adjustIconicTaxaObservationCount(
+  queryClient: QueryClient,
+  userId: number | undefined,
+  category: ICONIC_TAXA_GROUP,
+  change: number,
+) {
+  queryClient.setQueriesData<IconicTaxaGroupCount[]>(
+    { queryKey: [QUERY_KEY, userId] },
+    counts => counts?.map( counted => ( counted.category === category
+      ? { category, count: Math.max( 0, counted.count + change ) }
+      : counted ) ),
+  );
+}
