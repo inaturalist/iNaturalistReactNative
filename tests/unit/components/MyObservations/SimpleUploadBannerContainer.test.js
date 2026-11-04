@@ -265,8 +265,8 @@ describe( "SimpleUploadBannerContainer", () => {
     expect( statusText ).toBeVisible( );
   } );
 
-  it( "should hide banner if logged out and only one observation", ( ) => {
-    zustandStorage.setItem( "numOfUserObservations", 1 );
+  it( "should hide banner if logged out with no observations", ( ) => {
+    zustandStorage.setItem( "numOfUserObservations", 0 );
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING,
@@ -285,8 +285,8 @@ describe( "SimpleUploadBannerContainer", () => {
     expect( statusText ).toBeFalsy( );
   } );
 
-  it( "should show banner if logged out with more than one observation", ( ) => {
-    zustandStorage.setItem( "numOfUserObservations", 2 );
+  it( "should show banner if logged out with one observation", ( ) => {
+    zustandStorage.setItem( "numOfUserObservations", 1 );
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING,
