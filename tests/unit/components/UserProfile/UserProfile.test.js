@@ -7,7 +7,7 @@ import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockUser = factory( "RemoteUser" );
+const mockUser = factory( "RemoteUser", { species_count: 779 } );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
@@ -15,6 +15,18 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
     data: mockUser,
     refetch: jest.fn(),
   } ),
+} ) );
+
+// Deliberately different from mockUser.species_count, which the server can let go stale
+const mockCurrentUserSpeciesCount = 783;
+const mockUseCurrentUserSpeciesCount = jest.fn( ( { enabled } ) => (
+  enabled
+    ? mockCurrentUserSpeciesCount
+    : null
+) );
+jest.mock( "sharedHooks/useCurrentUserSpeciesCount", () => ( {
+  __esModule: true,
+  default: ( ...args ) => mockUseCurrentUserSpeciesCount( ...args ),
 } ) );
 
 const mockMutate = jest.fn();
@@ -126,6 +138,28 @@ describe( "UserProfile", () => {
 
     expect( options.user ).toEqual( expect.objectContaining( { id: mockUser.id } ) );
     expect( options.tab ).toBe( SPECIES_TAB );
+  } );
+
+  describe( "species count", ( ) => {
+    const speciesCountText = count => new RegExp(
+      `^${t( "Intl-number", { val: count } )}$`,
+    );
+
+    test( "shows the live species count on your own profile", ( ) => {
+      jest.spyOn( useCurrentUser, "default" )
+        .mockImplementation( () => ( { login: mockUser.login, roles: [] } ) );
+
+      renderComponent( <UserProfile /> );
+
+      expect( screen.getByText( speciesCountText( mockCurrentUserSpeciesCount ) ) ).toBeVisible( );
+    } );
+
+    test( "shows the user record's species count on someone else's profile", ( ) => {
+      renderComponent( <UserProfile /> );
+
+      expect( screen.getByText( speciesCountText( mockUser.species_count ) ) ).toBeVisible( );
+      expect( mockUseCurrentUserSpeciesCount ).not.toHaveBeenCalledWith( { enabled: true } );
+    } );
   } );
 
   describe( "edit button", () => {
