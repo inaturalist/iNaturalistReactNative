@@ -19,8 +19,10 @@ const PARAMS = {
 } as const;
 
 interface ScoreImageApiParams extends ApiParams {
-  locale?: string;
   image?: ScoreImageFile;
+  lat?: number;
+  lng?: number;
+  locale?: string;
 }
 
 const scoreImage = async <T = ApiDefaultResult>(
