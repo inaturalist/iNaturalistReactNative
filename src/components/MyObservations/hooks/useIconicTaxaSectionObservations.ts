@@ -203,7 +203,7 @@ const useIconicTaxaSectionObservations = ( {
       // fan out into one request per loaded page, all at once — 50 parallel observation
       // searches for someone deep in a large category who backgrounds the app or walks through
       // a tunnel. staleTime only narrows the window that can happen in; these close it. This
-      // view refreshes on pull-to-refresh and after an upload instead.
+      // view refreshes only on pull-to-refresh instead.
       // Turning off reconnect also means a section that failed while offline won't quietly
       // recover, which is why the error row it renders has to offer a retry.
       refetchOnReconnect: false,
