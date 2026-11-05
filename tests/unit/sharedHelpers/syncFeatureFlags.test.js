@@ -23,7 +23,10 @@ describe( "syncFeatureFlags", ( ) => {
 
     await syncFeatureFlags( );
 
-    expect( mockGet ).toHaveBeenCalledWith( {}, { api_token: "user-jwt" } );
+    expect( mockGet ).toHaveBeenCalledWith(
+      {},
+      expect.objectContaining( { api_token: "user-jwt" } ),
+    );
     const { featureFlagApiValues, featureFlagApiStatus } = useStore.getState( );
     expect( featureFlagApiValues ).toEqual( { [FeatureFlag.TraditionalProjects]: true } );
     expect( featureFlagApiStatus ).toMatchObject( { state: "loaded", signedIn: true } );
@@ -35,7 +38,7 @@ describe( "syncFeatureFlags", ( ) => {
 
     await syncFeatureFlags( );
 
-    expect( mockGet ).toHaveBeenCalledWith( {}, { api_token: null } );
+    expect( mockGet ).toHaveBeenCalledWith( {}, expect.objectContaining( { api_token: null } ) );
     expect( useStore.getState( ).featureFlagApiStatus )
       .toMatchObject( { state: "loaded", signedIn: false } );
   } );

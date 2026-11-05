@@ -14,7 +14,19 @@ describe( "fetchFeatureFlags", ( ) => {
   it( "passes the api token through", async ( ) => {
     mockGet.mockResolvedValue( { flags: {}, experiments: {} } );
     await fetchFeatureFlags( { api_token: "test-token" } );
-    expect( mockGet ).toHaveBeenCalledWith( {}, { api_token: "test-token" } );
+    expect( mockGet ).toHaveBeenCalledWith(
+      {},
+      expect.objectContaining( { api_token: "test-token" } ),
+    );
+  } );
+
+  it( "asks HTTP caches to revalidate so auth changes never reuse stale flags", async ( ) => {
+    mockGet.mockResolvedValue( { flags: {}, experiments: {} } );
+    await fetchFeatureFlags( );
+    expect( mockGet ).toHaveBeenCalledWith(
+      {},
+      expect.objectContaining( { headers: { "Cache-Control": "no-cache" } } ),
+    );
   } );
 
   it( "keeps known boolean flags, including false ones", async ( ) => {

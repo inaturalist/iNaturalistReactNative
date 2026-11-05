@@ -12,7 +12,12 @@ const fetchFeatureFlags = async (
   opts: ApiOpts = {},
 ): Promise<Partial<Record<FeatureFlag, boolean>>> => {
   try {
-    const { flags } = await inatjs.feature_flags.get( {}, opts );
+    // The response is cacheable for 60s but varies by token, so a fetch right after
+    // login/logout could get the other auth state's flags from the HTTP cache
+    const { flags } = await inatjs.feature_flags.get( {}, {
+      ...opts,
+      headers: { "Cache-Control": "no-cache" },
+    } );
     return Object.fromEntries(
       Object.entries( flags || {} ).filter(
         ( [key, value] ) => knownFlags.has( key ) && typeof value === "boolean",
