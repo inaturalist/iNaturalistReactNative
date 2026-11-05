@@ -1,3 +1,20 @@
+diff --git a/node_modules/@candlefinance/faster-image/FasterImage.podspec b/node_modules/@candlefinance/faster-image/FasterImage.podspec
+index db9d4f0..18d13bf 100644
+--- a/node_modules/@candlefinance/faster-image/FasterImage.podspec
++++ b/node_modules/@candlefinance/faster-image/FasterImage.podspec
+@@ -37,11 +37,6 @@ Pod::Spec.new do |s|
+         "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+         "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
+     }
+-    s.dependency "React-RCTFabric"
+-    s.dependency "React-Codegen"
+-    s.dependency "RCT-Folly"
+-    s.dependency "RCTRequired"
+-    s.dependency "RCTTypeSafety"
+-    s.dependency "ReactCommon/turbomodule/core"
++    install_modules_dependencies(s)
+   end
+ end
 diff --git a/node_modules/@candlefinance/faster-image/android/src/main/java/com/candlefinance/fasterimage/FasterImageViewManager.kt b/node_modules/@candlefinance/faster-image/android/src/main/java/com/candlefinance/fasterimage/FasterImageViewManager.kt
 index 5cf4dba..f75e080 100644
 --- a/node_modules/@candlefinance/faster-image/android/src/main/java/com/candlefinance/fasterimage/FasterImageViewManager.kt
