@@ -146,46 +146,29 @@ describe( "usePinnedObservationsByIconicTaxon", ( ) => {
       return observation;
     };
 
-    const heldIn = ( result, category ) => result.current.uploadsByCategory
-      .get( category )?.map( ( { uuid } ) => uuid );
+    const heldIn = ( result, category ) => result.current.uploadsByCategory.get( category );
 
     it( "keeps it pinned, since the cached pages were fetched before it existed", ( ) => {
       const uploaded = uploadedObsWithIconicTaxon( "Aves" );
 
-      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ) );
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
       expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [uploaded.uuid] );
     } );
 
-    it( "holds it apart from the unsynced pins, with the date it was observed, so the view "
-      + "can place it where the current sort puts it", ( ) => {
-      const uploaded = uploadedObsWithIconicTaxon( "Aves", {
-        observed_on: null,
-        observed_on_string: "2026-03-04T10:15:00",
-      } );
+    it( "holds it apart from the unsynced pins, so the view can place it where the current "
+      + "sort puts it", ( ) => {
+      uploadedObsWithIconicTaxon( "Aves" );
 
-      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ) );
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
       expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
-      expect( result.current.uploadsByCategory.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [
-        { uuid: uploaded.uuid, observedOn: "2026-03-04" },
-      ] );
-    } );
-
-    it( "lets it go once the sections have loaded it from the server", ( ) => {
-      const uploaded = uploadedObsWithIconicTaxon( "Aves" );
-
-      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon(
-        new Set( [uploaded.uuid] ),
-      ) );
-
-      expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
     } );
 
     it( "moves it with a local taxon change rather than leaving it in its old section", ( ) => {
       const uploaded = uploadedObsWithIconicTaxon( "Aves" );
       const { result, rerender } = renderHook(
-        ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ),
+        ( ) => usePinnedObservationsByIconicTaxon( ),
       );
 
       createObservation( {
@@ -201,7 +184,7 @@ describe( "usePinnedObservationsByIconicTaxon", ( ) => {
     it( "doesn't keep it pinned once the user deletes it", ( ) => {
       uploadedObsWithIconicTaxon( "Aves", { _deleted_at: new Date( ) } );
 
-      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ) );
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
       expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
     } );

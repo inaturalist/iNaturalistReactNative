@@ -106,21 +106,12 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     sortBy: observationsSort,
   } );
 
-  const serverUuids = useMemo(
-    ( ) => new Set( [...sections.values( )].flatMap( section => section.uuids ) ),
-    [sections],
-  );
-  const {
-    unsyncedByCategory,
-    uploadsByCategory,
-  } = usePinnedObservationsByIconicTaxon( serverUuids );
+  const { unsyncedByCategory, uploadsByCategory } = usePinnedObservationsByIconicTaxon( );
 
-  // Loaded tiles have hydrated into Realm, so their observed dates are read from there when
-  // placing a held upload under a date-observed sort
-  const observedOnOf = useCallback(
-    ( uuid: string ) => realm
-      .objectForPrimaryKey<RealmObservation>( "Observation", uuid )
-      ?.observed_on ?? null,
+  // Loaded tiles have hydrated into Realm, so held uploads are placed by reading where each
+  // falls in the server's order from there
+  const getObservationByUuid = useCallback(
+    ( uuid: string ) => realm.objectForPrimaryKey<RealmObservation>( "Observation", uuid ),
     [realm],
   );
 
@@ -142,13 +133,13 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       unsyncedByCategory,
       uploadsByCategory,
       sort: observationsSort,
-      observedOnOf,
+      getObservationByUuid,
     } ) ), [
     collapsedCategories,
     counts,
     isLoadingCounts,
     observationsSort,
-    observedOnOf,
+    getObservationByUuid,
     sections,
     unsyncedByCategory,
     uploadsByCategory,

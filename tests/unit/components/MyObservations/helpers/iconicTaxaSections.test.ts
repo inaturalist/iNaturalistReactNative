@@ -1,4 +1,7 @@
-import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
+import type {
+  IconicTaxaSectionState,
+  SortableObservation,
+} from "components/MyObservations/helpers/iconicTaxaSections";
 import {
   buildIconicTaxaRows,
   categoryToDeepen,
@@ -27,7 +30,13 @@ const buildRows = ( {
   sections = new Map( ),
   unsyncedByCategory = new Map( ),
 } = {} ) => buildIconicTaxaRows( {
-  collapsedCategories, orderedCounts, sections, unsyncedByCategory,
+  collapsedCategories,
+  orderedCounts,
+  sections,
+  unsyncedByCategory,
+  uploadsByCategory: new Map( ),
+  sort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+  getObservationByUuid: ( ) => null,
 } );
 
 const tileKeys = ( rows: ReturnType<typeof buildRows> ) => rows
@@ -244,117 +253,181 @@ describe( "placeHeldUploads", ( ) => {
     DATE_UPLOADED_NEWEST, DATE_UPLOADED_OLDEST, DATE_OBSERVED_NEWEST, DATE_OBSERVED_OLDEST,
   } = OBSERVATIONS_SORT;
 
+  // Loaded tiles are listed in server order, and are what the section has fetched. Uploads are
+  // in Realm but not in the section unless also listed in loaded.
   const place = (
     sort: OBSERVATIONS_SORT,
-    loaded: Record<string, string | null>,
-    uploads: { uuid: string; observedOn: string | null }[],
-    hasMore = false,
+    loaded: Record<string, SortableObservation>,
+    uploads: Record<string, SortableObservation>,
+    { hasMore = false, sectionUuids = Object.keys( loaded ) } = {},
   ) => placeHeldUploads( {
     sort,
-    sectionUuids: Object.keys( loaded ),
+    sectionUuids,
     hasMore,
-    uploads,
-    observedOnOf: uuid => loaded[uuid] ?? null,
+    uploadUuids: Object.keys( uploads ),
+    getObservationByUuid: uuid => loaded[uuid] ?? uploads[uuid] ?? null,
   } );
 
-  const upload = ( observedOn: string | null, uuid = "new" ) => ( { uuid, observedOn } );
-
   describe( "by date added", ( ) => {
+    const newestFirst = { fifty: { id: 50 }, forty: { id: 40 }, twenty: { id: 20 } };
+
     it( "puts a new upload first when newest first", ( ) => {
-      expect( place( DATE_UPLOADED_NEWEST, { a: null, b: null }, [upload( null )] ) )
-        .toEqual( ["new", "a", "b"] );
+      expect( place( DATE_UPLOADED_NEWEST, newestFirst, { new: { id: 60 } } ) )
+        .toEqual( ["new", "fifty", "forty", "twenty"] );
+    } );
+
+    it( "puts an earlier upload from this session among the loaded tiles, not above newer "
+      + "ones, once a refresh has moved it off the first page", ( ) => {
+      expect( place( DATE_UPLOADED_NEWEST, newestFirst, { earlier: { id: 30 } } ) )
+        .toEqual( ["fifty", "forty", "earlier", "twenty"] );
+      expect( place( DATE_UPLOADED_NEWEST, newestFirst, { earlier: { id: 10 } }, {
+        hasMore: true,
+      } ) ).toEqual( ["fifty", "forty", "twenty"] );
     } );
 
     it( "puts a new upload last when oldest first, once the section is fully loaded", ( ) => {
-      expect( place( DATE_UPLOADED_OLDEST, { a: null, b: null }, [upload( null )] ) )
-        .toEqual( ["a", "b", "new"] );
-    } );
+      const oldestFirst = { twenty: { id: 20 }, forty: { id: 40 } };
 
-    it( "leaves it out when oldest first and there are more pages, since it arrives with the "
-      + "last one", ( ) => {
-      expect( place( DATE_UPLOADED_OLDEST, { a: null, b: null }, [upload( null )], true ) )
-        .toEqual( ["a", "b"] );
+      expect( place( DATE_UPLOADED_OLDEST, oldestFirst, { new: { id: 60 } } ) )
+        .toEqual( ["twenty", "forty", "new"] );
+      expect( place( DATE_UPLOADED_OLDEST, oldestFirst, { new: { id: 60 } }, { hasMore: true } ) )
+        .toEqual( ["twenty", "forty"] );
     } );
   } );
 
   describe( "by date observed, newest first", ( ) => {
-    const loaded = { may: "2026-05-01", april: "2026-04-01", march: "2026-03-01" };
+    const loaded = {
+      may: { id: 1, time_observed_at: "2026-05-01T12:00:00+00:00" },
+      aprilEvening: { id: 2, time_observed_at: "2026-04-01T18:00:00+00:00" },
+      aprilMorning: { id: 3, time_observed_at: "2026-04-01T09:00:00+00:00" },
+      march: { id: 4, time_observed_at: "2026-03-01T12:00:00+00:00" },
+    };
 
-    it( "puts it before the first loaded tile observed before it", ( ) => {
-      expect( place( DATE_OBSERVED_NEWEST, loaded, [upload( "2026-04-15" )] ) )
-        .toEqual( ["may", "new", "april", "march"] );
+    it( "places a new upload by when it was observed, down to the time of day", ( ) => {
+      expect( place( DATE_OBSERVED_NEWEST, loaded, {
+        new: { id: 9, observed_on_string: "2026-04-01T12:00:00" },
+      } ) ).toEqual( ["may", "aprilEvening", "new", "aprilMorning", "march"] );
     } );
 
-    it( "puts it first among tiles observed the same day", ( ) => {
-      expect( place( DATE_OBSERVED_NEWEST, loaded, [upload( "2026-04-01" )] ) )
-        .toEqual( ["may", "new", "april", "march"] );
+    it( "compares by the moment observed, not the clock time where it was observed", ( ) => {
+      // 06:00 at UTC-6 is 12:00 UTC, after the 09:00 UTC tile
+      expect( place( DATE_OBSERVED_NEWEST, {
+        aprilMorning: { id: 3, time_observed_at: "2026-04-01T09:00:00+00:00" },
+      }, {
+        new: { id: 9, time_observed_at: "2026-04-01T06:00:00-06:00" },
+      } ) ).toEqual( ["new", "aprilMorning"] );
     } );
 
-    it( "puts it last when it's older than everything and the section is fully loaded", ( ) => {
-      expect( place( DATE_OBSERVED_NEWEST, loaded, [upload( "2026-01-01" )] ) )
-        .toEqual( ["may", "april", "march", "new"] );
+    it( "breaks a tie on the moment observed by id, newest first", ( ) => {
+      expect( place( DATE_OBSERVED_NEWEST, loaded, {
+        older: { id: 7, observed_on_string: "2026-04-01T09:00:00" },
+        newer: { id: 8, observed_on_string: "2026-04-01T09:00:00" },
+      } ) ).toEqual( ["may", "aprilEvening", "newer", "older", "aprilMorning", "march"] );
+    } );
+
+    it( "puts a loaded tile with only a date at the start of its day", ( ) => {
+      expect( place( DATE_OBSERVED_NEWEST, {
+        aprilMorning: { id: 3, time_observed_at: "2026-04-01T09:00:00+00:00" },
+        aprilNoTime: { id: 5, observed_on: "2026-04-01" },
+      }, {
+        new: { id: 9, observed_on_string: "2026-04-01T06:00:00" },
+      } ) ).toEqual( ["aprilMorning", "new", "aprilNoTime"] );
     } );
 
     it( "leaves it out when it's older than everything loaded and there are more pages", ( ) => {
-      expect( place( DATE_OBSERVED_NEWEST, loaded, [upload( "2026-01-01" )], true ) )
-        .toEqual( ["may", "april", "march"] );
+      const uploads = { new: { id: 9, observed_on_string: "2026-01-01T12:00:00" } };
+
+      expect( place( DATE_OBSERVED_NEWEST, loaded, uploads ) )
+        .toEqual( ["may", "aprilEvening", "aprilMorning", "march", "new"] );
+      expect( place( DATE_OBSERVED_NEWEST, loaded, uploads, { hasMore: true } ) )
+        .toEqual( ["may", "aprilEvening", "aprilMorning", "march"] );
     } );
 
-    it( "places each of several uploads among the others", ( ) => {
-      expect( place( DATE_OBSERVED_NEWEST, loaded, [
-        upload( "2026-04-15", "mid-april" ),
-        upload( "2026-04-20", "late-april" ),
-      ] ) ).toEqual( ["may", "late-april", "mid-april", "april", "march"] );
-    } );
-
-    it( "puts it before loaded tiles with no date, which the server sorts last", ( ) => {
-      expect( place( DATE_OBSERVED_NEWEST, { may: "2026-05-01", undated: null }, [
-        upload( "2026-04-01" ),
-      ] ) ).toEqual( ["may", "new", "undated"] );
+    it( "puts an upload with no date last, as the server does", ( ) => {
+      expect( place( DATE_OBSERVED_NEWEST, loaded, { new: { id: 9 } } ) )
+        .toEqual( ["may", "aprilEvening", "aprilMorning", "march", "new"] );
     } );
   } );
 
   describe( "by date observed, oldest first", ( ) => {
-    const loaded = { march: "2026-03-01", april: "2026-04-01", may: "2026-05-01" };
+    const loaded = {
+      aprilMorning: { id: 3, time_observed_at: "2026-04-01T09:00:00+00:00" },
+      aprilEvening: { id: 2, time_observed_at: "2026-04-01T18:00:00+00:00" },
+    };
 
-    it( "puts it before the first loaded tile observed after it", ( ) => {
-      expect( place( DATE_OBSERVED_OLDEST, loaded, [upload( "2026-04-15" )] ) )
-        .toEqual( ["march", "april", "new", "may"] );
+    it( "places it by the moment observed, and breaks ties by id, oldest first", ( ) => {
+      expect( place( DATE_OBSERVED_OLDEST, loaded, {
+        newer: { id: 8, observed_on_string: "2026-04-01T12:00:00" },
+        older: { id: 7, observed_on_string: "2026-04-01T12:00:00" },
+      } ) ).toEqual( ["aprilMorning", "older", "newer", "aprilEvening"] );
     } );
 
-    it( "puts it last among tiles observed the same day", ( ) => {
-      expect( place( DATE_OBSERVED_OLDEST, loaded, [upload( "2026-04-01" )] ) )
-        .toEqual( ["march", "april", "new", "may"] );
+    it( "puts an upload with no date last, and leaves it out while there are more pages", ( ) => {
+      expect( place( DATE_OBSERVED_OLDEST, loaded, { new: { id: 9 } } ) )
+        .toEqual( ["aprilMorning", "aprilEvening", "new"] );
+      expect( place( DATE_OBSERVED_OLDEST, loaded, { new: { id: 9 } }, { hasMore: true } ) )
+        .toEqual( ["aprilMorning", "aprilEvening"] );
     } );
   } );
 
-  it( "puts an upload with no date last, and leaves it out while there are more pages", ( ) => {
-    const loaded = { may: "2026-05-01", april: "2026-04-01" };
+  it( "leaves an upload whose server copy has loaded where the server put it, even as the "
+    + "last loaded tile of a section with more pages", ( ) => {
+    const loaded = { fifty: { id: 50 }, uploaded: { id: 45 } };
 
-    expect( place( DATE_OBSERVED_NEWEST, loaded, [upload( null )] ) )
-      .toEqual( ["may", "april", "new"] );
-    expect( place( DATE_OBSERVED_OLDEST, loaded, [upload( null )], true ) )
-      .toEqual( ["may", "april"] );
+    expect( place( DATE_UPLOADED_NEWEST, loaded, { uploaded: { id: 45 } }, { hasMore: true } ) )
+      .toEqual( ["fifty", "uploaded"] );
   } );
 } );
 
 describe( "buildIconicTaxaRows with held uploads", ( ) => {
+  const observations: Record<string, SortableObservation> = {
+    may: { id: 1, time_observed_at: "2026-05-01T12:00:00+00:00" },
+    march: { id: 2, time_observed_at: "2026-03-01T12:00:00+00:00" },
+    uploaded: { id: 3, observed_on_string: "2026-04-01T12:00:00" },
+  };
+
+  const rowsWith = ( {
+    sections,
+    unsyncedByCategory = new Map( ),
+    uploadsByCategory,
+  }: {
+    sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
+    unsyncedByCategory?: Map<ICONIC_TAXA_GROUP, string[]>;
+    uploadsByCategory: Map<ICONIC_TAXA_GROUP, string[]>;
+  } ) => buildIconicTaxaRows( {
+    collapsedCategories: new Set( ),
+    orderedCounts: [
+      { category: ICONIC_TAXA_GROUP.AVES, count: 3 },
+      { category: ICONIC_TAXA_GROUP.PLANTAE, count: 1 },
+    ],
+    sections,
+    unsyncedByCategory,
+    uploadsByCategory,
+    sort: OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
+    getObservationByUuid: uuid => observations[uuid] ?? null,
+  } );
+
   it( "keeps unsynced observations pinned at the top while placing a held upload by "
     + "sort", ( ) => {
-    const observedOn: Record<string, string> = { may: "2026-05-01", march: "2026-03-01" };
-    const rows = buildIconicTaxaRows( {
-      collapsedCategories: new Set( ),
-      orderedCounts: [{ category: ICONIC_TAXA_GROUP.AVES, count: 3 }],
+    const rows = rowsWith( {
       sections: new Map( [[ICONIC_TAXA_GROUP.AVES, section( { uuids: ["may", "march"] } )]] ),
       unsyncedByCategory: new Map( [[ICONIC_TAXA_GROUP.AVES, ["unsynced"]]] ),
-      uploadsByCategory: new Map( [[
-        ICONIC_TAXA_GROUP.AVES,
-        [{ uuid: "uploaded", observedOn: "2026-04-01" }],
-      ]] ),
-      sort: OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
-      observedOnOf: uuid => observedOn[uuid] ?? null,
+      uploadsByCategory: new Map( [[ICONIC_TAXA_GROUP.AVES, ["uploaded"]]] ),
     } );
 
     expect( tileKeys( rows ) ).toEqual( ["unsynced", "may", "uploaded", "march"] );
+  } );
+
+  it( "shows a held upload only under its local category when the server still lists it "
+    + "under another", ( ) => {
+    const rows = rowsWith( {
+      sections: new Map( [
+        [ICONIC_TAXA_GROUP.AVES, section( { uuids: ["may", "march"] } )],
+        [ICONIC_TAXA_GROUP.PLANTAE, section( { uuids: ["uploaded"] } )],
+      ] ),
+      uploadsByCategory: new Map( [[ICONIC_TAXA_GROUP.AVES, ["uploaded"]]] ),
+    } );
+
+    expect( tileKeys( rows ) ).toEqual( ["may", "uploaded", "march"] );
   } );
 } );
