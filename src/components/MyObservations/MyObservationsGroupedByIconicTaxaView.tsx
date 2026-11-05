@@ -31,8 +31,7 @@ import {
 } from "./helpers/iconicTaxaSections";
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
 import useIconicTaxaSectionObservations from "./hooks/useIconicTaxaSectionObservations";
-import useUnsyncedObservationIdsByIconicTaxon
-  from "./hooks/useUnsyncedObservationIdsByIconicTaxon";
+import usePinnedObservationsByIconicTaxon from "./hooks/usePinnedObservationsByIconicTaxon";
 import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
 
 function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string> {
@@ -114,7 +113,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   const {
     unsyncedByCategory,
     uploadsByCategory,
-  } = useUnsyncedObservationIdsByIconicTaxon( serverUuids );
+  } = usePinnedObservationsByIconicTaxon( serverUuids );
 
   // Loaded tiles have hydrated into Realm, so their observed dates are read from there when
   // placing a held upload under a date-observed sort

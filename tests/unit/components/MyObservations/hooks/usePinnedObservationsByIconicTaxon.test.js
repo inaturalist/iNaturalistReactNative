@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-native";
-import useUnsyncedObservationIdsByIconicTaxon
-  from "components/MyObservations/hooks/useUnsyncedObservationIdsByIconicTaxon";
+import usePinnedObservationsByIconicTaxon
+  from "components/MyObservations/hooks/usePinnedObservationsByIconicTaxon";
 import { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useStore from "stores/useStore";
@@ -39,7 +39,7 @@ const createObservation = observation => {
   const realm = global.mockRealms[mockRealmIdentifier];
   safeRealmWrite( realm, ( ) => {
     realm.create( "Observation", observation, "modified" );
-  }, "create test observation for useUnsyncedObservationIdsByIconicTaxon" );
+  }, "create test observation for usePinnedObservationsByIconicTaxon" );
 };
 
 const unsyncedObsWithIconicTaxon = ( iconicTaxonName, overrides = {} ) => factory(
@@ -61,19 +61,19 @@ beforeEach( ( ) => {
   const realm = global.mockRealms[mockRealmIdentifier];
   safeRealmWrite( realm, ( ) => {
     realm.deleteAll( );
-  }, "clear realm before each useUnsyncedObservationIdsByIconicTaxon test" );
+  }, "clear realm before each usePinnedObservationsByIconicTaxon test" );
 } );
 
 const unsyncedIn = ( result, category ) => result.current.unsyncedByCategory.get( category );
 
-describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
+describe( "usePinnedObservationsByIconicTaxon", ( ) => {
   it( "groups unsynced observations by the iconic taxon of their local taxon", ( ) => {
     const bird = unsyncedObsWithIconicTaxon( "Aves" );
     const plant = unsyncedObsWithIconicTaxon( "Plantae" );
     createObservation( bird );
     createObservation( plant );
 
-    const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
+    const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [bird.uuid] );
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.PLANTAE ) ).toEqual( [plant.uuid] );
@@ -84,7 +84,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     const noTaxon = unsyncedObsWithIconicTaxon( null );
     createObservation( noTaxon );
 
-    const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
+    const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.OTHER ) ).toEqual( [noTaxon.uuid] );
   } );
@@ -94,7 +94,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     const unrecognized = unsyncedObsWithIconicTaxon( "Bacteria" );
     createObservation( unrecognized );
 
-    const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
+    const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.OTHER ) ).toEqual( [unrecognized.uuid] );
   } );
@@ -104,7 +104,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     const stillPinned = unsyncedObsWithIconicTaxon( "Aves" );
     createObservation( stillPinned );
 
-    const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
+    const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [stillPinned.uuid] );
   } );
@@ -117,7 +117,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     const stillPinned = unsyncedObsWithIconicTaxon( "Aves" );
     createObservation( stillPinned );
 
-    const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
+    const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [stillPinned.uuid] );
   } );
@@ -128,7 +128,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     createObservation( older );
     createObservation( newer );
 
-    const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
+    const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( ) );
 
     expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [newer.uuid, older.uuid] );
   } );
@@ -152,7 +152,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     it( "keeps it pinned, since the cached pages were fetched before it existed", ( ) => {
       const uploaded = uploadedObsWithIconicTaxon( "Aves" );
 
-      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ) );
 
       expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [uploaded.uuid] );
     } );
@@ -164,7 +164,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
         observed_on_string: "2026-03-04T10:15:00",
       } );
 
-      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ) );
 
       expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
       expect( result.current.uploadsByCategory.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [
@@ -175,7 +175,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     it( "lets it go once the sections have loaded it from the server", ( ) => {
       const uploaded = uploadedObsWithIconicTaxon( "Aves" );
 
-      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon(
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon(
         new Set( [uploaded.uuid] ),
       ) );
 
@@ -185,7 +185,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     it( "moves it with a local taxon change rather than leaving it in its old section", ( ) => {
       const uploaded = uploadedObsWithIconicTaxon( "Aves" );
       const { result, rerender } = renderHook(
-        ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ),
+        ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ),
       );
 
       createObservation( {
@@ -201,7 +201,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     it( "doesn't keep it pinned once the user deletes it", ( ) => {
       uploadedObsWithIconicTaxon( "Aves", { _deleted_at: new Date( ) } );
 
-      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
+      const { result } = renderHook( ( ) => usePinnedObservationsByIconicTaxon( new Set( ) ) );
 
       expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
     } );

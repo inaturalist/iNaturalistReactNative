@@ -37,7 +37,7 @@ function addTo<T>(
   }
 }
 
-const useUnsyncedObservationIdsByIconicTaxon = (
+const usePinnedObservationsByIconicTaxon = (
   serverUuids?: Set<string>,
 ): PinnedObservations => {
   const firstUploadUuids = useStore( state => state.firstUploadUuids );
@@ -87,4 +87,4 @@ const useUnsyncedObservationIdsByIconicTaxon = (
   }, [pinnedObs, serverUuids] );
 };
 
-export default useUnsyncedObservationIdsByIconicTaxon;
+export default usePinnedObservationsByIconicTaxon;

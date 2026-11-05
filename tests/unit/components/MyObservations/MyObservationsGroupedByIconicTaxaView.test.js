@@ -24,7 +24,7 @@ jest.mock( "components/MyObservations/hooks/useIconicTaxaObservationCounts", ( )
   } ),
 } ) );
 
-jest.mock( "components/MyObservations/hooks/useUnsyncedObservationIdsByIconicTaxon", ( ) => ( {
+jest.mock( "components/MyObservations/hooks/usePinnedObservationsByIconicTaxon", ( ) => ( {
   __esModule: true,
   default: ( ) => ( { unsyncedByCategory: new Map( ), uploadsByCategory: new Map( ) } ),
 } ) );
