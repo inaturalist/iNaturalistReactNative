@@ -2,7 +2,7 @@ import { createRelationships, updateRelationships } from "api/relationships";
 import type { ApiRelationship } from "api/types";
 import React, { useState } from "react";
 import { Alert } from "react-native";
-import type User from "realmModels/User";
+import type { UserPojo } from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 import useInvalidateUserLists from "sharedHooks/useInvalidateUserLists";
@@ -12,7 +12,7 @@ import FollowButton from "./FollowButton";
 const logger = log.extend( "FollowButtonContainer" );
 
 interface Props {
-  currentUser: User | null;
+  currentUser: UserPojo | null;
   refetchRelationship: ( ) => void;
   relationship?: ApiRelationship;
   setShowLoginSheet: ( _show: boolean ) => void;

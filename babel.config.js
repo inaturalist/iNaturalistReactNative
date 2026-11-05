@@ -12,6 +12,9 @@ module.exports = function ( api ) {
     presets: ["module:@react-native/babel-preset", "nativewind/babel"],
     plugins: [
       "babel-plugin-react-compiler", // must run first!
+      // The RN preset runs flow-strip-types on .ts files too; without this it throws on the
+      // `declare` fields that type Realm model classes
+      ["@babel/plugin-transform-flow-strip-types", { allowDeclareFields: true }],
       "@babel/plugin-transform-export-namespace-from",
       "transform-inline-environment-variables",
       ["module-resolver", {

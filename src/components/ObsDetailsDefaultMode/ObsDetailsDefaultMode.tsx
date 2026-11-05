@@ -9,7 +9,8 @@ import React, {
   useRef,
 } from "react";
 import type Observation from "realmModels/Observation";
-import type { RealmObservation, RealmUser } from "realmModels/types";
+import type { RealmObservation } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import {
   useScrollToOffset,
 } from "sharedHooks";
@@ -33,7 +34,7 @@ interface Props {
   activityItems: object[];
   addingActivityItem: boolean;
   belongsToCurrentUser: boolean;
-  currentUser: RealmUser;
+  currentUser: UserPojo | null;
   isConnected: boolean;
   navToSuggestions: () => void;
   observation: RealmObservation & Observation & { id: number };
