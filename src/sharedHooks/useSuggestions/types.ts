@@ -55,12 +55,14 @@ export interface UseSuggestionsResult {
 
 type MaybeLatLng = { lat: number; lng: number } | { lat: undefined; lng: undefined };
 
+export interface ScoreImageFile {
+  uri: string;
+  name: string;
+  type: string;
+}
+
 export type ScoreImageParams = MaybeLatLng & {
-  image: {
-    uri: string;
-    name: string;
-    type: string;
-  };
+  image: ScoreImageFile;
 }
 
 export interface UseSuggestionsOptions {
