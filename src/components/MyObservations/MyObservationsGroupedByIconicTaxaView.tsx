@@ -8,10 +8,12 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { TFunction } from "i18next";
+import { RealmContext } from "providers/contexts";
 import { useMyObservations } from "providers/MyObservationsContext";
 import React, {
   useCallback, useEffect, useMemo, useRef, useState,
 } from "react";
+import type { RealmObservation } from "realmModels/types";
 import { ICONIC_TAXA_GROUP, iconicTaxaGroupIcon } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import type { MyObservationsSlice } from "stores/createMyObservationsSlice";
@@ -60,11 +62,14 @@ interface Props {
 // How many tiles ahead of the last loaded one to start fetching.
 const PREFETCH_TILES = 15;
 
+const { useRealm } = RealmContext;
+
 const MyObservationsGroupedByIconicTaxaView = ( {
   handlePullToRefresh,
   listHeaderContent,
 }: Props ) => {
   const { t } = useTranslation( );
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { state } = useMyObservations( );
   const { observationsSort } = state;
@@ -106,7 +111,19 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     ( ) => new Set( [...sections.values( )].flatMap( section => section.uuids ) ),
     [sections],
   );
-  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( serverUuids );
+  const {
+    unsyncedByCategory,
+    uploadsByCategory,
+  } = useUnsyncedObservationIdsByIconicTaxon( serverUuids );
+
+  // Loaded tiles have hydrated into Realm, so their observed dates are read from there when
+  // placing a held upload under a date-observed sort
+  const observedOnOf = useCallback(
+    ( uuid: string ) => realm
+      .objectForPrimaryKey<RealmObservation>( "Observation", uuid )
+      ?.observed_on ?? null,
+    [realm],
+  );
 
   // Changing sort re-sorts every section's contents, so the list the user was reading is gone.
   // Put them back at the top.
@@ -124,7 +141,19 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       orderedCounts: counts,
       sections,
       unsyncedByCategory,
-    } ) ), [collapsedCategories, counts, isLoadingCounts, sections, unsyncedByCategory] );
+      uploadsByCategory,
+      sort: observationsSort,
+      observedOnOf,
+    } ) ), [
+    collapsedCategories,
+    counts,
+    isLoadingCounts,
+    observationsSort,
+    observedOnOf,
+    sections,
+    unsyncedByCategory,
+    uploadsByCategory,
+  ] );
 
   const sectionRanges = useMemo( ( ) => sectionRowRanges( rows ), [rows] );
 

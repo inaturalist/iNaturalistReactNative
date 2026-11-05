@@ -1,5 +1,6 @@
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import type { ICONIC_TAXA_GROUP, IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
 // Shared by section pages and counts so they go stale together (hasMore comes from the count).
 // Long enough that a remount doesn't refetch every loaded page, or overwrite a count adjusted
@@ -33,12 +34,98 @@ export interface IconicTaxaSpan {
 
 export type IconicTaxaRow = SmallGridItem<string, IconicTaxaHeader, IconicTaxaSpan>;
 
+// A first-time upload whose section hasn't loaded its server copy yet
+export interface HeldUpload {
+  uuid: string;
+  // YYYY-MM-DD, or null if it has no date
+  observedOn: string | null;
+}
+
+interface PlaceHeldUploadsParams {
+  sort: OBSERVATIONS_SORT;
+  // the section's loaded server uuids, in server order
+  sectionUuids: string[];
+  hasMore: boolean;
+  // newest first
+  uploads: HeldUpload[];
+  // a loaded observation's observed date, as YYYY-MM-DD
+  observedOnOf: ( uuid: string ) => string | null;
+}
+
+// Puts held uploads where the current sort would put them among a section's loaded tiles. One
+// that sorts past the last loaded tile is left out while the section has more pages, since it
+// will arrive with a later one.
+//
+// The server orders observed dates by day only, so same-day ties are a guess: a new upload goes
+// first among its day's tiles when newest-first, and last when oldest-first. Observations with no
+// date sort last either way.
+export function placeHeldUploads( {
+  sort,
+  sectionUuids,
+  hasMore,
+  uploads,
+  observedOnOf,
+}: PlaceHeldUploadsParams ): string[] {
+  if ( uploads.length === 0 ) return sectionUuids;
+  const uploadUuids = uploads.map( ( { uuid } ) => uuid );
+
+  if ( sort === OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST ) {
+    // A new upload is the newest observation the user has, so it belongs at the very end
+    return hasMore
+      ? sectionUuids
+      : [...sectionUuids, ...uploadUuids.reverse( )];
+  }
+  if (
+    sort !== OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST
+    && sort !== OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST
+  ) {
+    return [...uploadUuids, ...sectionUuids];
+  }
+
+  const newestFirst = sort === OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST;
+  const uploadDays = new Map( uploads.map( ( { uuid, observedOn } ) => [uuid, observedOn] ) );
+  const dayOf = ( uuid: string ) => ( uploadDays.has( uuid )
+    ? uploadDays.get( uuid ) ?? null
+    : observedOnOf( uuid ) );
+  // Whether a tile belongs after the given upload day.
+  const sortsAfter = ( tileDay: string | null, uploadDay: string ) => {
+    if ( tileDay === null ) return true;
+    return newestFirst
+      ? tileDay <= uploadDay
+      : tileDay > uploadDay;
+  };
+
+  const placed = [...sectionUuids];
+  uploads.forEach( ( { uuid, observedOn } ) => {
+    let index = placed.length;
+    if ( observedOn !== null ) {
+      let low = 0;
+      let high = placed.length;
+      while ( low < high ) {
+        const middle = Math.floor( ( low + high ) / 2 );
+        if ( sortsAfter( dayOf( placed[middle] ), observedOn ) ) {
+          high = middle;
+        } else {
+          low = middle + 1;
+        }
+      }
+      index = low;
+    }
+    if ( index === placed.length && hasMore ) return;
+    placed.splice( index, 0, uuid );
+  } );
+  return placed;
+}
+
 interface BuildIconicTaxaRowsParams {
   collapsedCategories: Set<ICONIC_TAXA_GROUP>;
   // most-observed first; drives both section order and header counts
   orderedCounts: IconicTaxaGroupCount[];
   sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
   unsyncedByCategory: Map<ICONIC_TAXA_GROUP, string[]>;
+  uploadsByCategory?: Map<ICONIC_TAXA_GROUP, HeldUpload[]>;
+  sort?: OBSERVATIONS_SORT;
+  observedOnOf?: ( uuid: string ) => string | null;
 }
 
 // Flattens the sections into the single row list SmallGrid renders.
@@ -47,6 +134,9 @@ export function buildIconicTaxaRows( {
   orderedCounts,
   sections,
   unsyncedByCategory,
+  uploadsByCategory = new Map( ),
+  sort = OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+  observedOnOf = ( ) => null,
 }: BuildIconicTaxaRowsParams ): IconicTaxaRow[] {
   // Deduped against every category's pins, not just this section's: an observation whose taxon
   // was changed locally is pinned under its new category while the server still returns it
@@ -65,7 +155,13 @@ export function buildIconicTaxaRows( {
     const section = sections.get( category );
     const uuids = [
       ...unsyncedByCategory.get( category ) ?? [],
-      ...( section?.uuids ?? [] ).filter( uuid => !pinnedUuids.has( uuid ) ),
+      ...placeHeldUploads( {
+        sort,
+        sectionUuids: ( section?.uuids ?? [] ).filter( uuid => !pinnedUuids.has( uuid ) ),
+        hasMore: section?.hasMore ?? count > 0,
+        uploads: uploadsByCategory.get( category ) ?? [],
+        observedOnOf,
+      } ),
     ];
     const tileRows: IconicTaxaRow[] = uuids.map( uuid => ( {
       type: "tile",

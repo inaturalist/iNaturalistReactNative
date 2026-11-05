@@ -1,3 +1,4 @@
+import type { HeldUpload } from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
 import { useMemo } from "react";
 import type { RealmObservation } from "realmModels/types";
@@ -15,11 +16,30 @@ const { useQuery } = RealmContext;
 // This is the same filter useMyObservationsQuery uses to prepend unsynced observations to the
 // flat list, so both views pin the same set.
 //
-// An upload stays pinned after needs_sync clears, until it shows up in serverUuids,
-// so it doesn't vanish when the cached pages predate its existence.
+// A first-time upload is held separately after needs_sync clears, until it shows up in
+// serverUuids, so it doesn't vanish when the cached pages predate its existence. It carries its
+// observed date so the view can place it where the current sort puts it.
+interface PinnedObservations {
+  unsyncedByCategory: Map<ICONIC_TAXA_GROUP, string[]>;
+  uploadsByCategory: Map<ICONIC_TAXA_GROUP, HeldUpload[]>;
+}
+
+function addTo<T>(
+  byCategory: Map<ICONIC_TAXA_GROUP, T[]>,
+  category: ICONIC_TAXA_GROUP,
+  item: T,
+) {
+  const items = byCategory.get( category );
+  if ( items ) {
+    items.push( item );
+  } else {
+    byCategory.set( category, [item] );
+  }
+}
+
 const useUnsyncedObservationIdsByIconicTaxon = (
   serverUuids?: Set<string>,
-): Map<ICONIC_TAXA_GROUP, string[]> => {
+): PinnedObservations => {
   const firstUploadUuids = useStore( state => state.firstUploadUuids );
 
   const pinnedObs = useQuery<RealmObservation & { needs_sync: boolean }>(
@@ -41,18 +61,29 @@ const useUnsyncedObservationIdsByIconicTaxon = (
   );
 
   return useMemo( ( ) => {
-    const byCategory = new Map<ICONIC_TAXA_GROUP, string[]>( );
-    pinnedObs.forEach( ( { needs_sync: needsSync, taxon, uuid } ) => {
-      if ( !needsSync && serverUuids?.has( uuid ) ) return;
+    const unsyncedByCategory = new Map<ICONIC_TAXA_GROUP, string[]>( );
+    const uploadsByCategory = new Map<ICONIC_TAXA_GROUP, HeldUpload[]>( );
+    pinnedObs.forEach( ( {
+      needs_sync: needsSync,
+      observed_on: observedOn,
+      observed_on_string: observedOnString,
+      taxon,
+      uuid,
+    } ) => {
       const category = iconicTaxaGroupForTaxonName( taxon?.iconic_taxon_name );
-      const uuids = byCategory.get( category );
-      if ( uuids ) {
-        uuids.push( uuid );
-      } else {
-        byCategory.set( category, [uuid] );
+      if ( needsSync ) {
+        addTo( unsyncedByCategory, category, uuid );
+        return;
       }
+      if ( serverUuids?.has( uuid ) ) return;
+      // The server only fills in observed_on once the observation syncs back. Locally the
+      // string starts with the date, as YYYY-MM-DD.
+      addTo( uploadsByCategory, category, {
+        uuid,
+        observedOn: observedOn || observedOnString?.slice( 0, 10 ) || null,
+      } );
     } );
-    return byCategory;
+    return { unsyncedByCategory, uploadsByCategory };
   }, [pinnedObs, serverUuids] );
 };
 
