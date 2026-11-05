@@ -10,6 +10,9 @@ const config: Config = {
     "\\.svg": "<rootDir>/tests/mocks/svgMock.js",
     "\\.css$": "<rootDir>/tests/mocks/cssMock.js",
   },
+  // agent worktrees (.claude/worktrees) are full repo copies: their tests and __mocks__ would
+  // otherwise run alongside ours and collide with our manual mocks
+  modulePathIgnorePatterns: ["<rootDir>/.claude/"],
   preset: "react-native",
   setupFiles: [
     "./node_modules/react-native-gesture-handler/jestSetup.js",
