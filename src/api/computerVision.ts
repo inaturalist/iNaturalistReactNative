@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 import Taxon from "realmModels/Taxon";
+import type { ScoreImageFile } from "sharedHooks/useSuggestions/types";
 
 import type { ErrorWithResponse, INatApiError } from "./error";
 import handleError from "./error";
@@ -19,6 +20,7 @@ const PARAMS = {
 
 interface ScoreImageApiParams extends ApiParams {
   locale?: string;
+  image?: ScoreImageFile;
 }
 
 const scoreImage = async <T = ApiDefaultResult>(
