@@ -77,7 +77,6 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     isLoading: isLoadingCounts,
     refetch: refetchCounts,
   } = useIconicTaxaObservationCounts( );
-  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
   const collapsedCategories: MyObservationsSlice["myObservationsClosedIconicTaxaCategories"]
     = useStore(
@@ -102,6 +101,12 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     orderedCounts: counts,
     sortBy: observationsSort,
   } );
+
+  const serverUuids = useMemo(
+    ( ) => new Set( [...sections.values( )].flatMap( section => section.uuids ) ),
+    [sections],
+  );
+  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( serverUuids );
 
   // Changing sort re-sorts every section's contents, so the list the user was reading is gone.
   // Put them back at the top.
