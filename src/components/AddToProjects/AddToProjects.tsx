@@ -37,6 +37,7 @@ import colors from "styles/tailwindColors";
 import useSyncJoinedProjects from "./hooks/useSyncJoinedProjects";
 import ObservationFieldInput from "./ObservationFieldInput";
 import ProjectRuleRow from "./ProjectRuleRow";
+import RuleStatusIcon from "./RuleStatusIcon";
 
 const { useQuery } = RealmContext;
 
@@ -230,11 +231,7 @@ const AddToProjects = ( ) => {
             !projectValid
               ? (
                 <View className="px-4 py-2.5 flex-row justify-center items-center">
-                  <INatIcon
-                    name="triangle-exclamation"
-                    color={colors.warningRed}
-                    size={19}
-                  />
+                  <RuleStatusIcon passed={false} />
                   <Body3 className="ml-2.5">
                     {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
                   </Body3>
@@ -242,11 +239,7 @@ const AddToProjects = ( ) => {
               )
               : (
                 <View className="px-4 py-2.5 flex-row justify-center items-center">
-                  <INatIcon
-                    name="checkmark-circle"
-                    color={colors.inatGreen}
-                    size={19}
-                  />
+                  <RuleStatusIcon passed />
                   <Body3 className="ml-2.5">
                     {t( "All-required-fields-have-been-filled" )}
                   </Body3>

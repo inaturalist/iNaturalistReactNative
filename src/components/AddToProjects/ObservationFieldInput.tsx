@@ -3,12 +3,13 @@ import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericField
 import SelectFieldInput from "components/AddToProjects/FieldInputs/SelectFieldInput";
 import TaxonFieldInput from "components/AddToProjects/FieldInputs/TaxonFieldInput";
 import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
-import { Body1, Body4, INatIcon } from "components/SharedComponents";
+import { Body1, Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { RealmObservationField, RealmProjectObservationField } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
+
+import RuleStatusIcon from "./RuleStatusIcon";
 
 interface Props {
   projectObservationField: RealmProjectObservationField;
@@ -59,21 +60,7 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
         {projectObservationField.required && (
           <View className="flex-row items-center">
             <Body4 className="mr-2.5">{t( "Required" )}</Body4>
-            {isValid
-              ? (
-                <INatIcon
-                  name="checkmark-circle"
-                  color={colors.inatGreen}
-                  size={19}
-                />
-              )
-              : (
-                <INatIcon
-                  name="triangle-exclamation"
-                  color={colors.warningRed}
-                  size={19}
-                />
-              )}
+            <RuleStatusIcon passed={isValid} />
           </View>
         )}
       </View>
