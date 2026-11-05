@@ -54,7 +54,7 @@ const useNavigateToExplore = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<
     "TaxonDetails" | "UserProfile" | "ProjectDetails" | "ProjectRequirements"
   >["navigation"]>( );
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
+  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2 );
   const setExploreView = useStore( state => state.setExploreView );
   const { writeLayoutToStorage: writeLegacyLayout } = useStoredLayout(
     "exploreObservationsLayout",

@@ -72,15 +72,15 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
     adapter: createRNFSAdapter( RNFS ),
   } );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
-    = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
+    = useFeatureFlagForDebug( FeatureFlag.ExploreV2 );
   const {
     resolvedValue: traditionalProjectsEnabled,
     setOverride: setTraditionalProjectsEnabled,
-  } = useFeatureFlagForDebug( FeatureFlag.TraditionalProjectsEnabled );
+  } = useFeatureFlagForDebug( FeatureFlag.TraditionalProjects );
   const {
     resolvedValue: myObservationsSmallGridViewEnabled,
     setOverride: setMyObservationsSmallGridViewEnabled,
-  } = useFeatureFlagForDebug( FeatureFlag.MyObservationsSmallGridViewEnabled );
+  } = useFeatureFlagForDebug( FeatureFlag.MyObservationsSmallGridView );
 
   const sections = useMemo(
     () => [

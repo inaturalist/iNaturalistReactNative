@@ -74,7 +74,7 @@ const OtherDataSection = ( {
       value: true,
     }];
 
-  const traditionalProjectsEnabled = useFeatureFlag( FeatureFlag.TraditionalProjectsEnabled );
+  const traditionalProjectsEnabled = useFeatureFlag( FeatureFlag.TraditionalProjects );
 
   const projectCount = ( currentObservation?.projectObservations ?? [] )
     .filter( po => !po._pendingRemoval && !po._pending_deletion )

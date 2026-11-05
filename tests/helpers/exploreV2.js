@@ -5,6 +5,7 @@ import {
   within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 const actor = userEvent.setup( );
@@ -13,9 +14,9 @@ const actor = userEvent.setup( );
  * store after each test. */
 export const enableExploreV2 = ( ) => act( ( ) => {
   useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      exploreV2Enabled: true,
+    featureFlagDebugOverrides: {
+      ...state.featureFlagDebugOverrides,
+      [FeatureFlag.ExploreV2]: true,
     },
   } ) );
 } );

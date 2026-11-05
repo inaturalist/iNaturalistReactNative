@@ -110,7 +110,7 @@ const MyObservationsResults = ( ) => {
   }, [navigation, setJustFinishedSignup] );
 
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
-    FeatureFlag.MyObservationsSmallGridViewEnabled,
+    FeatureFlag.MyObservationsSmallGridView,
   );
   const { isConnected } = useNetInfo( );
   const {

@@ -8,6 +8,7 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import ReactNativePermissions from "react-native-permissions";
 import Observation from "realmModels/Observation";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -92,7 +93,7 @@ beforeEach( ( ) => {
     isDefaultMode: false,
     isAllAddObsOptionsMode: true,
   } );
-  setStoreStateFeatureFlags( { exploreV2Enabled: false } );
+  setStoreStateFeatureFlags( { [FeatureFlag.ExploreV2]: false } );
 } );
 
 const actor = userEvent.setup( );

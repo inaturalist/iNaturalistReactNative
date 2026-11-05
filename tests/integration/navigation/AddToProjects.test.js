@@ -91,7 +91,7 @@ beforeEach( () => {
     isDefaultMode: false,
   } );
   setStoreStateFeatureFlags( {
-    [FeatureFlag.TraditionalProjectsEnabled]: true,
+    [FeatureFlag.TraditionalProjects]: true,
   } );
 } );
 

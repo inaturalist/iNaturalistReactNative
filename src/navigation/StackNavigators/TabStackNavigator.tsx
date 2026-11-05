@@ -168,7 +168,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const initialRouteName
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
+  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2 );
   const ExploreScreen = exploreV2Enabled
     ? ExploreV2Container
     : ExploreContainer;

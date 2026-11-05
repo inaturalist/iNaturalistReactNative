@@ -111,7 +111,7 @@ beforeEach( async ( ) => {
     isAllAddObsOptionsMode: true,
   } );
   setStoreStateFeatureFlags( {
-    [FeatureFlag.TraditionalProjectsEnabled]: true,
+    [FeatureFlag.TraditionalProjects]: true,
   } );
   jest.spyOn( Alert, "alert" ).mockImplementation( ( ) => undefined );
   networkState.current = ONLINE;

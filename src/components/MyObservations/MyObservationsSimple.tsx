@@ -181,7 +181,7 @@ const MyObservationsSimple = ( {
   // so tapping a card will continue to navigate to TaxonDetails.
   const canSearchFromSpeciesTab = !!currentUser;
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
-    FeatureFlag.MyObservationsSmallGridViewEnabled,
+    FeatureFlag.MyObservationsSmallGridView,
   );
   const viewOptions: ViewOption[] = ["grid", "list"];
   if ( myObservationsSmallGridViewEnabled && currentUser ) {
