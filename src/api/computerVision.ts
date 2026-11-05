@@ -17,12 +17,12 @@ const PARAMS = {
   },
 } as const;
 
-export interface ScoreImageParams extends ApiParams {
+interface ScoreImageApiParams extends ApiParams {
   locale?: string;
 }
 
 const scoreImage = async <T = ApiDefaultResult>(
-  params: ScoreImageParams = {},
+  params: ScoreImageApiParams = {},
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
