@@ -64,6 +64,8 @@ beforeEach( ( ) => {
   }, "clear realm before each useUnsyncedObservationIdsByIconicTaxon test" );
 } );
 
+const unsyncedIn = ( result, category ) => result.current.unsyncedByCategory.get( category );
+
 describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
   it( "groups unsynced observations by the iconic taxon of their local taxon", ( ) => {
     const bird = unsyncedObsWithIconicTaxon( "Aves" );
@@ -73,8 +75,8 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
-    expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [bird.uuid] );
-    expect( result.current.get( ICONIC_TAXA_GROUP.PLANTAE ) ).toEqual( [plant.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [bird.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.PLANTAE ) ).toEqual( [plant.uuid] );
   } );
 
   it( "puts observations with no taxon in OTHER, so a brand new observation is still "
@@ -84,7 +86,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
-    expect( result.current.get( ICONIC_TAXA_GROUP.OTHER ) ).toEqual( [noTaxon.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.OTHER ) ).toEqual( [noTaxon.uuid] );
   } );
 
   it( "puts observations with an unrecognized iconic taxon in OTHER rather than dropping "
@@ -94,7 +96,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
-    expect( result.current.get( ICONIC_TAXA_GROUP.OTHER ) ).toEqual( [unrecognized.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.OTHER ) ).toEqual( [unrecognized.uuid] );
   } );
 
   it( "excludes observations that have already been uploaded", ( ) => {
@@ -104,7 +106,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
-    expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [stillPinned.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [stillPinned.uuid] );
   } );
 
   it( "excludes observations the user has deleted", ( ) => {
@@ -117,7 +119,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
-    expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [stillPinned.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [stillPinned.uuid] );
   } );
 
   it( "orders a category's observations newest first, matching the flat list's pins", ( ) => {
@@ -128,7 +130,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
-    expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [newer.uuid, older.uuid] );
+    expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [newer.uuid, older.uuid] );
   } );
 
   describe( "after a first-time upload", ( ) => {
@@ -144,12 +146,30 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
       return observation;
     };
 
+    const heldIn = ( result, category ) => result.current.uploadsByCategory
+      .get( category )?.map( ( { uuid } ) => uuid );
+
     it( "keeps it pinned, since the cached pages were fetched before it existed", ( ) => {
       const uploaded = uploadedObsWithIconicTaxon( "Aves" );
 
       const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
 
-      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [uploaded.uuid] );
+      expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toEqual( [uploaded.uuid] );
+    } );
+
+    it( "holds it apart from the unsynced pins, with the date it was observed, so the view "
+      + "can place it where the current sort puts it", ( ) => {
+      const uploaded = uploadedObsWithIconicTaxon( "Aves", {
+        observed_on: null,
+        observed_on_string: "2026-03-04T10:15:00",
+      } );
+
+      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
+
+      expect( unsyncedIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+      expect( result.current.uploadsByCategory.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [
+        { uuid: uploaded.uuid, observedOn: "2026-03-04" },
+      ] );
     } );
 
     it( "lets it go once the sections have loaded it from the server", ( ) => {
@@ -159,7 +179,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
         new Set( [uploaded.uuid] ),
       ) );
 
-      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+      expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
     } );
 
     it( "moves it with a local taxon change rather than leaving it in its old section", ( ) => {
@@ -174,8 +194,8 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
       } );
       rerender( );
 
-      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
-      expect( result.current.get( ICONIC_TAXA_GROUP.PLANTAE ) ).toEqual( [uploaded.uuid] );
+      expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+      expect( heldIn( result, ICONIC_TAXA_GROUP.PLANTAE ) ).toEqual( [uploaded.uuid] );
     } );
 
     it( "doesn't keep it pinned once the user deletes it", ( ) => {
@@ -183,7 +203,7 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
 
       const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
 
-      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+      expect( heldIn( result, ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
     } );
   } );
 } );
