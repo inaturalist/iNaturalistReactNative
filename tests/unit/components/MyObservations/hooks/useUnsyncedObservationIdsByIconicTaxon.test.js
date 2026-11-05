@@ -3,6 +3,7 @@ import useUnsyncedObservationIdsByIconicTaxon
   from "components/MyObservations/hooks/useUnsyncedObservationIdsByIconicTaxon";
 import { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -51,6 +52,10 @@ const unsyncedObsWithIconicTaxon = ( iconicTaxonName, overrides = {} ) => factor
     ...overrides,
   },
 );
+
+afterEach( ( ) => {
+  useStore.setState( { firstUploadUuids: [] } );
+} );
 
 beforeEach( ( ) => {
   const realm = global.mockRealms[mockRealmIdentifier];
@@ -124,5 +129,61 @@ describe( "useUnsyncedObservationIdsByIconicTaxon", ( ) => {
     const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( ) );
 
     expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [newer.uuid, older.uuid] );
+  } );
+
+  describe( "after a first-time upload", ( ) => {
+    // needs_sync clears as soon as the server creates the record
+    const uploadedObsWithIconicTaxon = ( iconicTaxonName, overrides = {} ) => {
+      const observation = unsyncedObsWithIconicTaxon( iconicTaxonName, {
+        needs_sync: false,
+        _synced_at: new Date( ),
+        ...overrides,
+      } );
+      useStore.setState( { firstUploadUuids: [observation.uuid] } );
+      createObservation( observation );
+      return observation;
+    };
+
+    it( "keeps it pinned, since the cached pages were fetched before it existed", ( ) => {
+      const uploaded = uploadedObsWithIconicTaxon( "Aves" );
+
+      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
+
+      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toEqual( [uploaded.uuid] );
+    } );
+
+    it( "lets it go once the sections have loaded it from the server", ( ) => {
+      const uploaded = uploadedObsWithIconicTaxon( "Aves" );
+
+      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon(
+        new Set( [uploaded.uuid] ),
+      ) );
+
+      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+    } );
+
+    it( "moves it with a local taxon change rather than leaving it in its old section", ( ) => {
+      const uploaded = uploadedObsWithIconicTaxon( "Aves" );
+      const { result, rerender } = renderHook(
+        ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ),
+      );
+
+      createObservation( {
+        uuid: uploaded.uuid,
+        taxon: factory( "LocalTaxon", { iconic_taxon_name: "Plantae" } ),
+      } );
+      rerender( );
+
+      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+      expect( result.current.get( ICONIC_TAXA_GROUP.PLANTAE ) ).toEqual( [uploaded.uuid] );
+    } );
+
+    it( "doesn't keep it pinned once the user deletes it", ( ) => {
+      uploadedObsWithIconicTaxon( "Aves", { _deleted_at: new Date( ) } );
+
+      const { result } = renderHook( ( ) => useUnsyncedObservationIdsByIconicTaxon( new Set( ) ) );
+
+      expect( result.current.get( ICONIC_TAXA_GROUP.AVES ) ).toBeUndefined( );
+    } );
   } );
 } );
