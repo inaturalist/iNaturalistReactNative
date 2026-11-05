@@ -1,10 +1,11 @@
 import React from "react";
+import type { AccessibilityProps } from "react-native";
 import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
 import Icon from "./INatIcon";
 
-interface Props {
+interface Props extends AccessibilityProps {
   testID?: string;
   name: string;
   color?: string;
@@ -82,7 +83,7 @@ const ALIASES: Aliases = {
 
 // Use default color if none is specified
 const INatIcon = ( {
-  testID, name, color, size, dropShadow,
+  testID, name, color, size, dropShadow, ...accessibilityProps
 }: Props ) => {
   const style = {
     // Android has a default line padding that we should disable
@@ -96,6 +97,10 @@ const INatIcon = ( {
   };
   return (
     <Icon
+      // Anything not destructured above is an accessibility prop, and the icon
+      // renders a <Text>, which passes them on to the screen reader
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...accessibilityProps}
       testID={testID}
       name={ALIASES[name] || name}
       color={color || colors.darkGray}

@@ -108,6 +108,7 @@ describe( "ObservationFieldInput", ( ) => {
 
     expect( screen.getByText( "Required" ) ).toBeVisible( );
     expect( screen.getByText( iconGlyph( "checkmark-circle" ) ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Meets requirement" ) ).toBeVisible( );
   } );
 
   it( "shows validation failed icons for required fields", ( ) => {
@@ -118,6 +119,7 @@ describe( "ObservationFieldInput", ( ) => {
 
     expect( screen.getByText( "Required" ) ).toBeVisible( );
     expect( screen.getByText( iconGlyph( "triangle-exclamation" ) ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Does not meet requirement" ) ).toBeVisible( );
   } );
 
   it( "renders a select picker when text has multiple allowed values", ( ) => {

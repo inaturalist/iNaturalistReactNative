@@ -230,7 +230,11 @@ const AddToProjects = ( ) => {
             !projectValid
               ? (
                 <View className="px-4 py-2.5 flex-row justify-center items-center">
+                  {/* The adjacent text says whether this project is ready, so
+                  the icon is decorative and would only repeat it */}
                   <INatIcon
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
                     name="triangle-exclamation"
                     color={colors.warningRed}
                     size={19}
@@ -243,6 +247,8 @@ const AddToProjects = ( ) => {
               : (
                 <View className="px-4 py-2.5 flex-row justify-center items-center">
                   <INatIcon
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
                     name="checkmark-circle"
                     color={colors.inatGreen}
                     size={19}

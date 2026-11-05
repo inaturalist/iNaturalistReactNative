@@ -46,12 +46,28 @@ const ruleHeader = ( operator: string, t: TFunction ) => {
   }
 };
 
-const renderStatusIcon = ( status: ProjectRuleStatus ) => {
+// An unknown rule is one only the server can check, so it gets no icon and
+// nothing for a screen reader to announce
+const renderStatusIcon = ( status: ProjectRuleStatus, t: TFunction ) => {
   switch ( status ) {
     case "pass":
-      return <INatIcon name="checkmark-circle" color={colors.inatGreen} size={19} />;
+      return (
+        <INatIcon
+          accessibilityLabel={t( "Meets-requirement--label" )}
+          name="checkmark-circle"
+          color={colors.inatGreen}
+          size={19}
+        />
+      );
     case "fail":
-      return <INatIcon name="triangle-exclamation" color={colors.warningRed} size={19} />;
+      return (
+        <INatIcon
+          accessibilityLabel={t( "Does-not-meet-requirement--label" )}
+          name="triangle-exclamation"
+          color={colors.warningRed}
+          size={19}
+        />
+      );
     default:
       return null;
   }
@@ -69,7 +85,7 @@ const ProjectRuleRow = ( { group }: Props ) => {
         <Body1 className="flex-1">{ruleHeader( group.operator, t )}</Body1>
         <View className="flex-row items-center">
           <Body4 className="mr-2.5">{t( "Required" )}</Body4>
-          {renderStatusIcon( group.status )}
+          {renderStatusIcon( group.status, t )}
         </View>
       </View>
       {group.operator === "in_taxon?" && group.rules.map( rule => rule.taxon && (

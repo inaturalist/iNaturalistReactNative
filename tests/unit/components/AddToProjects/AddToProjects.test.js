@@ -333,6 +333,19 @@ describe( "AddToProjects", ( ) => {
         .toBeVisible( );
     } );
 
+    it( "labels the pass and fail icons for screen readers", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect(
+        within( ruleRow( "identified?" ) ).getByLabelText( "Does not meet requirement" ),
+      ).toBeVisible( );
+      expect(
+        within( ruleRow( "wild?" ) ).getByLabelText( "Meets requirement" ),
+      ).toBeVisible( );
+    } );
+
     it( "shows no icon for rules only the server can check", async ( ) => {
       renderAddToProjects( );
 
@@ -342,6 +355,7 @@ describe( "AddToProjects", ( ) => {
       expect( placeRow.getByText( "Required" ) ).toBeVisible( );
       expect( placeRow.queryByText( iconGlyph( "triangle-exclamation" ) ) ).toBeNull( );
       expect( placeRow.queryByText( iconGlyph( "checkmark-circle" ) ) ).toBeNull( );
+      expect( placeRow.queryByLabelText( /requirement/i ) ).toBeNull( );
     } );
 
     it( "lists the rule taxa without making them pressable", async ( ) => {
@@ -438,6 +452,10 @@ describe( "AddToProjects", ( ) => {
 
       expect(
         screen.getByText( "To add to this project, all required fields must be filled" ),
+      ).toBeVisible( );
+      // The empty required field's icon says this, so a screen reader hears it once
+      expect(
+        screen.getByLabelText( "Does not meet requirement" ),
       ).toBeVisible( );
     } );
 
