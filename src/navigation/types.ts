@@ -10,6 +10,7 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { OnboardingStepId } from "components/Onboarding/onboardingSteps";
 import type {
   ExploreV2LocationState,
   ExploreV2Search,
@@ -214,7 +215,10 @@ export type SharedStackParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type OnboardingStackParamList = {
+  // The carousel shown while FeatureFlag.OnboardingV2Enabled is off
   Onboarding: undefined;
+} & {
+  [StepId in OnboardingStepId]: undefined;
 };
 
 // Screens hosted by ExploreStackNavigator (ExploreV2)
