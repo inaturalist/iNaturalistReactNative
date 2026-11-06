@@ -47,6 +47,32 @@ const DROP_SHADOW = getShadow( {
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
+function titleCollator( locale: string | undefined ): Intl.Collator {
+  const options = { sensitivity: "accent" as const };
+  try {
+    if ( !locale ) return new Intl.Collator( undefined, options );
+    const [supportedLocale] = Intl.Collator.supportedLocalesOf( locale );
+    return new Intl.Collator( supportedLocale, options );
+  } catch {
+    return new Intl.Collator( undefined, options );
+  }
+}
+
+function compareJoinedProjectTitles(
+  left: { id: number; title?: string | null },
+  right: { id: number; title?: string | null },
+  collator: Intl.Collator,
+): number {
+  const leftTitle = left.title?.trim() ?? "";
+  const rightTitle = right.title?.trim() ?? "";
+  if ( !leftTitle && !rightTitle ) return left.id - right.id;
+  if ( !leftTitle ) return 1;
+  if ( !rightTitle ) return -1;
+  const byTitle = collator.compare( leftTitle, rightTitle );
+  if ( byTitle === 0 ) return left.id - right.id;
+  return byTitle;
+}
+
 function getCompletedProjectIds(
   selectedProjectIds: Set<number>,
   invalidProjectIds: Set<number>,
@@ -59,7 +85,7 @@ function getCompletedProjectIds(
 }
 
 const AddToProjects = ( ) => {
-  const { t } = useTranslation( );
+  const { i18n, t } = useTranslation( );
   const navigation = useNavigation( );
   useSyncJoinedProjects( );
   const joinedProjectsCollection = useQuery(
@@ -85,8 +111,13 @@ const AddToProjects = ( ) => {
   const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
 
   const joinedProjects = useMemo(
-    () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
-    [joinedProjectsCollection],
+    ( ) => {
+      const collator = titleCollator( i18n.language );
+      return joinedProjectsCollection
+        .map( jp => Project.mapRealmToPojo( jp ) )
+        .sort( ( left, right ) => compareJoinedProjectTitles( left, right, collator ) );
+    },
+    [i18n.language, joinedProjectsCollection],
   );
 
   const validationResult = useMemo(
