@@ -16,6 +16,11 @@ import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
+// flexGrow makes the content container fill the tab's height when there's nothing to show;
+// without it the container shrinks to the empty state, and the loading spinner below has no
+// room to center itself in. A populated list still grows past the screen and scrolls.
+const contentContainerStyle = { flexGrow: 1 };
+
 interface Props {
   currentUser: UserPojo | null;
   data: Notification[];
@@ -66,15 +71,19 @@ const NotificationsList = ( {
   const emptyComponent = useMemo( ( ) => {
     // Offline/retry when disconnected or request fails
     if ( isConnected === false || isError ) {
-      return <OfflineNotice onPress={reload} />;
+      return (
+        <View className="flex-1">
+          <OfflineNotice onPress={reload} />
+        </View>
+      );
     }
 
     if ( isInitialLoading ) {
       return (
-        <View className="h-full justify-center">
+        <View className="flex-1 items-center justify-center">
           <ActivityIndicator size={50} />
           {showStillLoadingMessage && (
-            <Body1 className="mt-4 text-center mx-12">
+            <Body1 className="self-stretch mt-4 text-center mx-12">
               {t( "Still-loading" )}
             </Body1>
           )}
@@ -124,6 +133,7 @@ const NotificationsList = ( {
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={footerComponent}
+      contentContainerStyle={contentContainerStyle}
       data={data}
       keyExtractor={( item: Notification ) => item.id}
       onEndReached={onEndReached}
