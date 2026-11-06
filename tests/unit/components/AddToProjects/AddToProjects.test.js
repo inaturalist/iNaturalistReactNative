@@ -4,6 +4,7 @@ import {
 } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
+import i18n from "i18next";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
@@ -87,6 +88,99 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByText( mockProjects[0].title ) ).toBeVisible( );
     expect( screen.getByText( mockProjects[1].title ) ).toBeVisible( );
     expect( screen.getAllByText( "Traditional Project" ).length ).toBe( 2 );
+  } );
+
+  it( "lists joined traditional projects by title, untitled last", ( ) => {
+    const titles = mockProjects.map( project => project.title );
+    const untitled = factory( "LocalProject", { title: "" } );
+    mockProjects.push( untitled );
+    mockProjects[0].title = "Banana";
+    mockProjects[1].title = "apple";
+    try {
+      renderAddToProjects( );
+
+      expect(
+        screen.getAllByTestId( /^AddToProjects\.project\./ ).map( row => row.props.testID ),
+      ).toEqual( [
+        `AddToProjects.project.${mockProjects[1].id}`,
+        `AddToProjects.project.${mockProjects[0].id}`,
+        `AddToProjects.project.${untitled.id}`,
+      ] );
+    } finally {
+      mockProjects.pop( );
+      mockProjects[0].title = titles[0];
+      mockProjects[1].title = titles[1];
+    }
+  } );
+
+  it( "orders joined traditional projects by the app locale", async ( ) => {
+    const titles = mockProjects.map( project => project.title );
+    const apple = factory( "LocalProject", { title: "äpple" } );
+    mockProjects.push( apple );
+    mockProjects[0].title = "zebra";
+    mockProjects[1].title = "apple";
+    const previousLanguage = i18n.language;
+    const projectIds = ( ) => screen.getAllByTestId( /^AddToProjects\.project\./ )
+      .map( row => row.props.testID );
+    try {
+      await i18n.changeLanguage( "sv" );
+      const view = renderAddToProjects( );
+      expect( projectIds( ) ).toEqual( [
+        `AddToProjects.project.${mockProjects[1].id}`,
+        `AddToProjects.project.${mockProjects[0].id}`,
+        `AddToProjects.project.${apple.id}`,
+      ] );
+      view.unmount( );
+
+      await i18n.changeLanguage( "de" );
+      renderAddToProjects( );
+      expect( projectIds( ) ).toEqual( [
+        `AddToProjects.project.${mockProjects[1].id}`,
+        `AddToProjects.project.${apple.id}`,
+        `AddToProjects.project.${mockProjects[0].id}`,
+      ] );
+    } finally {
+      mockProjects.pop( );
+      mockProjects[0].title = titles[0];
+      mockProjects[1].title = titles[1];
+      await i18n.changeLanguage( previousLanguage );
+    }
+  } );
+
+  it( "trims titles, puts blank titles last, and breaks ties by id", ( ) => {
+    const titles = mockProjects.map( project => project.title );
+    const blank = factory( "LocalProject", { title: "   " } );
+    mockProjects.push( blank );
+    mockProjects[0].title = "Apple";
+    mockProjects[1].title = "  apple";
+    const byId = [mockProjects[0], mockProjects[1]].sort( ( a, b ) => a.id - b.id );
+    try {
+      renderAddToProjects( );
+
+      expect(
+        screen.getAllByTestId( /^AddToProjects\.project\./ ).map( row => row.props.testID ),
+      ).toEqual( [
+        `AddToProjects.project.${byId[0].id}`,
+        `AddToProjects.project.${byId[1].id}`,
+        `AddToProjects.project.${blank.id}`,
+      ] );
+    } finally {
+      mockProjects.pop( );
+      mockProjects[0].title = titles[0];
+      mockProjects[1].title = titles[1];
+    }
+  } );
+
+  it( "still lists projects when the app locale is not a collation locale", async ( ) => {
+    const previousLanguage = i18n.language;
+    try {
+      await i18n.changeLanguage( "zh_TW" );
+      expect( ( ) => renderAddToProjects( ) ).not.toThrow( );
+      expect( screen.getByText( mockProjects[0].title ) ).toBeVisible( );
+      expect( screen.getByText( mockProjects[1].title ) ).toBeVisible( );
+    } finally {
+      await i18n.changeLanguage( previousLanguage );
+    }
   } );
 
   it( "renders selected projects with expanded chooser", async ( ) => {
@@ -490,9 +584,9 @@ describe( "AddToProjects", ( ) => {
       renderAddToProjects( );
 
       await actor.press( screen.getByText( mockProjects[1].title ) );
-      // Project 0 is already selected in beforeEach, so two pickers are visible
-      const [, projectOneSelectResponse] = screen.getAllByText( "Select a response" );
-      await actor.press( projectOneSelectResponse );
+      const projectOneIndex = screen.getAllByTestId( /^AddToProjects\.project\./ )
+        .findIndex( row => row.props.testID === `AddToProjects.project.${mockProjects[1].id}` );
+      await actor.press( screen.getAllByText( "Select a response" )[projectOneIndex] );
 
       const picker = await screen.findByTestId( "ReactNativePicker" );
       fireEvent( picker, "onValueChange", selectedValue );
