@@ -26,7 +26,9 @@ export enum FeatureFlag {
   MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
 }
 
-export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [];
+export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [
+  FeatureFlag.MyObservationsSmallGridViewEnabled,
+];
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
