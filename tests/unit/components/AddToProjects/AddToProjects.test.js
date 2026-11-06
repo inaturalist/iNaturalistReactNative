@@ -89,6 +89,29 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getAllByText( "Traditional Project" ).length ).toBe( 2 );
   } );
 
+  it( "lists joined projects in title order", ( ) => {
+    const titles = mockProjects.map( project => project.title );
+    const untitled = factory( "LocalProject", { title: "" } );
+    mockProjects.push( untitled );
+    mockProjects[0].title = "Banana";
+    mockProjects[1].title = "apple";
+    try {
+      renderAddToProjects( );
+
+      expect(
+        screen.getAllByTestId( /^AddToProjects\.project\./ ).map( row => row.props.testID ),
+      ).toEqual( [
+        `AddToProjects.project.${mockProjects[1].id}`,
+        `AddToProjects.project.${mockProjects[0].id}`,
+        `AddToProjects.project.${untitled.id}`,
+      ] );
+    } finally {
+      mockProjects.pop( );
+      mockProjects[0].title = titles[0];
+      mockProjects[1].title = titles[1];
+    }
+  } );
+
   it( "renders selected projects with expanded chooser", async ( ) => {
     renderAddToProjects( );
 
