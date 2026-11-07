@@ -8,6 +8,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
+  useRef,
 } from "react";
 import Observation from "realmModels/Observation";
 import type { RealmObservation, RealmTaxon } from "realmModels/types";
@@ -43,6 +44,7 @@ const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
 const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
 const ADD_ACTIVITY_ITEM = "ADD_ACTIVITY_ITEM";
 const LOADING_ACTIVITY_ITEM = "LOADING_ACTIVITY_ITEM";
+const ACTIVITY_ITEM_SETTLED = "ACTIVITY_ITEM_SETTLED";
 
 export interface AgreeIdentification {
   taxon: RealmTaxon;
@@ -61,6 +63,7 @@ type Action =
   | { type: typeof SET_INITIAL_OBSERVATION; observationShown: ApiObservation }
   | { type: typeof ADD_ACTIVITY_ITEM; observationShown: ApiObservation }
   | { type: typeof LOADING_ACTIVITY_ITEM }
+  | { type: typeof ACTIVITY_ITEM_SETTLED }
   | { type: typeof SHOW_AGREE_SHEET; agreeIdentification: AgreeIdentification }
   | { type: typeof HIDE_AGREE_SHEET }
   | { type: typeof SET_ADD_COMMENT_SHEET; showAddCommentSheet: boolean };
@@ -101,6 +104,14 @@ const reducer = ( state: State, action: Action ): State => {
       return {
         ...state,
         addingActivityItem: true,
+      };
+    // A refetch came back with nothing new to show. The pending-activity
+    // spinner still has to come down, so this is deliberately separate from
+    // ADD_ACTIVITY_ITEM.
+    case ACTIVITY_ITEM_SETTLED:
+      return {
+        ...state,
+        addingActivityItem: false,
       };
     case SHOW_AGREE_SHEET:
       return {
@@ -252,15 +263,36 @@ const useObsDetailsSharedLogic = ( {
     }
   }, [observation, observationShown] );
 
+  // Observation.mapApiToRealm builds a new object every call, so dispatching
+  // on every isRefetching flip replaced observationShown even when the refetch
+  // brought back identical data. Anything downstream keyed on that object --
+  // a useCallback, a useMemo, an effect's deps -- then churned on every
+  // refetch, and refetches happen on focus, on reconnect and after any comment
+  // or ID mutation. React Query's structural sharing keeps remoteObservation's
+  // identity stable when the data has not changed, so that identity is the
+  // honest signal for "there is something new to show".
+  const shownRemoteObservation = useRef<RealmObservation | null>( null );
+
   useEffect( ( ) => {
     // if observation does not belong to current user, show
     // new activity items after a refetch
-    if ( remoteObservation && !isRefetching ) {
+    if ( !remoteObservation || isRefetching ) return;
+
+    if ( shownRemoteObservation.current !== remoteObservation ) {
+      shownRemoteObservation.current = remoteObservation;
       dispatch( {
         type: ADD_ACTIVITY_ITEM,
         observationShown: Observation.mapApiToRealm( remoteObservation ),
       } );
+      return;
     }
+
+    // The refetch settled without new data -- either it returned an identical
+    // response, or it failed and React Query kept the previous data. On
+    // someone else's observation this effect is the only thing that clears the
+    // spinner, because handleIdentificationMutationSuccess and
+    // handleCommentMutationSuccess only dispatch directly for your own.
+    dispatch( { type: ACTIVITY_ITEM_SETTLED } );
   }, [remoteObservation, isRefetching] );
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
