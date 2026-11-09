@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
@@ -104,19 +104,14 @@ const Reason = ( { text }: { text: string } ) => (
 
 const LocationExplainerStep = ( ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
   const { stepId, proceedToNext } = useOnboardingFlow( );
   const [requesting, setRequesting] = useState( false );
 
   useFocusEffect(
     useCallback( ( ) => {
-      // Swallow back while there's an earlier step; with none, let Android exit
-      const backHandler = BackHandler.addEventListener(
-        "hardwareBackPress",
-        ( ) => navigation.canGoBack( ),
-      );
+      const backHandler = BackHandler.addEventListener( "hardwareBackPress", ( ) => true );
       return ( ) => backHandler.remove( );
-    }, [navigation] ),
+    }, [] ),
   );
 
   const requestLocationAndContinue = async ( ) => {
