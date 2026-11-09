@@ -333,6 +333,35 @@ describe( "AddToProjects", ( ) => {
         .toBeVisible( );
     } );
 
+    it( "shows requirement sentences under rule rows for pass, fail, and unknown", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect(
+        within( ruleRow( "identified?" ) ).getByText(
+          "This observation must have an identification.",
+        ),
+      ).toBeVisible( );
+      expect(
+        within( ruleRow( "wild?" ) ).getByText( "This observation must be marked wild." ),
+      ).toBeVisible( );
+      const placeRow = within( ruleRow( "observed_in_place?" ) );
+      expect(
+        placeRow.getByText(
+          // eslint-disable-next-line max-len
+          "This observation must be in a specific location specified by the project. Please check the project page for details.",
+        ),
+      ).toBeVisible();
+      const taxonRow = within( ruleRow( "in_taxon?" ) );
+      expect(
+        taxonRow.getByText(
+          "This observation must have an identification in the following taxon:",
+        ),
+      ).toBeVisible( );
+      expect( taxonRow.getByText( "Sanderling" ) ).toBeVisible( );
+    } );
+
     it( "shows no icon for rules only the server can check", async ( ) => {
       renderAddToProjects( );
 

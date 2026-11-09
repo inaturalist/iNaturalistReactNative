@@ -197,12 +197,6 @@ interface ApiRule {
   id: number;
   operand_id: null;
   operator: Operator;
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  operand_type: string | null;
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  project?: { id: number; title: string };
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  user?: ApiUser;
 }
 
 // Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS

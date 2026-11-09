@@ -2,14 +2,15 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import React, { useMemo } from "react";
+import type { Geoprivacy } from "realmModels/geoprivacy";
 import {
   GEOPRIVACY_OBSCURED,
   GEOPRIVACY_OPEN,
   GEOPRIVACY_PRIVATE,
-} from "realmModels/Observation";
+} from "realmModels/geoprivacy";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Geoprivacy = null | GEOPRIVACY_OPEN | GEOPRIVACY_OBSCURED | GEOPRIVACY_PRIVATE;
+type GeoprivacyChoice = Exclude<Geoprivacy, null>;
 
 interface Props {
   onPressClose: ( ) => void;
@@ -43,7 +44,7 @@ const GeoprivacySheet = ( {
   } ), [t] );
 
   return (
-    <RadioButtonSheet
+    <RadioButtonSheet<GeoprivacyChoice>
       headerText={t( "GEOPRIVACY" )}
       confirm={checkBoxValue => {
         // Don't bother changing anything if we're "changing" from null

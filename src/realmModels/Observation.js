@@ -13,6 +13,7 @@ import * as uuid from "uuid";
 
 import Application from "./Application";
 import Comment from "./Comment";
+import { GEOPRIVACY_OPEN } from "./geoprivacy";
 import Identification from "./Identification";
 import ObservationFieldValue from "./ObservationFieldValue";
 import ObservationPhoto from "./ObservationPhoto";
@@ -21,10 +22,6 @@ import ProjectObservation from "./ProjectObservation";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
-
-export const GEOPRIVACY_OPEN = "open";
-export const GEOPRIVACY_OBSCURED = "obscured";
-export const GEOPRIVACY_PRIVATE = "private";
 
 const logger = log.extend( "index.js" );
 
