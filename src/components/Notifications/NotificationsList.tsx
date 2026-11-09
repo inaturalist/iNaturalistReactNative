@@ -82,11 +82,15 @@ const NotificationsList = ( {
       return (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size={50} />
-          {showStillLoadingMessage && (
-            <Body1 className="self-stretch mt-4 text-center mx-12">
-              {t( "Still-loading" )}
-            </Body1>
-          )}
+          {showStillLoadingMessage
+            ? (
+              <Body1 className="self-stretch mt-4 text-center mx-12">
+                {t( "Still-loading" )}
+              </Body1>
+            )
+            : (
+              <View className="mt-4 mx-12 h-5" />
+            )}
         </View>
       );
     }
