@@ -7,15 +7,16 @@ interface CropInput {
   // Pixel size of the image being cropped
   imageWidth: number;
   imageHeight: number;
-  // On-screen size of the crop frame. At scale 1 the image fills the frame
-  // exactly, so the frame has the same aspect ratio as the image
-  frameWidth: number;
-  frameHeight: number;
-  // Zoom applied to the image around the frame's center; 1 means no zoom
-  scale: number;
-  // On-screen pan of the image, in points, measured after scaling
-  translateX: number;
-  translateY: number;
+  // On-screen width of the image. It is shown at its own aspect ratio, so
+  // this also sets its on-screen height
+  displayWidth: number;
+  // The crop frame on screen, in points from the image's top-left corner.
+  // The frame keeps the image's aspect ratio, so its width sets its height
+  frame: {
+    x: number;
+    y: number;
+    width: number;
+  };
   minimumCropSize?: number;
 }
 
@@ -32,41 +33,36 @@ const clamp = ( value: number, minimum: number, maximum: number ) => (
   Math.min( Math.max( value, minimum ), maximum )
 );
 
-const cropAxis = (
-  imageSize: number,
-  frameSize: number,
-  translate: number,
-  scale: number,
-  effectiveScale: number,
-) => {
-  const pixelsPerPoint = imageSize / frameSize;
-  // The image pixel under the center of the frame
-  const center = ( frameSize / 2 - translate / scale ) * pixelsPerPoint;
-  const size = Math.min( Math.round( imageSize / effectiveScale ), imageSize );
+const cropAxis = ( imageSize: number, center: number, fraction: number ) => {
+  const size = Math.round( imageSize * fraction );
   const start = clamp( Math.round( center - size / 2 ), 0, imageSize - size );
   return { start, end: start + size };
 };
 
-// Converts the zoom and pan of an image under a fixed crop frame into the
-// pixel rectangle of the image that the frame shows
+// Converts a crop frame drawn over an image on screen into the pixel
+// rectangle of the image it covers
 const getCropRectangle = ( {
   imageWidth,
   imageHeight,
-  frameWidth,
-  frameHeight,
-  scale,
-  translateX,
-  translateY,
+  displayWidth,
+  frame,
   minimumCropSize = MINIMUM_CROP_SIZE,
 }: CropInput ): CropRectangle => {
-  // Limit zoom so the shorter side never drops below the minimum crop size,
-  // while keeping the user's chosen center
-  const shorterSide = Math.min( imageWidth, imageHeight );
-  const maximumScale = Math.max( 1, shorterSide / minimumCropSize );
-  const effectiveScale = clamp( scale, 1, maximumScale );
+  const pixelsPerPoint = imageWidth / displayWidth;
+  // Share of the image the frame covers. It is the same on both axes because
+  // the frame keeps the image's aspect ratio
+  const frameFraction = frame.width / displayWidth;
+  // The image pixel under the center of the frame
+  const centerX = frame.x * pixelsPerPoint + ( frameFraction * imageWidth ) / 2;
+  const centerY = frame.y * pixelsPerPoint + ( frameFraction * imageHeight ) / 2;
 
-  const horizontal = cropAxis( imageWidth, frameWidth, translateX, scale, effectiveScale );
-  const vertical = cropAxis( imageHeight, frameHeight, translateY, scale, effectiveScale );
+  // Keep the shorter side at or above the minimum, growing around the
+  // frame's center
+  const minimumFraction = Math.min( 1, minimumCropSize / Math.min( imageWidth, imageHeight ) );
+  const fraction = clamp( frameFraction, minimumFraction, 1 );
+
+  const horizontal = cropAxis( imageWidth, centerX, fraction );
+  const vertical = cropAxis( imageHeight, centerY, fraction );
 
   return {
     startX: horizontal.start,
