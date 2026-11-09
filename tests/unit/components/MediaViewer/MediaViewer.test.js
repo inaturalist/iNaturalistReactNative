@@ -64,6 +64,12 @@ describe( "MediaViewer", ( ) => {
         expect( await screen.findByLabelText( "Delete photo" ) ).toBeTruthy( );
       } );
 
+      it( "should not offer rotation for an already uploaded photo", async ( ) => {
+        renderComponent( <MediaViewer photos={photos} editable onEditPhoto={jest.fn( )} /> );
+        await screen.findByLabelText( "Delete photo" );
+        expect( screen.queryByLabelText( "Rotate photo" ) ).toBeNull( );
+      } );
+
       it( "should not show AttributionButton", async ( ) => {
         renderComponent( <MediaViewer photos={photos} editable /> );
         await screen.findByLabelText( "Delete photo" );

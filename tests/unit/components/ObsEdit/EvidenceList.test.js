@@ -1,9 +1,13 @@
-import { screen } from "@testing-library/react-native";
+import { screen, userEvent, waitFor } from "@testing-library/react-native";
+import { photoUploadPath } from "appConstants/paths";
 import EvidenceList from "components/ObsEdit/EvidenceList";
 import React from "react";
+import Photo from "realmModels/Photo";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 
 const initialStoreState = useStore.getState( );
 
@@ -61,5 +65,47 @@ describe( "EvidenceList", ( ) => {
     renderEvidenceList( [] );
     expect( screen.getByTestId( "EvidenceList.add" ) ).toBeVisible( );
     expect( screen.queryByTestId( "ObsEdit.photo" ) ).toBeFalsy( );
+  } );
+
+  describe( "rotating a photo that has not been uploaded", ( ) => {
+    const localFilePath = `${photoUploadPath}/local.jpg`;
+    const localPhotoUri = Photo.getLocalPhotoUri( localFilePath );
+    const observationWithLocalPhoto = factory( "LocalObservation", {
+      observationPhotos: [factory( "LocalObservationPhoto", {
+        photo: factory( "LocalPhoto", { url: undefined, localFilePath } ),
+      } )],
+    } );
+
+    const openLocalPhoto = async actor => {
+      useStore.setState( {
+        observations: [observationWithLocalPhoto],
+        currentObservation: observationWithLocalPhoto,
+        currentObservationIndex: 0,
+      } );
+      renderEvidenceList( );
+      await actor.press( screen.getByTestId( `EvidenceList.${localPhotoUri}` ) );
+      await screen.findByLabelText( "Delete photo" );
+    };
+
+    it( "should not be offered when photo editing is off", async ( ) => {
+      setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: false } );
+      await openLocalPhoto( userEvent.setup( ) );
+      expect( screen.queryByLabelText( "Rotate photo" ) ).toBeNull( );
+    } );
+
+    it( "should point the observation photo at a new rotated file", async ( ) => {
+      setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: true } );
+      const actor = userEvent.setup( );
+      await openLocalPhoto( actor );
+
+      await actor.press( screen.getByLabelText( "Rotate photo" ) );
+
+      await waitFor( ( ) => {
+        const { photo } = useStore.getState( ).currentObservation.observationPhotos[0];
+        expect( photo.localFilePath ).not.toEqual( localFilePath );
+      } );
+      const { photo } = useStore.getState( ).currentObservation.observationPhotos[0];
+      expect( photo.localFilePath ).toMatch( new RegExp( `^${photoUploadPath}/.+\\.jpg$` ) );
+    } );
   } );
 } );
