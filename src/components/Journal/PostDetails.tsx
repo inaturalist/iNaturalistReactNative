@@ -14,6 +14,8 @@ import { useTranslation } from "sharedHooks";
 
 const PostDetails = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"PostDetails">["route"]>( );
+  const { id } = params;
+  console.log( "id", id );
   const {
     body,
     // eslint-disable-next-line camelcase
