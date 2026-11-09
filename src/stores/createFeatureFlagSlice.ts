@@ -7,10 +7,14 @@ import type { StateCreator } from "zustand";
 // is driven by the hard-coded entry here in `initialFeatureFlagConfig`. That is,
 // when we want to "turn on" `MyFeature`, we will set its `initialFeatureFlagConfig` to true.
 
+// To add a new feature flag, add entries below, following the example of `MyFeatureFlagEnabled`.
+// The enum value is the flag's base name in snake_case, named for the feature. Create it in
+// Flipper as `client_<name>`: only `client_` flags are returned to the app, and Flipper flags
+// can't be renamed. Creating the flag in Flipper (in each environment) is only needed to
+// control it remotely, and a newly created Flipper flag is off for everyone until a gate is added
+
 // Once a feature has been enabled, deployed, and verified, the feature flag should be removed
 // along with the newly-deprecated / "old" code.
-
-// To add a new feature flag, add entries below, following the example of `MyFeatureFlagEnabled`
 
 // This slice _also_ supports dynamically enabling and disabling a flag for testing,
 // overriding its default "live" status. This is done through the "Debug" / "Developer" screen.
@@ -20,11 +24,11 @@ import type { StateCreator } from "zustand";
 // flag and obviated dead code
 export enum FeatureFlag {
   // flags should use positive language ending with `Enabled`
-  // MyFeatureFlagEnabled = "myFeatureFlagEnabled",
-  ExploreV2Enabled = "exploreV2Enabled",
-  TraditionalProjectsEnabled = "traditionalProjectsEnabled",
-  MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
-  OnboardingV2Enabled = "onboardingV2Enabled",
+  // MyFeatureFlagEnabled = "my_feature",
+  ExploreV2Enabled = "explore_v2",
+  TraditionalProjectsEnabled = "traditional_projects",
+  MyObservationsSmallGridViewEnabled = "my_observations_small_grid_view",
+  OnboardingV2Enabled = "onboarding_v2",
 }
 
 export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [];

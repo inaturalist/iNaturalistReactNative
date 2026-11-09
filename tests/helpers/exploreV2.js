@@ -5,6 +5,7 @@ import {
   within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 const actor = userEvent.setup( );
@@ -15,7 +16,7 @@ export const enableExploreV2 = ( ) => act( ( ) => {
   useStore.setState( state => ( {
     featureFlagConfig: {
       ...state.featureFlagConfig,
-      exploreV2Enabled: true,
+      [FeatureFlag.ExploreV2Enabled]: true,
     },
   } ) );
 } );
