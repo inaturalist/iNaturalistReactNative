@@ -40,6 +40,8 @@ interface Props {
   onDeletePhoto: ( uri: string ) => void;
   onClose: ( ) => void;
   onDeleteSound: ( uri: string ) => void;
+  // Only offered for photos that exist locally and have not been uploaded, for now
+  onRotatePhoto?: ( localFilePath: string ) => void;
   photos: Omit<PhotoItem, "type">[];
   sounds?: Omit<SoundItem, "type">[];
   selectedMediaIndex: number;
@@ -53,6 +55,7 @@ const MainMediaDisplay = ( {
   onDeletePhoto,
   onDeleteSound,
   onClose,
+  onRotatePhoto,
   photos,
   sounds = [],
   selectedMediaIndex,
@@ -79,6 +82,8 @@ const MainMediaDisplay = ( {
   const renderPhoto = ( photo: PhotoItem ) => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
+    const { localFilePath } = photo;
+    const canEditPhoto = editable && !photo.url && !!localFilePath;
     return (
       <View className="flex-1">
         <CustomImageZoom
@@ -86,6 +91,16 @@ const MainMediaDisplay = ( {
           setZooming={setZooming}
           selectedMediaIndex={selectedMediaIndex}
         />
+        {canEditPhoto && onRotatePhoto && (
+          <View className="absolute bottom-4 left-4">
+            <TransparentCircleButton
+              onPress={( ) => onRotatePhoto( localFilePath )}
+              // this icon might be a placeholder if design wants a different rotate img icon
+              icon="rotate-right"
+              accessibilityLabel="Rotate photo"
+            />
+          </View>
+        )}
         {
           editable
             ? (

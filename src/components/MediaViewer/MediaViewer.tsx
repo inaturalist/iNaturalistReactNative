@@ -12,12 +12,16 @@ import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import editLocalPhoto from "sharedHelpers/editLocalPhoto";
+import { log } from "sharedHelpers/logger";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
 import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
+
+const logger = log.extend( "MediaViewer" );
 
 interface MediaToDelete {
   type: "sound" | "photo";
@@ -47,6 +51,8 @@ interface Props {
   onClose?: ( ) => void;
   onDeletePhoto?: ( uri: string ) => void;
   onDeleteSound?: ( uri: string ) => void;
+  // Called with a photo's current URI and the path of its edited copy.
+  onEditPhoto?: ( uri: string, newLocalFilePath: string ) => void;
   photos?: PhotoItem[];
   sounds?: SoundItem[];
   uri?: string | null;
@@ -60,6 +66,7 @@ const MediaViewer = ( {
   onClose = ( ) => undefined,
   onDeletePhoto,
   onDeleteSound,
+  onEditPhoto,
   photos = [],
   sounds = [],
   uri,
@@ -118,6 +125,22 @@ const MediaViewer = ( {
     setMediaToDelete,
   ] );
 
+  // Ignores taps while a rotation is still being written to disk
+  const rotatingRef = useRef( false );
+  const rotatePhoto = useCallback( async ( localFilePath: string ) => {
+    const photoUri = Photo.getLocalPhotoUri( localFilePath );
+    if ( !onEditPhoto || !photoUri || rotatingRef.current ) return;
+    rotatingRef.current = true;
+    try {
+      const editedPath = await editLocalPhoto( localFilePath, { rotation: 90 } );
+      onEditPhoto( photoUri, editedPath );
+    } catch ( rotateError ) {
+      logger.error( "Failed to rotate photo", rotateError );
+    } finally {
+      rotatingRef.current = false;
+    }
+  }, [onEditPhoto] );
+
   return (
     <View
       className="flex-1 bg-black"
@@ -147,6 +170,9 @@ const MediaViewer = ( {
         setSelectedMediaIndex={setSelectedMediaIndex}
         onDeletePhoto={photoUri => setMediaToDelete( { type: "photo", uri: photoUri } )}
         onDeleteSound={soundUri => setMediaToDelete( { type: "sound", uri: soundUri } )}
+        onRotatePhoto={onEditPhoto
+          ? rotatePhoto
+          : undefined}
       />
       <MediaSelector
         photos={photos}
