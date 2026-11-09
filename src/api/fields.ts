@@ -104,6 +104,13 @@ export const POST_FOR_USER_FIELDS = {
   },
 };
 
+export const POST_DETAILS = {
+  body: true,
+  id: true,
+  published_at: true,
+  title: true,
+};
+
 export const ICONIC_TAXA_COUNTS_FIELDS = {
   count: true,
   taxon: {
