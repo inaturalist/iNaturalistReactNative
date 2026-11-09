@@ -14,8 +14,8 @@ const actor = userEvent.setup( );
  * store after each test. */
 export const enableExploreV2 = ( ) => act( ( ) => {
   useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
+    featureFlagDebugOverrides: {
+      ...state.featureFlagDebugOverrides,
       [FeatureFlag.ExploreV2Enabled]: true,
     },
   } ) );

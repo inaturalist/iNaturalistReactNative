@@ -7,6 +7,7 @@ import React, { useCallback } from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import type { SharedData } from "sharedHooks/useShare";
 import useShare from "sharedHooks/useShare";
+import useSyncFeatureFlags from "sharedHooks/useSyncFeatureFlags";
 
 import AppStateListener from "./AppStateListener";
 import EnvironmentNotice from "./EnvironmentNotice";
@@ -53,6 +54,7 @@ const App = ( { children }: PropsWithChildren ) => {
   useLinking( currentUser );
   useShare( onShare );
   useDeferredStartup( );
+  useSyncFeatureFlags( currentUser?.id );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

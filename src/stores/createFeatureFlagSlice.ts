@@ -3,9 +3,14 @@ import type { StateCreator } from "zustand";
 // This state slice supports application code's consumption of feature flags, namely:
 // const isMyFeatureEnabled = useFeatureFlag ( FeatureFlag.MyFeatureFlagEnabled );
 
-// The "status" / "enabledness" of whether a feature flag'd feature is "on" or "off" in the live app
-// is driven by the hard-coded entry here in `initialFeatureFlagConfig`. That is,
-// when we want to "turn on" `MyFeature`, we will set its `initialFeatureFlagConfig` to true.
+// A flag resolves to the first of these that has a value (see `resolveFeatureFlag`):
+// 1. a local override set from the "Debug" / "Developer" screen. These are not persisted
+//    so will be reset to their defaults on app start.
+// 2. the value returned by the API's `/v2/feature_flags`, which is driven by Flipper on the web
+//    (/admin/feature_flags/flipper). Fetched on app start and when the signed-in user changes
+// 3. `flagsEnabledForAdminsInTestFlight`, for admins on iOS TestFlight builds
+// 4. the hard-coded entry in `hardcodedFeatureFlagDefaults`. Used whenever the API didn't
+//    return the flag: offline, request failed, or the flag doesn't exist in Flipper
 
 // To add a new feature flag, add entries below, following the example of `MyFeatureFlagEnabled`.
 // The enum value is the flag's base name in snake_case, named for the feature. Create it in
@@ -15,10 +20,6 @@ import type { StateCreator } from "zustand";
 
 // Once a feature has been enabled, deployed, and verified, the feature flag should be removed
 // along with the newly-deprecated / "old" code.
-
-// This slice _also_ supports dynamically enabling and disabling a flag for testing,
-// overriding its default "live" status. This is done through the "Debug" / "Developer" screen.
-// These are not persisted so will be reset to their defaults on app start.
 
 // When adding a new feature flag, consider creating a Linear ticket to track removing the
 // flag and obviated dead code
@@ -33,7 +34,7 @@ export enum FeatureFlag {
 
 export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [];
 
-const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
+export const hardcodedFeatureFlagDefaults: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: true,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
@@ -49,24 +50,53 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.OnboardingV2Enabled]: null,
 };
 
+export type FeatureFlagApiStatus =
+  | { state: "idle" }
+  | { state: "loading" }
+  | { state: "loaded"; fetchedAt: number; signedIn: boolean }
+  | { state: "error"; failedAt: number; signedIn: boolean };
+
 const DEFAULT_STATE = {
-  featureFlagConfig: initialFeatureFlagConfig,
+  featureFlagApiValues: {} as Partial<Record<FeatureFlag, boolean>>,
+  featureFlagApiStatus: { state: "idle" } as FeatureFlagApiStatus,
   featureFlagDebugOverrides: initialFeatureFlagDebugOverrides,
 };
 
 export interface FeatureFlagSlice {
-  featureFlagConfig: Record<FeatureFlag, boolean>;
+  featureFlagApiValues: Partial<Record<FeatureFlag, boolean>>;
+  featureFlagApiStatus: FeatureFlagApiStatus;
   featureFlagDebugOverrides: Record<FeatureFlag, boolean | null>;
+  setFeatureFlagApiLoading: ( ) => void;
+  setFeatureFlagApiValues: (
+    values: Partial<Record<FeatureFlag, boolean>>,
+    signedIn: boolean,
+  ) => void;
+  setFeatureFlagApiError: ( signedIn: boolean ) => void;
   /**
    * WARNING
    *
    * DO NOT call this anywhere except from the Feature Flag management in the "Debug" screen
    */
   setFeatureFlagDebugOverride: ( featureFlagKey: FeatureFlag, override: boolean | null ) => void;
+  /**
+   * WARNING
+   *
+   * DO NOT call this anywhere except from the Feature Flag management in the "Debug" screen
+   */
+  clearFeatureFlagDebugOverrides: ( ) => void;
 }
 
 const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
   ...DEFAULT_STATE,
+  setFeatureFlagApiLoading: ( ) => set( { featureFlagApiStatus: { state: "loading" } } ),
+  setFeatureFlagApiValues: ( values, signedIn ) => set( {
+    featureFlagApiValues: values,
+    featureFlagApiStatus: { state: "loaded", fetchedAt: Date.now( ), signedIn },
+  } ),
+  setFeatureFlagApiError: signedIn => set( {
+    featureFlagApiValues: {},
+    featureFlagApiStatus: { state: "error", failedAt: Date.now( ), signedIn },
+  } ),
   setFeatureFlagDebugOverride: ( featureFlagKey, override ) => set( state => ( {
     ...state,
     featureFlagDebugOverrides: {
@@ -74,6 +104,9 @@ const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
       [featureFlagKey]: override,
     },
   } ) ),
+  clearFeatureFlagDebugOverrides: ( ) => set( {
+    featureFlagDebugOverrides: initialFeatureFlagDebugOverrides,
+  } ),
 } );
 
 export default createFeatureFlagSlice;
