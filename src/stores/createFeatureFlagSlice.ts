@@ -24,6 +24,7 @@ export enum FeatureFlag {
   ExploreV2Enabled = "exploreV2Enabled",
   TraditionalProjectsEnabled = "traditionalProjectsEnabled",
   MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
+  OnboardingV2Enabled = "onboardingV2Enabled",
 }
 
 export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [];
@@ -33,6 +34,7 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.ExploreV2Enabled]: true,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
+  [FeatureFlag.OnboardingV2Enabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
@@ -40,6 +42,7 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.ExploreV2Enabled]: null,
   [FeatureFlag.TraditionalProjectsEnabled]: null,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
+  [FeatureFlag.OnboardingV2Enabled]: null,
 };
 
 const DEFAULT_STATE = {
