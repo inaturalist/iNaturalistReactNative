@@ -22,12 +22,6 @@ const PostDetails = ( ) => {
   const { i18n, t } = useTranslation( );
 
   const {
-    body,
-    // eslint-disable-next-line camelcase
-    published_at,
-    title,
-  } = params;
-  const {
     data: post,
     isError,
     isPending,
@@ -41,7 +35,6 @@ const PostDetails = ( ) => {
       return fetchPost( params, optsWithAuth );
     },
   );
-  console.log( "post", post );
 
   if ( isPending ) {
     return (
@@ -69,11 +62,11 @@ const PostDetails = ( ) => {
         <View className="mx-4 my-5">
           <View className="mb-2 flex-row justify-between">
             <View />
-            <List2>{formatLongDate( published_at, i18n )}</List2>
+            <List2>{formatLongDate( post.published_at, i18n )}</List2>
           </View>
-          <Body1>{title}</Body1>
+          <Body1>{post.title}</Body1>
           {/* 32 = mx-4 (16 on either side) */}
-          <UserText text={body} contentMargin={32} />
+          <UserText text={post.body} contentMargin={32} />
         </View>
       </ScrollViewWrapper>
     </ScreenShell>
