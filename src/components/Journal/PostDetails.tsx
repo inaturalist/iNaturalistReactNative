@@ -19,16 +19,17 @@ import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 const PostDetails = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"PostDetails">["route"]>( );
   const { id } = params;
-  console.log( "id", id );
+  const { i18n, t } = useTranslation( );
+
   const {
     body,
     // eslint-disable-next-line camelcase
     published_at,
     title,
   } = params;
-  const { i18n } = useTranslation( );
   const {
     data: post,
+    isError,
     isPending,
   } = useAuthenticatedQuery<ApiPost>(
     ["fetchPost", id],
@@ -51,6 +52,17 @@ const PostDetails = ( ) => {
       </ScreenShell>
     );
   }
+
+  if ( isError || post === null || post === undefined ) {
+    return (
+      <ScreenShell testID="PostDetails.error">
+        <View className="flex-1 justify-center items-center">
+          <Body1>{t( "Something-went-wrong" )}</Body1>
+        </View>
+      </ScreenShell>
+    );
+  }
+
   return (
     <ScreenShell>
       <ScrollViewWrapper testID="PostDetails">
