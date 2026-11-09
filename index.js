@@ -33,6 +33,7 @@ import {
   LAST_CRASH_DATA,
 } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
+import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
 import DeviceInfo from "react-native-device-info";
 import useRozenite, { HaltedLaunch, shouldHaltLaunchForDebug } from "sharedHooks/useRozenite";
 import { createMMKVStorageAdapter } from "@rozenite/storage-plugin";
@@ -132,6 +133,10 @@ inatjs.setConfig( {
     "X-Installation-ID": getInstallID( ),
   },
 } );
+
+// Once per JS load, which also covers logout: signOut restarts the app. Login refetches in
+// AuthenticationService
+syncFeatureFlags( );
 
 const queryClient = new QueryClient( {
   defaultOptions: {

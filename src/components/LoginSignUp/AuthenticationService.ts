@@ -34,6 +34,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
@@ -674,6 +675,8 @@ async function afterAuthenticateUser(
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   clearAuthCache( );
+  // Flipper resolves flags per user
+  syncFeatureFlags( );
   return {
     success: true,
     observationsCount: remoteUser?.observations_count,
