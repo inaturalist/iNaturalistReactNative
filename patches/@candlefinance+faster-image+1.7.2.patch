@@ -1,19 +1,35 @@
 diff --git a/node_modules/@candlefinance/faster-image/FasterImage.podspec b/node_modules/@candlefinance/faster-image/FasterImage.podspec
-index db9d4f0..18d13bf 100644
+index db9d4f0..b6b35c0 100644
 --- a/node_modules/@candlefinance/faster-image/FasterImage.podspec
 +++ b/node_modules/@candlefinance/faster-image/FasterImage.podspec
-@@ -37,11 +37,6 @@ Pod::Spec.new do |s|
-         "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
-         "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
-     }
+@@ -1,7 +1,6 @@
+ require "json"
+ 
+ package = JSON.parse(File.read(File.join(__dir__, "package.json")))
+-folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
+ 
+ Pod::Spec.new do |s|
+   s.name         = "FasterImage"
+@@ -28,20 +27,4 @@ Pod::Spec.new do |s|
+     ss.name = "NukeUI"
+     ss.source_files = "ios/NukeUI/**/*.{h,m,mm,swift}"
+   end
+-
+-  # Don't install the dependencies when we run `pod install` in the old architecture.
+-  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
+-    s.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
+-    s.pod_target_xcconfig    = {
+-        "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",
+-        "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+-        "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
+-    }
 -    s.dependency "React-RCTFabric"
 -    s.dependency "React-Codegen"
 -    s.dependency "RCT-Folly"
 -    s.dependency "RCTRequired"
 -    s.dependency "RCTTypeSafety"
 -    s.dependency "ReactCommon/turbomodule/core"
-+    install_modules_dependencies(s)
-   end
+-  end
  end
 diff --git a/node_modules/@candlefinance/faster-image/android/src/main/java/com/candlefinance/fasterimage/FasterImageViewManager.kt b/node_modules/@candlefinance/faster-image/android/src/main/java/com/candlefinance/fasterimage/FasterImageViewManager.kt
 index 5cf4dba..f75e080 100644
