@@ -1,4 +1,7 @@
 import { useRoute } from "@react-navigation/native";
+import { POST_DETAILS } from "api/fields";
+import { fetchPost } from "api/posts";
+import type { ApiPost } from "api/types";
 import {
   Body1,
   List2,
@@ -10,7 +13,7 @@ import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
-import { useTranslation } from "sharedHooks";
+import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 const PostDetails = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"PostDetails">["route"]>( );
@@ -23,6 +26,19 @@ const PostDetails = ( ) => {
     title,
   } = params;
   const { i18n } = useTranslation( );
+  const {
+    data: post,
+  } = useAuthenticatedQuery<ApiPost>(
+    ["fetchPost", id],
+    optsWithAuth => {
+      const params = {
+        id,
+        fields: POST_DETAILS,
+      };
+      return fetchPost( params, optsWithAuth );
+    },
+  );
+  console.log( "post", post );
 
   return (
     <ScreenShell>
