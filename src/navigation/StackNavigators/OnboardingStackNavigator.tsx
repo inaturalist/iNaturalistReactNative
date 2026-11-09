@@ -10,6 +10,7 @@ import LocationExplainerStep from "components/Onboarding/steps/LocationExplainer
 import ObsStoryStep from "components/Onboarding/steps/ObsStoryStep";
 import ResearchGradeStep from "components/Onboarding/steps/ResearchGradeStep";
 import WelcomeStep from "components/Onboarding/steps/WelcomeStep";
+import { preventSwipeToGoBack } from "navigation/navigationOptions";
 import type { OnboardingStackParamList } from "navigation/types";
 import type { ComponentType } from "react";
 import React from "react";
@@ -40,6 +41,9 @@ const OnboardingStackNavigator = ( ) => {
             key={id}
             name={id}
             component={STEP_COMPONENTS[id]}
+            options={id === "location_explainer"
+              ? preventSwipeToGoBack
+              : undefined}
           />
         ) )
         : (

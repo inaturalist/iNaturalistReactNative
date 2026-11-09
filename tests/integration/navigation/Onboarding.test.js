@@ -6,7 +6,7 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useContext } from "react";
-import { Image } from "react-native";
+import { BackHandler, Image } from "react-native";
 import { requestMultiple, RESULTS } from "react-native-permissions";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -135,9 +135,50 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ),
   );
 
+  const renderAppWithNavigationContainer = ( ) => {
+    const container = { current: null };
+    const ContainerProbe = ( ) => {
+      container.current = useContext( NavigationContainerRefContext );
+      return null;
+    };
+    renderAppWithComponent(
+      <>
+        <ContainerProbe />
+        <RootStackNavigator />
+      </>,
+    );
+    return { navigationContainer: container };
+  };
+
   const locationResults = status => Object.fromEntries(
     LOCATION_PERMISSIONS.map( permission => [permission, status] ),
   );
+
+  // BackHandler is a no-op outside Android, so record listeners and dispatch
+  // to them the way Android does: newest first, stopping at the first one
+  // that handles the press. Returns false when nothing handled it, which on
+  // a device means the OS closes the app.
+  let addBackListener;
+  const mockHardwareBack = ( ) => {
+    const listeners = [];
+    addBackListener = jest.spyOn( BackHandler, "addEventListener" )
+      .mockImplementation( ( eventName, listener ) => {
+        if ( eventName === "hardwareBackPress" ) listeners.push( listener );
+        return {
+          remove: ( ) => {
+            const index = listeners.indexOf( listener );
+            if ( index !== -1 ) listeners.splice( index, 1 );
+          },
+        };
+      } );
+    return ( ) => {
+      let handled;
+      act( ( ) => {
+        handled = [...listeners].reverse( ).some( listener => listener( ) );
+      } );
+      return handled;
+    };
+  };
 
   beforeAll( async ( ) => {
     await initI18next( );
@@ -155,6 +196,8 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
 
   afterEach( ( ) => {
     setStoreStateFeatureFlags( { } );
+    addBackListener?.mockRestore( );
+    addBackListener = undefined;
   } );
 
   it( "shows the welcome step instead of the carousel", async ( ) => {
@@ -199,37 +242,43 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     expect( mockOnboarding.shown ).toBe( true );
   } );
 
+  it( "can't swipe back from the location step", async ( ) => {
+    const { navigationContainer } = renderAppWithNavigationContainer( );
+    await continueToLocationStep( );
+    expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+    expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).toBe( false );
+  } );
+
+  it( "stays on the location step when the Android back button is pressed", async ( ) => {
+    const pressHardwareBack = mockHardwareBack( );
+    renderApp( );
+    await continueToLocationStep( );
+    expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+    expect( pressHardwareBack( ) ).toBe( true );
+    expect( screen.getByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+    expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+  } );
+
   it(
     "goes back one step at a time by swipe or back button, from impact to the observation story",
     async ( ) => {
-      const container = { current: null };
-      const ContainerProbe = ( ) => {
-        container.current = useContext( NavigationContainerRefContext );
-        return null;
-      };
-      renderAppWithComponent(
-        <>
-          <ContainerProbe />
-          <RootStackNavigator />
-        </>,
-      );
-      const stepIds = STEPS_IN_ORDER.map( ( [stepId] ) => stepId );
-      const impactIndex = stepIds.indexOf( "impact" );
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      const impactIndex = STEP_IDS.indexOf( "impact" );
       // eslint-disable-next-line no-restricted-syntax
-      for ( const stepId of stepIds.slice( 0, impactIndex ) ) {
+      for ( const stepId of STEP_IDS.slice( 0, impactIndex ) ) {
         // eslint-disable-next-line no-await-in-loop
         await continueFrom( stepId );
       }
       expect( await screen.findByTestId( "Onboarding.impact" ) ).toBeVisible( );
 
-      const obsStoryIndex = stepIds.indexOf( "obs_story" );
+      const obsStoryIndex = STEP_IDS.indexOf( "obs_story" );
       for ( let i = impactIndex; i > obsStoryIndex; i -= 1 ) {
-        expect( container.current.getCurrentOptions( ).gestureEnabled ).not.toBe( false );
+        expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).not.toBe( false );
         // Stands in for the back gesture and Android back button, which both
         // pop the step stack and can't be performed in jest
-        act( ( ) => container.current.goBack( ) );
-        expect( screen.queryByTestId( `Onboarding.${stepIds[i]}` ) ).toBeNull( );
-        expect( screen.getByTestId( `Onboarding.${stepIds[i - 1]}` ) ).toBeVisible( );
+        act( ( ) => navigationContainer.current.goBack( ) );
+        expect( screen.queryByTestId( `Onboarding.${STEP_IDS[i]}` ) ).toBeNull( );
+        expect( screen.getByTestId( `Onboarding.${STEP_IDS[i - 1]}` ) ).toBeVisible( );
       }
     },
   );
