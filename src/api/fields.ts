@@ -13,6 +13,22 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
   required: true,
 };
 
+export const TAXON_FIELDS = {
+  ancestor_ids: true,
+  default_photo: {
+    attribution: true,
+    id: true,
+    license_code: true,
+    url: true,
+  },
+  iconic_taxon_name: true,
+  is_active: true,
+  name: true,
+  preferred_common_name: true,
+  rank: true,
+  rank_level: true,
+};
+
 // Operand objects (taxon, place, etc.) are only returned with rule_details: true
 const PROJECT_OBSERVATION_RULE_FIELDS = {
   id: true,

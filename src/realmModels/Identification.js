@@ -1,8 +1,8 @@
 import { Realm } from "@realm/react";
+import { TAXON_FIELDS } from "api/fields";
 import * as uuid from "uuid";
 
 import Flag from "./Flag";
-import Taxon from "./Taxon";
 import User from "./User";
 
 class Identification extends Realm.Object {
@@ -15,8 +15,8 @@ class Identification extends Realm.Object {
     hidden: true,
     id: true,
     flags: Flag.FLAG_FIELDS,
-    previous_observation_taxon: Taxon.TAXON_FIELDS,
-    taxon: Taxon.TAXON_FIELDS,
+    previous_observation_taxon: TAXON_FIELDS,
+    taxon: TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
     user: User && ( { ...User.FIELDS, id: true } ),

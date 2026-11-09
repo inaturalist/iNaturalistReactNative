@@ -4,22 +4,6 @@ import { LIMITED_TAXON_FIELDS } from "api/fields";
 import Photo from "./Photo";
 
 class Taxon extends Realm.Object {
-  static TAXON_FIELDS = {
-    ancestor_ids: true,
-    default_photo: {
-      id: true,
-      url: true,
-      attribution: true,
-      license_code: true,
-    },
-    iconic_taxon_name: true,
-    is_active: true,
-    name: true,
-    preferred_common_name: true,
-    rank: true,
-    rank_level: true,
-  };
-
   static LIMITED_TAXON_FIELDS = LIMITED_TAXON_FIELDS;
 
   static STATEOFMATTER_LEVEL = 100;
