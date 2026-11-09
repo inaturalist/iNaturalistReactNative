@@ -3,6 +3,7 @@ import { POST_DETAILS } from "api/fields";
 import { fetchPost } from "api/posts";
 import type { ApiPost } from "api/types";
 import {
+  ActivityIndicator,
   Body1,
   List2,
   ScrollViewWrapper,
@@ -28,6 +29,7 @@ const PostDetails = ( ) => {
   const { i18n } = useTranslation( );
   const {
     data: post,
+    isPending,
   } = useAuthenticatedQuery<ApiPost>(
     ["fetchPost", id],
     optsWithAuth => {
@@ -40,6 +42,15 @@ const PostDetails = ( ) => {
   );
   console.log( "post", post );
 
+  if ( isPending ) {
+    return (
+      <ScreenShell testID="PostDetails.loading">
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size={50} />
+        </View>
+      </ScreenShell>
+    );
+  }
   return (
     <ScreenShell>
       <ScrollViewWrapper testID="PostDetails">
