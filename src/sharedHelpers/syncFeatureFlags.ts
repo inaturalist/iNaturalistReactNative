@@ -1,5 +1,4 @@
 import fetchFeatureFlags from "api/featureFlags";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
 
@@ -7,9 +6,11 @@ const logger = log.extend( "syncFeatureFlags" );
 
 let latestRequestId = 0;
 
-// Fetches Flipper-backed flags into the store. Signed out, the API only returns flags that are
-// fully enabled; on failure the store's API values are cleared so hard-coded defaults apply
-const syncFeatureFlags = async ( ) => {
+// Fetches Flipper-backed flags into the store. Signed out (no token), the API only returns flags
+// that are fully enabled; on failure the store's API values are cleared so hard-coded defaults
+// apply. Callers pass the token: getJWT lives in AuthenticationService, which calls this after
+// login, so importing it here would be circular
+const syncFeatureFlags = async ( apiToken: string | null ) => {
   latestRequestId += 1;
   const requestId = latestRequestId;
   const {
@@ -18,10 +19,8 @@ const syncFeatureFlags = async ( ) => {
     setFeatureFlagApiError,
   } = useStore.getState( );
   setFeatureFlagApiLoading( );
-  let signedIn = false;
+  const signedIn = !!apiToken;
   try {
-    const apiToken = await getJWT( );
-    signedIn = !!apiToken;
     const values = await fetchFeatureFlags( { api_token: apiToken } );
     // a newer sync (e.g. after login) started while this one was in flight
     if ( requestId !== latestRequestId ) return;

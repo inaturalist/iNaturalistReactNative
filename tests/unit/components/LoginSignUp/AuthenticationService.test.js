@@ -94,6 +94,7 @@ test( "authenticates user", async ( ) => {
   await expect( isLoggedIn() ).resolves.toEqual( true );
 
   // Feature flags are refetched once, after the signed-in user is saved
+  expect( syncFeatureFlags ).toHaveBeenCalledWith( JWT );
   expect( syncFeatureFlags ).toHaveBeenCalledTimes( 1 );
   expect( signedInUserAtSync ).toEqual( USERNAME );
 

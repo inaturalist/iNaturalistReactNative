@@ -1,4 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
   Body2,
   Body3,
@@ -168,7 +169,7 @@ const FeatureFlags = () => {
       ) )}
       <Button
         text="REFETCH FLAGS"
-        onPress={syncFeatureFlags}
+        onPress={async ( ) => syncFeatureFlags( await getJWT( ) )}
         disabled={apiStatus.state === "loading"}
         className="mt-3"
       />

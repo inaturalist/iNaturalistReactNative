@@ -1,15 +1,9 @@
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
-jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
-  getJWT: jest.fn( ),
-} ) );
-
 const mockGet = jest.mocked( inatjs.feature_flags.get );
-const mockGetJWT = jest.mocked( getJWT );
 
 const PROJECTS_KEY = `client_${FeatureFlag.TraditionalProjectsEnabled}`;
 const EXPLORE_KEY = `client_${FeatureFlag.ExploreV2Enabled}`;
@@ -17,14 +11,12 @@ const EXPLORE_KEY = `client_${FeatureFlag.ExploreV2Enabled}`;
 describe( "syncFeatureFlags", ( ) => {
   beforeEach( ( ) => {
     mockGet.mockReset( );
-    mockGetJWT.mockReset( );
   } );
 
   it( "stores API values fetched with the user's JWT", async ( ) => {
-    mockGetJWT.mockResolvedValue( "user-jwt" );
     mockGet.mockResolvedValue( { flags: { [PROJECTS_KEY]: true } } );
 
-    await syncFeatureFlags( );
+    await syncFeatureFlags( "user-jwt" );
 
     expect( mockGet ).toHaveBeenCalledWith(
       {},
@@ -36,10 +28,9 @@ describe( "syncFeatureFlags", ( ) => {
   } );
 
   it( "fetches without a token when signed out", async ( ) => {
-    mockGetJWT.mockResolvedValue( null );
     mockGet.mockResolvedValue( { flags: {} } );
 
-    await syncFeatureFlags( );
+    await syncFeatureFlags( null );
 
     expect( mockGet ).toHaveBeenCalledWith( {}, expect.objectContaining( { api_token: null } ) );
     expect( useStore.getState( ).featureFlagApiStatus )
@@ -47,12 +38,11 @@ describe( "syncFeatureFlags", ( ) => {
   } );
 
   it( "clears API values when the request fails", async ( ) => {
-    mockGetJWT.mockResolvedValue( "user-jwt" );
     mockGet.mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: false } } );
-    await syncFeatureFlags( );
+    await syncFeatureFlags( "user-jwt" );
 
     mockGet.mockRejectedValueOnce( new Error( "Network request failed" ) );
-    await syncFeatureFlags( );
+    await syncFeatureFlags( "user-jwt" );
 
     const { featureFlagApiValues, featureFlagApiStatus } = useStore.getState( );
     expect( featureFlagApiValues ).toEqual( {} );
@@ -61,13 +51,12 @@ describe( "syncFeatureFlags", ( ) => {
 
   it( "ignores a response that arrives after a newer sync started", async ( ) => {
     let resolveFirst;
-    mockGetJWT.mockResolvedValue( "user-jwt" );
     mockGet
       .mockImplementationOnce( ( ) => new Promise( resolve => { resolveFirst = resolve; } ) )
       .mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: true } } );
 
-    const first = syncFeatureFlags( );
-    await syncFeatureFlags( );
+    const first = syncFeatureFlags( "user-jwt" );
+    await syncFeatureFlags( "user-jwt" );
     resolveFirst( { flags: { [EXPLORE_KEY]: false } } );
     await first;
 

@@ -15,6 +15,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import App from "components/App";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import ErrorBoundary from "components/ErrorBoundary";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
@@ -136,7 +137,9 @@ inatjs.setConfig( {
 
 // Once per JS load, which also covers logout: signOut restarts the app. Login refetches in
 // AuthenticationService
-syncFeatureFlags( );
+getJWT( )
+  .then( syncFeatureFlags )
+  .catch( error => logger.error( "Couldn't get a JWT to sync feature flags", error ) );
 
 const queryClient = new QueryClient( {
   defaultOptions: {

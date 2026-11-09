@@ -676,7 +676,7 @@ async function afterAuthenticateUser(
   }, "saving current user in AuthenticationService" );
   clearAuthCache( );
   // Flipper resolves flags per user
-  syncFeatureFlags( );
+  syncFeatureFlags( apiToken );
   return {
     success: true,
     observationsCount: remoteUser?.observations_count,
