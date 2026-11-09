@@ -7,6 +7,8 @@ import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useContext } from "react";
 import { Image } from "react-native";
+import { requestMultiple, RESULTS } from "react-native-permissions";
+import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import { renderApp, renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
@@ -114,11 +116,28 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     ["signup_credentials", false],
     ["location_explainer", true],
   ];
+  const STEP_IDS = STEPS_IN_ORDER.map( ( [stepId] ) => stepId );
 
   const continueFrom = async stepId => {
     const step = await screen.findByTestId( `Onboarding.${stepId}` );
     await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.next` ) );
   };
+
+  const continueToLocationStep = async ( ) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for ( const stepId of STEP_IDS.slice( 0, STEP_IDS.indexOf( "location_explainer" ) ) ) {
+      // eslint-disable-next-line no-await-in-loop
+      await continueFrom( stepId );
+    }
+  };
+
+  const findMyObservations = ( ) => screen.findByText(
+    i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ),
+  );
+
+  const locationResults = status => Object.fromEntries(
+    LOCATION_PERMISSIONS.map( permission => [permission, status] ),
+  );
 
   beforeAll( async ( ) => {
     await initI18next( );
@@ -128,6 +147,10 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   beforeEach( ( ) => {
     mockOnboarding.shown = false;
     setStoreStateFeatureFlags( { [FeatureFlag.OnboardingV2Enabled]: true } );
+    requestMultiple.mockReset( );
+    requestMultiple.mockImplementation(
+      ( ) => Promise.resolve( locationResults( RESULTS.GRANTED ) ),
+    );
   } );
 
   afterEach( ( ) => {
@@ -141,7 +164,8 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   it(
-    "visits each step in order (progress on education and location steps), then my observations",
+    "visits each step in order (progress on education and location steps), asks for location, "
+    + "then shows my observations",
     async ( ) => {
       renderApp( );
       // eslint-disable-next-line no-restricted-syntax
@@ -156,13 +180,24 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         // eslint-disable-next-line no-await-in-loop
         await continueFrom( stepId );
       }
-      expect(
-        await screen.findByText( i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ) ),
-      ).toBeVisible( );
+      expect( requestMultiple ).toHaveBeenCalledWith( LOCATION_PERMISSIONS );
+      expect( await findMyObservations( ) ).toBeVisible( );
       expect( screen.queryByTestId( "Onboarding.welcome" ) ).toBeNull( );
       expect( mockOnboarding.shown ).toBe( true );
     },
   );
+
+  it.each( [
+    ["denied", ( ) => Promise.resolve( locationResults( RESULTS.DENIED ) )],
+    ["not requested because of an error", ( ) => Promise.reject( new Error( "request failed" ) )],
+  ] )( "shows my observations when location is %s", async ( _outcome, request ) => {
+    requestMultiple.mockImplementationOnce( request );
+    renderApp( );
+    await continueToLocationStep( );
+    await continueFrom( "location_explainer" );
+    expect( await findMyObservations( ) ).toBeVisible( );
+    expect( mockOnboarding.shown ).toBe( true );
+  } );
 
   it(
     "goes back one step at a time by swipe or back button, from impact to the observation story",
