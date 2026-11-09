@@ -38,18 +38,7 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
     display_name: true,
     id: true,
   },
-  taxon: {
-    // TODO: MOB-1946 this should be changed to request a persitable taxon
-    ancestor_ids: true,
-    default_photo: {
-      url: true,
-    },
-    id: true,
-    name: true,
-    preferred_common_name: true,
-    rank: true,
-    rank_level: true,
-  },
+  taxon: TAXON_FIELDS,
 };
 
 export const PROJECT_SUMMARY_FIELDS = {
