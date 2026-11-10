@@ -15,9 +15,9 @@ export interface UserPojo {
   login?: string;
   name?: string;
   observations_count?: number;
-  prefers_common_names?: boolean;
+  prefers_common_names: boolean;
   prefers_community_taxa?: boolean;
-  prefers_scientific_name_first?: boolean;
+  prefers_scientific_name_first: boolean;
   roles: string[];
   signedIn?: boolean;
 }
@@ -87,7 +87,7 @@ class User extends Realm.Object<User> {
    *
    * @param user - a live Realm User
    * @returns plain user snapshot, or null. Unset fields are undefined rather than null so
-   * consumers' default props and `?:` types apply
+   * consumers' default props and `?:` types apply; unset name prefs get the server defaults
    */
   static mapRealmToPojo( user?: User | null ): UserPojo | null {
     if ( !user ) return null;
@@ -99,9 +99,10 @@ class User extends Realm.Object<User> {
       login: user.login ?? undefined,
       name: user.name ?? undefined,
       observations_count: user.observations_count ?? undefined,
-      prefers_common_names: user.prefers_common_names ?? undefined,
+      // users/me always sends these; the API falls back to these defaults when unset
+      prefers_common_names: user.prefers_common_names ?? true,
       prefers_community_taxa: user.prefers_community_taxa ?? undefined,
-      prefers_scientific_name_first: user.prefers_scientific_name_first ?? undefined,
+      prefers_scientific_name_first: user.prefers_scientific_name_first ?? false,
       roles: Array.from( user.roles || [] ),
       signedIn: user.signedIn ?? undefined,
     };
