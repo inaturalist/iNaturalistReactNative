@@ -115,7 +115,9 @@ describe( "EvidenceList", ( ) => {
       expect( photo.localFilePath ).toMatch( new RegExp( `^${photoUploadPath}/.+\\.jpg$` ) );
     } );
 
-    it( "should crop the observation photo to the part inside the frame", async ( ) => {
+    // Opens the cropper on a 2048x1536 photo shown 400x300pt, and returns the
+    // image whose cropAsync records the crop
+    const openCropper = async ( ) => {
       setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: true } );
       jest.spyOn( Image, "getSize" ).mockResolvedValue( { width: 2048, height: 1536 } );
       const croppedImage = { saveToFileAsync: jest.fn( ) };
@@ -123,22 +125,30 @@ describe( "EvidenceList", ( ) => {
       Images.loadFromFileAsync.mockResolvedValueOnce( originalImage );
       const actor = userEvent.setup( );
       await openLocalPhoto( actor );
-
       await actor.press( screen.getByLabelText( "Crop photo" ) );
-      // Show the 2048x1536 photo 400x300pt, then drag the bottom-right corner
-      // halfway in, framing the top-left quarter of the photo
       fireEvent( screen.getByTestId( "PhotoCropper" ), "layout", {
         nativeEvent: { layout: { width: 400, height: 300 } },
       } );
       await waitFor( ( ) => {
         expect( getByGestureTestId( "PhotoCropper.handle.bottomRight" ) ).toBeTruthy( );
       } );
-      fireGestureHandler( getByGestureTestId( "PhotoCropper.handle.bottomRight" ), [
+      return { actor, originalImage };
+    };
+
+    const drag = ( gestureTestId, translationX, translationY ) => {
+      fireGestureHandler( getByGestureTestId( gestureTestId ), [
         { state: State.BEGAN },
         { state: State.ACTIVE, translationX: 0, translationY: 0 },
-        { state: State.ACTIVE, translationX: -200, translationY: -150 },
-        { state: State.END, translationX: -200, translationY: -150 },
+        { state: State.ACTIVE, translationX, translationY },
+        { state: State.END, translationX, translationY },
       ] );
+    };
+
+    it( "should crop the observation photo to the part inside the frame", async ( ) => {
+      const { actor, originalImage } = await openCropper( );
+
+      // Drag the bottom-right corner halfway in, framing the top-left quarter
+      drag( "PhotoCropper.handle.bottomRight", -200, -150 );
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       await waitFor( ( ) => {
@@ -147,6 +157,21 @@ describe( "EvidenceList", ( ) => {
       await waitFor( ( ) => {
         const { photo } = useStore.getState( ).currentObservation.observationPhotos[0];
         expect( photo.localFilePath ).not.toEqual( localFilePath );
+      } );
+    } );
+
+    it( "should move the frame without leaving the photo", async ( ) => {
+      const { actor, originalImage } = await openCropper( );
+
+      drag( "PhotoCropper.handle.bottomRight", -200, -150 );
+      // Drag the frame well past the bottom-right corner, where it stops, then
+      // back halfway to the center
+      drag( "PhotoCropper.frame", 500, 500 );
+      drag( "PhotoCropper.frame", -100, -75 );
+      await actor.press( screen.getByLabelText( "Save crop" ) );
+
+      await waitFor( ( ) => {
+        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 512, 384, 1536, 1152 );
       } );
     } );
   } );

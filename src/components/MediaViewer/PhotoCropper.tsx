@@ -3,6 +3,7 @@ import { View } from "components/styledComponents";
 import React, { useEffect, useMemo, useState } from "react";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { Image } from "react-native";
+import type { PanGesture } from "react-native-gesture-handler";
 import {
   Gesture,
   GestureDetector,
@@ -56,10 +57,13 @@ interface CropHandleProps {
   display: Size;
   heightPerWidth: number;
   minimumWidth: number;
+  // Waits for this handle, so a drag that starts on a corner resizes the
+  // frame instead of moving it
+  moveGesture: PanGesture;
 }
 
 const CropHandle = ( {
-  corner, frame, display, heightPerWidth, minimumWidth,
+  corner, frame, display, heightPerWidth, minimumWidth, moveGesture,
 }: CropHandleProps ) => {
   const isLeft = corner === "topLeft" || corner === "bottomLeft";
   const isTop = corner === "topLeft" || corner === "topRight";
@@ -68,6 +72,7 @@ const CropHandle = ( {
 
   const gesture = useMemo( ( ) => Gesture.Pan( )
     .withTestId( `PhotoCropper.handle.${corner}` )
+    .blocksExternalGesture( moveGesture )
     .onStart( ( ) => {
       start.set( { x: frame.x.get( ), y: frame.y.get( ), width: frame.width.get( ) } );
     } )
@@ -108,7 +113,17 @@ const CropHandle = ( {
       frame.y.set( isTop
         ? anchorY - width * heightPerWidth
         : anchorY );
-    } ), [corner, display, frame, heightPerWidth, isLeft, isTop, minimumWidth, start] );
+    } ), [
+    corner,
+    display,
+    frame,
+    heightPerWidth,
+    isLeft,
+    isTop,
+    minimumWidth,
+    moveGesture,
+    start,
+  ] );
 
   return (
     <GestureDetector gesture={gesture}>
@@ -128,8 +143,8 @@ interface Props {
   onCrop: ( cropRectangle: CropRectangle ) => void;
 }
 
-// Shows a photo with a crop frame the user resizes by dragging its corners.
-// The frame keeps the photo's aspect ratio
+// Shows a photo with a crop frame the user resizes by dragging its corners
+// and moves by dragging inside it. The frame keeps the photo's aspect ratio.
 const PhotoCropper = ( {
   uri, saving, onCancel, onCrop,
 }: Props ) => {
@@ -171,7 +186,25 @@ const PhotoCropper = ( {
   const minimumWidth = imageSize && display
     ? display.width * getMinimumCropFraction( imageSize.width, imageSize.height )
     : 0;
-  const dimBorderWidth = Math.max( display?.width || 0, display?.height || 0 );
+  const displayWidth = display?.width || 0;
+  const displayHeight = display?.height || 0;
+  const dimBorderWidth = Math.max( displayWidth, displayHeight );
+
+  // Drag the whole frame, keeping it inside the photo
+  const moveStart = useSharedValue( { x: 0, y: 0 } );
+  const moveGesture = useMemo( ( ) => Gesture.Pan( )
+    .withTestId( "PhotoCropper.frame" )
+    .onStart( ( ) => {
+      moveStart.set( { x: frameX.get( ), y: frameY.get( ) } );
+    } )
+    .onUpdate( ( { translationX, translationY } ) => {
+      const { x: startX, y: startY } = moveStart.get( );
+      const width = frameWidth.get( );
+      const maximumX = displayWidth - width;
+      const maximumY = displayHeight - width * heightPerWidth;
+      frameX.set( Math.max( 0, Math.min( startX + translationX, maximumX ) ) );
+      frameY.set( Math.max( 0, Math.min( startY + translationY, maximumY ) ) );
+    } ), [displayHeight, displayWidth, frameWidth, frameX, frameY, heightPerWidth, moveStart] );
 
   const frameStyle = useAnimatedStyle( ( ) => ( {
     left: frameX.get( ),
@@ -226,24 +259,27 @@ const PhotoCropper = ( {
               accessibilityIgnoresInvertColors
             />
             <Animated.View className="absolute border-black/60" style={dimStyle} />
-            <Animated.View className="absolute border border-white" style={frameStyle}>
-              {GRIDLINE_CLASSES.map( gridlineClasses => (
-                <Animated.View
-                  key={gridlineClasses}
-                  className={`absolute bg-white/50 ${gridlineClasses}`}
-                />
-              ) )}
-              {CORNERS.map( corner => (
-                <CropHandle
-                  key={corner}
-                  corner={corner}
-                  frame={frame}
-                  display={display}
-                  heightPerWidth={heightPerWidth}
-                  minimumWidth={minimumWidth}
-                />
-              ) )}
-            </Animated.View>
+            <GestureDetector gesture={moveGesture}>
+              <Animated.View className="absolute border border-white" style={frameStyle}>
+                {GRIDLINE_CLASSES.map( gridlineClasses => (
+                  <Animated.View
+                    key={gridlineClasses}
+                    className={`absolute bg-white/50 ${gridlineClasses}`}
+                  />
+                ) )}
+                {CORNERS.map( corner => (
+                  <CropHandle
+                    key={corner}
+                    corner={corner}
+                    frame={frame}
+                    display={display}
+                    heightPerWidth={heightPerWidth}
+                    minimumWidth={minimumWidth}
+                    moveGesture={moveGesture}
+                  />
+                ) )}
+              </Animated.View>
+            </GestureDetector>
           </View>
         )}
       </View>
