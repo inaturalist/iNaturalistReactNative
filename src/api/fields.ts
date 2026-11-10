@@ -1,18 +1,3 @@
-const OBSERVATION_FIELD_FIELDS = {
-  allowed_values: true,
-  datatype: true,
-  description: true,
-  id: true,
-  name: true,
-};
-
-const PROJECT_OBSERVATION_FIELDS_FIELDS = {
-  id: true,
-  observation_field: OBSERVATION_FIELD_FIELDS,
-  position: true,
-  required: true,
-};
-
 export const TAXON_FIELDS = {
   ancestor_ids: true,
   default_photo: {
@@ -27,6 +12,43 @@ export const TAXON_FIELDS = {
   preferred_common_name: true,
   rank: true,
   rank_level: true,
+};
+
+export const LIMITED_TAXON_FIELDS = {
+  ancestor_ids: true,
+  default_photo: {
+    id: true,
+    url: true,
+  },
+  representative_photo: {
+    id: true,
+    url: true,
+  },
+  iconic_taxon_name: true,
+  name: true,
+  preferred_common_name: true,
+  rank: true,
+  rank_level: true,
+  taxon_photos: {
+    photo: {
+      url: true,
+    },
+  },
+};
+
+const OBSERVATION_FIELD_FIELDS = {
+  allowed_values: true,
+  datatype: true,
+  description: true,
+  id: true,
+  name: true,
+};
+
+const PROJECT_OBSERVATION_FIELDS_FIELDS = {
+  id: true,
+  observation_field: OBSERVATION_FIELD_FIELDS,
+  position: true,
+  required: true,
 };
 
 // Operand objects (taxon, place, etc.) are only returned with rule_details: true
@@ -128,28 +150,6 @@ export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
     id: true,
     name: true,
     preferred_common_name: true,
-  },
-};
-
-export const LIMITED_TAXON_FIELDS = {
-  ancestor_ids: true,
-  default_photo: {
-    id: true,
-    url: true,
-  },
-  representative_photo: {
-    id: true,
-    url: true,
-  },
-  iconic_taxon_name: true,
-  name: true,
-  preferred_common_name: true,
-  rank: true,
-  rank_level: true,
-  taxon_photos: {
-    photo: {
-      url: true,
-    },
   },
 };
 
