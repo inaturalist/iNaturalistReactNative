@@ -2,9 +2,9 @@ import { Realm } from "@realm/react";
 import type { ApiProjectObservationRule } from "api/types";
 import type { RealmProjectObservationRule } from "realmModels/types";
 
-// Operand details are flattened into scalars rather than linked to the Taxon
-// table so caching rules doesn't create rows there. Place display name is
-// persisted only so observed_in_place? round-trips keep a place object.
+// Place display name is persisted only so observed_in_place? round-trips keep a place object.
+// Embedded objects cannot link to top-level Taxon rows. Persist taxa required for in_taxon?
+// operands as operand_id (and in realm).
 class ProjectObservationRule extends Realm.Object {
   static mapApiToRealm( apiRule: ApiProjectObservationRule ) {
     return {
@@ -12,14 +12,6 @@ class ProjectObservationRule extends Realm.Object {
       operand_id: apiRule.operand_id,
       operator: apiRule.operator,
       place_display_name: apiRule.place?.display_name,
-      // Empty when the API omits them; offline validation falls back to
-      // other ancestry sources in that case
-      taxon_ancestor_ids: apiRule.taxon?.ancestor_ids || [],
-      taxon_default_photo_url: apiRule.taxon?.default_photo?.url,
-      taxon_name: apiRule.taxon?.name,
-      taxon_preferred_common_name: apiRule.taxon?.preferred_common_name,
-      taxon_rank: apiRule.taxon?.rank,
-      taxon_rank_level: apiRule.taxon?.rank_level,
     };
   }
 
