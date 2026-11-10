@@ -15,7 +15,7 @@ export const TAXON_SUMMARY_FIELDS = {
 };
 
 export const LIMITED_TAXON_FIELDS = {
-  ancestor_ids: true,
+  ...TAXON_SUMMARY_FIELDS,
   default_photo: {
     id: true,
     url: true,
@@ -24,11 +24,6 @@ export const LIMITED_TAXON_FIELDS = {
     id: true,
     url: true,
   },
-  iconic_taxon_name: true,
-  name: true,
-  preferred_common_name: true,
-  rank: true,
-  rank_level: true,
   taxon_photos: {
     photo: {
       url: true,
