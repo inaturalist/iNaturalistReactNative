@@ -143,14 +143,14 @@ const MyObservationsResults = ( ) => {
   // If the current view mode becomes unavailable (feature flag disabled or logged out),
   // fall back to grid rather than getting stuck on an unrenderable view
   useEffect( ( ) => {
-    const viewUnavailable = (
-      layout === "map" && !currentUser
-    ) || (
-      layout === "smallGrid" && (
-        ( featureFlagsSettled && !myObservationsSmallGridViewEnabled ) || !currentUser
-      )
-    );
-    if ( viewUnavailable ) {
+    const mapSignedOut = layout === "map" && !currentUser;
+    const smallGridSignedOut = layout === "smallGrid" && !currentUser;
+    const smallGridFlagDisabled = layout === "smallGrid"
+      // smallGrid may be remotely enabled but locally disabled
+      // wait for featureFlags to settle before any sideEffects
+      && featureFlagsSettled
+      && !myObservationsSmallGridViewEnabled;
+    if ( mapSignedOut || smallGridSignedOut || smallGridFlagDisabled ) {
       clearMyObservationsViewState( );
       writeLayoutToStorage( "grid" );
     }
