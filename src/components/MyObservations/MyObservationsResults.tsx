@@ -50,7 +50,7 @@ import {
 } from "sharedHooks/useCurrentUserSpeciesCount";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationCounts from "sharedHooks/useObservationCounts";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag, selectFeatureFlagsSettled } from "stores/createFeatureFlagSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_PENDING,
@@ -112,6 +112,7 @@ const MyObservationsResults = ( ) => {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const featureFlagsSettled = useStore( selectFeatureFlagsSettled );
   const { isConnected } = useNetInfo( );
   const {
     observationIds,
@@ -145,7 +146,9 @@ const MyObservationsResults = ( ) => {
     const viewUnavailable = (
       layout === "map" && !currentUser
     ) || (
-      layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
+      layout === "smallGrid" && (
+        ( featureFlagsSettled && !myObservationsSmallGridViewEnabled ) || !currentUser
+      )
     );
     if ( viewUnavailable ) {
       clearMyObservationsViewState( );
@@ -155,6 +158,7 @@ const MyObservationsResults = ( ) => {
     clearMyObservationsViewState,
     layout,
     myObservationsSmallGridViewEnabled,
+    featureFlagsSettled,
     currentUser,
     writeLayoutToStorage,
   ] );

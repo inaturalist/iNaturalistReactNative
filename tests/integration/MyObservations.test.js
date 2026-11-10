@@ -335,6 +335,42 @@ describe( "MyObservations", ( ) => {
         } );
       } );
 
+      describe( "with a saved small grid layout", ( ) => {
+        beforeEach( ( ) => {
+          zustandStorage.setItem( "myObservationsLayout", "smallGrid" );
+        } );
+
+        afterEach( ( ) => {
+          zustandStorage.removeItem( "myObservationsLayout" );
+          act( ( ) => {
+            useStore.setState( { featureFlagApiStatus: { state: "idle" } } );
+          } );
+        } );
+
+        it( "keeps it while feature flags are still loading", async ( ) => {
+          act( ( ) => {
+            useStore.setState( { featureFlagApiStatus: { state: "loading" } } );
+          } );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          await screen.findByTestId( "SyncButton" );
+          expect( zustandStorage.getItem( "myObservationsLayout" ) ).toEqual( "smallGrid" );
+          expect( screen.getByTestId( "SegmentedButton.smallGrid" ) ).toBeVisible( );
+        } );
+
+        it( "falls back to grid once feature flags load without it", async ( ) => {
+          act( ( ) => {
+            useStore.setState( {
+              featureFlagApiStatus: { state: "loaded", fetchedAt: Date.now( ), signedIn: true },
+            } );
+          } );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          await waitFor( ( ) => {
+            expect( zustandStorage.getItem( "myObservationsLayout" ) ).toEqual( "grid" );
+          } );
+          expect( screen.queryByTestId( "SegmentedButton.smallGrid" ) ).toBeNull( );
+        } );
+      } );
+
       it( "hides observation status in grid view", async () => {
         const realm = global.mockRealms[__filename];
         expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
