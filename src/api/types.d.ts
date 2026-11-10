@@ -180,6 +180,29 @@ export interface ApiUser extends ApiRecord {
   species_count?: number;
 }
 
+// When using LIMITED_TAXON_FIELDS
+export interface ApiTaxonLimited extends ApiRecord {
+  ancestor_ids: number[];
+  default_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+  representative_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  taxon_photos: {
+    photo: {
+      url: string | null;
+    } | null;
+  }[];
+}
+
 type Operator =
   | "georeferenced?"
   | "captive?"
@@ -443,29 +466,6 @@ export interface ApiSpeciesCountVerboseSummary extends ApiCount {
     name: string;
     preferred_common_name: string | null;
   } | null;
-}
-
-// When using Taxon.LIMITED_TAXON_FIELDS
-export interface ApiTaxonLimited extends ApiRecord {
-  ancestor_ids: number[];
-  default_photo: {
-    id: number;
-    url: string | null;
-  } | null;
-  iconic_taxon_name: string | null;
-  name: string;
-  preferred_common_name: string | null;
-  rank: string;
-  rank_level: number;
-  representative_photo: {
-    id: number;
-    url: string | null;
-  } | null;
-  taxon_photos: {
-    photo: {
-      url: string | null;
-    } | null;
-  }[];
 }
 
 // When using SPECIES_COUNTS_DETAILS_FIELDS
