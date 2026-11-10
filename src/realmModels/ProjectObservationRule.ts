@@ -72,12 +72,6 @@ class ProjectObservationRule extends Realm.Object {
       operand_id: "int?",
       operator: "string",
       place_display_name: "string?",
-      taxon_ancestor_ids: "int[]",
-      taxon_default_photo_url: "string?",
-      taxon_name: "string?",
-      taxon_preferred_common_name: "string?",
-      taxon_rank: "string?",
-      taxon_rank_level: "float?",
     },
   };
 }
