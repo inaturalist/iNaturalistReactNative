@@ -65,7 +65,7 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
     display_name: true,
     id: true,
   },
-  taxon: TAXON_SUMMARY_FIELDS,
+  taxon: TAXON_PERSISTABLE_FIELDS,
 };
 
 export const PROJECT_SUMMARY_FIELDS = {
