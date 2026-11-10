@@ -13,21 +13,12 @@ App id (both platforms): **`org.inaturalist.iNaturalistMobile`**.
 
 ## Detox
 
-Canonical commands are the npm scripts (see `package.json`), e.g.:
-
-```bash
-npm run e2e:ios         # build + test iOS (ios.release)
-npm run e2e:test:ios    # test without rebuilding
-npm run e2e:android     # build + test Android (android.release)
-```
-
-Key facts:
+Run it through the `e2e:*` npm scripts; they carry the flags below.
 
 - **`MOCK_MODE=e2e` is mandatory** on both build and test — it activates the `.e2e-mock` file substitutions across the codebase (e.g. `src/sharedHelpers/geolocationWrapper.e2e-mock`; the switch lives in `metro.config.js` / `src/appConstants/e2e.ts`). Without it the app hits real device services.
 - Detox needs **real network + real credentials** in `.env`: `E2E_TEST_USERNAME` / `E2E_TEST_PASSWORD`.
 - Tests run **serially** — `e2e/jest.config.js` sets `maxWorkers: 1`.
-- iOS binaries: `ios/build/Build/Products/{Debug,Release}-iphonesimulator/iNaturalistReactNative.app`. Android APK paths are derived in `.detoxrc.js`.
-- No custom artifacts path is configured in `.detoxrc.js`, so Detox uses its default location (`artifacts/` at the repo root), not `e2e/artifacts/`.
+- No custom artifacts path is configured in `.detoxrc.js`, so Detox writes to its default location, `artifacts/` at the repo root — not `e2e/artifacts/`.
 - Android keyboard helpers: dismiss with `adb shell input keyevent 111`; check visibility with `adb shell dumpsys input_method | grep mInputShown`.
 
 ## Maestro
@@ -75,4 +66,5 @@ Hard-won gotchas when driving the live app (e.g. via the Maestro MCP tools) rath
 
 ## Related
 
-- Unit / component / integration testing: `test-core.md`, `test-components.md`, `integration-test-analysis.md` in this directory.
+- Unit, component and integration testing: `test-core.md` in this directory, and
+  `.claude/rules/tests.md` for the standards.

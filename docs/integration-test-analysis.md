@@ -1,5 +1,10 @@
 # Integration Test Architecture and Strategy Analysis
 
+> Archived one-off memo, moved here from `agent-docs/` in September 2026. It is a
+> point-in-time strategy analysis with open recommendations, not agent guidance,
+> and nothing keeps it current. Testing standards live in `.claude/rules/tests.md`;
+> setup detail lives in `agent-docs/testing/test-core.md`.
+
 ## Overview
 
 The iNaturalistReactNative codebase separates tests into three tiers:

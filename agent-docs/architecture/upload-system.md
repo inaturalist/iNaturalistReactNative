@@ -1,104 +1,72 @@
 # Upload System Architecture
 
-## Overview
+Offline-first and queue-based: observations upload sequentially, media within one
+observation uploads in parallel, and auth is revalidated at each stage. Media
+upload is separate from observation metadata.
 
-The upload system implements an offline-first, queue-based architecture that uploads observations sequentially while processing media in parallel. It separates media uploads from observation metadata, enforces sequential processing per observation, and revalidates authentication at each stage.
+## The pipeline, per observation
 
-## Key Files
+1. **Media upload** (`uploadObservationMedia`) — raw photos and sounds to
+   `inatjs.photos.create()` / `sounds.create()`, all in parallel via `Promise.all`.
+2. **Create or update** (`createOrUpdateObservation`) — `create()` when
+   `wasSynced() === false`, otherwise `update()` with `ignore_photos=true`. JWT
+   revalidated first.
+3. **Attach** (`attachMediaToObservation`) — `observation_photos.create()` and
+   `observation_sounds.create()` link the uploaded media, including replacements
+   for previously synced media.
+4. **Realm sync** (`markRecordUploaded`) — writes the server `id`, sets
+   `_synced_at`, clears `needs_sync`, retrying on Realm invalidation.
 
-| File | Purpose |
-|------|---------|
-| `src/uploaders/observationUploader.ts` | 4-step upload pipeline (media → create/update → attach → persist) |
-| `src/uploaders/mediaUploader.ts` | Media filtering, classification, parallel upload |
-| `src/uploaders/dataTransformation/prepareObservationForUpload.ts` | Observation → API payload |
-| `src/uploaders/dataTransformation/prepareMediaForUpload.ts` | Photo/Sound → API payload |
-| `src/uploaders/utils/errorHandling.ts` | Error classification and recovery |
-| `src/uploaders/utils/progressTracker.ts` | Event-based progress tracking |
-| `src/uploaders/utils/realmSync.ts` | Post-upload Realm persistence |
-| `src/stores/createUploadObservationsSlice.ts` | Zustand state (queue, status, progress) |
-| `src/components/MyObservations/hooks/useUploadObservations.ts` | Entry point, upload loop control |
-| `src/components/MyObservations/hooks/useSyncObservations.ts` | Server sync integration |
+Steps 1–3 can each succeed while a later one fails, which is why an observation
+can end up with orphaned server-side photos. Do not assume partial failure means
+nothing was uploaded.
 
-## Upload Pipeline (4 Steps)
+## Queue ordering is deliberately not FIFO
 
-Each observation follows this strict sequence:
+The queue lives in Zustand (`createUploadObservationsSlice`), not Realm.
 
-1. **Media Upload** (`uploadObservationMedia()`) — Upload raw photos/sounds to server via `inatjs.photos.create()` / `inatjs.sounds.create()`. Processes all media in parallel via `Promise.all()`.
+- `filterUnsyncedObservations` returns results sorted `_created_at` **descending**
+  (`.sorted( "_created_at", true )`).
+- `uploadQueue` is consumed from the **tail** with `pop()`, while a single new
+  UUID is added at the front with `unshift()`.
 
-2. **Observation Create/Update** (`createOrUpdateObservation()`) — If `observation.wasSynced() === false`, creates via `inatjs.observations.create()`. If previously synced, updates with `ignore_photos=true`. Revalidates JWT before API call.
+The two reversals cancel, so the net upload order is oldest-first. Changing
+either one alone silently flips the order users see.
 
-3. **Media Attachment** (`attachMediaToObservation()`) — Attaches uploaded media to the observation via `inatjs.observation_photos.create()` and `inatjs.observation_sounds.create()`. Handles updates to previously synced media.
+Unsynced means any of: `_synced_at == null`, `_synced_at <= _updated_at`, or any
+`observationPhotos` / `observationSounds` / `projectObservations` /
+`observationFieldValues` with `_synced_at == null`.
 
-4. **Realm Sync** (`markRecordUploaded()`) — Updates local Observation with server-assigned `id`, sets `_synced_at` timestamp, clears `needs_sync` flag. Handles Realm invalidation errors with retry.
+## Timeouts and wakefulness
 
-## Queue & State Management
+- Each observation gets **5 minutes** (`setTimeout` plus
+  `AbortController.abort()`), not each request. A slow connection with many
+  photos hits this.
+- `@sayem314/react-native-keep-awake` is activated on
+  `setStartUploadObservations()` and deactivated on `completeUploads()` or
+  `stopAllUploads()`. An early return that skips those leaves the screen awake.
+- The toolbar resets 5 seconds after completion (`MS_BEFORE_TOOLBAR_RESET`).
 
-The Zustand slice (`createUploadObservationsSlice`) manages:
-
-- `uploadQueue` — array of observation UUIDs, consumed from the **tail** (`pop()`); single UUIDs are added at the front (`unshift`), so net upload order is oldest-first rather than strictly FIFO
-- `uploadStatus` — `PENDING` | `IN_PROGRESS` | `COMPLETE` | `CANCELLED`
-- `currentUpload` — Observation being processed
-- `abortController` — Enables cancellation via AbortSignal
-- `totalUploadProgress[]` — Per-observation progress tracking
-- `totalToolbarProgress` — Aggregate progress 0-1 for toolbar UI
-- `errorsByUuid` — Maps UUID → array of error messages
-
-## Upload Flow
-
-1. `startUploadObservations()` filters unsynced observations from Realm
-2. UUIDs added to queue, status set to `IN_PROGRESS`
-3. An effect watches `uploadStatus`, `uploadQueue`, `currentUpload`
-4. When queue has items and no current upload, pops next UUID
-5. Fetches Observation from Realm, calls `uploadObservationAndCatchError()`
-6. On success: removes from queue. On error: stores error, removes from queue.
-7. When queue empty: `completeUploads()` → status = `COMPLETE`
-8. UI resets after 5 seconds (`MS_BEFORE_TOOLBAR_RESET`)
-
-**Timeout**: Each observation upload limited to 5 minutes (300,000ms) via `setTimeout` + `AbortController.abort()`.
-
-## Unsynced Detection
-
-`Observation.filterUnsyncedObservations(realm)` queries:
-```
-_synced_at == null
-  OR _synced_at <= _updated_at
-  OR ANY observationPhotos._synced_at == null
-  OR ANY observationSounds._synced_at == null
-  OR ANY projectObservations._synced_at == null
-  OR ANY observationFieldValues._synced_at == null
-```
-Results are sorted by `_created_at` **descending** (newest first) via `.sorted("_created_at", true)`. Because the upload queue is popped from the tail (see above), observations still end up uploaded oldest-first.
-
-## Error Handling
+## Error recovery
 
 | Scenario | Recovery |
 |----------|----------|
-| No API Token | `RECOVERY_BY.LOGIN_AGAIN` → navigate to LoginStackNavigator |
-| Network Failure | User retry (recoveryPossible=true) |
-| Observation Deleted (detected by matching the error message `That observation no longer exists.`; 410 in code comments only) | Remove from queue, delete locally |
-| Auth Expired | Token revalidated at each step |
-| Realm Access Error | Refresh and retry once |
+| No API token | `RECOVERY_BY.LOGIN_AGAIN` → navigate to `LoginStackNavigator` |
+| Network failure | User retry (`recoveryPossible = true`) |
+| Observation deleted server-side | Remove from queue, delete locally |
+| Auth expired | Token revalidated at each step |
+| Realm access error | Refresh and retry once |
 
-## Progress Tracking
+The deleted-observation case is detected by **matching the error message string**
+`That observation no longer exists.` — the 410 status appears only in code
+comments. A server-side wording change breaks this branch silently.
 
-Event-driven via `EventRegister`:
-- `trackObservationUpload(uuid)` → emits `INCREMENT_SINGLE_UPLOAD_PROGRESS` with 0.5 increments
-- `trackEvidenceUpload(uuid)` → emits for each photo/sound upload and attachment
-- `trackProjectAttachment(uuid)` → emits `INCREMENT_SINGLE_UPLOAD_PROGRESS` with 0.5 increments
-- Per-observation total = 1 (obs) + count(unsynced photos/sounds) × 1 + count(previously-synced-but-modified photos/sounds) × 0.5 + 0 or 1 (project attachment). (Each *unsynced* media item emits twice — once on upload, once on attach — at 0.5 each, netting 1; only already-synced-but-changed evidence contributes 0.5.)
-- Toolbar progress = sum(currentIncrements) / sum(totalIncrements)
+## Progress
 
-## Keep-Awake
-
-Uses `@sayem314/react-native-keep-awake` to prevent device sleep during uploads. Activated on `setStartUploadObservations()`, deactivated on `completeUploads()` or `stopAllUploads()`.
-
-## Common Operations
-
-### Adding error handling to upload flow
-1. Define error in `src/uploaders/utils/errorHandling.ts`
-2. Catch in `useUploadObservations.ts` → `uploadObservationAndCatchError()`
-3. Store via `addUploadError(message, uuid)` in Zustand
-
-### Modifying upload payload
-1. Update mapper in `src/uploaders/dataTransformation/prepareObservationForUpload.ts`
-2. If schema changed, also update `Observation.mapObservationForUpload()` in `src/realmModels/Observation.js`
+`EventRegister` events drive it. Per-observation total is
+`1 + unsyncedMediaCount + 0.5 × alreadySyncedButModifiedMediaCount + projectAttachment`,
+where `projectAttachment` is 1 when the observation is added to a project
+(`trackProjectAttachment`) and 0 otherwise. Each unsynced media item emits 0.5
+on upload and 0.5 on attach, so only already-synced-but-changed evidence
+contributes a half. Toolbar progress is
+`sum( currentIncrements ) / sum( totalIncrements )`.

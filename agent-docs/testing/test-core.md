@@ -1,57 +1,31 @@
 # Core Testing Guidelines
 
-## Tech Stack
-- **Testing Framework**: React Native Testing Library for unit/integration tests
-- **Mocking**: Use `factoria` + `@faker-js/faker` to generate mock data. Use jest.mock and then jest.spyOn and mockImplementation for mocking hooks and services.
-- **State Management**: For components that use a realm-js realm, reuse the //UNIQUE REALM SETUP block found in many tests. zustand stores for testing can be created using useStore.setState or sepecific values can be set using zustandStorage.setItem
-- **HTTP Testing**: jest-fetch-mock for mocking http responses
+Standards live in `.claude/rules/tests.md`. This doc is the setup detail and the
+worked example.
 
-### Test Strategy
-- Group public methods in describe
-- Test files should focus on user behavior, not implementation details
-- Use SIFER pattern
-- Strongly prefer meaningful test cases to maximizing coverage
-- Add only one or two code comments per file
+## Stack
 
-### Factories
-- `factoria` + `@faker-js/faker` generate mock data. `Local*` factories create Realm-persisted data; `Remote*` factories create API-shaped data.
-- Pass field overrides as the **second argument** — `factory( "RemoteTaxon", { id: 745 } )` — **not** by spreading the result (`{ ...factory( "RemoteTaxon" ), id: 745 }`). The override arg runs through any factory `afterBuild`/derived-field logic that spreading silently skips.
+React Native Testing Library for unit and integration tests, `factoria` plus
+`@faker-js/faker` for mock data, `jest-fetch-mock` for HTTP. Unit and component
+tests are under `tests/unit/`; integration tests under `tests/integration/`.
 
-### User interactions
-- Prefer `userEvent` (via `const actor = userEvent.setup()`) over `fireEvent` for presses/taps — it's more realistic and reliable per RNTL guidance.
-- `fireEvent` is still appropriate for `changeText`/focus events and timing-controlled cases (e.g. debounce assertions with fake timers).
+## Realm and Zustand in tests
 
-### Assertions
-- Pair element queries with semantic RNTL matchers, not `toBeTruthy( )` — `getBy*`/`findBy*` already throw when nothing matches. `toBeVisible( )` is the repo default; prefer `toBeDisabled( )`/`toBeChecked( )`/`toBeExpanded( )` over `toHaveProp( )`. Use `queryBy*` only for non-existence.
-- Element assertions only — `toBeTruthy( )` stays correct for plain values in helper/hook tests.
-- Full matcher list: `docs/guides/llm-guidelines.md` in `@testing-library/react-native`.
+- **Realm:** reuse the `// UNIQUE REALM SETUP` block that appears in existing
+  tests. It gives each test file its own realm file, which is what keeps
+  parallel workers from fighting over one database.
+- **Zustand:** `useStore.setState( ... )` for whole-slice state, or
+  `zustandStorage.setItem( key, value )` for a single persisted value. Persisted
+  values have to go through `zustandStorage`, since that is what the store reads
+  on hydration.
+- **Hooks and services:** `jest.mock` the module, then `jest.spyOn` with
+  `mockImplementation` to vary behavior per test.
 
-### i18n
-- Initialize i18next in test files that render translated UI: `beforeAll( async () => { await initI18next(); } );` (import `initI18next` from `i18n/initI18next`).
+## Mock taxa
 
-### Running only affected tests
-- `npx jest --findRelatedTests <files>` runs just the tests that touch the given files.
+Prefer these over invented ones, so IDs stay stable across test files and a
+fixture is recognizable when it shows up in a failure message.
 
-# Run individual test by name
-You *must* use the following command to run a specific test file (paths are relative to the repo root):
-```bash
-node 'node_modules/.bin/jest' 'PATH_TO_FILE' -c './jest.config.ts' -t 'TEST_NAME'
-```
-
-### Mocking Strategy
-
-**DO Mock:**
-- External API services
-- Third-party libraries
-
-**DON'T Mock:**
-- React framework features
-- Your own models/interfaces
-- Simple utility functions
-- Child components
-
-### Mock Taxa
-Prefer the following taxa for mock data
 ```ts
 [
   { id: 745, name: "Silphium perfoliatum", preferred_common_name: "Cup Plant", rank: "species", rank_level: 10 },
@@ -70,7 +44,8 @@ Prefer the following taxa for mock data
 ];
 ```
 
-### Example
+## Worked example
+
 ```ts
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
@@ -102,3 +77,6 @@ describe( "shows tooltip", () => {
   } );
 });
 ```
+
+The full RNTL matcher list is `docs/guides/llm-guidelines.md` inside
+`@testing-library/react-native`.

@@ -8,13 +8,6 @@ The codebase is **partway through a Flow → TypeScript migration** and both coe
 - Many existing files are still `.js` with Flow type annotations. **Do not strip Flow types from a file you aren't actively migrating** — leave them until the file is converted wholesale.
 - There is a large pre-existing `tsc` error baseline (see the `lint:tsc` note in `AGENTS.md`). The bar is "add no new errors in files you touch," not "zero errors."
 
-## Type checkers
-
-| Command | Checks |
-|---------|--------|
-| `npm run lint:tsc` | TypeScript (`tsconfig.json`) |
-| `npm run lint:flow` | Flow (`.js` files with `// @flow`) |
-
 ## Honest types
 
 **If a `tsc` error is a legitimate type mismatch you can't fix within the scope of your change, leave it reported.** A visible error is an honest TODO; a cast is a lie that survives the migration. The baseline is the record — reviewers diff `lint:tsc` before and after to see what a change cost.

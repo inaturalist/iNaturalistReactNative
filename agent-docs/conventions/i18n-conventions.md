@@ -1,63 +1,56 @@
-# Internationalization (i18n) Conventions
+# Internationalization Conventions
 
-## System Overview
-- Translation system: Fluent → i18next
-- Source strings: `src/i18n/strings.ftl` (US English only — this is the only file to edit)
-- Translations: `src/i18n/l10n/` (pulled from Crowdin — NEVER edit directly)
-- Fluent syntax reference: https://projectfluent.org/fluent/guide/
+Rules version: `.claude/rules/i18n.md`. This doc is the Fluent syntax reference.
 
-## Usage in Components
+Source strings are Fluent (`src/i18n/strings.ftl`), consumed through i18next.
+`npm run translate` compiles them to the JSON i18next actually loads. Full
+Fluent guide: https://projectfluent.org/fluent/guide/
 
-### Basic Translation
+## Basic use
+
 ```javascript
 import { useTranslation } from "sharedHooks";
 
-const MyComponent = () => {
-  const { t } = useTranslation();
-  return <Text>{t( "my-string-key" )}</Text>;
-};
+const { t } = useTranslation();
+return <Text>{t( "my-string-key" )}</Text>;
 ```
 
-### With Variables
+## Variables
+
 ```ftl
-# In strings.ftl
 welcome-message = Welcome, { $username }!
 ```
 ```javascript
 t( "welcome-message", { username: user.login } )
 ```
 
-### With JSX Interpolation
-Use `<Trans>` component for strings containing JSX elements.
+Prefer separate strings over a variable where the set of values is small and
+known. A variable hides grammatical agreement that many languages need — the
+translator cannot tell whether `{ $username }` is a subject or an object.
 
-### Pluralization
+## JSX interpolation
+
+A string containing markup needs the `<Trans>` component. Passing a React
+element through `t()` renders it as a string.
+
+## Pluralization
+
+Fluent selectors, never string concatenation — the `[one]`/`*[other]` split is
+what lets a locale with three or six plural forms add its own branches:
+
 ```ftl
-# In strings.ftl
 observation-count = { $count } { $count ->
     [one] observation
    *[other] observations
 }
 ```
 
-## String Key Naming Rules
+## Why the key rules exist
 
-1. **Labels match content** — max 100 characters for the string content
-2. **Change key when content changes** — don't reuse keys for different meanings
-3. **Add comments** for translator context (unless self-explanatory)
-4. **Double-dashes for disambiguation** — `Unknown--rank`, `Unknown--taxon`
-5. **Avoid variables when possible** — create separate strings for each case
-6. **Kebab-case** for key names
-
-## Adding New Strings
-
-1. Add the string to `src/i18n/strings.ftl`
-2. Run `npm run translate` to validate and build JSON
-3. Use `t( "your-key" )` in the component
-4. The ESLint i18next string literal rule will catch any user-facing text not using `t()`
-
-## Common Mistakes
-
-- Editing files in `src/i18n/l10n/` — these are auto-generated from Crowdin
-- Forgetting to run `npm run translate` after editing `strings.ftl`
-- Using template literals for user-facing text instead of `t()`
-- Reusing an existing key for a different meaning
+The full list is in the rule; the reasoning is that `strings.ftl` keys are the
+join key against 40 locale files maintained by volunteers in Crowdin. Reusing a
+key for new content does not invalidate the old translations, so every locale
+silently keeps displaying the previous wording. Nothing in the build catches it.
+Double-dash disambiguation (`Unknown--rank`, `Unknown--taxon`) exists because
+translators see the key and the English string, not the screen — one English
+word often needs different words per context.

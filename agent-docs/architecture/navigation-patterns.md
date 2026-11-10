@@ -1,121 +1,53 @@
 # Navigation Architecture
 
-## Overview
+React Navigation 7, nested NativeStack inside BottomTab. Read
+`src/navigation/RootStackNavigator.tsx` for the current tree; this doc covers
+the decisions the tree does not explain.
 
-React Navigation 7 with nested NativeStack and BottomTab navigators. All four bottom tabs share the same `TabStackNavigator` component with different `initialRouteName` values. `SharedStackScreens` provides screens accessible from both tab and full-screen contexts.
+## Where a new screen goes
 
-## Navigator Hierarchy
-
-```
-RootStackNavigator (NativeStack)
-├── OnboardingStackNavigator (registered first, as the initial route, only when !onboardingShown)
-├── BottomTabNavigator (always registered, so it can sit beneath Login when onboarding exits)
-│   ├── MenuTab → TabStackNavigator (initialRouteName: Menu)
-│   ├── ExploreTab → TabStackNavigator (initialRouteName: RootExplore)
-│   ├── ObservationsTab → TabStackNavigator (initialRouteName: ObsList)
-│   └── NotificationsTab → TabStackNavigator (initialRouteName: Notifications)
-├── NoBottomTabStackNavigator (full-screen: Camera, PhotoLibrary, etc.)
-└── LoginStackNavigator (Login, SignUp, ForgotPassword, etc.)
-```
-
-## Key Files
-
-| File | Purpose |
-|------|---------|
-| `src/navigation/RootStackNavigator.tsx` | Top-level navigator |
-| `src/navigation/StackNavigators/TabStackNavigator.tsx` | Shared by all 4 bottom tabs |
-| `src/navigation/StackNavigators/SharedStackScreens.tsx` | Screens in both tab and full-screen contexts |
-| `src/navigation/StackNavigators/NoBottomTabStackNavigator.tsx` | Camera, PhotoLibrary, GroupPhotos, SoundRecorder |
-| `src/navigation/StackNavigators/LoginStackNavigator.tsx` | Auth screens |
-| `src/navigation/BottomTabNavigator/index.tsx` | Tab setup with CustomTabBarContainer |
-| `src/navigation/navigationUtils.ts` | Global `navigationRef`, `getCurrentRoute()` |
-| `src/navigation/navigationOptions.tsx` | Header presets: hideHeader, showHeader, fadeInComponent, etc. |
-| `src/navigation/OfflineNavigationGuard.tsx` | NavigationContainer with offline guard + analytics |
-| `src/navigation/ContextHeader.js` | Custom header for list screens |
-| `src/components/hooks/useLinking.ts` | Deep linking (manual Linking API) |
-
-## Where to Add a Screen
-
-| Scenario | Navigator | Tabs Visible? |
+| Scenario | Navigator | Tabs visible? |
 |----------|-----------|---------------|
-| Standard screen accessible from any tab | `SharedStackScreens` | Yes |
+| Standard screen reachable from any tab | `SharedStackScreens` | Yes |
 | Full-screen flow (camera, media capture) | `NoBottomTabStackNavigator` | No |
-| Tab-specific screen | `TabStackNavigator` (directly) | Yes |
+| Screen belonging to one tab | `TabStackNavigator` | Yes |
 | Auth screen | `LoginStackNavigator` | No |
 
-## SharedStackScreens (Registered in Both Contexts)
+## Why it is shaped this way
 
-Screens available from TabStackNavigator AND NoBottomTabStackNavigator:
-- **Hidden header**: ObsEdit, LocationPicker, TaxonDetails, PhotoSharing
-- **Centered header**: Match, Suggestions, SuggestionsTaxonSearch, MatchTaxonSearchScreen, AddToProjects
-- **Custom header**: FullPageWebView
+1. **All four bottom tabs render the same `TabStackNavigator`** with different
+   `initialRouteName` values, so every tab has the whole screen catalog and its
+   own independent history.
+2. **`SharedStackScreens` is a `Stack.Group` registered in both**
+   `TabStackNavigator` and `NoBottomTabStackNavigator`. That is what lets a flow
+   cross contexts: Camera (no tabs) → Match (shared) → ObsEdit (shared) →
+   ObsList (tab).
+3. **Custom headers check `navigation.canGoBack()`** and fall back to
+   TabNavigator → ObservationsTab → ObsList when there is no history. A screen
+   entered by a deep link or a reset has none.
+4. **`freezeOnBlur: true`** suspends inactive tabs and `backBehavior: "history"`
+   preserves per-tab stacks. Neither survives the tab-tree teardown described in
+   `realm-and-zustand.md` — freezing is not the same as staying mounted.
+5. **`fadeInComponent()` wrapping individual screens is a workaround** for
+   per-screen fade-in. React Navigation 7's `layout` prop is expected to replace
+   it; see the comments in `TabStackNavigator.tsx` and `SharedStackScreens.tsx`
+   before adding another wrapper.
+6. **`TabNavigator` stays registered during onboarding.** `OnboardingStackNavigator`
+   is registered first, as the initial route, only while `!onboardingShown`. The
+   carousel exits by resetting the root to `TabNavigator` with Login on top, and
+   React Navigation drops a reset that names an unregistered route. So any
+   root-level reset to `TabNavigator` during onboarding removes the carousel
+   without setting `onboardingShown`, and it returns on next launch.
 
-All wrapped with `fadeInComponent()` for fade-in animation.
+## Deep linking is hand-rolled
 
-## Navigation Patterns
+There is no React Navigation `linking` config. `src/components/hooks/useLinking.ts`
+uses React Native's `Linking` API directly:
 
-### Navigating to a tab screen
-```javascript
-navigation.navigate( "TabNavigator", {
-  screen: "ObservationsTab",
-  params: { screen: "ObsList" },
-} );
-```
+- `www.inaturalist.org` is the only allowed host.
+- `/observations/{id}` resolves to ObsDetails, fetching the observation from the
+  API *before* navigating. It is deliberately not deferred during onboarding, so
+  it hits the reset described in point 6.
+- Email-confirmation URLs go to `LoginStackNavigator` with `emailConfirmed: true`.
 
-### Deep navigation with reset (e.g., navigateToObsDetails)
-```javascript
-navigation.dispatch(
-  CommonActions.reset( {
-    index: 1,
-    routes: [ {
-      name: "TabNavigator",
-      state: {
-        routes: [ {
-          name: "ObservationsTab",
-          state: {
-            index: 0,
-            routes: [
-              { name: "ObsList" },
-              { name: "ObsDetails", params: { uuid } },
-            ],
-          },
-        } ],
-      },
-    } ],
-  } )
-);
-```
-
-### Reading params
-```javascript
-const { params } = useRoute();
-const { lastScreen, uuid } = params || {};
-```
-
-## Key Design Patterns
-
-1. **Tab Stack Reuse** — Same TabStackNavigator instantiated 4 times with different initialRouteName. Each tab maintains independent navigation history.
-
-2. **Shared Screen Accessibility** — SharedStackScreens Group in both tab and full-screen navigators enables flows like: Camera (NoBottomTab) → Match (Shared) → ObsEdit (Shared) → ObsList (Tab).
-
-3. **Back Navigation Fallback** — Custom headers check `navigation.canGoBack()`. If no history, default to TabNavigator → ObservationsTab → ObsList.
-
-4. **Tab State Preservation** — `freezeOnBlur: true` suspends inactive tabs. `backBehavior: "history"` preserves per-tab stacks.
-
-5. **Animation Workaround** — `fadeInComponent()` wraps individual screens for a fade-in effect. This is the current workaround; the React Navigation 7 `layout` prop is expected to replace these per-screen wrappers (see the comments in `TabStackNavigator.tsx` / `SharedStackScreens.tsx`).
-
-## Deep Linking
-
-Manual implementation via React Native's `Linking` API (no React Navigation linking config):
-- Allowed host: `www.inaturalist.org` only
-- `/observations/{id}` → ObsDetails screen. Not deferred during onboarding: the reset to TabNavigator removes the carousel without setting `onboardingShown`, so the carousel returns on next launch
-- Email confirmed URLs → LoginStackNavigator with `emailConfirmed: true`
-- Fetches observation data from API before navigating
-
-## Typical Flow: Creating an Observation
-
-1. Camera button → NoBottomTabStackNavigator → Camera
-2. Photo selected → GroupPhotos (still NoBottomTab)
-3. ID flow → Match or Suggestions (SharedStackScreens)
-4. Edit → ObsEdit (SharedStackScreens)
-5. Save → Navigate to TabNavigator → ObservationsTab → ObsList
+Adding a route means editing that hook, not a config object.
