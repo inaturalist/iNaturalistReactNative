@@ -1,5 +1,5 @@
 import inatjs from "inaturalistjs";
-import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
+import syncFeatureFlags, { cancelFeatureFlagSync } from "sharedHelpers/syncFeatureFlags";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
@@ -62,5 +62,39 @@ describe( "syncFeatureFlags", ( ) => {
 
     expect( useStore.getState( ).featureFlagApiValues )
       .toEqual( { [FeatureFlag.ExploreV2Enabled]: true } );
+  } );
+
+  it( "ignores a response that arrives after the sync was cancelled", async ( ) => {
+    mockGet.mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: true } } );
+    await syncFeatureFlags( "user-jwt" );
+    let resolveFetch;
+    mockGet.mockImplementationOnce( ( ) => new Promise( resolve => { resolveFetch = resolve; } ) );
+    const sync = syncFeatureFlags( "user-jwt" );
+
+    cancelFeatureFlagSync( );
+    resolveFetch( { flags: { [EXPLORE_KEY]: false } } );
+    await sync;
+
+    const { featureFlagApiValues, featureFlagApiStatus } = useStore.getState( );
+    expect( featureFlagApiValues ).toEqual( { [FeatureFlag.ExploreV2Enabled]: true } );
+    expect( featureFlagApiStatus ).toEqual( { state: "loading" } );
+  } );
+
+  it( "ignores a failure that arrives after the sync was cancelled", async ( ) => {
+    mockGet.mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: true } } );
+    await syncFeatureFlags( "user-jwt" );
+    let rejectFetch;
+    mockGet.mockImplementationOnce(
+      ( ) => new Promise( ( _resolve, reject ) => { rejectFetch = reject; } ),
+    );
+    const sync = syncFeatureFlags( "user-jwt" );
+
+    cancelFeatureFlagSync( );
+    rejectFetch( new Error( "Network request failed" ) );
+    await sync;
+
+    const { featureFlagApiValues, featureFlagApiStatus } = useStore.getState( );
+    expect( featureFlagApiValues ).toEqual( { [FeatureFlag.ExploreV2Enabled]: true } );
+    expect( featureFlagApiStatus ).toEqual( { state: "loading" } );
   } );
 } );

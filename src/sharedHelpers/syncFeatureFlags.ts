@@ -32,4 +32,10 @@ const syncFeatureFlags = async ( apiToken: string | null ) => {
   }
 };
 
+// Drops in-flight syncs before they touch the store. signOut calls this first: a store write
+// after it clears MMKV would persist the departing user's state again before the restart
+export const cancelFeatureFlagSync = ( ) => {
+  latestRequestId += 1;
+};
+
 export default syncFeatureFlags;

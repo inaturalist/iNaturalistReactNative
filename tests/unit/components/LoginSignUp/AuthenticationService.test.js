@@ -16,7 +16,7 @@ import RNSInfo, {
   getItem,
   IntegrityViolationError,
 } from "react-native-sensitive-info";
-import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
+import syncFeatureFlags, { cancelFeatureFlagSync } from "sharedHelpers/syncFeatureFlags";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 
@@ -32,6 +32,7 @@ const defaultGetItemImplementation = async ( key, o ) => {
 jest.mock( "sharedHelpers/syncFeatureFlags", ( ) => ( {
   __esModule: true,
   default: jest.fn( ),
+  cancelFeatureFlagSync: jest.fn( ),
 } ) );
 
 jest.mock( "navigation/navigationUtils", ( ) => ( {
@@ -101,6 +102,7 @@ test( "authenticates user", async ( ) => {
   // Sign out
   await signOut();
   await expect( isLoggedIn() ).resolves.toEqual( false );
+  expect( cancelFeatureFlagSync ).toHaveBeenCalledTimes( 1 );
 
   scope.done();
   scope2.done();
