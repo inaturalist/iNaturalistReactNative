@@ -266,7 +266,7 @@ interface ApiRuleInTaxon {
   taxon: ApiTaxonPersistable | null;
 }
 
-type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
+export type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
 
 // "", "bioblitz", "contest", and "assessment" are all traditional
 export type ApiProjectType =
