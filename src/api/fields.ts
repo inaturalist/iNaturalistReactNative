@@ -1,3 +1,11 @@
+export const PHOTO_FIELDS = {
+  id: true,
+  attribution: true,
+  license_code: true,
+  url: true,
+  hidden: true,
+} as const;
+
 export const TAXON_SUMMARY_FIELDS = {
   ancestor_ids: true,
   default_photo: {
