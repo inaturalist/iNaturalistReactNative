@@ -203,6 +203,24 @@ export interface ApiTaxonLimited extends ApiRecord {
   }[];
 }
 
+// When using TAXON_PERSISTABLE_FIELDS
+export interface ApiTaxonPersistable {
+  ancestor_ids: number[];
+  default_photo: {
+    attribution: string;
+    hidden: boolean;
+    id: number;
+    license_code: string | null;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  id: number;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+}
+
 type Operator =
   | "georeferenced?"
   | "captive?"
@@ -245,15 +263,7 @@ interface ApiRuleInTaxon {
   id: number;
   operand_id: number;
   operator: "in_taxon?";
-  // TODO: MOB-1946 this should be changed to request a persistable taxon
-  taxon: {
-    ancestor_ids: number[];
-    id: number;
-    name: string;
-    preferred_common_name: string | null;
-    rank: string;
-    rank_level: number;
-  } | null;
+  taxon: ApiTaxonPersistable | null;
 }
 
 type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
