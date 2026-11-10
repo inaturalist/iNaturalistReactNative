@@ -38,7 +38,7 @@ import useSyncJoinedProjects from "./hooks/useSyncJoinedProjects";
 import ObservationFieldInput from "./ObservationFieldInput";
 import ProjectRuleRow from "./ProjectRuleRow";
 
-const { useQuery } = RealmContext;
+const { useQuery, useRealm } = RealmContext;
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: -3,
@@ -62,6 +62,7 @@ const AddToProjects = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   useSyncJoinedProjects( );
+  const realm = useRealm( );
   const joinedProjectsCollection = useQuery(
     {
       type: Project,
@@ -85,8 +86,8 @@ const AddToProjects = ( ) => {
   const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
 
   const joinedProjects = useMemo(
-    () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
-    [joinedProjectsCollection],
+    () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp, realm ) ),
+    [joinedProjectsCollection, realm],
   );
 
   const validationResult = useMemo(

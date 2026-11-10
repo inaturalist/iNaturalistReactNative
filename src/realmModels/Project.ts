@@ -56,7 +56,7 @@ class Project extends Realm.Object {
     }, "upserting projects in Project" );
   }
 
-  static mapRealmToPojo( realmProject: RealmProject ) {
+  static mapRealmToPojo( realmProject: RealmProject, realm: Realm ) {
     const pojoPOFs = realmProject.projectObservationFields
       .map( pof => ProjectObservationField.mapRealmToPojo( pof ) );
     return {
@@ -68,7 +68,7 @@ class Project extends Realm.Object {
           .sort( ( a, b ) => a.position - b.position )
         : [],
       project_observation_rules: realmProject.project_observation_rules
-        .map( rule => ProjectObservationRule.mapRealmToPojo( rule ) ),
+        .map( rule => ProjectObservationRule.mapRealmToPojo( rule, realm ) ),
       project_type: realmProject.project_type,
       title: realmProject.title,
     };
