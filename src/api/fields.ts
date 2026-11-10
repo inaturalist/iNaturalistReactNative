@@ -8,12 +8,7 @@ export const PHOTO_FIELDS = {
 
 export const TAXON_SUMMARY_FIELDS = {
   ancestor_ids: true,
-  default_photo: {
-    attribution: true,
-    id: true,
-    license_code: true,
-    url: true,
-  },
+  default_photo: PHOTO_FIELDS,
   iconic_taxon_name: true,
   is_active: true,
   name: true,
