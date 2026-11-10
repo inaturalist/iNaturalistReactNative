@@ -38,6 +38,8 @@ interface Props {
   hideLocationToggleButton: boolean;
   hideSkip?: boolean;
   observers: string[];
+  // Offers cropping the selected photo when this is passed
+  onCropPhoto?: ( ) => void;
   shouldUseEvidenceLocation: boolean;
   toggleLocation: ( options: { showLocation: boolean } ) => void;
 }
@@ -48,6 +50,7 @@ const SuggestionsFooter = ( {
   hideLocationToggleButton,
   hideSkip,
   observers,
+  onCropPhoto,
   shouldUseEvidenceLocation,
   toggleLocation,
 }: Props ) => {
@@ -56,10 +59,10 @@ const SuggestionsFooter = ( {
 
   return (
     <View className="mb-9">
-      {!hideLocationToggleButton && (
-        <>
-          <View className="px-4 py-6">
-            {shouldUseEvidenceLocation
+      {( !hideLocationToggleButton || onCropPhoto ) && (
+        <View className="px-4 py-6">
+          {!hideLocationToggleButton && (
+            shouldUseEvidenceLocation
               ? (
                 <Button
                   text={t( "IGNORE-LOCATION" )}
@@ -73,12 +76,22 @@ const SuggestionsFooter = ( {
                   onPress={( ) => toggleLocation( { showLocation: true } )}
                   accessibilityLabel={t( "Search-suggestions-with-location" )}
                 />
-
-              )}
-          </View>
-          <Attribution observers={observers} />
-        </>
+              )
+          )}
+          {onCropPhoto && (
+            <Button
+              className={!hideLocationToggleButton
+                ? "mt-4"
+                : undefined}
+              // eslint-disable-next-line i18next/no-literal-string
+              text="CROP IMAGE"
+              onPress={onCropPhoto}
+              accessibilityLabel="Crop image"
+            />
+          )}
+        </View>
       )}
+      {!hideLocationToggleButton && <Attribution observers={observers} />}
       { !hideSkip && (
         <Body1
           className="underline text-center py-6"

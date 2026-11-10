@@ -25,6 +25,7 @@ type Props = {
   improveWithLocationButtonOnPress: () => void,
   isLoading: boolean,
   shouldUseEvidenceLocation: boolean,
+  onCropPhoto?: () => void,
   onPressPhoto: Function,
   onTaxonChosen: Function,
   photoUris: string[],
@@ -45,6 +46,7 @@ const Suggestions = ( {
   improveWithLocationButtonOnPress,
   isLoading,
   shouldUseEvidenceLocation,
+  onCropPhoto,
   onPressPhoto,
   onTaxonChosen,
   photoUris,
@@ -93,6 +95,7 @@ const Suggestions = ( {
       hideSkip={hideSkip}
       shouldUseEvidenceLocation={shouldUseEvidenceLocation}
       observers={observers}
+      onCropPhoto={onCropPhoto}
       toggleLocation={toggleLocation}
     />
   ), [
@@ -102,6 +105,7 @@ const Suggestions = ( {
     hideSkip,
     shouldUseEvidenceLocation,
     observers,
+    onCropPhoto,
     toggleLocation,
   ] );
 
