@@ -25,6 +25,9 @@ interface UploadObservationsState {
   abortController: AbortController | null;
   currentUpload: RealmObservation | null;
   errorsByUuid: object;
+  // Uuids whose upload created them on the server this launch (not persisted), so small grid
+  // sections can keep them pinned until a cached page includes them
+  firstUploadUuids: string[];
   multiError: string | null;
   initialNumObservationsInQueue: number;
   numUploadsAttempted: number;
@@ -38,6 +41,7 @@ interface UploadObservationsState {
 interface UploadObservationsActions {
   resetUploadObservationsSlice: ( ) => void;
   addUploadError: ( error: string, obsUUID: string ) => void;
+  addFirstUploadUuid: ( uuid: string ) => void;
   stopAllUploads: ( ) => void;
   setCannotUploadObservations: ( ) => void;
   setStartUploadObservations: ( ) => void;
@@ -61,6 +65,7 @@ const DEFAULT_STATE: UploadObservationsState = {
   abortController: null,
   currentUpload: null,
   errorsByUuid: {},
+  firstUploadUuids: [],
   // Single error caught during multiple obs upload
   multiError: null,
   initialNumObservationsInQueue: 0,
@@ -170,6 +175,11 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       ],
     },
     multiError: error,
+  } ) ),
+  addFirstUploadUuid: uuid => set( state => ( {
+    firstUploadUuids: state.firstUploadUuids.includes( uuid )
+      ? state.firstUploadUuids
+      : [...state.firstUploadUuids, uuid],
   } ) ),
   stopAllUploads: ( ) => {
     deactivateKeepAwake( );

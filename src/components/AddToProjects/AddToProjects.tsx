@@ -28,6 +28,7 @@ import type { RealmProject } from "realmModels/types";
 import buildProjectObservationSelection, {
   areProjectIdSetsEqual,
 } from "sharedHelpers/buildProjectObservationSelection";
+import sortByTitle from "sharedHelpers/sortByTitle";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
 import useStore from "stores/useStore";
@@ -59,7 +60,7 @@ function getCompletedProjectIds(
 }
 
 const AddToProjects = ( ) => {
-  const { t } = useTranslation( );
+  const { i18n, t } = useTranslation( );
   const navigation = useNavigation( );
   useSyncJoinedProjects( );
   const realm = useRealm( );
@@ -86,8 +87,11 @@ const AddToProjects = ( ) => {
   const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
 
   const joinedProjects = useMemo(
-    () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp, realm ) ),
-    [joinedProjectsCollection, realm],
+    ( ) => sortByTitle(
+      joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp, realm ) ),
+      i18n.language,
+    ),
+    [i18n.language, joinedProjectsCollection, realm],
   );
 
   const validationResult = useMemo(
