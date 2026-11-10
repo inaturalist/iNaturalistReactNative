@@ -15,7 +15,6 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import App from "components/App";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import ErrorBoundary from "components/ErrorBoundary";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
@@ -34,7 +33,6 @@ import {
   LAST_CRASH_DATA,
 } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
-import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
 import DeviceInfo from "react-native-device-info";
 import useRozenite, { HaltedLaunch, shouldHaltLaunchForDebug } from "sharedHooks/useRozenite";
 import { createMMKVStorageAdapter } from "@rozenite/storage-plugin";
@@ -134,12 +132,6 @@ inatjs.setConfig( {
     "X-Installation-ID": getInstallID( ),
   },
 } );
-
-// Once per JS load, which also covers logout: signOut restarts the app. Login refetches in
-// AuthenticationService
-getJWT( )
-  .then( syncFeatureFlags )
-  .catch( error => logger.error( "Couldn't get a JWT to sync feature flags", error ) );
 
 const queryClient = new QueryClient( {
   defaultOptions: {
