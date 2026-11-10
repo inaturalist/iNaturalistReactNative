@@ -3,7 +3,7 @@ import {
   OBSERVATION_FIELD_VALUE_FIELDS,
   PROJECT_OBSERVATION_FIELDS,
   PROJECT_SUMMARY_FIELDS,
-  TAXON_FIELDS,
+  TAXON_SUMMARY_FIELDS,
 } from "api/fields";
 import { Alert } from "react-native";
 import { getNowISO } from "sharedHelpers/dateAndTime";
@@ -60,7 +60,7 @@ class Observation extends Realm.Object {
     quality_grade: true,
     observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     observed_time_zone: true,
-    taxon: TAXON_FIELDS,
+    taxon: TAXON_SUMMARY_FIELDS,
     taxon_geoprivacy: true,
     time_observed_at: true,
     user: User && {

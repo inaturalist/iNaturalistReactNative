@@ -1,4 +1,4 @@
-export const TAXON_FIELDS = {
+export const TAXON_SUMMARY_FIELDS = {
   ancestor_ids: true,
   default_photo: {
     attribution: true,
@@ -60,7 +60,7 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
     display_name: true,
     id: true,
   },
-  taxon: TAXON_FIELDS,
+  taxon: TAXON_SUMMARY_FIELDS,
 };
 
 export const PROJECT_SUMMARY_FIELDS = {
