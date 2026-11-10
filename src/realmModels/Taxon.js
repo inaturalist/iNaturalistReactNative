@@ -157,12 +157,21 @@ class Taxon extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
+      _searchableName: {
+        type: "string",
+        indexed: "full-text",
+        optional: true,
+      },
+      _synced_at: "date?",
+      ancestor_ids: "int[]",
       default_photo: {
         type: "object",
         objectType: "Photo",
         mapTo: "defaultPhoto",
         optional: true,
       },
+      iconic_taxon_name: "string?",
+      isIconic: "bool?",
       name: {
         type: "string",
         // indexed: "full-text",
@@ -174,17 +183,8 @@ class Taxon extends Realm.Object {
         mapTo: "preferredCommonName",
         optional: true,
       },
-      _searchableName: {
-        type: "string",
-        indexed: "full-text",
-        optional: true,
-      },
       rank: "string?",
       rank_level: "float?",
-      isIconic: "bool?",
-      iconic_taxon_name: "string?",
-      ancestor_ids: "int[]",
-      _synced_at: "date?",
       taxonPhotos: "TaxonPhoto[]",
     },
   };

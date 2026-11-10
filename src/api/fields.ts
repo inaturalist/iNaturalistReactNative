@@ -10,6 +10,7 @@ export const TAXON_SUMMARY_FIELDS = {
   ancestor_ids: true,
   default_photo: PHOTO_FIELDS,
   iconic_taxon_name: true,
+  // TODO: we do not need this for realm
   is_active: true,
   name: true,
   preferred_common_name: true,
