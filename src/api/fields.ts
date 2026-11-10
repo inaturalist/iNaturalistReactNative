@@ -8,17 +8,20 @@ export const PHOTO_FIELDS = {
 
 // The set of fields required to get all information we want
 // to store in realm
-export const TAXON_SUMMARY_FIELDS = {
+export const TAXON_PERSISTABLE_FIELDS = {
   ancestor_ids: true,
   default_photo: PHOTO_FIELDS,
   iconic_taxon_name: true,
   id: true,
-  // TODO: we do not need this for realm
-  is_active: true,
   name: true,
   preferred_common_name: true,
   rank: true,
   rank_level: true,
+};
+
+export const TAXON_SUMMARY_FIELDS = {
+  ...TAXON_PERSISTABLE_FIELDS,
+  is_active: true,
 };
 
 export const LIMITED_TAXON_FIELDS = {
