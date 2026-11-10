@@ -6,7 +6,7 @@ import * as uuid from "uuid";
 
 export type PhotoRotation = 0 | 90 | 180 | 270;
 
-interface PhotoEdits {
+export interface PhotoEdits {
   // Degrees clockwise. Applied before cropping
   rotation: PhotoRotation;
   // In pixels of the image after rotation

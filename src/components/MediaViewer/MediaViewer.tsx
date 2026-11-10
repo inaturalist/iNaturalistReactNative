@@ -12,7 +12,9 @@ import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import type { PhotoEdits } from "sharedHelpers/editLocalPhoto";
 import editLocalPhoto from "sharedHelpers/editLocalPhoto";
+import type { CropRectangle } from "sharedHelpers/getCropRectangle";
 import { log } from "sharedHelpers/logger";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -20,6 +22,7 @@ import useTranslation from "sharedHooks/useTranslation";
 import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
+import PhotoCropper from "./PhotoCropper";
 
 const logger = log.extend( "MediaViewer" );
 
@@ -125,21 +128,39 @@ const MediaViewer = ( {
     setMediaToDelete,
   ] );
 
-  // Ignores taps while a rotation is still being written to disk
-  const rotatingRef = useRef( false );
-  const rotatePhoto = useCallback( async ( localFilePath: string ) => {
+  // Ignores new edits while one is still being written to disk
+  const editingRef = useRef( false );
+  const applyPhotoEdit = useCallback( async ( localFilePath: string, edits: PhotoEdits ) => {
     const photoUri = Photo.getLocalPhotoUri( localFilePath );
-    if ( !onEditPhoto || !photoUri || rotatingRef.current ) return;
-    rotatingRef.current = true;
+    if ( !onEditPhoto || !photoUri || editingRef.current ) return;
+    editingRef.current = true;
     try {
-      const editedPath = await editLocalPhoto( localFilePath, { rotation: 90 } );
+      const editedPath = await editLocalPhoto( localFilePath, edits );
       onEditPhoto( photoUri, editedPath );
-    } catch ( rotateError ) {
-      logger.error( "Failed to rotate photo", rotateError );
+    } catch ( editError ) {
+      logger.error( "Failed to edit photo", editError );
     } finally {
-      rotatingRef.current = false;
+      editingRef.current = false;
     }
   }, [onEditPhoto] );
+
+  const rotatePhoto = useCallback(
+    ( localFilePath: string ) => applyPhotoEdit( localFilePath, { rotation: 90 } ),
+    [applyPhotoEdit],
+  );
+
+  // The photo being cropped, which replaces the carousel while set
+  const [localFilePathToCrop, setLocalFilePathToCrop] = useState<string | null>( null );
+  const [savingCrop, setSavingCrop] = useState( false );
+  const uriToCrop = Photo.getLocalPhotoUri( localFilePathToCrop || undefined );
+  const closeCropper = useCallback( ( ) => setLocalFilePathToCrop( null ), [] );
+  const cropPhoto = useCallback( async ( cropRectangle: CropRectangle ) => {
+    if ( !localFilePathToCrop ) return;
+    setSavingCrop( true );
+    await applyPhotoEdit( localFilePathToCrop, { rotation: 0, cropRectangle } );
+    setSavingCrop( false );
+    setLocalFilePathToCrop( null );
+  }, [applyPhotoEdit, localFilePathToCrop] );
 
   return (
     <View
@@ -159,28 +180,44 @@ const MediaViewer = ( {
             />
           )
       }
-      <MainMediaDisplay
-        autoPlaySound={autoPlaySound}
-        editable={editable}
-        photos={photos}
-        sounds={sounds}
-        onClose={onClose}
-        selectedMediaIndex={selectedMediaIndex}
-        horizontalScroll={horizontalScroll}
-        setSelectedMediaIndex={setSelectedMediaIndex}
-        onDeletePhoto={photoUri => setMediaToDelete( { type: "photo", uri: photoUri } )}
-        onDeleteSound={soundUri => setMediaToDelete( { type: "sound", uri: soundUri } )}
-        onRotatePhoto={onEditPhoto
-          ? rotatePhoto
-          : undefined}
-      />
-      <MediaSelector
-        photos={photos}
-        sounds={sounds}
-        scrollToIndex={scrollToIndex}
-        isLargeScreen={isLargeScreen}
-        selectedMediaIndex={selectedMediaIndex}
-      />
+      {uriToCrop
+        ? (
+          <PhotoCropper
+            uri={uriToCrop}
+            saving={savingCrop}
+            onCancel={closeCropper}
+            onCrop={cropPhoto}
+          />
+        )
+        : (
+          <>
+            <MainMediaDisplay
+              autoPlaySound={autoPlaySound}
+              editable={editable}
+              photos={photos}
+              sounds={sounds}
+              onClose={onClose}
+              selectedMediaIndex={selectedMediaIndex}
+              horizontalScroll={horizontalScroll}
+              setSelectedMediaIndex={setSelectedMediaIndex}
+              onDeletePhoto={photoUri => setMediaToDelete( { type: "photo", uri: photoUri } )}
+              onDeleteSound={soundUri => setMediaToDelete( { type: "sound", uri: soundUri } )}
+              onCropPhoto={onEditPhoto
+                ? setLocalFilePathToCrop
+                : undefined}
+              onRotatePhoto={onEditPhoto
+                ? rotatePhoto
+                : undefined}
+            />
+            <MediaSelector
+              photos={photos}
+              sounds={sounds}
+              scrollToIndex={scrollToIndex}
+              isLargeScreen={isLargeScreen}
+              selectedMediaIndex={selectedMediaIndex}
+            />
+          </>
+        )}
       {( mediaToDelete || deleting ) && (
         <WarningSheet
           onPressClose={( ) => setMediaToDelete( null )}

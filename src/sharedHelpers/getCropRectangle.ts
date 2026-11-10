@@ -33,6 +33,14 @@ const clamp = ( value: number, minimum: number, maximum: number ) => (
   Math.min( Math.max( value, minimum ), maximum )
 );
 
+// The smallest share of the image a crop may cover, so the crop's shorter
+// side stays at or above the minimum size
+export const getMinimumCropFraction = (
+  imageWidth: number,
+  imageHeight: number,
+  minimumCropSize = MINIMUM_CROP_SIZE,
+) => Math.min( 1, minimumCropSize / Math.min( imageWidth, imageHeight ) );
+
 const cropAxis = ( imageSize: number, center: number, fraction: number ) => {
   const size = Math.round( imageSize * fraction );
   const start = clamp( Math.round( center - size / 2 ), 0, imageSize - size );
@@ -58,7 +66,7 @@ const getCropRectangle = ( {
 
   // Keep the shorter side at or above the minimum, growing around the
   // frame's center
-  const minimumFraction = Math.min( 1, minimumCropSize / Math.min( imageWidth, imageHeight ) );
+  const minimumFraction = getMinimumCropFraction( imageWidth, imageHeight, minimumCropSize );
   const fraction = clamp( frameFraction, minimumFraction, 1 );
 
   const horizontal = cropAxis( imageWidth, centerX, fraction );

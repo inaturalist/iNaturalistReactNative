@@ -41,6 +41,7 @@ interface Props {
   onClose: ( ) => void;
   onDeleteSound: ( uri: string ) => void;
   // Only offered for photos that exist locally and have not been uploaded, for now
+  onCropPhoto?: ( localFilePath: string ) => void;
   onRotatePhoto?: ( localFilePath: string ) => void;
   photos: Omit<PhotoItem, "type">[];
   sounds?: Omit<SoundItem, "type">[];
@@ -55,6 +56,7 @@ const MainMediaDisplay = ( {
   onDeletePhoto,
   onDeleteSound,
   onClose,
+  onCropPhoto,
   onRotatePhoto,
   photos,
   sounds = [],
@@ -91,14 +93,24 @@ const MainMediaDisplay = ( {
           setZooming={setZooming}
           selectedMediaIndex={selectedMediaIndex}
         />
-        {canEditPhoto && onRotatePhoto && (
-          <View className="absolute bottom-4 left-4">
-            <TransparentCircleButton
-              onPress={( ) => onRotatePhoto( localFilePath )}
-              // this icon might be a placeholder if design wants a different rotate img icon
-              icon="rotate-right"
-              accessibilityLabel="Rotate photo"
-            />
+        {canEditPhoto && (
+          <View className="absolute bottom-4 left-4 flex-row">
+            {onCropPhoto && (
+              <TransparentCircleButton
+                onPress={( ) => onCropPhoto( localFilePath )}
+                icon="crop"
+                accessibilityLabel="Crop photo"
+                optionalClasses="mr-3"
+              />
+            )}
+            {onRotatePhoto && (
+              <TransparentCircleButton
+                onPress={( ) => onRotatePhoto( localFilePath )}
+                // this icon might be a placeholder if design wants a different rotate img icon
+                icon="rotate-right"
+                accessibilityLabel="Rotate photo"
+              />
+            )}
           </View>
         )}
         {
