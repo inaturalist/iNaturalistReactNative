@@ -3,6 +3,7 @@ import type { ApiProjectSummaryWithPOF } from "api/types";
 import { UpdateMode } from "realm";
 import ProjectObservationField from "realmModels/ProjectObservationField";
 import ProjectObservationRule from "realmModels/ProjectObservationRule";
+import Taxon from "realmModels/Taxon";
 import type { RealmProject } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -33,6 +34,18 @@ class Project extends Realm.Object {
 
     safeRealmWrite( realm, ( ) => {
       apiProjects.forEach( apiProject => {
+        // For rules that require a taxon, map it to Taxon realm for offline capabilities
+        ( apiProject.project_observation_rules || [] ).forEach( rule => {
+          if ( rule.operator !== "in_taxon?" ) return;
+          const { taxon } = rule;
+          if ( !taxon?.id ) return;
+          const mappedTaxon = Taxon.mapApiToRealm( taxon, realm );
+          realm.create(
+            "Taxon",
+            Taxon.forUpdate( mappedTaxon ),
+            UpdateMode.Modified,
+          );
+        } );
         const projectMappedForRealm = Project.mapApiToRealm( apiProject );
         realm.create(
           "Project",
