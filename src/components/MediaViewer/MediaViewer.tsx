@@ -12,19 +12,15 @@ import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import type { PhotoEdits } from "sharedHelpers/editLocalPhoto";
-import editLocalPhoto from "sharedHelpers/editLocalPhoto";
 import type { CropRectangle } from "sharedHelpers/getCropRectangle";
-import { log } from "sharedHelpers/logger";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
+import useEditLocalPhoto from "./hooks/useEditLocalPhoto";
 import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 import PhotoCropper from "./PhotoCropper";
-
-const logger = log.extend( "MediaViewer" );
 
 interface MediaToDelete {
   type: "sound" | "photo";
@@ -128,21 +124,7 @@ const MediaViewer = ( {
     setMediaToDelete,
   ] );
 
-  // Ignores new edits while one is still being written to disk
-  const editingRef = useRef( false );
-  const applyPhotoEdit = useCallback( async ( localFilePath: string, edits: PhotoEdits ) => {
-    const photoUri = Photo.getLocalPhotoUri( localFilePath );
-    if ( !onEditPhoto || !photoUri || editingRef.current ) return;
-    editingRef.current = true;
-    try {
-      const editedPath = await editLocalPhoto( localFilePath, edits );
-      onEditPhoto( photoUri, editedPath );
-    } catch ( editError ) {
-      logger.error( "Failed to edit photo", editError );
-    } finally {
-      editingRef.current = false;
-    }
-  }, [onEditPhoto] );
+  const applyPhotoEdit = useEditLocalPhoto( onEditPhoto );
 
   const rotatePhoto = useCallback(
     ( localFilePath: string ) => applyPhotoEdit( localFilePath, { rotation: 90 } ),
