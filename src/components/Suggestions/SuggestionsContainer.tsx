@@ -3,23 +3,28 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import PhotoCropperModal from "components/MediaViewer/PhotoCropperModal";
 import isEqual from "lodash/isEqual";
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import Photo from "realmModels/Photo";
 import {
   useLastScreen,
   useLocationPermission,
   useSuggestions,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
 import type { TopSuggestionType } from "sharedHooks/useSuggestions/types";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
@@ -127,6 +132,8 @@ const SuggestionsContainer = ( ) => {
     [currentObservation],
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const replacePhotoInObservation = useStore( state => state.replacePhotoInObservation );
+  const photoEditingEnabled = useFeatureFlag( FeatureFlag.PhotoEditingEnabled );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
@@ -334,6 +341,33 @@ const SuggestionsContainer = ( ) => {
     shouldUseEvidenceLocation,
   ] );
 
+  // The selected photo's file, if it's local and not uploaded yet
+  const selectedLocalFilePath = innerPhotos.find( photo => !photo.url
+    && Photo.getLocalPhotoUri( photo.localFilePath ) === selectedPhotoUri )?.localFilePath;
+  const hasNoSuggestions = !suggestions?.topSuggestion
+    && suggestions?.otherSuggestions?.length === 0;
+  // Offer cropping only when the online model found nothing to suggest
+  const canCropSelectedPhoto = photoEditingEnabled
+    && !!selectedLocalFilePath
+    && onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
+    && !usingOfflineSuggestions
+    && hasNoSuggestions;
+  const [localFilePathToCrop, setLocalFilePathToCrop] = useState<string | null>( null );
+  const closeCropper = useCallback( ( ) => setLocalFilePathToCrop( null ), [] );
+
+  // Swap the cropped copy into the observation, then select it, which fetches
+  // new suggestions for it
+  const selectCroppedPhoto = useCallback( async ( uri: string, newLocalFilePath: string ) => {
+    replacePhotoInObservation( uri, newLocalFilePath );
+    const croppedUri = Photo.getLocalPhotoUri( newLocalFilePath );
+    const newImageParams = await createUploadParams( croppedUri, shouldUseEvidenceLocation );
+    dispatch( {
+      type: "SELECT_PHOTO",
+      selectedPhotoUri: croppedUri,
+      scoreImageParams: newImageParams,
+    } );
+  }, [createUploadParams, dispatch, replacePhotoInObservation, shouldUseEvidenceLocation] );
+
   const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
 
   const shouldSetImageParams = useMemo(
@@ -393,6 +427,9 @@ const SuggestionsContainer = ( ) => {
         improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
         isLoading={isLoading}
         shouldUseEvidenceLocation={shouldUseEvidenceLocation}
+        onCropPhoto={canCropSelectedPhoto
+          ? ( ) => setLocalFilePathToCrop( selectedLocalFilePath )
+          : undefined}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={navigateWithTaxonSelected}
         photoUris={photoUris}
@@ -412,6 +449,11 @@ const SuggestionsContainer = ( ) => {
         } )}
         uri={selectedPhotoUri}
         photos={innerPhotos}
+      />
+      <PhotoCropperModal
+        localFilePath={localFilePathToCrop}
+        onClose={closeCropper}
+        onEditPhoto={selectCroppedPhoto}
       />
       {renderPermissionsGate( { onPermissionGranted } )}
     </>
