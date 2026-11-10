@@ -1,11 +1,8 @@
 import { Realm } from "@realm/react";
-import { LIMITED_TAXON_FIELDS } from "api/fields";
 
 import Photo from "./Photo";
 
 class Taxon extends Realm.Object {
-  static LIMITED_TAXON_FIELDS = LIMITED_TAXON_FIELDS;
-
   static STATEOFMATTER_LEVEL = 100;
 
   static KINGDOM_LEVEL = 70;

@@ -4,6 +4,7 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { useQueryClient } from "@tanstack/react-query";
+import { LIMITED_TAXON_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiSpeciesCountDetails } from "api/types";
 import { fetchTaxaObserved } from "api/users";
@@ -22,7 +23,6 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
-import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
 import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
@@ -453,7 +453,7 @@ const MyObservationsResults = ( ) => {
         ? { taxon_id: myObsState.searchedTaxon.id }
         : {} ),
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS,
+        taxon: LIMITED_TAXON_FIELDS,
       },
     },
     {
