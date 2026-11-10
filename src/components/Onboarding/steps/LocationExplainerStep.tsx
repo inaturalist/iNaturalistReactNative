@@ -137,7 +137,7 @@ const LocationExplainerStep = ( ) => {
         />
       )}
     >
-      <Heading1 className="mt-[44px] mb-3">
+      <Heading1 className="mt-[43px] mb-3">
         {t( "iNaturalist-helps-you-discover-your-local-nature" )}
       </Heading1>
       <Body2 className="mb-3">{t( "Location-permissions--onboarding" )}</Body2>
