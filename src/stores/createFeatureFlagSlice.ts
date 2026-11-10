@@ -109,4 +109,11 @@ const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
   } ),
 } );
 
+// True once the latest /v2/feature_flags fetch has finished or failed; until then flags are only
+// their hard-coded defaults. Rendering from a flag doesn't need this. Code that acts on a flag
+// (writes storage, navigates, logs) should wait for it
+export const selectFeatureFlagsSettled = ( state: FeatureFlagSlice ): boolean => (
+  state.featureFlagApiStatus.state === "loaded" || state.featureFlagApiStatus.state === "error"
+);
+
 export default createFeatureFlagSlice;
