@@ -6,6 +6,8 @@ export const PHOTO_FIELDS = {
   hidden: true,
 } as const;
 
+// The set of fields required to get all information we want
+// to store in realm
 export const TAXON_SUMMARY_FIELDS = {
   ancestor_ids: true,
   default_photo: PHOTO_FIELDS,
