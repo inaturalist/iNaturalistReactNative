@@ -1,9 +1,9 @@
 export const PHOTO_FIELDS = {
-  id: true,
   attribution: true,
+  hidden: true,
+  id: true,
   license_code: true,
   url: true,
-  hidden: true,
 } as const;
 
 // The set of fields required to get all information we want
@@ -12,6 +12,7 @@ export const TAXON_SUMMARY_FIELDS = {
   ancestor_ids: true,
   default_photo: PHOTO_FIELDS,
   iconic_taxon_name: true,
+  id: true,
   // TODO: we do not need this for realm
   is_active: true,
   name: true,
