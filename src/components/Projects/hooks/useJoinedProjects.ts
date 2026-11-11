@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import sortByTitle from "sharedHelpers/sortByTitle";
 import { useAuthenticatedQuery } from "sharedHooks";
 
+export const JOINED_PROJECTS_QUERY_KEY = "useJoinedProjects";
+
 const PER_PAGE = 100;
 // Runaway guard, ideally above any realistic number of joined projects
 const MAX_PAGES = 100;
@@ -58,7 +60,7 @@ const useJoinedProjects = ( memberId: number | undefined, enabled: boolean ) => 
   const { i18n } = useTranslation( );
 
   const { data, isFetching } = useAuthenticatedQuery(
-    ["useJoinedProjects", memberId],
+    [JOINED_PROJECTS_QUERY_KEY, memberId],
     optsWithAuth => ( memberId
       ? fetchAllJoinedProjects( memberId, optsWithAuth )
       : Promise.resolve( [] ) ),
