@@ -127,7 +127,8 @@ const MediaViewer = ( {
   const applyPhotoEdit = useEditLocalPhoto( onEditPhoto );
 
   const rotatePhoto = useCallback(
-    ( localFilePath: string ) => applyPhotoEdit( localFilePath, { rotation: 90 } ),
+    // A quarter turn counterclockwise, matching the rotate icon
+    ( localFilePath: string ) => applyPhotoEdit( localFilePath, { rotation: 270 } ),
     [applyPhotoEdit],
   );
 
