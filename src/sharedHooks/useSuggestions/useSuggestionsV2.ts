@@ -115,6 +115,21 @@ const willCrashOffline = ( photoUri: string, isConnected: boolean | null ) => (
   photoUri.includes( "https://" ) && !isConnected
 );
 
+// Resizing won't succeed on a retry, and reactQueryRetry turns errors without
+// an API response into unhandled rejections, so these skip it
+const PHOTO_RESIZE_ERROR = "PhotoResizeError";
+
+const resizePhoto = async ( photoUri: string ) => {
+  try {
+    const { image } = await flattenUploadParams( photoUri );
+    return image;
+  } catch ( resizeError ) {
+    const error = new Error( `Couldn't resize photo: ${( resizeError as Error ).message}` );
+    error.name = PHOTO_RESIZE_ERROR;
+    throw error;
+  }
+};
+
 const onlineQueryKeyPrefix = ( photoUri: string, latitude?: number, longitude?: number ) => [
   "scoreImageV2",
   photoUri,
@@ -154,7 +169,7 @@ const fetchOnline = async ( {
   const queryKey = [...onlineQueryKeyPrefix( photoUri, latitude, longitude ), language];
 
   const queryFn = async ( ) => {
-    const { image } = await flattenUploadParams( photoUri );
+    const image = await resizePhoto( photoUri );
     const apiToken = await getJWT( true );
     const hasLocation = typeof latitude === "number" && typeof longitude === "number";
     const params = {
@@ -175,7 +190,8 @@ const fetchOnline = async ( {
     // a given photo and location always score the same, so reuse results
     // until the query is garbage collected
     staleTime: Infinity,
-    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, { queryKey } ),
+    retry: ( failureCount, error ) => error.name !== PHOTO_RESIZE_ERROR
+      && reactQueryRetry( failureCount, error, { queryKey } ),
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
   } );
 

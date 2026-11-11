@@ -1,3 +1,4 @@
+import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
@@ -157,6 +158,17 @@ describe( "useSuggestionsV2", ( ) => {
     await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
     expect( result.current.onlineStatus ).toBe( "timed-out" );
     expect( topSuggestionId( result ) ).toBe( 750 );
+  } );
+
+  it( "doesn't retry a photo that fails to resize", async ( ) => {
+    reactQueryRetry.mockImplementation( failureCount => failureCount < 2 );
+    ImageResizer.createResizedImage.mockRejectedValueOnce( new Error( "403" ) );
+    const { result } = renderSuggestionsHook( { photoUri: remotePhotoUri } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( result.current.onlineStatus ).toBe( "error" );
+    expect( ImageResizer.createResizedImage ).toHaveBeenCalledTimes( 1 );
+    expect( reactQueryRetry ).not.toHaveBeenCalled( );
+    expect( scoreImage ).not.toHaveBeenCalled( );
   } );
 
   it( "goes straight to the offline model when the device is offline", async ( ) => {
