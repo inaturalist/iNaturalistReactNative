@@ -50,7 +50,7 @@ import {
 } from "sharedHooks/useCurrentUserSpeciesCount";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationCounts from "sharedHooks/useObservationCounts";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag, selectFeatureFlagsSettled } from "stores/createFeatureFlagSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_PENDING,
@@ -112,6 +112,7 @@ const MyObservationsResults = ( ) => {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const featureFlagsSettled = useStore( selectFeatureFlagsSettled );
   const { isConnected } = useNetInfo( );
   const {
     observationIds,
@@ -142,12 +143,14 @@ const MyObservationsResults = ( ) => {
   // If the current view mode becomes unavailable (feature flag disabled or logged out),
   // fall back to grid rather than getting stuck on an unrenderable view
   useEffect( ( ) => {
-    const viewUnavailable = (
-      layout === "map" && !currentUser
-    ) || (
-      layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
-    );
-    if ( viewUnavailable ) {
+    const mapSignedOut = layout === "map" && !currentUser;
+    const smallGridSignedOut = layout === "smallGrid" && !currentUser;
+    const smallGridFlagDisabled = layout === "smallGrid"
+      // smallGrid may be remotely enabled but locally disabled
+      // wait for featureFlags to settle before any sideEffects
+      && featureFlagsSettled
+      && !myObservationsSmallGridViewEnabled;
+    if ( mapSignedOut || smallGridSignedOut || smallGridFlagDisabled ) {
       clearMyObservationsViewState( );
       writeLayoutToStorage( "grid" );
     }
@@ -155,6 +158,7 @@ const MyObservationsResults = ( ) => {
     clearMyObservationsViewState,
     layout,
     myObservationsSmallGridViewEnabled,
+    featureFlagsSettled,
     currentUser,
     writeLayoutToStorage,
   ] );

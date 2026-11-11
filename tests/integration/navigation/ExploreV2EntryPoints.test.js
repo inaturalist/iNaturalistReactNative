@@ -7,6 +7,7 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -112,7 +113,7 @@ beforeEach( ( ) => {
     isAllAddObsOptionsMode: true,
   } );
   zustandStorage.setItem( "exploreV2ObservationsLayout", "grid" );
-  setStoreStateFeatureFlags( { exploreV2Enabled: true } );
+  setStoreStateFeatureFlags( { [FeatureFlag.ExploreV2Enabled]: true } );
   mockFetchUserLocation.mockClear( );
   inatjs.observations.search.mockClear( );
   inatjs.observations.speciesCounts.mockClear( );
