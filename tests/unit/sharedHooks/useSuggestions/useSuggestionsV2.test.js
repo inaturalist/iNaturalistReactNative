@@ -149,12 +149,31 @@ describe( "useSuggestionsV2", ( ) => {
     expect( topSuggestionId( result ) ).toBe( 750 );
   } );
 
+  it( "falls back to the offline model when the online request times out", async ( ) => {
+    scoreImage.mockImplementation( neverResolves );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri, onlineTimeoutMs: 50 } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( result.current.onlineStatus ).toBe( "timed-out" );
+    expect( topSuggestionId( result ) ).toBe( 750 );
+  } );
+
   it( "goes straight to the offline model when the device is offline", async ( ) => {
     useNetInfo.mockReturnValue( { isConnected: false } );
     const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
     await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
     expect( result.current.onlineStatus ).toBe( "offline" );
     expect( scoreImage ).not.toHaveBeenCalled( );
+  } );
+
+  it( "falls back to the offline model when the connection drops mid-request", async ( ) => {
+    scoreImage.mockImplementation( neverResolves );
+    const props = { photoUri: localPhotoUri };
+    const { result, rerender } = renderSuggestionsHook( props );
+    await waitFor( ( ) => expect( scoreImage ).toHaveBeenCalled( ) );
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    rerender( props );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( result.current.onlineStatus ).toBe( "offline" );
   } );
 
   it( "skips the offline model for a remote photo while offline", async ( ) => {

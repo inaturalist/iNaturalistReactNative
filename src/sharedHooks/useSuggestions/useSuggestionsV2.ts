@@ -24,8 +24,11 @@ import { shimApiResponseForCommonAncestor } from "./useOnlineSuggestions";
 
 const { useRealm } = RealmContext;
 
-// "offline" means the device had no connection when the run started
-export type OnlineStatus = "idle" | "loading" | "fetched" | "error" | "offline";
+export const SCORE_IMAGE_TIMEOUT = 5_000;
+
+// "offline" means the device had no connection, either before the request
+// started or while it was in flight
+export type OnlineStatus = "idle" | "loading" | "fetched" | "error" | "timed-out" | "offline";
 // "idle" while waiting on the online request; "skipped" when online succeeded
 // or the photo is remote and we're offline
 export type OfflineStatus = "idle" | "loading" | "fetched" | "error" | "skipped";
@@ -38,6 +41,7 @@ interface Location {
 export interface UseSuggestionsV2Options {
   photoUri?: string | null;
   location?: Location | null;
+  onlineTimeoutMs?: number;
 }
 
 interface State {
@@ -113,6 +117,8 @@ const willCrashOffline = ( photoUri: string, isConnected: boolean | null ) => (
 
 interface Run {
   cancelled: boolean;
+  // ends the online attempt early, e.g. when the connection drops
+  interruptOnline?: ( status: "offline" | "cancelled" ) => void;
 }
 
 interface RunParams {
@@ -123,6 +129,7 @@ interface RunParams {
   longitude?: number;
   isConnected: () => boolean | null;
   locale?: string;
+  onlineTimeoutMs: number;
   queryClient: QueryClient;
   realm: Realm;
   dispatch: ( action: Action ) => void;
@@ -130,10 +137,11 @@ interface RunParams {
 
 type OnlineOutcome =
   | { status: "fetched"; data: OnlineSuggestionsQueryResponse }
-  | { status: "error"; error: Error };
+  | { status: "error"; error: Error }
+  | { status: "timed-out" | "offline" | "cancelled" };
 
 const fetchOnline = async ( {
-  photoUri, latitude, longitude, locale, queryClient,
+  run, photoUri, latitude, longitude, locale, onlineTimeoutMs, queryClient,
 }: RunParams ): Promise<OnlineOutcome> => {
   const queryKey = ["scoreImageV2", photoUri, latitude ?? null, longitude ?? null, locale ?? null];
 
@@ -153,17 +161,32 @@ const fetchOnline = async ( {
     return shimApiResponseForCommonAncestor( apiResponse );
   };
 
-  try {
-    const data = await queryClient.fetchQuery( {
-      queryKey,
-      queryFn,
-      retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, { queryKey } ),
-      retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
-    } );
-    return { status: "fetched", data };
-  } catch ( error ) {
-    return { status: "error", error: error as Error };
+  const request = queryClient.fetchQuery( {
+    queryKey,
+    queryFn,
+    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, { queryKey } ),
+    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
+  } );
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const outcome = await new Promise<OnlineOutcome>( resolve => {
+    // whichever settles first wins
+    timer = setTimeout( ( ) => resolve( { status: "timed-out" } ), onlineTimeoutMs );
+    run.interruptOnline = status => resolve( { status } );
+    request.then(
+      data => resolve( { status: "fetched", data } ),
+      error => resolve( { status: "error", error } ),
+    );
+  } );
+  clearTimeout( timer );
+  run.interruptOnline = undefined;
+
+  // a cancelled run leaves the request alone so the next run with the same
+  // inputs (e.g. a remount) can pick it up
+  if ( outcome.status === "timed-out" || outcome.status === "offline" ) {
+    queryClient.cancelQueries( { queryKey } );
   }
+  return outcome;
 };
 
 const runSuggestions = async ( params: RunParams ) => {
@@ -211,7 +234,7 @@ const runSuggestions = async ( params: RunParams ) => {
     type: "RUN_STARTED", inputKey, onlineStatus: "loading", offlineStatus: "idle",
   } );
   const outcome = await fetchOnline( params );
-  if ( run.cancelled ) return;
+  if ( run.cancelled || outcome.status === "cancelled" ) return;
 
   if ( outcome.status === "fetched" ) {
     dispatch( {
@@ -226,11 +249,13 @@ const runSuggestions = async ( params: RunParams ) => {
   const skipOffline = willCrashOffline( photoUri, isConnected( ) );
   dispatch( {
     type: "ONLINE_SETTLED",
-    onlineStatus: "error",
+    onlineStatus: outcome.status,
     offlineStatus: skipOffline
       ? "skipped"
       : "loading",
-    onlineError: outcome.error,
+    onlineError: outcome.status === "error"
+      ? outcome.error
+      : undefined,
   } );
   if ( !skipOffline ) await runOffline( );
 };
@@ -238,6 +263,7 @@ const runSuggestions = async ( params: RunParams ) => {
 const useSuggestionsV2 = ( {
   photoUri,
   location,
+  onlineTimeoutMs = SCORE_IMAGE_TIMEOUT,
 }: UseSuggestionsV2Options ) => {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
@@ -256,12 +282,12 @@ const useSuggestionsV2 = ( {
   // values a run reads when it starts or as it goes, but that shouldn't
   // start a new run when they change
   const latest = useRef( {
-    isConnected, locale, queryClient, realm,
+    isConnected, locale, onlineTimeoutMs, queryClient, realm,
   } );
   // declared before the run effect so it updates first in the same commit
   useEffect( ( ) => {
     latest.current = {
-      isConnected, locale, queryClient, realm,
+      isConnected, locale, onlineTimeoutMs, queryClient, realm,
     };
   } );
 
@@ -269,9 +295,12 @@ const useSuggestionsV2 = ( {
     ? JSON.stringify( [photoUri, latitude ?? null, longitude ?? null] )
     : null;
 
+  const runRef = useRef<Run | null>( null );
+
   useEffect( ( ) => {
     const run: Run = { cancelled: false };
     if ( inputKey && photoUri ) {
+      runRef.current = run;
       const { current } = latest;
       runSuggestions( {
         run,
@@ -281,6 +310,7 @@ const useSuggestionsV2 = ( {
         longitude,
         isConnected: ( ) => latest.current.isConnected,
         locale: current.locale,
+        onlineTimeoutMs: current.onlineTimeoutMs,
         queryClient: current.queryClient,
         realm: current.realm,
         dispatch,
@@ -288,8 +318,15 @@ const useSuggestionsV2 = ( {
     }
     return ( ) => {
       run.cancelled = true;
+      run.interruptOnline?.( "cancelled" );
     };
   }, [inputKey, photoUri, latitude, longitude] );
+
+  useEffect( ( ) => {
+    if ( isConnected === false ) {
+      runRef.current?.interruptOnline?.( "offline" );
+    }
+  }, [isConnected] );
 
   // State from previous inputs is stale. Report a run that hasn't started
   // yet as loading so callers never see a "no suggestions" frame
