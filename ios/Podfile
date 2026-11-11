@@ -17,6 +17,7 @@ node_require( "react-native-permissions/scripts/setup.rb" )
 
 # Prebuilt React-Core headers are not a clang module when use_frameworks! is
 # enabled, which breaks Firebase imports. Build React Native core from source.
+# TODO: remove in MOB-2000 if updating Firebase allows getting rid of this
 ENV["RCT_USE_PREBUILT_RNCORE"] = "0"
 
 platform :ios, min_ios_version_supported
