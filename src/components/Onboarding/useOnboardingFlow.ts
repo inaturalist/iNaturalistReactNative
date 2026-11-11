@@ -30,9 +30,12 @@ const useOnboardingFlow = ( ) => {
     }
   };
 
+  const logIn = ( ) => host.onLogIn( stepId );
+
   return {
     exit: host.onExit,
     exitSheet: getExitSheet( stepId ),
+    logIn,
     proceedToNext,
     stepId,
   };

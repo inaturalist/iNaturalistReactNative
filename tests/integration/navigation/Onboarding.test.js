@@ -145,6 +145,28 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     await actor.press( within( sheet ).getByText( i18next.t( confirmText ) ) );
   };
 
+  const logInFrom = async stepId => {
+    const step = await screen.findByTestId( `Onboarding.${stepId}` );
+    await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.logIn` ) );
+    return screen.findByTestId( "Login.email" );
+  };
+
+  const logIn = async ( ) => {
+    await actor.type( await screen.findByTestId( "Login.email" ), "someone" );
+    await actor.type( screen.getByTestId( "Login.password" ), "a-good-password" );
+    await actor.press( screen.getByTestId( "Login.loginButton" ) );
+  };
+
+  const closeLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByLabelText( i18next.t( "Close" ) ) );
+  };
+
+  const signUpFromLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByText( /Sign up/ ) );
+  };
+
   const findMyObservations = ( ) => screen.findByText(
     i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ),
   );
@@ -350,5 +372,85 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         expect( mockOnboarding.shown ).toBe( true );
       },
     );
+  } );
+
+  describe( "logging in and signing up", ( ) => {
+    it( "returns to welcome when Login opened from welcome is closed", async ( ) => {
+      renderApp( );
+      await logInFrom( "welcome" );
+      await closeLogin( );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      expect( mockOnboarding.shown ).toBeFalsy( );
+    } );
+
+    it(
+      "shows the location step, then my observations, after logging in from welcome",
+      async ( ) => {
+        renderApp( );
+        await logInFrom( "welcome" );
+        await logIn( );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+        await continueFrom( "location_explainer" );
+        expect( await findMyObservations( ) ).toBeVisible( );
+        expect( mockOnboarding.shown ).toBe( true );
+      },
+    );
+
+    it( "returns to the sign-up email step via Sign up in Login opened there", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await logInFrom( "signup_email" );
+      await signUpFromLogin( );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      expect( screen.getAllByTestId( "Onboarding.signup_email" ) ).toHaveLength( 1 );
+    } );
+
+    it( "returns to the sign-up email step when Login opened there is closed", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await logInFrom( "signup_email" );
+      await closeLogin( );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+    } );
+
+    it( "returns to Login when sign-up opened from Login is exited", async ( ) => {
+      renderApp( );
+      await logInFrom( "welcome" );
+      await signUpFromLogin( );
+      await confirmExit( "signup_email", "EXIT" );
+      expect( await screen.findByTestId( "Login.email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+    } );
+
+    it(
+      "shows the location step after signing up from Login during onboarding",
+      async ( ) => {
+        renderApp( );
+        await logInFrom( "welcome" );
+        await signUpFromLogin( );
+        await continueFrom( "signup_email" );
+        await continueFrom( "signup_credentials" );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      },
+    );
+
+    it( "shows my observations after signing up from Login once onboarding is done", async ( ) => {
+      mockOnboarding.shown = true;
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await findMyObservations( );
+      await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
+      await signUpFromLogin( );
+      await continueFrom( "signup_email" );
+      await continueFrom( "signup_credentials" );
+      expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+      expect( screen.queryByTestId( "Onboarding.location_explainer" ) ).toBeNull( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      expect( navigationContainer.current.getCurrentRoute( ).name ).toBe( "MyObservationsResults" );
+    } );
   } );
 } );

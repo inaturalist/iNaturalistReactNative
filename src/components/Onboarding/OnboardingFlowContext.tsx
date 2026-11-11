@@ -3,11 +3,12 @@ import { createContext, useContext } from "react";
 import type { OnboardingExitSheet, OnboardingStepId } from "./onboardingSteps";
 
 // Supplied by each navigator that hosts onboarding steps: which steps it runs,
-// in order, and where they go when the user finishes or exits
+// in order, and where they go when the user finishes, exits, or logs in
 export interface OnboardingFlowHost {
   steps: readonly OnboardingStepId[];
   onFinish: ( ) => void;
   onExit: ( sheet: OnboardingExitSheet ) => void;
+  onLogIn: ( stepId: OnboardingStepId ) => void;
 }
 
 const OnboardingFlowContext = createContext<OnboardingFlowHost | null>( null );

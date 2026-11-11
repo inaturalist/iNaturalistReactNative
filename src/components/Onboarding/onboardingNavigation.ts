@@ -15,3 +15,8 @@ export const showLocationStep = ( navigation: RootNavigation ) => {
     { pop: true },
   );
 };
+
+// Opens Login on top of whatever is showing, so closing it goes back there
+export const openLogin = ( navigation: RootNavigation, params: { fromSignUp: boolean } ) => {
+  navigation.navigate( "LoginStackNavigator", { screen: "Login", params } );
+};
