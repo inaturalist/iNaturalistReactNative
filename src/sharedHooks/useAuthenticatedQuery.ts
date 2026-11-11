@@ -16,6 +16,16 @@ export type AuthenticatedQueryOptions<Response> = Omit<
   refetchInterval?: number;
 }
 
+// The cache key useAuthenticatedQuery actually uses. Exported so code that writes to the cache
+// directly (e.g. queryClient.setQueryData) can match it
+export const authenticatedQueryKey = (
+  queryKey: QueryKey,
+  { allowAnonymousJWT, userLoggedIn }: {
+    allowAnonymousJWT?: boolean;
+    userLoggedIn: boolean | null;
+  },
+): QueryKey => [...queryKey, allowAnonymousJWT, userLoggedIn];
+
 export type QueryFunction<Response>
   = ( options: { api_token: string | null } ) => Promise<Response>;
 
@@ -45,7 +55,10 @@ const useAuthenticatedQuery = <Response>(
   // The results will probably be different depending on whether the user is
   // signed in or we wouldn't be using useAuthenticatedQuery in the first
   // place, so we need to redo this request if the auth state changed
-  const authQueryKey = [...queryKey, queryOptions.allowAnonymousJWT, userLoggedIn];
+  const authQueryKey = authenticatedQueryKey( queryKey, {
+    allowAnonymousJWT: queryOptions.allowAnonymousJWT,
+    userLoggedIn,
+  } );
 
   return useQuery( {
     queryKey: authQueryKey,

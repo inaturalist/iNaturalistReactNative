@@ -1,3 +1,46 @@
+export const PHOTO_FIELDS = {
+  attribution: true,
+  hidden: true,
+  id: true,
+  license_code: true,
+  url: true,
+} as const;
+
+// The set of fields required to get all information we want
+// to store in realm
+export const TAXON_PERSISTABLE_FIELDS = {
+  ancestor_ids: true,
+  default_photo: PHOTO_FIELDS,
+  iconic_taxon_name: true,
+  id: true,
+  name: true,
+  preferred_common_name: true,
+  rank: true,
+  rank_level: true,
+};
+
+export const TAXON_SUMMARY_FIELDS = {
+  ...TAXON_PERSISTABLE_FIELDS,
+  is_active: true,
+};
+
+export const LIMITED_TAXON_FIELDS = {
+  ...TAXON_SUMMARY_FIELDS,
+  default_photo: {
+    id: true,
+    url: true,
+  },
+  representative_photo: {
+    id: true,
+    url: true,
+  },
+  taxon_photos: {
+    photo: {
+      url: true,
+    },
+  },
+};
+
 const OBSERVATION_FIELD_FIELDS = {
   allowed_values: true,
   datatype: true,
@@ -17,35 +60,12 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
 const PROJECT_OBSERVATION_RULE_FIELDS = {
   id: true,
   operand_id: true,
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  operand_type: true,
   operator: true,
   place: {
     display_name: true,
     id: true,
   },
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  project: {
-    id: true,
-    title: true,
-  },
-  taxon: {
-    // TODO: MOB-1946 this should be changed to request a persitable taxon
-    ancestor_ids: true,
-    default_photo: {
-      url: true,
-    },
-    id: true,
-    name: true,
-    preferred_common_name: true,
-    rank: true,
-    rank_level: true,
-  },
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  user: {
-    id: true,
-    login: true,
-  },
+  taxon: TAXON_PERSISTABLE_FIELDS,
 };
 
 export const PROJECT_SUMMARY_FIELDS = {
@@ -135,28 +155,6 @@ export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
     id: true,
     name: true,
     preferred_common_name: true,
-  },
-};
-
-export const LIMITED_TAXON_FIELDS = {
-  ancestor_ids: true,
-  default_photo: {
-    id: true,
-    url: true,
-  },
-  representative_photo: {
-    id: true,
-    url: true,
-  },
-  iconic_taxon_name: true,
-  name: true,
-  preferred_common_name: true,
-  rank: true,
-  rank_level: true,
-  taxon_photos: {
-    photo: {
-      url: true,
-    },
   },
 };
 

@@ -63,6 +63,17 @@ describe( "ObservationLocation", () => {
     expect( await screen.findByText( new RegExp( expectedResult ) ) ).toBeTruthy();
   } );
 
+  it( "shows obscured geoprivacy label when details are shown", async () => {
+    render(
+      <ObservationLocation
+        observation={factory( "RemoteObservation", { geoprivacy: "obscured" } )}
+        details
+      />,
+    );
+
+    expect( await screen.findByText( "Geoprivacy: Obscured" ) ).toBeVisible( );
+  } );
+
   it( "renders obscured icon if obscured", async () => {
     const mockObservation = {
       taxon_geoprivacy: "obscured",

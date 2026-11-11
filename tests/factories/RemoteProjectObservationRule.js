@@ -5,7 +5,6 @@ export default define( "RemoteProjectObservationRule", faker => {
   return {
     id: faker.number.int( ),
     operand_id: taxonId,
-    operand_type: "Taxon",
     operator: "in_taxon?",
     taxon: {
       ancestor_ids: [48460, 1, taxonId],

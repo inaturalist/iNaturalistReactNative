@@ -174,9 +174,9 @@ const SimpleUploadBannerContainer = ( {
   const syncDisabled = rotating || showsCheckmark;
   const progress = totalToolbarProgress || deletionsProgress;
 
-  // hide when there are less than two observations to upload
+  // hide when there are no observations to upload
   // but make sure completed status is displayed when uploads are finished
-  if ( !currentUser && numOfUserObservations < 2 && progress === 0 ) {
+  if ( !currentUser && numOfUserObservations < 1 && progress === 0 ) {
     return null;
   }
   return (

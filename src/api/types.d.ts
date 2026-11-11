@@ -180,6 +180,47 @@ export interface ApiUser extends ApiRecord {
   species_count?: number;
 }
 
+// When using LIMITED_TAXON_FIELDS
+export interface ApiTaxonLimited extends ApiRecord {
+  ancestor_ids: number[];
+  default_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+  representative_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  taxon_photos: {
+    photo: {
+      url: string | null;
+    } | null;
+  }[];
+}
+
+// When using TAXON_PERSISTABLE_FIELDS
+export interface ApiTaxonPersistable {
+  ancestor_ids: number[];
+  default_photo: {
+    attribution: string;
+    hidden: boolean;
+    id: number;
+    license_code: string | null;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  id: number;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+}
+
 type Operator =
   | "georeferenced?"
   | "captive?"
@@ -197,12 +238,6 @@ interface ApiRule {
   id: number;
   operand_id: null;
   operator: Operator;
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  operand_type: string | null;
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  project?: { id: number; title: string };
-  // TODO: MOB-1945 this can be deleted from here and from realm persistence
-  user?: ApiUser;
 }
 
 // Certain rules fetched with PROJECT_OBSERVATION_RULE_FIELDS
@@ -228,18 +263,10 @@ interface ApiRuleInTaxon {
   id: number;
   operand_id: number;
   operator: "in_taxon?";
-  // TODO: MOB-1946 this should be changed to request a persistable taxon
-  taxon: {
-    ancestor_ids: number[];
-    id: number;
-    name: string;
-    preferred_common_name: string | null;
-    rank: string;
-    rank_level: number;
-  } | null;
+  taxon: ApiTaxonPersistable | null;
 }
 
-type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
+export type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
 
 // "", "bioblitz", "contest", and "assessment" are all traditional
 export type ApiProjectType =
@@ -449,29 +476,6 @@ export interface ApiSpeciesCountVerboseSummary extends ApiCount {
     name: string;
     preferred_common_name: string | null;
   } | null;
-}
-
-// When using Taxon.LIMITED_TAXON_FIELDS
-export interface ApiTaxonLimited extends ApiRecord {
-  ancestor_ids: number[];
-  default_photo: {
-    id: number;
-    url: string | null;
-  } | null;
-  iconic_taxon_name: string | null;
-  name: string;
-  preferred_common_name: string | null;
-  rank: string;
-  rank_level: number;
-  representative_photo: {
-    id: number;
-    url: string | null;
-  } | null;
-  taxon_photos: {
-    photo: {
-      url: string | null;
-    } | null;
-  }[];
 }
 
 // When using SPECIES_COUNTS_DETAILS_FIELDS

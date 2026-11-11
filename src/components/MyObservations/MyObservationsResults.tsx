@@ -3,6 +3,8 @@ import {
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import { useQueryClient } from "@tanstack/react-query";
+import { LIMITED_TAXON_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiSpeciesCountDetails } from "api/types";
 import { fetchTaxaObserved } from "api/users";
@@ -21,7 +23,6 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
-import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
 import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
@@ -43,10 +44,15 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import {
+  markCurrentUserSpeciesCountStale,
+  setCurrentUserSpeciesCount,
+} from "sharedHooks/useCurrentUserSpeciesCount";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationCounts from "sharedHooks/useObservationCounts";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag, selectFeatureFlagsSettled } from "stores/createFeatureFlagSlice";
 import {
+  UPLOAD_COMPLETE,
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
@@ -106,6 +112,7 @@ const MyObservationsResults = ( ) => {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const featureFlagsSettled = useStore( selectFeatureFlagsSettled );
   const { isConnected } = useNetInfo( );
   const {
     observationIds,
@@ -136,12 +143,14 @@ const MyObservationsResults = ( ) => {
   // If the current view mode becomes unavailable (feature flag disabled or logged out),
   // fall back to grid rather than getting stuck on an unrenderable view
   useEffect( ( ) => {
-    const viewUnavailable = (
-      layout === "map" && !currentUser
-    ) || (
-      layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
-    );
-    if ( viewUnavailable ) {
+    const mapSignedOut = layout === "map" && !currentUser;
+    const smallGridSignedOut = layout === "smallGrid" && !currentUser;
+    const smallGridFlagDisabled = layout === "smallGrid"
+      // smallGrid may be remotely enabled but locally disabled
+      // wait for featureFlags to settle before any sideEffects
+      && featureFlagsSettled
+      && !myObservationsSmallGridViewEnabled;
+    if ( mapSignedOut || smallGridSignedOut || smallGridFlagDisabled ) {
       clearMyObservationsViewState( );
       writeLayoutToStorage( "grid" );
     }
@@ -149,6 +158,7 @@ const MyObservationsResults = ( ) => {
     clearMyObservationsViewState,
     layout,
     myObservationsSmallGridViewEnabled,
+    featureFlagsSettled,
     currentUser,
     writeLayoutToStorage,
   ] );
@@ -432,6 +442,7 @@ const MyObservationsResults = ( ) => {
 
   const {
     data: remoteObservedTaxaCounts,
+    dataUpdatedAt: remoteObservedTaxaCountsUpdatedAt,
     isFetching: isLoadingTaxa,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
@@ -446,7 +457,7 @@ const MyObservationsResults = ( ) => {
         ? { taxon_id: myObsState.searchedTaxon.id }
         : {} ),
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS,
+        taxon: LIMITED_TAXON_FIELDS,
       },
     },
     {
@@ -458,17 +469,28 @@ const MyObservationsResults = ( ) => {
     ? numTotalTaxaRemote
     : numTotalTaxaLocal;
 
-  const numTotalObservations = totalResultsRemote || observationIds.length;
+  // We want to show the server's totals when signed in, and local counts when signed out.
+  let freshObservationsCount: number | undefined;
+  if ( !currentUser ) {
+    freshObservationsCount = observationIds.length;
+  } else if ( typeof totalResultsRemote === "number" ) {
+    // A signed-in user with no uploaded obs should still see their local count
+    freshObservationsCount = totalResultsRemote || observationIds.length;
+  }
+  const freshSpeciesCount = hasActiveSearch
+    ? undefined
+    : numTotalTaxa;
 
   // When a search is active, we want to show a live, search-informed total for observation and
-  // species counts, otherwise, fallback to the values from zustand
+  // species counts. Otherwise show the fresh totals, falling back to the last stored totals
+  // when we don't have fresh ones (e.g. offline or still loading)
   const displayedObservationsCount = hasActiveSearch
     ? searchTotalResults
-    : numOfUserObservations;
+    : freshObservationsCount ?? numOfUserObservations;
 
   const displayedSpeciesCount = hasActiveSearch
     ? numTotalTaxa
-    : numOfUserSpecies;
+    : freshSpeciesCount ?? numOfUserSpecies;
 
   // Pagination for the rendered list follows whichever source is authoritative:
   const isFetchingNextPageForList = isServerAuthoritative
@@ -479,20 +501,63 @@ const MyObservationsResults = ( ) => {
     : fetchNextPage;
 
   useEffect( ( ) => {
-    // persist this number in zustand so a user can see their latest observations count
-    // even if they're offline
-    if ( numTotalObservations > numOfUserObservations ) {
-      zustandStorage.setItem( "numOfUserObservations", numTotalObservations );
+    // persist the latest observations count in zustand so a user can see it offline.
+    if (
+      typeof freshObservationsCount === "number"
+      && freshObservationsCount !== numOfUserObservations
+    ) {
+      zustandStorage.setItem( "numOfUserObservations", freshObservationsCount );
     }
-  }, [numTotalObservations, numOfUserObservations] );
+  }, [freshObservationsCount, numOfUserObservations] );
 
   useEffect( ( ) => {
-    // persist this number in zustand so a user can see their latest species count
-    // even if they're offline
-    if ( numTotalTaxa > numOfUserSpecies ) {
-      zustandStorage.setItem( "numOfUserSpecies", numTotalTaxa );
+    // persist the latest species count in zustand so a user can see it offline. Counts can
+    // go down (e.g. deleted obs), so store any change, not just increases
+    if ( typeof freshSpeciesCount === "number" && freshSpeciesCount !== numOfUserSpecies ) {
+      zustandStorage.setItem( "numOfUserSpecies", freshSpeciesCount );
     }
-  }, [numTotalTaxa, numOfUserSpecies] );
+  }, [freshSpeciesCount, numOfUserSpecies] );
+
+  // Share the species list's total with the current user's species count so their profile can
+  // show it without fetching it again. Search results are filtered, so they don't count
+  const queryClient = useQueryClient( );
+  useEffect( ( ) => {
+    if (
+      currentUserId
+      && !hasActiveSearch
+      && typeof numTotalTaxaRemote === "number"
+      && remoteObservedTaxaCountsUpdatedAt
+    ) {
+      setCurrentUserSpeciesCount(
+        queryClient,
+        currentUserId,
+        numTotalTaxaRemote,
+        remoteObservedTaxaCountsUpdatedAt,
+      );
+    }
+  }, [
+    currentUserId,
+    hasActiveSearch,
+    numTotalTaxaRemote,
+    queryClient,
+    remoteObservedTaxaCountsUpdatedAt,
+  ] );
+
+  // Uploads and deletions can add or remove species, so the shared count needs refreshing
+  useEffect( ( ) => {
+    if ( uploadStatus === UPLOAD_COMPLETE ) {
+      markCurrentUserSpeciesCountStale( queryClient );
+    }
+  }, [queryClient, uploadStatus] );
+  // deletionsCompletedAt keeps its last value, so only react when it changes, not on mount
+  const deletionsCompletedAt = useStore( state => state.deletionsCompletedAt );
+  const prevDeletionsCompletedAt = useRef( deletionsCompletedAt );
+  useEffect( ( ) => {
+    if ( deletionsCompletedAt && deletionsCompletedAt !== prevDeletionsCompletedAt.current ) {
+      markCurrentUserSpeciesCountStale( queryClient );
+    }
+    prevDeletionsCompletedAt.current = deletionsCompletedAt;
+  }, [deletionsCompletedAt, queryClient] );
 
   useEffect( () => {
     const newObservationCount = observationIds.length - prevObservationsLength.current;

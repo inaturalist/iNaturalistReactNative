@@ -8,14 +8,6 @@ import resizeImage from "sharedHelpers/resizeImage";
 import { unlink } from "sharedHelpers/util";
 
 class Photo extends Realm.Object {
-  static PHOTO_FIELDS = {
-    id: true,
-    attribution: true,
-    license_code: true,
-    url: true,
-    hidden: true,
-  } as const;
-
   static mapApiToRealm( photo: ApiPhoto, _realm = null ) {
     const localPhoto = {
       ...photo,

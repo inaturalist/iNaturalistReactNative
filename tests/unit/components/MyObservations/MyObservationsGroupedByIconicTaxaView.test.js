@@ -24,9 +24,9 @@ jest.mock( "components/MyObservations/hooks/useIconicTaxaObservationCounts", ( )
   } ),
 } ) );
 
-jest.mock( "components/MyObservations/hooks/useUnsyncedObservationIdsByIconicTaxon", ( ) => ( {
+jest.mock( "components/MyObservations/hooks/usePinnedObservationsByIconicTaxon", ( ) => ( {
   __esModule: true,
-  default: ( ) => new Map( ),
+  default: ( ) => ( { unsyncedByCategory: new Map( ), uploadsByCategory: new Map( ) } ),
 } ) );
 
 // Stood in so these tests are about what a header tap does to collapse state and to the
