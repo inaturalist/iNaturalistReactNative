@@ -106,8 +106,7 @@ const MainMediaDisplay = ( {
             {onRotatePhoto && (
               <TransparentCircleButton
                 onPress={( ) => onRotatePhoto( localFilePath )}
-                // this icon might be a placeholder if design wants a different rotate img icon
-                icon="rotate-right"
+                icon="rotate-photo"
                 accessibilityLabel="Rotate photo"
               />
             )}
