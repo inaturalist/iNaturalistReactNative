@@ -48,6 +48,8 @@ interface Location {
 export interface UseSuggestionsV2Options {
   photoUri?: string | null;
   location?: Location | null;
+  // e.g. hold off until location permission is known
+  enabled?: boolean;
   // only used for the online/offline comparison experiment
   observationUuid?: string;
   onlineTimeoutMs?: number;
@@ -82,7 +84,8 @@ type Action =
     offlineStatus: "fetched" | "error";
     offlineSuggestions?: OfflineSuggestionsResponse;
     offlineError?: Error;
-  };
+  }
+  | { type: "RUN_ENDED" };
 
 const initialState: State = {
   inputKey: null,
@@ -113,6 +116,8 @@ const reducer = ( state: State, action: Action ): State => {
         offlineSuggestions: action.offlineSuggestions,
         offlineError: action.offlineError,
       };
+    case "RUN_ENDED":
+      return initialState;
     default:
       return state;
   }
@@ -337,6 +342,7 @@ const runSuggestions = async ( params: RunParams ) => {
 const useSuggestionsV2 = ( {
   photoUri,
   location,
+  enabled = true,
   observationUuid,
   onlineTimeoutMs = SCORE_IMAGE_TIMEOUT,
 }: UseSuggestionsV2Options ) => {
@@ -369,7 +375,7 @@ const useSuggestionsV2 = ( {
     };
   } );
 
-  const inputKey = photoUri
+  const inputKey = enabled && photoUri
     ? JSON.stringify( [photoUri, latitude ?? null, longitude ?? null, attempt] )
     : null;
 
@@ -399,6 +405,9 @@ const useSuggestionsV2 = ( {
     return ( ) => {
       run.cancelled = true;
       run.interruptOnline?.( "cancelled" );
+      // otherwise re-enabling with the same inputs would match the old
+      // result for a frame before the new run starts
+      dispatch( { type: "RUN_ENDED" } );
     };
   }, [inputKey, photoUri, latitude, longitude] );
 

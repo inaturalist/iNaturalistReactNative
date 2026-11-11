@@ -230,6 +230,31 @@ describe( "useSuggestionsV2", ( ) => {
     expect( result.current.suggestions.topSuggestion ).toBeUndefined( );
   } );
 
+  it( "waits until enabled", async ( ) => {
+    const { result, rerender } = renderSuggestionsHook( {
+      photoUri: localPhotoUri, enabled: false,
+    } );
+    expect( result.current.onlineStatus ).toBe( "idle" );
+    expect( result.current.isLoading ).toBe( false );
+    expect( scoreImage ).not.toHaveBeenCalled( );
+    rerender( { photoUri: localPhotoUri, enabled: true } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+  } );
+
+  it( "doesn't show the earlier result when re-enabled with the same inputs", async ( ) => {
+    const {
+      result, rerender, renderedStatuses,
+    } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    rerender( { photoUri: localPhotoUri, enabled: false } );
+    expect( result.current.onlineStatus ).toBe( "idle" );
+
+    const reenabledAt = renderedStatuses.length;
+    rerender( { photoUri: localPhotoUri, enabled: true } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( renderedStatuses[reenabledAt] ).toBe( "loading" );
+  } );
+
   it( "starts over when the location changes and ignores the earlier response", async ( ) => {
     const firstRequest = deferred( );
     scoreImage
