@@ -11,7 +11,6 @@ export interface UseInfiniteProjectsScrollOptions {
   params: {
     fields: typeof PROJECT_SUMMARY_FIELDS;
     q: string;
-    member_id?: number;
     lat?: number;
     lng?: number;
     featured?: boolean;
