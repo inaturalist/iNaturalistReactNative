@@ -10,10 +10,15 @@ import {
   useCallback, useEffect, useMemo, useReducer, useRef, useState,
 } from "react";
 import type Realm from "realm";
+import { UpdateMode } from "realm";
+import Taxon from "realmModels/Taxon";
+import { log } from "sharedHelpers/logger";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import filterSuggestions from "./filterSuggestions";
+import { startOfflineExperimentInBackground } from "./suggestionComparisonExperiment";
 import type { OfflineSuggestionsResponse } from "./useOfflineSuggestions";
 import { predictOffline } from "./useOfflineSuggestions";
 import type {
@@ -21,6 +26,8 @@ import type {
   OnlineSuggestionsQueryResponse,
 } from "./useOnlineSuggestions";
 import { shimApiResponseForCommonAncestor } from "./useOnlineSuggestions";
+
+const logger = log.extend( "useSuggestionsV2" );
 
 const { useRealm } = RealmContext;
 
@@ -41,6 +48,8 @@ interface Location {
 export interface UseSuggestionsV2Options {
   photoUri?: string | null;
   location?: Location | null;
+  // only used for the online/offline comparison experiment
+  observationUuid?: string;
   onlineTimeoutMs?: number;
 }
 
@@ -137,6 +146,26 @@ const onlineQueryKeyPrefix = ( photoUri: string, latitude?: number, longitude?: 
   longitude ?? null,
 ];
 
+const saveTaxaToRealm = ( realm: Realm, response: OnlineSuggestionsQueryResponse ) => {
+  // we already have this taxon info, so store it now instead of waiting for
+  // useTaxon to fetch each one. It's only a cache, so a failure here shouldn't
+  // throw away the suggestions
+  const apiTaxa = response.results.map( suggestion => suggestion.taxon );
+  if ( response.common_ancestor ) {
+    apiTaxa.push( response.common_ancestor.taxon );
+  }
+  try {
+    safeRealmWrite( realm, ( ) => {
+      apiTaxa.forEach( apiTaxon => {
+        const remoteTaxon = Taxon.mapApiToRealm( apiTaxon, realm );
+        realm.create( "Taxon", Taxon.forUpdate( remoteTaxon ), UpdateMode.Modified );
+      } );
+    }, "saving remote taxon from useSuggestionsV2" );
+  } catch ( saveError ) {
+    logger.error( "Failed to save suggested taxa", saveError );
+  }
+};
+
 interface Run {
   cancelled: boolean;
   // ends the online attempt early, e.g. when the connection drops
@@ -152,6 +181,7 @@ interface RunParams {
   isConnected: () => boolean | null;
   language: string;
   locale?: string;
+  observationUuid?: string;
   onlineTimeoutMs: number;
   queryClient: QueryClient;
   realm: Realm;
@@ -164,10 +194,13 @@ type OnlineOutcome =
   | { status: "timed-out" | "offline" | "cancelled" };
 
 const fetchOnline = async ( {
-  run, photoUri, latitude, longitude, language, locale, onlineTimeoutMs, queryClient,
+  run, photoUri, latitude, longitude, language, locale, observationUuid, onlineTimeoutMs,
+  queryClient, realm,
 }: RunParams ): Promise<OnlineOutcome> => {
   const queryKey = [...onlineQueryKeyPrefix( photoUri, latitude, longitude ), language];
 
+  // realm and observationUuid don't affect the response, so they stay out of
+  // the key
   const queryFn = async ( ) => {
     const image = await resizePhoto( photoUri );
     const apiToken = await getJWT( true );
@@ -181,7 +214,21 @@ const fetchOnline = async ( {
       params,
       { api_token: apiToken },
     ) as OnlineSuggestionsApiResponse;
-    return shimApiResponseForCommonAncestor( apiResponse );
+    const response = shimApiResponseForCommonAncestor( apiResponse );
+    saveTaxaToRealm( realm, response );
+    if ( observationUuid ) {
+      startOfflineExperimentInBackground(
+        observationUuid,
+        response,
+        ( ) => predictOffline( {
+          latitude,
+          longitude,
+          photoUri: image.uri,
+          realm,
+        } ),
+      );
+    }
+    return response;
   };
 
   const request = queryClient.fetchQuery( {
@@ -290,6 +337,7 @@ const runSuggestions = async ( params: RunParams ) => {
 const useSuggestionsV2 = ( {
   photoUri,
   location,
+  observationUuid,
   onlineTimeoutMs = SCORE_IMAGE_TIMEOUT,
 }: UseSuggestionsV2Options ) => {
   const realm = useRealm( );
@@ -312,12 +360,12 @@ const useSuggestionsV2 = ( {
   // values a run reads when it starts or as it goes, but that shouldn't
   // start a new run when they change
   const latest = useRef( {
-    isConnected, language, locale, onlineTimeoutMs, queryClient, realm,
+    isConnected, language, locale, observationUuid, onlineTimeoutMs, queryClient, realm,
   } );
   // declared before the run effect so it updates first in the same commit
   useEffect( ( ) => {
     latest.current = {
-      isConnected, language, locale, onlineTimeoutMs, queryClient, realm,
+      isConnected, language, locale, observationUuid, onlineTimeoutMs, queryClient, realm,
     };
   } );
 
@@ -341,6 +389,7 @@ const useSuggestionsV2 = ( {
         isConnected: ( ) => latest.current.isConnected,
         language: current.language,
         locale: current.locale,
+        observationUuid: current.observationUuid,
         onlineTimeoutMs: current.onlineTimeoutMs,
         queryClient: current.queryClient,
         realm: current.realm,

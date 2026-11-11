@@ -123,6 +123,18 @@ describe( "useSuggestionsV2", ( ) => {
     expect( renderedStatuses[0] ).toBe( "loading" );
   } );
 
+  it( "keeps online suggestions when saving taxa to realm fails", async ( ) => {
+    // a literal because factoria merges array overrides into the default
+    // ancestor_ids; Taxon.forUpdate rejects a species without ancestors
+    const taxonWithoutAncestors = {
+      id: 747, name: "Silphium integrifolium", rank_level: 10, ancestor_ids: [],
+    };
+    scoreImage.mockResolvedValue( onlineResponse( taxonWithoutAncestors ) );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( topSuggestionId( result ) ).toBe( 747 );
+  } );
+
   it( "uses online suggestions and skips the offline model", async ( ) => {
     const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
     await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
@@ -131,6 +143,8 @@ describe( "useSuggestionsV2", ( ) => {
     expect( result.current.usingOfflineSuggestions ).toBe( false );
     expect( topSuggestionId( result ) ).toBe( 745 );
     expect( predictImage ).not.toHaveBeenCalled( );
+    const savedTaxon = global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", 745 );
+    expect( savedTaxon?.name ).toBe( "Silphium perfoliatum" );
   } );
 
   it( "sends the location with the online request", async ( ) => {
