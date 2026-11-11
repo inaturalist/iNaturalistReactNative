@@ -2,6 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
+import useAfterSignIn from "components/Onboarding/useAfterSignIn";
 import {
   Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
   WarningSheet,
@@ -20,7 +21,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import Error from "./Error";
@@ -63,6 +66,8 @@ const LoginForm = ( {
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
   const [showModal, setShowModal] = useState( false );
+  const onboardingV2Enabled = useFeatureFlag( FeatureFlag.OnboardingV2Enabled );
+  const afterSignIn = useAfterSignIn( );
 
   const onSignOut = async () => {
     await signOut( { realm, clearRealm: true } );
@@ -130,26 +135,40 @@ const LoginForm = ( {
       // Set a state to zustand that we just logged in while in default mode
       setLoggedInWhileInDefaultMode( isDefaultMode );
     }
-    if ( params?.prevScreen && params?.projectId ) {
-      navigation.navigate( "TabNavigator", {
-        screen: "ObservationsTab",
-        params: {
-          screen: "ProjectDetails",
+    afterSignIn( navigation, ( ) => {
+      if ( params?.prevScreen && params?.projectId ) {
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsTab",
           params: {
-            id: params.projectId,
+            screen: "ProjectDetails",
+            params: {
+              id: params.projectId,
+            },
           },
-        },
-      } );
-    } else {
-      navigation.getParent( )?.goBack( );
-    }
+        } );
+      } else {
+        navigation.getParent( )?.goBack( );
+      }
+    } );
   }, [
+    afterSignIn,
     navigation,
     params,
     isDefaultMode,
     setIsDefaultMode,
     setLoggedInWhileInDefaultMode,
   ] );
+
+  const openSignUp = ( ) => {
+    if ( !onboardingV2Enabled ) {
+      navigation.navigate( "SignUp" );
+    } else if ( params?.fromSignUp ) {
+      // Login was opened from the sign-up email step, so return to it
+      navigation.getParent( )?.goBack( );
+    } else {
+      navigation.navigate( "signup_email" );
+    }
+  };
 
   const scrollToItem = useCallback( ( ) => {
     firstInputFieldRef.current.measureLayout(
@@ -221,7 +240,7 @@ const LoginForm = ( {
           !keyboardShown && "mb-[35px]",
         )}
         i18nKey="Dont-have-an-account"
-        onPress={( ) => navigation.navigate( "SignUp" )}
+        onPress={openSignUp}
         components={[
           <Body1
             key="0"

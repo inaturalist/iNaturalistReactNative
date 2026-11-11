@@ -461,10 +461,16 @@ export type LoginStackParamList = {
   // { emailConfirmed: true }
   Login: {
     emailConfirmed?: boolean;
+    // Opened from the onboarding sign-up email step, so signing up goes back
+    // to it instead of starting a second sign-up
+    fromSignUp?: boolean;
     prevScreen?: string;
     projectId?: number;
   } | undefined;
   SignUp: undefined;
+  // The onboarding sign-up steps, while FeatureFlag.OnboardingV2Enabled is on
+  signup_email: undefined;
+  signup_credentials: undefined;
   ForgotPassword: undefined;
   LearnMore: undefined;
   SignUpConfirmation: {
