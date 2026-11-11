@@ -958,6 +958,8 @@ Observation-location-obscured-you-can-see-your-own = This observation’s locati
 # Displayed when user views an obscured location of someone else's observation
 # when they have permission to view the coordinates
 Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
+# Subtitle on Add to Projects membership rule row (on_list?)
+Observation-must-exactly-match = Observation must exactly match one of the taxa on the project's list. Please check the project page on the iNaturalist website for details.
 # Label for a menu that shows various actions you can take for an observation
 Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
@@ -1458,6 +1460,17 @@ This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = Th
 This-observation-is-casual = This observation is casual.
 # Title on observation details for an observation with Research Grade quality grade
 This-observation-is-Research-Grade = This observation is Research Grade
+# Subtitles on Add to Projects membership rule rows
+This-observation-must-be-in-a-specific-location = This observation must be in a specific location specified by the project. Please check the project page for details.
+This-observation-must-be-marked-captive-cultivated = This observation must be marked captive/cultivated.
+This-observation-must-be-marked-wild = This observation must be marked wild.
+This-observation-must-be-marked-wild-have-photo = This observation must be marked wild, have photo or sound evidence, have a date, and have a location.
+This-observation-must-have-a-location = This observation must have a location.
+This-observation-must-have-an-identification = This observation must have an identification.
+This-observation-must-have-an-identification-in-the-following-taxon = This observation must have an identification in the following taxon:
+This-observation-must-have-photo-evidence = This observation must have photo evidence.
+This-observation-must-have-photo-or-sound-evidence = This observation must have photo or sound evidence.
+This-observation-must-have-sound-evidence = This observation must have sound evidence.
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
 # Title on observation details for an observation with needs ID quality grade
 This-observation-needs-more-identifications--status-title = This observation needs more identifications
@@ -1797,6 +1810,8 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x 
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
+# Subtitle on Add to Projects membership rule row (coordinates_shareable_by_project_curators?)
+Your-project-membership-settings-must-allow = Your project membership settings must allow project curators to access the true locations of your project observations. You change location permissions on the project's page.
 # Title for modal shown after account creation
 Youre-ready-to-share-your-observations = You’re ready to share your observations!
 # Text prompting the user to open Settings to grant permission after

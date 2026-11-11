@@ -39,39 +39,21 @@ describe( "ProjectObservationRule", ( ) => {
       expect( roundTrip( mockRule ) ).toEqual( mockRule );
     } );
 
-    it( "rebuilds place, user, and project operands", ( ) => {
+    it( "rebuilds the place operand from operator", ( ) => {
       const placeRule = {
         id: 1,
         operand_id: 10,
-        operand_type: "Place",
         operator: "observed_in_place?",
         place: { display_name: "Some Place", id: 10 },
       };
-      const userRule = {
-        id: 2,
-        operand_id: 20,
-        operand_type: "User",
-        operator: "not_observed_by_user?",
-        user: { id: 20, login: "someuser" },
-      };
-      const projectRule = {
-        id: 3,
-        operand_id: 30,
-        operand_type: "Project",
-        operator: "in_project?",
-        project: { id: 30, title: "Some Project" },
-      };
 
       expect( roundTrip( placeRule ) ).toEqual( placeRule );
-      expect( roundTrip( userRule ) ).toEqual( userRule );
-      expect( roundTrip( projectRule ) ).toEqual( projectRule );
     } );
 
     it( "returns operand-less rules without operand objects", ( ) => {
       const rule = {
         id: 4,
         operand_id: null,
-        operand_type: null,
         operator: "verifiable?",
       };
 
