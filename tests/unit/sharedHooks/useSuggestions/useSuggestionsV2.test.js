@@ -1,14 +1,20 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 import scoreImage from "api/computerVision";
 import React from "react";
 import { reactQueryRetry } from "sharedHelpers/logging";
+import { predictImage } from "sharedHelpers/mlModel";
 import useSuggestionsV2 from "sharedHooks/useSuggestions/useSuggestionsV2";
 import factory from "tests/factory";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 jest.mock( "api/computerVision", ( ) => ( {
   __esModule: true,
   default: jest.fn( ),
+} ) );
+jest.mock( "sharedHelpers/mlModel", ( ) => ( {
+  predictImage: jest.fn( ),
 } ) );
 jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
   getJWT: jest.fn( ( ) => Promise.resolve( "jwt" ) ),
@@ -22,7 +28,29 @@ jest.mock( "sharedHelpers/logging", ( ) => ( {
   reactQueryRetry: jest.fn( ( ) => false ),
 } ) );
 
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier,
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+    },
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
+
 const localPhotoUri = "file:///tmp/photo.jpg";
+const remotePhotoUri = "https://static.inaturalist.org/photos/1/medium.jpg";
 const location = { latitude: 41.88, longitude: -87.63 };
 
 const cupPlant = factory( "RemoteTaxon", {
@@ -33,6 +61,20 @@ const compassPlant = factory( "RemoteTaxon", {
 } );
 const onlineResponse = taxon => ( {
   results: [{ score: 95, combined_score: 95, taxon }],
+} );
+const offlinePrediction = factory( "ModelPrediction", {
+  taxon_id: 750,
+  name: "Opuntia humifusa",
+  rank_level: 10,
+  combined_score: 95,
+  ancestor_ids: [],
+} );
+const otherOfflinePrediction = factory( "ModelPrediction", {
+  taxon_id: 752,
+  name: "Opuntia engelmannii",
+  rank_level: 10,
+  combined_score: 95,
+  ancestor_ids: [],
 } );
 
 const deferred = ( ) => {
@@ -65,7 +107,9 @@ const topSuggestionId = result => result.current.suggestions.topSuggestion?.taxo
 beforeEach( ( ) => {
   jest.clearAllMocks( );
   reactQueryRetry.mockImplementation( ( ) => false );
+  useNetInfo.mockReturnValue( { isConnected: true } );
   scoreImage.mockResolvedValue( onlineResponse( cupPlant ) );
+  predictImage.mockResolvedValue( { predictions: [offlinePrediction] } );
 } );
 
 describe( "useSuggestionsV2", ( ) => {
@@ -76,11 +120,14 @@ describe( "useSuggestionsV2", ( ) => {
     expect( renderedStatuses[0] ).toBe( "loading" );
   } );
 
-  it( "uses online suggestions", async ( ) => {
+  it( "uses online suggestions and skips the offline model", async ( ) => {
     const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
     await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( result.current.offlineStatus ).toBe( "skipped" );
     expect( result.current.isLoading ).toBe( false );
+    expect( result.current.usingOfflineSuggestions ).toBe( false );
     expect( topSuggestionId( result ) ).toBe( 745 );
+    expect( predictImage ).not.toHaveBeenCalled( );
   } );
 
   it( "sends the location with the online request", async ( ) => {
@@ -92,12 +139,48 @@ describe( "useSuggestionsV2", ( ) => {
     );
   } );
 
-  it( "reports an online error", async ( ) => {
+  it( "falls back to the offline model when the online request fails", async ( ) => {
     scoreImage.mockRejectedValue( new Error( "server error" ) );
     const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
-    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "error" ) );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( result.current.onlineStatus ).toBe( "error" );
     expect( result.current.onlineError?.message ).toBe( "server error" );
+    expect( result.current.usingOfflineSuggestions ).toBe( true );
+    expect( topSuggestionId( result ) ).toBe( 750 );
+  } );
+
+  it( "goes straight to the offline model when the device is offline", async ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( result.current.onlineStatus ).toBe( "offline" );
+    expect( scoreImage ).not.toHaveBeenCalled( );
+  } );
+
+  it( "skips the offline model for a remote photo while offline", async ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    const { result } = renderSuggestionsHook( { photoUri: remotePhotoUri } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "skipped" ) );
     expect( result.current.isLoading ).toBe( false );
+    expect( result.current.urlWillCrashOffline ).toBe( true );
+    expect( predictImage ).not.toHaveBeenCalled( );
+  } );
+
+  it( "reports an offline model failure instead of throwing", async ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    predictImage.mockRejectedValue( new Error( "model missing" ) );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "error" ) );
+    expect( result.current.offlineError?.message ).toBe( "model missing" );
+    expect( result.current.isLoading ).toBe( false );
+  } );
+
+  it( "finishes with no suggestions when the offline model returns nothing", async ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    predictImage.mockResolvedValue( null );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( result.current.suggestions.topSuggestion ).toBeUndefined( );
   } );
 
   it( "starts over when the location changes and ignores the earlier response", async ( ) => {
@@ -118,5 +201,22 @@ describe( "useSuggestionsV2", ( ) => {
     await act( async ( ) => firstRequest.resolve( onlineResponse( cupPlant ) ) );
     expect( topSuggestionId( result ) ).toBe( 746 );
     expect( renderedStatuses ).not.toContain( "idle" );
+  } );
+
+  it( "ignores an offline result from earlier inputs", async ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    const firstPrediction = deferred( );
+    predictImage
+      .mockReturnValueOnce( firstPrediction.promise )
+      .mockResolvedValueOnce( { predictions: [otherOfflinePrediction] } );
+    const { result, rerender } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( predictImage ).toHaveBeenCalledTimes( 1 ) );
+
+    rerender( { photoUri: localPhotoUri, location } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( topSuggestionId( result ) ).toBe( 752 );
+
+    await act( async ( ) => firstPrediction.resolve( { predictions: [offlinePrediction] } ) );
+    expect( topSuggestionId( result ) ).toBe( 752 );
   } );
 } );
