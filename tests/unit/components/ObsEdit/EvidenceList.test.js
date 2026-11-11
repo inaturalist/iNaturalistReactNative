@@ -102,6 +102,9 @@ describe( "EvidenceList", ( ) => {
 
     it( "should point the observation photo at a new rotated file", async ( ) => {
       setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: true } );
+      const rotatedImage = { saveToFileAsync: jest.fn( ) };
+      const originalImage = { rotateAsync: jest.fn( async ( ) => rotatedImage ) };
+      Images.loadFromFileAsync.mockResolvedValueOnce( originalImage );
       const actor = userEvent.setup( );
       await openLocalPhoto( actor );
 
@@ -113,6 +116,8 @@ describe( "EvidenceList", ( ) => {
       } );
       const { photo } = useStore.getState( ).currentObservation.observationPhotos[0];
       expect( photo.localFilePath ).toMatch( new RegExp( `^${photoUploadPath}/.+\\.jpg$` ) );
+      // A quarter turn counterclockwise, in the clockwise degrees nitro-image takes
+      expect( originalImage.rotateAsync ).toHaveBeenCalledWith( 270, false );
     } );
 
     // Opens the cropper on a 2048x1536 photo shown 400x300pt, and returns the
