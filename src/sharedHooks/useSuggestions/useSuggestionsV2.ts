@@ -7,7 +7,7 @@ import flattenUploadParams from "components/Suggestions/helpers/flattenUploadPar
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
-  useEffect, useMemo, useReducer, useRef,
+  useCallback, useEffect, useMemo, useReducer, useRef, useState,
 } from "react";
 import type Realm from "realm";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
@@ -115,6 +115,13 @@ const willCrashOffline = ( photoUri: string, isConnected: boolean | null ) => (
   photoUri.includes( "https://" ) && !isConnected
 );
 
+const onlineQueryKeyPrefix = ( photoUri: string, latitude?: number, longitude?: number ) => [
+  "scoreImageV2",
+  photoUri,
+  latitude ?? null,
+  longitude ?? null,
+];
+
 interface Run {
   cancelled: boolean;
   // ends the online attempt early, e.g. when the connection drops
@@ -128,6 +135,7 @@ interface RunParams {
   latitude?: number;
   longitude?: number;
   isConnected: () => boolean | null;
+  language: string;
   locale?: string;
   onlineTimeoutMs: number;
   queryClient: QueryClient;
@@ -141,9 +149,9 @@ type OnlineOutcome =
   | { status: "timed-out" | "offline" | "cancelled" };
 
 const fetchOnline = async ( {
-  run, photoUri, latitude, longitude, locale, onlineTimeoutMs, queryClient,
+  run, photoUri, latitude, longitude, language, locale, onlineTimeoutMs, queryClient,
 }: RunParams ): Promise<OnlineOutcome> => {
-  const queryKey = ["scoreImageV2", photoUri, latitude ?? null, longitude ?? null, locale ?? null];
+  const queryKey = [...onlineQueryKeyPrefix( photoUri, latitude, longitude ), language];
 
   const queryFn = async ( ) => {
     const { image } = await flattenUploadParams( photoUri );
@@ -164,6 +172,9 @@ const fetchOnline = async ( {
   const request = queryClient.fetchQuery( {
     queryKey,
     queryFn,
+    // a given photo and location always score the same, so reuse results
+    // until the query is garbage collected
+    staleTime: Infinity,
     retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, { queryKey } ),
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
   } );
@@ -270,29 +281,32 @@ const useSuggestionsV2 = ( {
   const currentUser = useCurrentUser( );
   const { isConnected } = useNetInfo( );
   const [state, dispatch] = useReducer( reducer, initialState );
+  const [attempt, setAttempt] = useState( 0 );
 
   const latitude = location?.latitude ?? undefined;
   const longitude = location?.longitude ?? undefined;
 
-  // logged-out users need a locale for common names
+  // Common names follow the app language. Signed-in users get it from their
+  // account, so only logged-out users send it
+  const language = i18n?.language ?? "en";
   const locale = currentUser
     ? undefined
-    : i18n?.language ?? "en";
+    : language;
 
   // values a run reads when it starts or as it goes, but that shouldn't
   // start a new run when they change
   const latest = useRef( {
-    isConnected, locale, onlineTimeoutMs, queryClient, realm,
+    isConnected, language, locale, onlineTimeoutMs, queryClient, realm,
   } );
   // declared before the run effect so it updates first in the same commit
   useEffect( ( ) => {
     latest.current = {
-      isConnected, locale, onlineTimeoutMs, queryClient, realm,
+      isConnected, language, locale, onlineTimeoutMs, queryClient, realm,
     };
   } );
 
   const inputKey = photoUri
-    ? JSON.stringify( [photoUri, latitude ?? null, longitude ?? null] )
+    ? JSON.stringify( [photoUri, latitude ?? null, longitude ?? null, attempt] )
     : null;
 
   const runRef = useRef<Run | null>( null );
@@ -309,6 +323,7 @@ const useSuggestionsV2 = ( {
         latitude,
         longitude,
         isConnected: ( ) => latest.current.isConnected,
+        language: current.language,
         locale: current.locale,
         onlineTimeoutMs: current.onlineTimeoutMs,
         queryClient: current.queryClient,
@@ -327,6 +342,14 @@ const useSuggestionsV2 = ( {
       runRef.current?.interruptOnline?.( "offline" );
     }
   }, [isConnected] );
+
+  const retry = useCallback( ( ) => {
+    if ( !photoUri ) return;
+    queryClient.removeQueries( {
+      queryKey: onlineQueryKeyPrefix( photoUri, latitude, longitude ),
+    } );
+    setAttempt( a => a + 1 );
+  }, [photoUri, latitude, longitude, queryClient] );
 
   // State from previous inputs is stale. Report a run that hasn't started
   // yet as loading so callers never see a "no suggestions" frame
@@ -363,6 +386,7 @@ const useSuggestionsV2 = ( {
       || offlineStatus === "fetched"
       || offlineStatus === "error",
     urlWillCrashOffline: !!photoUri && willCrashOffline( photoUri, isConnected ),
+    retry,
   };
 };
 

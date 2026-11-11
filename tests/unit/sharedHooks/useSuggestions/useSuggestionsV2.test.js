@@ -2,9 +2,11 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 import scoreImage from "api/computerVision";
+import i18n from "i18next";
 import React from "react";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { predictImage } from "sharedHelpers/mlModel";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useSuggestionsV2 from "sharedHooks/useSuggestions/useSuggestionsV2";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -86,10 +88,9 @@ const neverResolves = ( ) => new Promise( ( ) => {} );
 
 // renderedStatuses records every render, so tests can catch a single-frame
 // flash that result.current would miss
-const renderSuggestionsHook = initialProps => {
-  const queryClient = new QueryClient( {
-    defaultOptions: { queries: { retry: false, gcTime: Infinity } },
-  } );
+const renderSuggestionsHook = ( initialProps, queryClient = new QueryClient( {
+  defaultOptions: { queries: { retry: false, gcTime: Infinity } },
+} ) ) => {
   const wrapper = ( { children } ) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
@@ -99,7 +100,7 @@ const renderSuggestionsHook = initialProps => {
     renderedStatuses.push( hookResult.onlineStatus );
     return hookResult;
   }, { initialProps, wrapper } );
-  return { ...utils, renderedStatuses };
+  return { ...utils, renderedStatuses, queryClient };
 };
 
 const topSuggestionId = result => result.current.suggestions.topSuggestion?.taxon.id;
@@ -108,6 +109,7 @@ beforeEach( ( ) => {
   jest.clearAllMocks( );
   reactQueryRetry.mockImplementation( ( ) => false );
   useNetInfo.mockReturnValue( { isConnected: true } );
+  useCurrentUser.mockReturnValue( undefined );
   scoreImage.mockResolvedValue( onlineResponse( cupPlant ) );
   predictImage.mockResolvedValue( { predictions: [offlinePrediction] } );
 } );
@@ -237,5 +239,52 @@ describe( "useSuggestionsV2", ( ) => {
 
     await act( async ( ) => firstPrediction.resolve( { predictions: [offlinePrediction] } ) );
     expect( topSuggestionId( result ) ).toBe( 752 );
+  } );
+
+  it( "reuses the earlier response when inputs change back", async ( ) => {
+    scoreImage
+      .mockResolvedValueOnce( onlineResponse( cupPlant ) )
+      .mockResolvedValueOnce( onlineResponse( compassPlant ) );
+    const { result, rerender } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( topSuggestionId( result ) ).toBe( 745 ) );
+    rerender( { photoUri: localPhotoUri, location } );
+    await waitFor( ( ) => expect( topSuggestionId( result ) ).toBe( 746 ) );
+    rerender( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( topSuggestionId( result ) ).toBe( 745 ) );
+    expect( scoreImage ).toHaveBeenCalledTimes( 2 );
+  } );
+
+  it( "requests online suggestions again in a new app language", async ( ) => {
+    useCurrentUser.mockReturnValue( factory( "LocalUser" ) );
+    const {
+      result: firstResult, unmount, queryClient,
+    } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( firstResult.current.onlineStatus ).toBe( "fetched" ) );
+    unmount( );
+    const { language } = i18n;
+    await act( async ( ) => { await i18n.changeLanguage( "es" ); } );
+    try {
+      const { result } = renderSuggestionsHook( { photoUri: localPhotoUri }, queryClient );
+      await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    } finally {
+      await act( async ( ) => { await i18n.changeLanguage( language ); } );
+    }
+    expect( scoreImage ).toHaveBeenCalledTimes( 2 );
+    // signed-in users get names in their account's language
+    expect( scoreImage ).toHaveBeenLastCalledWith(
+      expect.not.objectContaining( { locale: expect.anything( ) } ),
+      { api_token: "jwt" },
+    );
+  } );
+
+  it( "requests online suggestions again on retry", async ( ) => {
+    scoreImage.mockRejectedValueOnce( new Error( "server error" ) );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    act( ( ) => result.current.retry( ) );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( result.current.usingOfflineSuggestions ).toBe( false );
+    expect( topSuggestionId( result ) ).toBe( 745 );
+    expect( scoreImage ).toHaveBeenCalledTimes( 2 );
   } );
 } );
