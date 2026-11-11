@@ -94,20 +94,19 @@ const MainMediaDisplay = ( {
           selectedMediaIndex={selectedMediaIndex}
         />
         {canEditPhoto && (
-          <View className="absolute bottom-4 left-4 flex-row">
-            {onCropPhoto && (
-              <TransparentCircleButton
-                onPress={( ) => onCropPhoto( localFilePath )}
-                icon="crop"
-                accessibilityLabel="Crop photo"
-                optionalClasses="mr-3"
-              />
-            )}
+          <View className="absolute bottom-4 left-4 gap-[15px]">
             {onRotatePhoto && (
               <TransparentCircleButton
                 onPress={( ) => onRotatePhoto( localFilePath )}
                 icon="rotate-photo"
                 accessibilityLabel="Rotate photo"
+              />
+            )}
+            {onCropPhoto && (
+              <TransparentCircleButton
+                onPress={( ) => onCropPhoto( localFilePath )}
+                icon="crop"
+                accessibilityLabel="Crop photo"
               />
             )}
           </View>
