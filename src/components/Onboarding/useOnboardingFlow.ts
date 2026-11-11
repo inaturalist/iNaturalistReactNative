@@ -1,40 +1,32 @@
-import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { OnboardingStackParamList } from "navigation/types";
-import { useOnboardingShown } from "sharedHelpers/installData";
 
+import { useOnboardingFlowHost } from "./OnboardingFlowContext";
 import type { OnboardingStepId } from "./onboardingSteps";
 import { getNextStepId, isOnboardingStepId } from "./onboardingSteps";
 
+// Steps run in more than one navigator, so a step can only assume its siblings
+// are routes named by step id; host.steps limits which ones it reaches
+type OnboardingStepNavigation = NativeStackNavigationProp<{
+  [StepId in OnboardingStepId]: undefined;
+}>;
+
 const useOnboardingFlow = ( ) => {
-  const navigation = useNavigation<NativeStackNavigationProp<OnboardingStackParamList>>( );
+  const navigation = useNavigation<OnboardingStepNavigation>( );
   const { name } = useRoute( );
-  const [, setOnboardingShown] = useOnboardingShown( );
+  const host = useOnboardingFlowHost( );
 
   if ( !isOnboardingStepId( name ) ) {
     throw new Error( `useOnboardingFlow used outside an onboarding step: ${name}` );
   }
   const stepId: OnboardingStepId = name;
 
-  const finishOnboarding = ( ) => {
-    // Name the destination explicitly rather than relying on
-    // RootStackNavigator falling back to its first registered screen once
-    // onboardingShown unregisters the onboarding stack
-    navigation.getParent( )?.dispatch(
-      CommonActions.reset( {
-        index: 0,
-        routes: [{ name: "TabNavigator" }],
-      } ),
-    );
-    setOnboardingShown( true );
-  };
-
   const proceedToNext = ( ) => {
-    const nextStepId = getNextStepId( stepId );
+    const nextStepId = getNextStepId( host.steps, stepId );
     if ( nextStepId ) {
       navigation.navigate( nextStepId );
     } else {
-      finishOnboarding( );
+      host.onFinish( );
     }
   };
 

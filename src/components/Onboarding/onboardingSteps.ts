@@ -39,7 +39,11 @@ export const ONBOARDING_STEPS = [
 export type OnboardingStep = typeof ONBOARDING_STEPS[number];
 export type OnboardingStepId = OnboardingStep["id"];
 
-const ONBOARDING_STEP_IDS: readonly string[] = ONBOARDING_STEPS.map( step => step.id );
+export const FIRST_RUN_STEP_IDS: readonly OnboardingStepId[] = ONBOARDING_STEPS.map(
+  step => step.id,
+);
+
+const ONBOARDING_STEP_IDS: readonly string[] = FIRST_RUN_STEP_IDS;
 
 export const isOnboardingStepId = ( name: string ): name is OnboardingStepId => (
   ONBOARDING_STEP_IDS.includes( name )
@@ -49,11 +53,19 @@ const stepIndex = ( id: OnboardingStepId ) => (
   ONBOARDING_STEPS.findIndex( step => step.id === id )
 );
 
-export const getNextStepId = ( id: OnboardingStepId ): OnboardingStepId | null => (
-  ONBOARDING_STEPS[stepIndex( id ) + 1]?.id ?? null
-);
+// The step after this one in the hosting flow's order, or null on its last step
+export const getNextStepId = (
+  steps: readonly OnboardingStepId[],
+  id: OnboardingStepId,
+): OnboardingStepId | null => {
+  const index = steps.indexOf( id );
+  if ( index === -1 ) {
+    throw new Error( `Onboarding step ${id} isn't part of this flow` );
+  }
+  return steps[index + 1] ?? null;
+};
 
-// Fraction of the flow completed on arriving at this step
+// Fraction of the first-run flow completed on arriving at this step
 export const getStepProgress = ( id: OnboardingStepId ): number | null => {
   const index = stepIndex( id );
   if ( !ONBOARDING_STEPS[index].showsProgress ) return null;

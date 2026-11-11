@@ -260,7 +260,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   it(
-    "goes back one step at a time by swipe or back button, from impact to the observation story",
+    "goes back one step at a time by swipe or back button, from impact to welcome",
     async ( ) => {
       const { navigationContainer } = renderAppWithNavigationContainer( );
       const impactIndex = STEP_IDS.indexOf( "impact" );
@@ -271,8 +271,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       }
       expect( await screen.findByTestId( "Onboarding.impact" ) ).toBeVisible( );
 
-      const obsStoryIndex = STEP_IDS.indexOf( "obs_story" );
-      for ( let i = impactIndex; i > obsStoryIndex; i -= 1 ) {
+      for ( let i = impactIndex; i > 0; i -= 1 ) {
         expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).not.toBe( false );
         // Stands in for the back gesture and Android back button, which both
         // pop the step stack and can't be performed in jest
