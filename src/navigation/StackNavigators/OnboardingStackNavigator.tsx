@@ -4,6 +4,7 @@ import SignUpEmailStep from "components/LoginSignUp/SignUpEmailStep";
 import OnboardingCarousel from "components/Onboarding/OnboardingCarousel";
 import type { OnboardingFlowHost } from "components/Onboarding/OnboardingFlowContext";
 import { OnboardingFlowProvider } from "components/Onboarding/OnboardingFlowContext";
+import { showLocationStep } from "components/Onboarding/onboardingNavigation";
 import type { OnboardingStepId } from "components/Onboarding/onboardingSteps";
 import { FIRST_RUN_STEP_IDS, ONBOARDING_STEPS } from "components/Onboarding/onboardingSteps";
 import CommunityIdStep from "components/Onboarding/steps/CommunityIdStep";
@@ -48,6 +49,13 @@ const OnboardingStackNavigator = ( { navigation }: RootStackScreenProps ) => {
         routes: [{ name: "TabNavigator" }],
       } );
       setOnboardingShown( true );
+    },
+    onExit: sheet => {
+      if ( sheet === "demo" ) {
+        navigation.navigate( "OnboardingStackNavigator", { screen: "signup_email" } );
+      } else {
+        showLocationStep( navigation );
+      }
     },
   } ), [navigation, setOnboardingShown] );
 

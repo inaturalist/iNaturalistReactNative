@@ -3,7 +3,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { useOnboardingFlowHost } from "./OnboardingFlowContext";
 import type { OnboardingStepId } from "./onboardingSteps";
-import { getNextStepId, isOnboardingStepId } from "./onboardingSteps";
+import { getExitSheet, getNextStepId, isOnboardingStepId } from "./onboardingSteps";
 
 // Steps run in more than one navigator, so a step can only assume its siblings
 // are routes named by step id; host.steps limits which ones it reaches
@@ -31,6 +31,8 @@ const useOnboardingFlow = ( ) => {
   };
 
   return {
+    exit: host.onExit,
+    exitSheet: getExitSheet( stepId ),
     proceedToNext,
     stepId,
   };

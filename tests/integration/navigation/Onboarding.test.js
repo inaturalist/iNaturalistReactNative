@@ -105,16 +105,16 @@ describe( "Onboarding", ( ) => {
 } );
 
 describe( "Onboarding with OnboardingV2Enabled", ( ) => {
-  // [step, shows progress bar]
+  // [step, shows progress bar, has a close button]
   const STEPS_IN_ORDER = [
-    ["welcome", false],
-    ["obs_story", true],
-    ["community_id", true],
-    ["research_grade", true],
-    ["impact", true],
-    ["signup_email", false],
-    ["signup_credentials", false],
-    ["location_explainer", true],
+    ["welcome", false, false],
+    ["obs_story", true, true],
+    ["community_id", true, true],
+    ["research_grade", true, true],
+    ["impact", true, true],
+    ["signup_email", false, true],
+    ["signup_credentials", false, true],
+    ["location_explainer", true, false],
   ];
   const STEP_IDS = STEPS_IN_ORDER.map( ( [stepId] ) => stepId );
 
@@ -123,12 +123,26 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.next` ) );
   };
 
-  const continueToLocationStep = async ( ) => {
+  const continueTo = async targetStepId => {
     // eslint-disable-next-line no-restricted-syntax
-    for ( const stepId of STEP_IDS.slice( 0, STEP_IDS.indexOf( "location_explainer" ) ) ) {
+    for ( const stepId of STEP_IDS.slice( 0, STEP_IDS.indexOf( targetStepId ) ) ) {
       // eslint-disable-next-line no-await-in-loop
       await continueFrom( stepId );
     }
+    return screen.findByTestId( `Onboarding.${targetStepId}` );
+  };
+
+  const continueToLocationStep = ( ) => continueTo( "location_explainer" );
+
+  const openExitSheet = async stepId => {
+    const step = await screen.findByTestId( `Onboarding.${stepId}` );
+    await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.close` ) );
+    return screen.findByTestId( `Onboarding.${stepId}.exitSheet` );
+  };
+
+  const confirmExit = async ( stepId, confirmText ) => {
+    const sheet = await openExitSheet( stepId );
+    await actor.press( within( sheet ).getByText( i18next.t( confirmText ) ) );
   };
 
   const findMyObservations = ( ) => screen.findByText(
@@ -207,18 +221,23 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   it(
-    "visits each step in order (progress on education and location steps), asks for location, "
-    + "then shows my observations",
+    "visits each step in order (progress on education and location steps, close on demo and "
+    + "sign-up steps), asks for location, then shows my observations",
     async ( ) => {
       renderApp( );
       // eslint-disable-next-line no-restricted-syntax
-      for ( const [stepId, showsProgress] of STEPS_IN_ORDER ) {
+      for ( const [stepId, showsProgress, hasClose] of STEPS_IN_ORDER ) {
         // eslint-disable-next-line no-await-in-loop
         const step = await screen.findByTestId( `Onboarding.${stepId}` );
         if ( showsProgress ) {
           expect( within( step ).getByTestId( "Onboarding.progress" ) ).toBeVisible( );
         } else {
           expect( within( step ).queryByTestId( "Onboarding.progress" ) ).toBeNull( );
+        }
+        if ( hasClose ) {
+          expect( within( step ).getByTestId( `Onboarding.${stepId}.close` ) ).toBeVisible( );
+        } else {
+          expect( within( step ).queryByTestId( `Onboarding.${stepId}.close` ) ).toBeNull( );
         }
         // eslint-disable-next-line no-await-in-loop
         await continueFrom( stepId );
@@ -281,4 +300,55 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       }
     },
   );
+
+  describe( "exit sheets", ( ) => {
+    it( "asks before exiting the demo, and cancelling stays on the step", async ( ) => {
+      renderApp( );
+      await continueTo( "community_id" );
+      const sheet = await openExitSheet( "community_id" );
+      expect(
+        within( sheet ).getByText( i18next.t( "You-can-always-revisit-this-later-in-settings" ) ),
+      ).toBeVisible( );
+      await actor.press( within( sheet ).getByText( i18next.t( "CANCEL" ) ) );
+      expect( screen.queryByTestId( "Onboarding.community_id.exitSheet" ) ).toBeNull( );
+      expect( screen.getByTestId( "Onboarding.community_id" ) ).toBeVisible( );
+    } );
+
+    it( "closes the exit sheet when the Android back button is pressed", async ( ) => {
+      const pressHardwareBack = mockHardwareBack( );
+      renderApp( );
+      await continueTo( "community_id" );
+      await openExitSheet( "community_id" );
+      expect( pressHardwareBack( ) ).toBe( true );
+      expect( screen.queryByTestId( "Onboarding.community_id.exitSheet" ) ).toBeNull( );
+      expect( screen.getByTestId( "Onboarding.community_id" ) ).toBeVisible( );
+    } );
+
+    it( "exits the demo to sign-up, and going back resumes the demo", async ( ) => {
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await continueTo( "community_id" );
+      await confirmExit( "community_id", "YES-EXIT" );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      act( ( ) => navigationContainer.current.goBack( ) );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+      expect( screen.getByTestId( "Onboarding.community_id" ) ).toBeVisible( );
+    } );
+
+    it(
+      "exits sign-up to the location step, then shows my observations",
+      async ( ) => {
+        renderApp( );
+        await continueTo( "signup_email" );
+        const sheet = await openExitSheet( "signup_email" );
+        expect( within( sheet ).getByText( i18next.t(
+          "You-can-only-get-identifications-from-other-people-by-creating-an-account",
+        ) ) ).toBeVisible( );
+        await actor.press( within( sheet ).getByText( i18next.t( "EXIT" ) ) );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        await continueFrom( "location_explainer" );
+        expect( await findMyObservations( ) ).toBeVisible( );
+        expect( mockOnboarding.shown ).toBe( true );
+      },
+    );
+  } );
 } );
