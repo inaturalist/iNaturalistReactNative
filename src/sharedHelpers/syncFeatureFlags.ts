@@ -1,10 +1,53 @@
 import fetchFeatureFlags from "api/featureFlags";
 import { log } from "sharedHelpers/logger";
+import type { FeatureFlagSource } from "sharedHooks/useFeatureFlag";
+import { resolveFeatureFlag } from "sharedHooks/useFeatureFlag";
+import { FeatureFlag, hardcodedFeatureFlagDefaults } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "syncFeatureFlags" );
 
 let latestRequestId = 0;
+
+// logs flag values and their source when loaded, e.g.
+// {
+//   explore_v2: true,
+//   traditional_projects: false,
+//   my_observations_small_grid_view: false,
+//   onboarding_v2: false,
+//   fromOverrides: "traditional_projects,explore_v2",
+//   fromApi: "",
+//   signedIn: true
+// }
+const loadedFlagsLogExtra = ( signedIn: boolean ) => {
+  const { featureFlagApiValues, featureFlagDebugOverrides } = useStore.getState( );
+  const values: Partial<Record<FeatureFlag, boolean>> = {};
+  const flagsBySource: Record<FeatureFlagSource, FeatureFlag[]> = {
+    override: [],
+    api: [],
+    // adminTestFlight needs Realm & User which is not worth
+    // pulling in here since it'll be removed soon.
+    // added here to satisfy FeatureFlagSource type
+    adminTestFlight: [],
+    hardcoded: [],
+  };
+  Object.values( FeatureFlag ).forEach( featureFlag => {
+    const { enabled, source } = resolveFeatureFlag( {
+      override: featureFlagDebugOverrides[featureFlag],
+      apiValue: featureFlagApiValues[featureFlag],
+      adminTestFlight: false,
+      hardcoded: hardcodedFeatureFlagDefaults[featureFlag],
+    } );
+    values[featureFlag] = enabled;
+    flagsBySource[source].push( featureFlag );
+  } );
+  return {
+    ...values,
+    fromOverrides: flagsBySource.override.join( "," ),
+    fromApi: flagsBySource.api.join( "," ),
+    signedIn,
+  };
+};
 
 // Fetches Flipper-backed flags into the store. Signed out (no token), the API only returns flags
 // that are fully enabled; on failure the store's API values are cleared so hard-coded defaults
@@ -25,10 +68,18 @@ const syncFeatureFlags = async ( apiToken: string | null ) => {
     // a newer sync (e.g. after login) started while this one was in flight
     if ( requestId !== latestRequestId ) return;
     setFeatureFlagApiValues( values, signedIn );
+    logger.infoWithExtra(
+      "Feature flags loaded from API",
+      loadedFlagsLogExtra( signedIn ),
+    );
   } catch ( error ) {
     if ( requestId !== latestRequestId ) return;
-    logger.warn( "Failed to fetch feature flags, using hard-coded defaults", error );
     setFeatureFlagApiError( signedIn );
+    logger.warnWithExtra(
+      "Failed to fetch feature flags, using hard-coded defaults",
+      error,
+      loadedFlagsLogExtra( signedIn ),
+    );
   }
 };
 
