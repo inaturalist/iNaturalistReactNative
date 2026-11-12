@@ -8,6 +8,7 @@ import {
   screen,
   userEvent,
   waitFor,
+  within,
 } from "@testing-library/react-native";
 import { photoUploadPath } from "appConstants/paths";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
@@ -373,6 +374,82 @@ describe( "cropping a photo with no suggestions", ( ) => {
 
     expect( await screen.findByText( /no ID suggestions/ ) ).toBeVisible( );
     expect( screen.queryByText( "CROP IMAGE" ) ).toBeNull( );
+  } );
+} );
+
+describe( "editing the selected photo in the media viewer", ( ) => {
+  const localFilePath = `${photoUploadPath}/local.jpg`;
+  const localPhotoUri = `file://${localFilePath}`;
+  const makeMockObservationsWithLocalPhoto = ( ) => ( [
+    factory( "RemoteObservation", {
+      _synced_at: null,
+      needsSync: jest.fn( ( ) => true ),
+      wasSynced: jest.fn( ( ) => false ),
+      observationPhotos: [factory( "LocalObservationPhoto", {
+        photo: factory( "LocalPhoto", { url: undefined, localFilePath } ),
+      } )],
+      user: mockUser,
+      observed_on_string: "2020-01-01",
+    } ),
+  ] );
+
+  const openMediaViewer = async ( ) => {
+    const { observations } = await setupAppWithSignedInUser(
+      false,
+      makeMockObservationsWithLocalPhoto( ),
+    );
+    await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
+    await waitFor( ( ) => {
+      expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
+    } );
+    // Pressing the selected photo opens it in the media viewer
+    await actor.press( await screen.findByTestId( `ObsPhotoSelectionList.${localPhotoUri}` ) );
+  };
+
+  const closeMediaViewer = async ( ) => {
+    // The back button and its icon both carry the label
+    const mediaViewer = screen.getByTestId( "MediaViewer" );
+    const [backButton] = within( mediaViewer ).getAllByLabelText( "Go back" );
+    await actor.press( backButton );
+  };
+
+  beforeEach( async ( ) => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+    setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: true } );
+    inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+  } );
+
+  afterEach( ( ) => {
+    signOut( { realm: global.mockRealms[__filename] } );
+    setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: false } );
+    inatjs.computervision.score_image.mockReset( );
+  } );
+
+  it( "should fetch new suggestions for the edited photo when the viewer closes", async ( ) => {
+    await openMediaViewer( );
+
+    await actor.press( await screen.findByLabelText( "Rotate photo" ) );
+    await waitFor( ( ) => {
+      const { photo } = useStore.getState( ).currentObservation.observationPhotos[0];
+      expect( photo.localFilePath ).not.toEqual( localFilePath );
+    } );
+    await closeMediaViewer( );
+
+    await waitFor( ( ) => {
+      expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 2 );
+    } );
+  } );
+
+  it( "should not fetch new suggestions when the viewer closes without edits", async ( ) => {
+    await openMediaViewer( );
+
+    await screen.findByLabelText( "Rotate photo" );
+    await closeMediaViewer( );
+
+    await waitFor( ( ) => {
+      expect( screen.queryByLabelText( "Rotate photo" ) ).toBeNull( );
+    } );
+    expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
   } );
 } );
 
