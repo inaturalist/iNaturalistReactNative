@@ -1,31 +1,31 @@
-// @flow
+import type { FlashListProps } from "@shopify/flash-list";
 import {
   ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
-import type { Node } from "react";
 import React, { useCallback } from "react";
+import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  canFetch?: boolean,
-  contentContainerStyle?: Object,
-  data: Object[],
-  fetchNextPage: boolean,
-  hideLoadingWheel: boolean,
-  isFetchingNextPage: boolean,
-  isConnected: boolean,
-  keyExtractor?: Function,
-  layout?: string,
-  numColumns?: number,
-  renderItem?: Function,
-  renderItemSeparator?: Function,
-  testID?: string,
-  totalResults: number
-};
+interface Props<T> {
+  canFetch?: boolean;
+  contentContainerStyle?: ViewStyle;
+  data: T[];
+  fetchNextPage: ( ) => void;
+  hideLoadingWheel: boolean;
+  isFetchingNextPage: boolean;
+  isConnected: boolean | null;
+  keyExtractor?: FlashListProps<T>["keyExtractor"];
+  layout?: "grid" | "user";
+  numColumns?: number;
+  renderItem?: FlashListProps<T>["renderItem"];
+  renderItemSeparator?: FlashListProps<T>["ItemSeparatorComponent"];
+  testID?: string;
+  totalResults: number;
+}
 
-const ExploreFlashList = ( {
+const ExploreFlashList = <T extends object, >( {
   canFetch,
   contentContainerStyle,
   data,
@@ -40,7 +40,7 @@ const ExploreFlashList = ( {
   renderItemSeparator,
   testID,
   totalResults,
-}: Props ): Node => {
+}: Props<T> ) => {
   const { t } = useTranslation( );
 
   const renderFooter = useCallback( ( ) => (
@@ -73,8 +73,8 @@ const ExploreFlashList = ( {
   return layout === "user"
     ? (
       <UserList
-        ListEmptyComponent={renderEmptyComponent}
-        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmptyComponent( )}
+        ListFooterComponent={renderFooter( )}
         contentContainerStyle={contentContainerStyle}
         users={data}
         onEndReached={fetchNextPage}
