@@ -5,21 +5,8 @@ import {
   within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
 
 const actor = userEvent.setup( );
-
-/** Turns on ExploreV2. Search state needs no clearing here: jest.post-setup resets every
- * store after each test. */
-export const enableExploreV2 = ( ) => act( ( ) => {
-  useStore.setState( state => ( {
-    featureFlagDebugOverrides: {
-      ...state.featureFlagDebugOverrides,
-      [FeatureFlag.ExploreV2Enabled]: true,
-    },
-  } ) );
-} );
 
 export async function navigateToExplore( ) {
   const tabBar = await screen.findByTestId( "CustomTabBar" );

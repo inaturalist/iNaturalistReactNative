@@ -9,7 +9,6 @@ import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import factory, { makeResponse } from "tests/factory";
 import {
-  enableExploreV2,
   lastObservationsSearchParams,
   navigateToExplore,
   openUniversalSearch,
@@ -93,7 +92,6 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  enableExploreV2( );
   inatjs.observations.search.mockClear( );
   inatjs.observations.observers.mockClear( );
   inatjs.observations.identifiers.mockClear( );
