@@ -1,5 +1,7 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { screen } from "@testing-library/react-native";
 import PostDetails from "components/Journal/PostDetails";
+import i18next from "i18next";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -30,10 +32,12 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 
 describe( "PostDetails", ( ) => {
   beforeEach( ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: true } );
     mockUseAuthenticatedQuery.mockReturnValue( {
       data: mockPost,
       isError: false,
-      isPending: false,
+      isLoading: false,
+      refetch: jest.fn(),
     } );
   } );
 
@@ -54,7 +58,8 @@ describe( "PostDetails", ( ) => {
     mockUseAuthenticatedQuery.mockReturnValue( {
       data: undefined,
       isError: false,
-      isPending: true,
+      isLoading: true,
+      refetch: jest.fn(),
     } );
 
     renderComponent( <PostDetails /> );
@@ -62,11 +67,30 @@ describe( "PostDetails", ( ) => {
     expect( screen.getByTestId( "PostDetails.loading" ) ).toBeVisible( );
   } );
 
+  it( "shows offline notice instead of loading when the device is offline", ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    mockUseAuthenticatedQuery.mockReturnValue( {
+      data: undefined,
+      isError: false,
+      isLoading: false,
+      refetch: jest.fn(),
+    } );
+
+    renderComponent( <PostDetails /> );
+
+    expect( screen.queryByTestId( "PostDetails.loading" ) ).toBeNull();
+    expect( screen.getByTestId( "PostDetails.offline" ) ).toBeVisible();
+    expect(
+      screen.getByText( i18next.t( "You-are-offline-Tap-to-try-again" ) ),
+    ).toBeVisible();
+  } );
+
   it( "shows an error message when fetch fails", ( ) => {
     mockUseAuthenticatedQuery.mockReturnValue( {
       data: undefined,
       isError: true,
-      isPending: false,
+      isLoading: false,
+      refetch: jest.fn(),
     } );
 
     renderComponent( <PostDetails /> );
@@ -79,7 +103,8 @@ describe( "PostDetails", ( ) => {
     mockUseAuthenticatedQuery.mockReturnValue( {
       data: null,
       isError: false,
-      isPending: false,
+      isLoading: false,
+      refetch: jest.fn(),
     } );
 
     renderComponent( <PostDetails /> );
