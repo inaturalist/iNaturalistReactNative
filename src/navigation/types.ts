@@ -346,9 +346,7 @@ export type BaseTabStackParamList = {
     userLogin?: string;
   } | undefined;
   PostDetails: {
-    body: string;
-    published_at: string;
-    title: string;
+    id: number;
   };
   Debug: undefined;
   UILibrary: undefined;
