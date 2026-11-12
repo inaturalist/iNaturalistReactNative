@@ -803,15 +803,16 @@ const resetPassword = async ( email: string ) => {
  *
  * @param email
  *
- * @returns boolean if email is available or not
+ * @returns boolean if email is available or not, undefined if the response
+ * has no answer
  */
-const emailAvailable = async ( email: string ) => {
-  // try to fetch user data (especially for loading user icon) from userMe
+const emailAvailable = async ( email: string ): Promise<boolean | undefined> => {
   const apiToken = await getAnonymousJWT( );
   const options = {
     api_token: apiToken,
   };
-  const response = await fetchUserEmailAvailable( email, options ) as { available: boolean };
+  const response = await fetchUserEmailAvailable( email, options ) as
+    { available?: boolean } | null | undefined;
   return response?.available;
 };
 
