@@ -12,6 +12,14 @@ const mockIdentifiers = [{
   count: 1,
 }];
 
+const observers = [{
+  ...factory( "RemoteUser" ),
+  observation_count: 7,
+}, {
+  ...factory( "RemoteUser" ),
+  observation_count: 44,
+}];
+
 jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
   __esModule: true,
   default: () => ( {
@@ -96,5 +104,19 @@ describe( "ExploreFlashList", () => {
 
     const identificationCount = await screen.findByText( "3 Identifications" );
     expect( identificationCount ).toBeVisible( );
+  } );
+
+  it( "should show number of observations a user has", async ( ) => {
+    renderComponent(
+      <ExploreFlashList
+        hideLoadingWheel
+        isConnected
+        data={observers}
+        layout="user"
+      />,
+    );
+
+    const observationCount = await screen.findByText( "7 Observations" );
+    expect( observationCount ).toBeVisible( );
   } );
 } );
