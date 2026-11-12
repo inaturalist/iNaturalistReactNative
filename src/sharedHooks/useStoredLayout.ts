@@ -6,7 +6,7 @@ interface LayoutHook {
   writeLayoutToStorage: ( newValue: string ) => void;
 }
 
-const MAP_DEFAULT_STORAGE_KEYS = ["exploreObservationsLayout", "exploreV2ObservationsLayout"];
+const MAP_DEFAULT_STORAGE_KEYS = ["exploreV2ObservationsLayout"];
 
 const useStoredLayout = ( storageKey: string ): LayoutHook => {
   const [layout, setLayout] = useState<string | null>( null );
