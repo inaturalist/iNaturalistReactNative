@@ -42,6 +42,10 @@ const useWorkQueue = ( ) => {
           api_token: apiToken,
         };
         const updatedUser = await fetchUserMe( { }, options );
+        if ( !updatedUser ) {
+          logger.error( "users/me returned no user after a user update" );
+          return;
+        }
         // logger.info( `Received updated user data from API: ${JSON.stringify( updatedUser )}` );
 
         safeRealmWrite( realm, ( ) => {
