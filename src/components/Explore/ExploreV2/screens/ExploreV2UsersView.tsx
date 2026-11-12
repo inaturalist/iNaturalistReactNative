@@ -1,6 +1,6 @@
 import { fetchIdentifiers, fetchObservers } from "api/observations";
 import { IDENTIFIERS_TAB, OBSERVERS_TAB } from "appConstants/tabs";
-import ExploreFlashList from "components/Explore/ExploreFlashList";
+import ExploreFlashList from "components/Explore/ExploreV2/components/ExploreFlashList";
 import type {
   ExploreV2BaseQueryParams,
 } from "components/Explore/ExploreV2/helpers/buildQueryParams";

@@ -2,7 +2,7 @@ import { useQueries } from "@tanstack/react-query";
 import { LIMITED_TAXON_FIELDS, SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiSpeciesCountSummary, ApiTaxon } from "api/types";
-import ExploreFlashList from "components/Explore/ExploreFlashList";
+import ExploreFlashList from "components/Explore/ExploreV2/components/ExploreFlashList";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
 import type {

@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import ExploreFlashList from "components/Explore/ExploreFlashList";
+import ExploreFlashList from "components/Explore/ExploreV2/components/ExploreFlashList";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";

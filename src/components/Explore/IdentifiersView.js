@@ -1,11 +1,10 @@
 // @flow
 import { fetchIdentifiers } from "api/observations";
+import ExploreFlashList from "components/Explore/ExploreV2/components/ExploreFlashList";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User";
 import { useInfiniteScroll } from "sharedHooks";
-
-import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
   canFetch?: boolean,

@@ -3,6 +3,7 @@
 import { LIMITED_TAXON_FIELDS, SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem";
+import ExploreFlashList from "components/Explore/ExploreV2/components/ExploreFlashList";
 import i18n from "i18next";
 import {
   useExplore,
@@ -15,8 +16,6 @@ import {
   useInfiniteScroll,
   useQuery,
 } from "sharedHooks";
-
-import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
   canFetch?: boolean,
