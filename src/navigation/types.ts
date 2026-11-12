@@ -26,15 +26,6 @@ export interface ExploreV2EntryParams {
   activeTab?: ExploreV2Tab;
 }
 
-// Params sent to ExploreV1, read in components/Explore/hooks/useParams.js
-interface LegacyExploreParams {
-  taxon?: { id?: number; name?: string; preferred_common_name?: string | null };
-  user?: { id?: number; login?: string; icon_url?: string | null };
-  project?: { id?: number; title?: string };
-  place?: { id?: number; display_name?: string } | null;
-  worldwide?: boolean;
-}
-
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -249,7 +240,7 @@ export type BaseTabStackParamList = {
   RootExplore: undefined;
   // Explore opened from another screen (TaxonDetails, UserProfile,
   // ProjectDetails, ProjectRequirements) rather than from the Explore tab.
-  Explore: ExploreV2EntryParams & LegacyExploreParams;
+  Explore: ExploreV2EntryParams;
   // From NotificationsListItem
   // {
   //   uuid: notification.resource_uuid,
