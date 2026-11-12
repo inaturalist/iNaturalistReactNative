@@ -20,8 +20,8 @@ jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
   } ),
 } ) );
 
-describe( "IdentifiersView", () => {
-  it( "should show a footer loading wheel when new identifiers are fetched", ( ) => {
+describe( "ExploreFlashList", () => {
+  it( "should show a footer loading wheel when the next page is fetched", ( ) => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel={false}
