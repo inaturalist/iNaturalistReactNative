@@ -4,7 +4,7 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockIdentifiers = [{
+const identifiers = [{
   ...factory( "RemoteUser" ),
   count: 3,
 }, {
@@ -19,14 +19,6 @@ const observers = [{
   ...factory( "RemoteUser" ),
   observation_count: 44,
 }];
-
-jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
-  __esModule: true,
-  default: () => ( {
-    data: mockIdentifiers,
-    isFetchingNextPage: true,
-  } ),
-} ) );
 
 describe( "ExploreFlashList", () => {
   it( "should show a footer loading wheel when the next page is fetched", ( ) => {
@@ -97,7 +89,7 @@ describe( "ExploreFlashList", () => {
       <ExploreFlashList
         hideLoadingWheel
         isConnected
-        data={mockIdentifiers}
+        data={identifiers}
         layout="user"
       />,
     );
