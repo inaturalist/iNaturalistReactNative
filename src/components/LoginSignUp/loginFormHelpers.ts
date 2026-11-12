@@ -1,4 +1,4 @@
-// Helpers for LoginForm. Might be better in AuthenticationService, but
+// Helpers for Apple and Google sign-in. Might be better in AuthenticationService, but
 // there's also some UI-related stuff in here, e.g. alerts
 import type { AppleError } from "@invertase/react-native-apple-authentication";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
@@ -51,9 +51,16 @@ async function signInWithApple( realm: Realm ): Promise<AuthenticateUserResult> 
   }
 
   // Check if auth was successful
-  const credentialState = await appleAuth.getCredentialStateForUser(
-    appleAuthRequestResponse.user,
-  );
+  let credentialState;
+  try {
+    credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+  } catch ( credentialStateError ) {
+    logger.error( "Failed to get Apple credential state", credentialStateError );
+    showSignInWithAppleFailed();
+    return { success: false };
+  }
 
   // If it was, send the identity token to iNat for verification and iNat
   // auth
@@ -98,6 +105,13 @@ GoogleSignin.configure( {
   ],
 } );
 
+function showSignInWithGoogleFailed() {
+  Alert.alert(
+    t( "Sign-in-with-Google-Failed" ),
+    t( "If-you-have-an-existing-account-try-sign-in-reset" ),
+  );
+}
+
 async function confirmGooglePlayServices() {
   try {
     await GoogleSignin.hasPlayServices( );
@@ -113,15 +127,10 @@ async function confirmGooglePlayServices() {
       );
       return false;
     }
-    throw hasPlayServicesError;
+    logger.error( "Failed to check for Google Play Services", hasPlayServicesError );
+    showSignInWithGoogleFailed();
+    return false;
   }
-}
-
-function showSignInWithGoogleFailed() {
-  Alert.alert(
-    t( "Sign-in-with-Google-Failed" ),
-    t( "If-you-have-an-existing-account-try-sign-in-reset" ),
-  );
 }
 
 async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult> {
@@ -132,6 +141,7 @@ async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult>
     signInResp = await GoogleSignin.signIn();
   } catch ( signInError ) {
     logger.error( "Failed to sign in with Google", signInError );
+    showSignInWithGoogleFailed();
     return { success: false };
   }
   if ( signInResp.type === "cancelled" ) return { success: false };
@@ -140,9 +150,14 @@ async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult>
     tokens = await GoogleSignin.getTokens();
   } catch ( getTokensError ) {
     logger.error( "Failed to get tokens from Google", getTokensError );
+    showSignInWithGoogleFailed();
     return { success: false };
   }
-  if ( !tokens?.accessToken ) return { success: false };
+  if ( !tokens?.accessToken ) {
+    logger.error( "Google returned no access token" );
+    showSignInWithGoogleFailed();
+    return { success: false };
+  }
   try {
     return await authenticateUserByAssertion( "google", tokens.accessToken, realm );
   } catch ( authenticateUserByAssertionError ) {
