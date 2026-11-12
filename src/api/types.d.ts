@@ -180,6 +180,73 @@ export interface ApiUser extends ApiRecord {
   species_count?: number;
 }
 
+// When using LIMITED_TAXON_FIELDS
+export interface ApiTaxonLimited extends ApiRecord {
+  ancestor_ids: number[];
+  default_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+  representative_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  taxon_photos: {
+    photo: {
+      url: string | null;
+    } | null;
+  }[];
+}
+
+// When using TAXON_PERSISTABLE_FIELDS
+export interface ApiTaxonPersistable {
+  ancestor_ids: number[];
+  default_photo: {
+    attribution: string;
+    hidden: boolean;
+    id: number;
+    license_code: string | null;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
+  id: number;
+  name: string;
+  preferred_common_name: string | null;
+  rank: string;
+  rank_level: number;
+}
+
+// users/me when using REMOTE_USER_FIELDS. Nullability follows iNaturalistAPI's
+// lib/models/user.js as of 9f9738d6 (2026-10-28), not its OpenAPI schema
+export interface ApiUserMe {
+  created_at: string;
+  description: string | null;
+  icon_url: string | null;
+  id: number;
+  identifications_count: number;
+  journal_posts_count: number;
+  locale: string | null;
+  login: string;
+  monthly_supporter: boolean;
+  name: string | null;
+  observations_count: number;
+  place_id: number | null;
+  prefers_common_names: boolean;
+  prefers_no_tracking: boolean;
+  prefers_scientific_name_first: boolean;
+  roles: string[];
+  site: {
+    name: string;
+  } | null;
+  species_count: number;
+  updated_at: string;
+}
+
 type Operator =
   | "georeferenced?"
   | "captive?"
@@ -222,18 +289,10 @@ interface ApiRuleInTaxon {
   id: number;
   operand_id: number;
   operator: "in_taxon?";
-  // TODO: MOB-1946 this should be changed to request a persistable taxon
-  taxon: {
-    ancestor_ids: number[];
-    id: number;
-    name: string;
-    preferred_common_name: string | null;
-    rank: string;
-    rank_level: number;
-  } | null;
+  taxon: ApiTaxonPersistable | null;
 }
 
-type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
+export type ApiProjectObservationRule = ApiRule | ApiRuleHasOF | ApiRuleInPlace | ApiRuleInTaxon;
 
 // "", "bioblitz", "contest", and "assessment" are all traditional
 export type ApiProjectType =
@@ -443,29 +502,6 @@ export interface ApiSpeciesCountVerboseSummary extends ApiCount {
     name: string;
     preferred_common_name: string | null;
   } | null;
-}
-
-// When using Taxon.LIMITED_TAXON_FIELDS
-export interface ApiTaxonLimited extends ApiRecord {
-  ancestor_ids: number[];
-  default_photo: {
-    id: number;
-    url: string | null;
-  } | null;
-  iconic_taxon_name: string | null;
-  name: string;
-  preferred_common_name: string | null;
-  rank: string;
-  rank_level: number;
-  representative_photo: {
-    id: number;
-    url: string | null;
-  } | null;
-  taxon_photos: {
-    photo: {
-      url: string | null;
-    } | null;
-  }[];
 }
 
 // When using SPECIES_COUNTS_DETAILS_FIELDS

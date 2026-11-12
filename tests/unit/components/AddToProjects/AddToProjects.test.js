@@ -5,6 +5,7 @@ import {
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
+import Taxon from "realmModels/Taxon";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -87,6 +88,29 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByText( mockProjects[0].title ) ).toBeVisible( );
     expect( screen.getByText( mockProjects[1].title ) ).toBeVisible( );
     expect( screen.getAllByText( "Traditional Project" ).length ).toBe( 2 );
+  } );
+
+  it( "lists joined projects in title order", ( ) => {
+    const titles = mockProjects.map( project => project.title );
+    const untitled = factory( "LocalProject", { title: "" } );
+    mockProjects.push( untitled );
+    mockProjects[0].title = "Banana";
+    mockProjects[1].title = "apple";
+    try {
+      renderAddToProjects( );
+
+      expect(
+        screen.getAllByTestId( /^AddToProjects\.project\./ ).map( row => row.props.testID ),
+      ).toEqual( [
+        `AddToProjects.project.${mockProjects[1].id}`,
+        `AddToProjects.project.${mockProjects[0].id}`,
+        `AddToProjects.project.${untitled.id}`,
+      ] );
+    } finally {
+      mockProjects.pop( );
+      mockProjects[0].title = titles[0];
+      mockProjects[1].title = titles[1];
+    }
   } );
 
   it( "renders selected projects with expanded chooser", async ( ) => {
@@ -268,7 +292,6 @@ describe( "AddToProjects", ( ) => {
     const realmRule = ( operator, overrides = {} ) => ( {
       id: Math.floor( Math.random( ) * 1_000_000 ),
       operator,
-      taxon_ancestor_ids: [],
       ...overrides,
     } );
     const ruleRow = operator => screen.getByTestId(
@@ -281,16 +304,20 @@ describe( "AddToProjects", ( ) => {
         realmRule( "identified?" ),
         realmRule( "wild?" ),
         realmRule( "observed_in_place?" ),
-        realmRule( "in_taxon?", {
-          operand_id: 4789,
-          operand_type: "Taxon",
-          taxon_ancestor_ids: [48460, 1, 3, 4789],
-          taxon_name: "Calidris alba",
-          taxon_preferred_common_name: "Sanderling",
-          taxon_rank: "species",
-          taxon_rank_level: 10,
-        } ),
+        realmRule( "in_taxon?", { operand_id: 4789 } ),
       ];
+      const sanderlingTaxon = Taxon.forUpdate( Taxon.mapApiToRealm( {
+        ancestor_ids: [48460, 1, 3, 4789],
+        id: 4789,
+        is_active: true,
+        name: "Calidris alba",
+        preferred_common_name: "Sanderling",
+        rank: "species",
+        rank_level: 10,
+      } ) );
+      global.realm.write( ( ) => {
+        global.realm.create( "Taxon", sanderlingTaxon, "modified" );
+      } );
     } );
 
     beforeEach( ( ) => {
@@ -519,9 +546,9 @@ describe( "AddToProjects", ( ) => {
       renderAddToProjects( );
 
       await actor.press( screen.getByText( mockProjects[1].title ) );
-      // Project 0 is already selected in beforeEach, so two pickers are visible
-      const [, projectOneSelectResponse] = screen.getAllByText( "Select a response" );
-      await actor.press( projectOneSelectResponse );
+      const projectOneIndex = screen.getAllByTestId( /^AddToProjects\.project\./ )
+        .findIndex( row => row.props.testID === `AddToProjects.project.${mockProjects[1].id}` );
+      await actor.press( screen.getAllByText( "Select a response" )[projectOneIndex] );
 
       const picker = await screen.findByTestId( "ReactNativePicker" );
       fireEvent( picker, "onValueChange", selectedValue );

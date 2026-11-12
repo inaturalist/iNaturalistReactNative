@@ -9,6 +9,7 @@ import Observation from "realmModels/Observation";
 import { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 
 jest.mock( "api/observations" );
@@ -79,6 +80,7 @@ beforeEach( ( ) => {
 
 afterEach( ( ) => {
   jest.restoreAllMocks( );
+  useStore.setState( { locallyDeletedObservationUuids: [] } );
 } );
 
 describe( "useIconicTaxaSectionObservations", ( ) => {
@@ -418,6 +420,53 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
       await act( ( ) => new Promise( resolve => { setTimeout( resolve, 50 ); } ) );
 
       expect( searchObservations ).toHaveBeenCalledTimes( 4 );
+    } );
+  } );
+
+  describe( "after the user deletes an observation", ( ) => {
+    const plantaeUuids = result => result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).uuids;
+
+    const deleteObservation = uuid => act( ( ) => {
+      useStore.getState( ).addToDeleteQueue( uuid );
+    } );
+
+    it( "closes up the gap it leaves on whichever page it was on", async ( ) => {
+      searchObservations.mockImplementation( params => Promise.resolve(
+        pageOf( [`page-${params.page}-a`, `page-${params.page}-b`] ),
+      ) );
+      const { result } = renderSectionsHook( );
+      await waitFor( ( ) => expect( plantaeUuids( result ) ).toHaveLength( 2 ) );
+      act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
+      await waitFor( ( ) => expect( plantaeUuids( result ) ).toHaveLength( 4 ) );
+
+      deleteObservation( "page-2-a" );
+
+      expect( plantaeUuids( result ) ).toEqual( ["page-1-a", "page-1-b", "page-2-b"] );
+    } );
+
+    it( "keeps it hidden when a reload returns it again, as a lagging search index "
+      + "can", async ( ) => {
+      const { result } = renderSectionsHook( );
+      await waitFor( ( ) => expect( plantaeUuids( result ) ).toEqual( ["a", "b"] ) );
+      deleteObservation( "a" );
+
+      act( ( ) => result.current.refreshSections( ) );
+
+      await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
+      await waitFor( ( ) => expect(
+        Observation.upsertRemoteObservations,
+      ).toHaveBeenCalledTimes( 2 ) );
+      expect( plantaeUuids( result ) ).toEqual( ["b"] );
+    } );
+
+    it( "doesn't write it back into Realm, where it would come back as a tile for an "
+      + "observation that no longer exists", async ( ) => {
+      deleteObservation( "a" );
+
+      renderSectionsHook( );
+
+      await waitFor( ( ) => expect( Observation.upsertRemoteObservations ).toHaveBeenCalled( ) );
+      expect( Observation.upsertRemoteObservations.mock.calls[0][0] ).toEqual( [{ uuid: "b" }] );
     } );
   } );
 

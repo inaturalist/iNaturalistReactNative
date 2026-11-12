@@ -8,10 +8,12 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { TFunction } from "i18next";
+import { RealmContext } from "providers/contexts";
 import { useMyObservations } from "providers/MyObservationsContext";
 import React, {
   useCallback, useEffect, useMemo, useRef, useState,
 } from "react";
+import type { RealmObservation } from "realmModels/types";
 import { ICONIC_TAXA_GROUP, iconicTaxaGroupIcon } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import type { MyObservationsSlice } from "stores/createMyObservationsSlice";
@@ -29,8 +31,7 @@ import {
 } from "./helpers/iconicTaxaSections";
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
 import useIconicTaxaSectionObservations from "./hooks/useIconicTaxaSectionObservations";
-import useUnsyncedObservationIdsByIconicTaxon
-  from "./hooks/useUnsyncedObservationIdsByIconicTaxon";
+import usePinnedObservationsByIconicTaxon from "./hooks/usePinnedObservationsByIconicTaxon";
 import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
 
 function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string> {
@@ -60,11 +61,14 @@ interface Props {
 // How many tiles ahead of the last loaded one to start fetching.
 const PREFETCH_TILES = 15;
 
+const { useRealm } = RealmContext;
+
 const MyObservationsGroupedByIconicTaxaView = ( {
   handlePullToRefresh,
   listHeaderContent,
 }: Props ) => {
   const { t } = useTranslation( );
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { state } = useMyObservations( );
   const { observationsSort } = state;
@@ -77,7 +81,6 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     isLoading: isLoadingCounts,
     refetch: refetchCounts,
   } = useIconicTaxaObservationCounts( );
-  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
   const collapsedCategories: MyObservationsSlice["myObservationsClosedIconicTaxaCategories"]
     = useStore(
@@ -103,6 +106,15 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     sortBy: observationsSort,
   } );
 
+  const { unsyncedByCategory, uploadsByCategory } = usePinnedObservationsByIconicTaxon( );
+
+  // Loaded tiles have hydrated into Realm, so held uploads are placed by reading where each
+  // falls in the server's order from there
+  const getObservationByUuid = useCallback(
+    ( uuid: string ) => realm.objectForPrimaryKey<RealmObservation>( "Observation", uuid ),
+    [realm],
+  );
+
   // Changing sort re-sorts every section's contents, so the list the user was reading is gone.
   // Put them back at the top.
   useEffect( ( ) => {
@@ -119,7 +131,19 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       orderedCounts: counts,
       sections,
       unsyncedByCategory,
-    } ) ), [collapsedCategories, counts, isLoadingCounts, sections, unsyncedByCategory] );
+      uploadsByCategory,
+      sort: observationsSort,
+      getObservationByUuid,
+    } ) ), [
+    collapsedCategories,
+    counts,
+    isLoadingCounts,
+    observationsSort,
+    getObservationByUuid,
+    sections,
+    unsyncedByCategory,
+    uploadsByCategory,
+  ] );
 
   const sectionRanges = useMemo( ( ) => sectionRowRanges( rows ), [rows] );
 

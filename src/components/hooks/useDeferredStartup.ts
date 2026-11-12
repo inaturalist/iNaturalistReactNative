@@ -10,7 +10,7 @@
  * runtime can interleave user interactions between them.
  */
 import { cleanupLogFiles } from "components/Developer/logManagementHelpers";
-import { isLoggedIn } from "components/LoginSignUp/AuthenticationService";
+import { getJWT, isLoggedIn } from "components/LoginSignUp/AuthenticationService";
 import { navigationRef } from "navigation/navigationUtils";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
@@ -27,6 +27,7 @@ import { LAST_CRASH_DATA, store as installDataMMKVStorage } from "sharedHelpers/
 import { log } from "sharedHelpers/logger";
 import { logSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
+import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
 import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";
 import { useTranslation } from "sharedHooks";
 
@@ -125,6 +126,14 @@ const useDeferredStartup = ( ) => {
       }
       await syncJoinedProjects( realm, currentUserId );
     }, 30000 );
+    // Once per launch, which also covers logout: signOut restarts the app. Login refetches in
+    // AuthenticationService. Short timeout because flags read their hard-coded defaults until
+    // this settles
+    const id12 = deferTask(
+      "syncFeatureFlags",
+      async ( ) => syncFeatureFlags( await getJWT( ) ),
+      500,
+    );
 
     return ( ) => {
       cancelIdleCallback( id0 );
@@ -139,6 +148,7 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id9 );
       cancelIdleCallback( id10 );
       cancelIdleCallback( id11 );
+      cancelIdleCallback( id12 );
     };
   }, [i18n, realm] );
 };

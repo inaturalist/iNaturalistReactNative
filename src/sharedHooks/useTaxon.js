@@ -1,5 +1,6 @@
 // @flow
 
+import { LIMITED_TAXON_FIELDS } from "api/fields";
 import { fetchTaxon } from "api/taxa";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
@@ -54,7 +55,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
   const locale = i18n?.language ?? "en";
 
   const params = {
-    fields: Taxon.LIMITED_TAXON_FIELDS,
+    fields: LIMITED_TAXON_FIELDS,
     ...( !currentUser && { locale } ),
   };
 

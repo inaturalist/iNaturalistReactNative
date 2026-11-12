@@ -1,4 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  adjustIconicTaxaObservationCount,
+} from "components/MyObservations/hooks/useIconicTaxaObservationCounts";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo,
@@ -6,7 +10,9 @@ import {
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types";
+import { iconicTaxaGroupForTaxonName } from "sharedHelpers/iconicTaxaGroupOrder";
 import {
+  useCurrentUser,
   useTranslation,
 } from "sharedHooks";
 import {
@@ -30,7 +36,10 @@ const { useRealm } = RealmContext;
 // eslint-disable-next-line no-undef
 export default ( canUpload: boolean ) => {
   const realm = useRealm( );
+  const queryClient = useQueryClient( );
+  const currentUser = useCurrentUser( );
 
+  const addFirstUploadUuid = useStore( state => state.addFirstUploadUuid );
   const addUploadError = useStore( state => state.addUploadError );
   const completeUploads = useStore( state => state.completeUploads );
   const currentUpload = useStore( state => state.currentUpload );
@@ -97,6 +106,10 @@ export default ( canUpload: boolean ) => {
 
   const uploadObservationAndCatchError = useCallback( async ( observation: RealmObservation ) => {
     const { uuid } = observation;
+    // Recorded before uploading, since needs_sync clears as soon as the server creates the
+    // record, while photos are still uploading. Edits to an uploaded observation aren't recorded.
+    const isFirstUpload = !observation._synced_at;
+    if ( isFirstUpload ) addFirstUploadUuid( uuid );
     setCurrentUpload( observation );
     // Each upload gets its own abort controller so that a timeout only
     // cancels this observation and the queue can advance. The store's
@@ -140,6 +153,16 @@ export default ( canUpload: boolean ) => {
         }
       }
     } finally {
+      // Re-read, since the upload can fail after creating the record, or delete it locally
+      const uploaded = realm.objectForPrimaryKey<RealmObservation>( "Observation", uuid );
+      if ( isFirstUpload && uploaded?._synced_at ) {
+        adjustIconicTaxaObservationCount(
+          queryClient,
+          currentUser?.id,
+          iconicTaxaGroupForTaxonName( uploaded.taxon?.iconic_taxon_name ),
+          1,
+        );
+      }
       clearTimeout( timeoutID );
       abortController?.signal.removeEventListener( "abort", abortCurrentUpload );
       if ( !abortController?.signal.aborted ) {
@@ -156,9 +179,12 @@ export default ( canUpload: boolean ) => {
     }
   }, [
     abortController,
+    addFirstUploadUuid,
     addUploadError,
     completeUploads,
     currentUpload,
+    currentUser?.id,
+    queryClient,
     realm,
     removeDeletedObsFromUploadQueue,
     removeFromUploadQueue,
