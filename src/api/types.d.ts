@@ -221,6 +221,32 @@ export interface ApiTaxonPersistable {
   rank_level: number;
 }
 
+// users/me when using REMOTE_USER_FIELDS. Nullability follows iNaturalistAPI's
+// lib/models/user.js as of 9f9738d6 (2026-10-28), not its OpenAPI schema
+export interface ApiUserMe {
+  created_at: string;
+  description: string | null;
+  icon_url: string | null;
+  id: number;
+  identifications_count: number;
+  journal_posts_count: number;
+  locale: string | null;
+  login: string;
+  monthly_supporter: boolean;
+  name: string | null;
+  observations_count: number;
+  place_id: number | null;
+  prefers_common_names: boolean;
+  prefers_no_tracking: boolean;
+  prefers_scientific_name_first: boolean;
+  roles: string[];
+  site: {
+    name: string;
+  } | null;
+  species_count: number;
+  updated_at: string;
+}
+
 type Operator =
   | "georeferenced?"
   | "captive?"
