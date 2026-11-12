@@ -1,8 +1,14 @@
-import type { MapBoundaries } from "providers/ExploreContext";
 import type { LatLng, Region } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
+
+export interface MapBoundaries {
+  swlat: number;
+  swlng: number;
+  nelat: number;
+  nelng: number;
+}
 
 export const OBSCURATION_CELL_SIZE = 0.2;
 const API_URL = EnvConfig.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
