@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import { POST_DETAILS } from "api/fields";
 import { fetchPost } from "api/posts";
@@ -6,6 +7,7 @@ import {
   ActivityIndicator,
   Body1,
   List2,
+  OfflineNotice,
   ScrollViewWrapper,
   UserText,
 } from "components/SharedComponents";
@@ -19,12 +21,15 @@ import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 const PostDetails = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"PostDetails">["route"]>( );
   const { id } = params;
+  const { isConnected } = useNetInfo( );
   const { i18n, t } = useTranslation( );
 
   const {
     data: post,
+    error,
     isError,
     isLoading,
+    refetch,
   } = useAuthenticatedQuery<ApiPost>(
     ["fetchPost", id],
     optsWithAuth => {
@@ -35,6 +40,16 @@ const PostDetails = ( ) => {
       return fetchPost( params, optsWithAuth );
     },
   );
+
+  if ( isConnected === false || error?.message?.match( /Network request failed/ ) ) {
+    return (
+      <ScreenShell testID="PostDetails.offline">
+        <View className="flex-1 justify-center items-center">
+          <OfflineNotice onPress={refetch} />
+        </View>
+      </ScreenShell>
+    );
+  }
 
   if ( isLoading ) {
     return (
