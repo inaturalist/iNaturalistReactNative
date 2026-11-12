@@ -9,7 +9,7 @@ const logger = log.extend( "syncFeatureFlags" );
 
 let latestRequestId = 0;
 
-// logs flag values and their source when loaded, e.g.
+// Each flag's resolved value and the layer it came from, for remote logs, e.g.
 // {
 //   explore_v2: true,
 //   traditional_projects: false,
@@ -17,9 +17,8 @@ let latestRequestId = 0;
 //   onboarding_v2: false,
 //   fromOverrides: "traditional_projects,explore_v2",
 //   fromApi: "",
-//   signedIn: true
 // }
-const loadedFlagsLogExtra = ( signedIn: boolean ) => {
+export const featureFlagsLogExtra = ( ) => {
   const { featureFlagApiValues, featureFlagDebugOverrides } = useStore.getState( );
   const values: Partial<Record<FeatureFlag, boolean>> = {};
   const flagsBySource: Record<FeatureFlagSource, FeatureFlag[]> = {
@@ -45,7 +44,6 @@ const loadedFlagsLogExtra = ( signedIn: boolean ) => {
     ...values,
     fromOverrides: flagsBySource.override.join( "," ),
     fromApi: flagsBySource.api.join( "," ),
-    signedIn,
   };
 };
 
@@ -70,7 +68,7 @@ const syncFeatureFlags = async ( apiToken: string | null ) => {
     setFeatureFlagApiValues( values, signedIn );
     logger.infoWithExtra(
       "Feature flags loaded from API",
-      loadedFlagsLogExtra( signedIn ),
+      { ...featureFlagsLogExtra( ), signedIn },
     );
   } catch ( error ) {
     if ( requestId !== latestRequestId ) return;
@@ -78,7 +76,7 @@ const syncFeatureFlags = async ( apiToken: string | null ) => {
     logger.warnWithExtra(
       "Failed to fetch feature flags, using hard-coded defaults",
       error,
-      loadedFlagsLogExtra( signedIn ),
+      { ...featureFlagsLogExtra( ), signedIn },
     );
   }
 };
