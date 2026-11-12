@@ -3,8 +3,6 @@ import { create } from "zustand";
 import type { StateStorage } from "zustand/middleware";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import type { ExploreSlice } from "./createExploreSlice";
-import createExploreSlice from "./createExploreSlice";
 import type { ExploreV2AdvancedSearchSlice } from "./createExploreV2AdvancedSearchSlice";
 import createExploreV2AdvancedSearchSlice from "./createExploreV2AdvancedSearchSlice";
 import type { ExploreV2SearchesSlice } from "./createExploreV2SearchesSlice";
@@ -19,8 +17,6 @@ import type { MyObservationsSlice } from "./createMyObservationsSlice";
 import createMyObservationsSlice from "./createMyObservationsSlice";
 import type { ObservationFlowSlice } from "./createObservationFlowSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
-import type { RootExploreSlice } from "./createRootExploreSlice";
-import createRootExploreSlice from "./createRootExploreSlice";
 import type { SyncObservationsSlice } from "./createSyncObservationsSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import type { UploadObservationsSlice } from "./createUploadObservationsSlice";
@@ -28,15 +24,13 @@ import createUploadObservationsSlice from "./createUploadObservationsSlice";
 import storage from "./zustandMMKVBackingStorage";
 
 type StoreState =
-  ExploreSlice
-  & ExploreV2AdvancedSearchSlice
+  ExploreV2AdvancedSearchSlice
   & ExploreV2SearchesSlice
   & FeatureFlagSlice
   & FirebaseTraceSlice
   & LayoutSlice
   & MyObservationsSlice
   & ObservationFlowSlice
-  & RootExploreSlice
   & SyncObservationsSlice
   & UploadObservationsSlice;
 
@@ -59,14 +53,12 @@ const useStore = create<StoreState>()( persist(
     // Let's make our slices
     const slices = [
       createExploreV2SearchesSlice( ...args ),
-      createExploreSlice( ...args ),
       createExploreV2AdvancedSearchSlice( ...args ),
       createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
       createMyObservationsSlice( ...args ),
       createObservationFlowSlice( ...args ),
-      createRootExploreSlice( ...args ),
       createSyncObservationsSlice( ...args ),
       createUploadObservationsSlice( ...args ),
     ];
