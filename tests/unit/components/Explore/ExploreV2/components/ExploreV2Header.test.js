@@ -1,7 +1,6 @@
 import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Header from "components/Explore/ExploreV2/components/ExploreV2Header";
-import { MEDIA } from "providers/ExploreContext";
-import { defaultExploreV2Filters, EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
+import { defaultExploreV2Filters, EXPLORE_V2_PLACE_MODE, MEDIA } from "providers/ExploreV2Context";
 import React from "react";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";

@@ -6,16 +6,14 @@ import {
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
+  defaultExploreV2Filters,
   ESTABLISHMENT_MEAN,
+  EXPLORE_V2_PLACE_MODE,
   MEDIA,
   PHOTO_LICENSE,
   REVIEWED,
   TAXONOMIC_RANK,
   WILD_STATUS,
-} from "providers/ExploreContext";
-import {
-  defaultExploreV2Filters,
-  EXPLORE_V2_PLACE_MODE,
 } from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";

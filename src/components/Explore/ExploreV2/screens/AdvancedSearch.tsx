@@ -61,8 +61,6 @@ import type { ExploreStackScreenProps } from "navigation/types";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
-} from "providers/ExploreContext";
-import {
   EXPLORE_V2_ACTION,
   useExploreV2,
 } from "providers/ExploreV2Context";

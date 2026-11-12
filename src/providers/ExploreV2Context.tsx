@@ -2,16 +2,6 @@ import type { ApiProjectSummary, ApiTotalBounds, ApiUser } from "api/types";
 import type { IDENTIFIERS_TAB, OBSERVERS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import type { ExploreV2EntryParams } from "navigation/types";
-import type { TAXONOMIC_RANK } from "providers/ExploreContext";
-import {
-  DATE_OBSERVED,
-  DATE_UPLOADED,
-  ESTABLISHMENT_MEAN,
-  MEDIA,
-  PHOTO_LICENSE,
-  REVIEWED,
-  WILD_STATUS,
-} from "providers/ExploreContext";
 import * as React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import type { SpeciesCountsSort } from "sharedHelpers/speciesSort";
@@ -37,6 +27,95 @@ export enum EXPLORE_V2_PLACE_MODE {
   WORLDWIDE = "WORLDWIDE",
   PLACE = "PLACE",
   MAP_AREA = "MAP_AREA"
+}
+
+export enum TAXONOMIC_RANK {
+  none = "none",
+  kingdom = "kingdom",
+  phylum = "phylum",
+  subphylum = "subphylum",
+  superclass = "superclass",
+  class = "class",
+  subclass = "subclass",
+  infraclass = "infraclass",
+  subterclass = "subterclass",
+  superorder = "superorder",
+  order = "order",
+  suborder = "suborder",
+  infraorder = "infraorder",
+  parvorder = "parvorder",
+  zoosection = "zoosection",
+  zoosubsection = "zoosubsection",
+  superfamily = "superfamily",
+  epifamily = "epifamily",
+  family = "family",
+  subfamily = "subfamily",
+  supertribe = "supertribe",
+  tribe = "tribe",
+  subtribe = "subtribe",
+  genus = "genus",
+  genushybrid = "genushybrid",
+  subgenus = "subgenus",
+  section = "section",
+  subsection = "subsection",
+  complex = "complex",
+  species = "species",
+  hybrid = "hybrid",
+  subspecies = "subspecies",
+  variety = "variety",
+  form = "form",
+  infrahybrid = "infrahybrid",
+}
+
+export enum DATE_OBSERVED {
+  ALL = "ALL",
+  EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE",
+  MONTHS = "MONTHS",
+}
+
+export enum DATE_UPLOADED {
+  ALL = "ALL",
+  EXACT_DATE = "EXACT_DATE",
+  DATE_RANGE = "DATE_RANGE"
+}
+
+export enum MEDIA {
+  ALL = "ALL",
+  PHOTOS = "PHOTOS",
+  SOUNDS = "SOUNDS",
+  NONE = "NONE"
+}
+
+export enum ESTABLISHMENT_MEAN {
+  ANY = "ANY",
+  INTRODUCED = "INTRODUCED",
+  NATIVE = "NATIVE",
+  ENDEMIC = "ENDEMIC"
+}
+
+export enum WILD_STATUS {
+  ALL = "ALL",
+  WILD = "WILD",
+  CAPTIVE = "CAPTIVE"
+}
+
+export enum REVIEWED {
+  ALL = "ALL",
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  REVIEWED = "REVIEWED",
+  UNREVIEWED = "UNREVIEWED"
+}
+
+export enum PHOTO_LICENSE {
+  ALL = "ALL",
+  CC0 = "CC0",
+  CCBY = "CCBY",
+  CCBYNC = "CCBYNC",
+  CCBYSA = "CCBYSA",
+  CCBYND = "CCBYND",
+  CCBYNCSA = "CCBYNCSA",
+  CCBYNCND = "CCBYNCND",
 }
 
 export interface Place {

@@ -2,14 +2,14 @@ import countFilters from "components/Explore/ExploreV2/helpers/countFilters";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
+  defaultExploreV2Filters,
   ESTABLISHMENT_MEAN,
   MEDIA,
   PHOTO_LICENSE,
   REVIEWED,
   TAXONOMIC_RANK,
   WILD_STATUS,
-} from "providers/ExploreContext";
-import { defaultExploreV2Filters } from "providers/ExploreV2Context";
+} from "providers/ExploreV2Context";
 import factory from "tests/factory";
 
 const withFilters = overrides => ( { ...defaultExploreV2Filters, ...overrides } );

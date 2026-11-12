@@ -1,25 +1,21 @@
 import type { ApiProjectSummary, ApiUser } from "api/types";
 import type {
   ESTABLISHMENT_MEAN,
-  MEDIA,
-  PHOTO_LICENSE,
-  REVIEWED,
-} from "providers/ExploreContext";
-import {
-  DATE_OBSERVED,
-  DATE_UPLOADED,
-  TAXONOMIC_RANK,
-  WILD_STATUS,
-} from "providers/ExploreContext";
-import type {
   ExploreV2Filters,
   ExploreV2LocationState,
   ExploreV2State,
   ExploreV2Subject,
+  MEDIA,
+  PHOTO_LICENSE,
+  REVIEWED,
 } from "providers/ExploreV2Context";
 import {
+  DATE_OBSERVED,
+  DATE_UPLOADED,
   defaultExploreV2Filters,
   EXPLORE_V2_PLACE_MODE,
+  TAXONOMIC_RANK,
+  WILD_STATUS,
 } from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 

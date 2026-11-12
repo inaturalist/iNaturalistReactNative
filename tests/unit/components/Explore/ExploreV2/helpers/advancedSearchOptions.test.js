@@ -21,7 +21,7 @@ import {
   REVIEWED,
   TAXONOMIC_RANK,
   WILD_STATUS,
-} from "providers/ExploreContext";
+} from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
 beforeAll( async ( ) => {

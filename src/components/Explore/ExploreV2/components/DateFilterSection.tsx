@@ -9,7 +9,7 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { DATE_OBSERVED, DATE_UPLOADED } from "providers/ExploreContext";
+import type { DATE_OBSERVED, DATE_UPLOADED } from "providers/ExploreV2Context";
 import React, { useState } from "react";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";

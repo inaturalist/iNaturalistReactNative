@@ -1,11 +1,11 @@
+import type { ExploreV2Filters } from "providers/ExploreV2Context";
 import {
   ESTABLISHMENT_MEAN,
   MEDIA,
   PHOTO_LICENSE,
   REVIEWED,
   WILD_STATUS,
-} from "providers/ExploreContext";
-import type { ExploreV2Filters } from "providers/ExploreV2Context";
+} from "providers/ExploreV2Context";
 
 // Maps the typed AdvancedSearch filters to iNat API query params.
 export interface FilterApiParams {

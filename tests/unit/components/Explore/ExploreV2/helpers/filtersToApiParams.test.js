@@ -1,12 +1,12 @@
 import filtersToApiParams from "components/Explore/ExploreV2/helpers/filtersToApiParams";
 import {
+  defaultExploreV2Filters,
   ESTABLISHMENT_MEAN,
   MEDIA,
   PHOTO_LICENSE,
   REVIEWED,
   WILD_STATUS,
-} from "providers/ExploreContext";
-import { defaultExploreV2Filters } from "providers/ExploreV2Context";
+} from "providers/ExploreV2Context";
 
 const makeFilters = overrides => ( { ...defaultExploreV2Filters, ...overrides } );
 

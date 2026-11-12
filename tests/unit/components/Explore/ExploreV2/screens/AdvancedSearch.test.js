@@ -3,12 +3,13 @@ import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import AdvancedSearch from "components/Explore/ExploreV2/screens/AdvancedSearch";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
-import { DATE_OBSERVED, WILD_STATUS } from "providers/ExploreContext";
 import {
+  DATE_OBSERVED,
   defaultExploreV2Filters,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   initialExploreV2State,
+  WILD_STATUS,
 } from "providers/ExploreV2Context";
 import React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
