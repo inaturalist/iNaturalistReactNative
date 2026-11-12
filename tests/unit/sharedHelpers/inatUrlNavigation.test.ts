@@ -1,4 +1,3 @@
-import type { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { StackActions } from "@react-navigation/native";
 import { openInatUrl, parseInatUrl } from "sharedHelpers/inatUrlNavigation";
 
@@ -45,7 +44,7 @@ describe( "parseInatUrl", ( ) => {
 describe( "openInatUrl", ( ) => {
   it( "pushes PostDetails with the numeric id", async ( ) => {
     const dispatch = jest.fn( );
-    const navigation = { dispatch } as unknown as NavigationProp<ParamListBase>;
+    const navigation = { dispatch };
     const parsed = parseInatUrl( `${HOST}/journal/some-user/12345-some-title` );
 
     if ( !parsed ) {
