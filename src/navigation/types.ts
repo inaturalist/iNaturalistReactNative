@@ -211,15 +211,17 @@ export type SharedStackParamList = {
   };
 };
 
-// Note from the documentation:
-// The type containing the mapping must be a type alias. It cannot be an interface.
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type OnboardingStepParamList = {
+  [StepId in Exclude<OnboardingStepId, "signup_credentials">]: undefined;
+} & {
+  // Trimmed, and already checked as available for a new account
+  signup_credentials: { email: string };
+};
+
 export type OnboardingStackParamList = {
   // The carousel shown while FeatureFlag.OnboardingV2Enabled is off
   Onboarding: undefined;
-} & {
-  [StepId in OnboardingStepId]: undefined;
-};
+} & OnboardingStepParamList;
 
 // Screens hosted by ExploreStackNavigator (ExploreV2)
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -469,8 +471,8 @@ export type LoginStackParamList = {
   } | undefined;
   SignUp: undefined;
   // The onboarding sign-up steps, while FeatureFlag.OnboardingV2Enabled is on
-  signup_email: undefined;
-  signup_credentials: undefined;
+  signup_email: OnboardingStepParamList["signup_email"];
+  signup_credentials: OnboardingStepParamList["signup_credentials"];
   ForgotPassword: undefined;
   LearnMore: undefined;
   SignUpConfirmation: {

@@ -1,7 +1,9 @@
 import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
-  act, screen, userEvent, within,
+  act, screen, userEvent, waitFor, within,
 } from "@testing-library/react-native";
+import { emailAvailable } from "components/LoginSignUp/AuthenticationService";
+import { signInWithGoogle } from "components/LoginSignUp/loginFormHelpers";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
@@ -50,6 +52,12 @@ jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
   emailAvailable: jest.fn( ( ) => Promise.resolve( true ) ),
   registerUser: jest.fn( ( ) => Promise.resolve( null ) ),
   authenticateUser: jest.fn( ( ) => Promise.resolve( { success: true } ) ),
+} ) );
+
+// Stands in for the Apple and Google sheets and the iNat sign-in behind them
+jest.mock( "components/LoginSignUp/loginFormHelpers", ( ) => ( {
+  signInWithApple: jest.fn( ),
+  signInWithGoogle: jest.fn( ),
 } ) );
 
 const actor = userEvent.setup( );
@@ -118,7 +126,13 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   ];
   const STEP_IDS = STEPS_IN_ORDER.map( ( [stepId] ) => stepId );
 
+  const enterEmail = async email => {
+    const step = await screen.findByTestId( "Onboarding.signup_email" );
+    await actor.type( within( step ).getByTestId( "Onboarding.signup_email.email" ), email );
+  };
+
   const continueFrom = async stepId => {
+    if ( stepId === "signup_email" ) await enterEmail( "new@example.com" );
     const step = await screen.findByTestId( `Onboarding.${stepId}` );
     await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.next` ) );
   };
@@ -228,6 +242,9 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     requestMultiple.mockImplementation(
       ( ) => Promise.resolve( locationResults( RESULTS.GRANTED ) ),
     );
+    emailAvailable.mockClear( );
+    signInWithGoogle.mockReset( );
+    signInWithGoogle.mockResolvedValue( { success: true } );
   } );
 
   afterEach( ( ) => {
@@ -452,5 +469,150 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
       expect( navigationContainer.current.getCurrentRoute( ).name ).toBe( "MyObservationsResults" );
     } );
+  } );
+
+  describe( "sign-up email step", ( ) => {
+    const findEmailStep = ( ) => screen.findByTestId( "Onboarding.signup_email" );
+    const continueButton = ( ) => screen.getByTestId( "Onboarding.signup_email.next" );
+
+    it( "disables Continue until an email is entered", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      expect( continueButton( ) ).toBeDisabled( );
+      await enterEmail( "   " );
+      expect( continueButton( ) ).toBeDisabled( );
+      await enterEmail( "new@example.com" );
+      expect( continueButton( ) ).toBeEnabled( );
+    } );
+
+    it(
+      "passes an unused email to the username/password step, and going back keeps it",
+      async ( ) => {
+        const { navigationContainer } = renderAppWithNavigationContainer( );
+        await continueTo( "signup_email" );
+        await enterEmail( " new@example.com " );
+        await actor.press( continueButton( ) );
+        expect( await screen.findByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+        expect( emailAvailable ).toHaveBeenCalledWith( "new@example.com" );
+        expect( navigationContainer.current.getCurrentRoute( ).params ).toEqual( {
+          email: "new@example.com",
+        } );
+        act( ( ) => navigationContainer.current.goBack( ) );
+        expect( await findEmailStep( ) ).toBeVisible( );
+        // Button ignores presses for a moment after each one
+        await waitFor( ( ) => expect( continueButton( ) ).toBeEnabled( ) );
+      },
+    );
+
+    it( "shows an error and stays when the email is already in use", async ( ) => {
+      emailAvailable.mockResolvedValueOnce( false );
+      renderApp( );
+      await continueTo( "signup_email" );
+      await enterEmail( "taken@example.com" );
+      await actor.press( continueButton( ) );
+      expect( await screen.findByText(
+        i18next.t( "That-email-is-already-associated-with-an-account" ),
+      ) ).toBeVisible( );
+      expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+    } );
+
+    it(
+      "shows a connection error when the email can't be checked, and clears it on edit",
+      async ( ) => {
+        emailAvailable.mockRejectedValueOnce( new Error( "Network request failed" ) );
+        renderApp( );
+        await continueTo( "signup_email" );
+        await enterEmail( "new@example.com" );
+        await actor.press( continueButton( ) );
+        const connectionError = i18next.t( "Connection-problem-Please-try-again-later" );
+        expect( await screen.findByText( connectionError ) ).toBeVisible( );
+        await enterEmail( "x" );
+        expect( screen.queryByText( connectionError ) ).toBeNull( );
+      },
+    );
+
+    it( "locks the email field while the email is being checked", async ( ) => {
+      let finishCheck;
+      emailAvailable.mockReturnValueOnce( new Promise( resolve => { finishCheck = resolve; } ) );
+      renderApp( );
+      await continueTo( "signup_email" );
+      await enterEmail( "taken@example.com" );
+      await actor.press( continueButton( ) );
+      const emailField = screen.getByTestId( "Onboarding.signup_email.email" );
+      expect( emailField ).toBeDisabled( );
+      await act( async ( ) => finishCheck( false ) );
+      expect( emailField ).toBeEnabled( );
+    } );
+
+    it( "stays where the user went back to when the check finishes afterward", async ( ) => {
+      let finishCheck;
+      emailAvailable.mockReturnValueOnce( new Promise( resolve => { finishCheck = resolve; } ) );
+      renderApp( );
+      await continueTo( "signup_email" );
+      await enterEmail( "new@example.com" );
+      await actor.press( continueButton( ) );
+      await actor.press( screen.getByTestId( "Onboarding.signup_email.back" ) );
+      expect( await screen.findByTestId( "Onboarding.impact" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+      await act( async ( ) => finishCheck( true ) );
+      expect( screen.getByTestId( "Onboarding.impact" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+    } );
+
+    it( "holds off Continue while signing in with Google", async ( ) => {
+      let finishSignIn;
+      signInWithGoogle.mockReturnValueOnce( new Promise( resolve => { finishSignIn = resolve; } ) );
+      renderApp( );
+      await continueTo( "signup_email" );
+      await enterEmail( "new@example.com" );
+      await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
+      expect( continueButton( ) ).toBeDisabled( );
+      await act( async ( ) => finishSignIn( { success: false } ) );
+      expect( continueButton( ) ).toBeEnabled( );
+    } );
+
+    it( "shows the location step after signing in with Google during onboarding", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+      expect( mockOnboarding.shown ).toBeFalsy( );
+    } );
+
+    it(
+      "shows my observations after signing in with Google from sign-up opened from Login "
+      + "once onboarding is done",
+      async ( ) => {
+        mockOnboarding.shown = true;
+        const { navigationContainer } = renderAppWithNavigationContainer( );
+        await findMyObservations( );
+        await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
+        await signUpFromLogin( );
+        await findEmailStep( );
+        await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
+        await findMyObservations( );
+        expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+        expect( navigationContainer.current.getCurrentRoute( ).name )
+          .toBe( "MyObservationsResults" );
+      },
+    );
+
+    it(
+      "stays on the email step and lets the user try again when Google sign-in is cancelled",
+      async ( ) => {
+        signInWithGoogle.mockResolvedValueOnce( { success: false } );
+        renderApp( );
+        await continueTo( "signup_email" );
+        const googleButton = screen.getByTestId( "ThirdPartySignIn.google" );
+        await actor.press( googleButton );
+        expect( signInWithGoogle ).toHaveBeenCalled( );
+        expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Onboarding.location_explainer" ) ).toBeNull( );
+        expect( googleButton ).toBeEnabled( );
+      },
+    );
   } );
 } );

@@ -51,19 +51,21 @@ const LoginStackNavigator = ( { navigation }: RootStackScreenProps ) => {
     const returnToLogin = ( ) => {
       navigation.navigate( "LoginStackNavigator", { screen: "Login", pop: true } );
     };
+    const showMyObservations = ( ) => afterSignIn( navigation, ( ) => {
+      navigation.navigate( "TabNavigator", {
+        screen: "ObservationsTab",
+        params: {
+          initialRouteName: "ObsList",
+          screen: "ObsList",
+        },
+      }, { pop: true } );
+    } );
     return {
       steps: SIGN_UP_STEPS,
-      onFinish: ( ) => afterSignIn( navigation, ( ) => {
-        navigation.navigate( "TabNavigator", {
-          screen: "ObservationsTab",
-          params: {
-            initialRouteName: "ObsList",
-            screen: "ObsList",
-          },
-        }, { pop: true } );
-      } ),
+      onFinish: showMyObservations,
       onExit: returnToLogin,
       onLogIn: returnToLogin,
+      onSignIn: showMyObservations,
     };
   }, [afterSignIn, navigation] );
 

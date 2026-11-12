@@ -13,6 +13,7 @@ import LocationExplainerStep from "components/Onboarding/steps/LocationExplainer
 import ObsStoryStep from "components/Onboarding/steps/ObsStoryStep";
 import ResearchGradeStep from "components/Onboarding/steps/ResearchGradeStep";
 import WelcomeStep from "components/Onboarding/steps/WelcomeStep";
+import useAfterSignIn from "components/Onboarding/useAfterSignIn";
 import { preventSwipeToGoBack } from "navigation/navigationOptions";
 import type { OnboardingStackParamList, RootStackScreenProps } from "navigation/types";
 import type { ComponentType } from "react";
@@ -37,10 +38,10 @@ const STEP_COMPONENTS: Record<OnboardingStepId, ComponentType> = {
 const OnboardingStackNavigator = ( { navigation }: RootStackScreenProps ) => {
   const onboardingV2Enabled = useFeatureFlag( FeatureFlag.OnboardingV2Enabled );
   const [, setOnboardingShown] = useOnboardingShown( );
+  const afterSignIn = useAfterSignIn( );
 
-  const firstRunHost = useMemo<OnboardingFlowHost>( ( ) => ( {
-    steps: FIRST_RUN_STEP_IDS,
-    onFinish: ( ) => {
+  const firstRunHost = useMemo<OnboardingFlowHost>( ( ) => {
+    const finishOnboarding = ( ) => {
       // Name the destination explicitly rather than relying on
       // RootStackNavigator falling back to its first registered screen once
       // onboardingShown unregisters the onboarding stack
@@ -49,18 +50,23 @@ const OnboardingStackNavigator = ( { navigation }: RootStackScreenProps ) => {
         routes: [{ name: "TabNavigator" }],
       } );
       setOnboardingShown( true );
-    },
-    onExit: sheet => {
-      if ( sheet === "demo" ) {
-        navigation.navigate( "OnboardingStackNavigator", { screen: "signup_email" } );
-      } else {
-        showLocationStep( navigation );
-      }
-    },
-    onLogIn: stepId => {
-      openLogin( navigation, { fromSignUp: stepId === "signup_email" } );
-    },
-  } ), [navigation, setOnboardingShown] );
+    };
+    return {
+      steps: FIRST_RUN_STEP_IDS,
+      onFinish: finishOnboarding,
+      onExit: sheet => {
+        if ( sheet === "demo" ) {
+          navigation.navigate( "OnboardingStackNavigator", { screen: "signup_email" } );
+        } else {
+          showLocationStep( navigation );
+        }
+      },
+      onLogIn: stepId => {
+        openLogin( navigation, { fromSignUp: stepId === "signup_email" } );
+      },
+      onSignIn: ( ) => afterSignIn( navigation, finishOnboarding ),
+    };
+  }, [afterSignIn, navigation, setOnboardingShown] );
 
   return (
     <OnboardingFlowProvider value={firstRunHost}>
