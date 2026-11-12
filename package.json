@@ -92,7 +92,7 @@
     "i18next": "^26.0.4",
     "i18next-fluent": "^2.0.0",
     "i18next-resources-to-backend": "^1.2.1",
-    "inaturalistjs": "github:inaturalist/inaturalistjs#a522c8986554f9ae03a85b6c03c5c6806092c1e4",
+    "inaturalistjs": "github:inaturalist/inaturalistjs#54a89c03ea98ad547592164d3bf09feb7e65be43",
     "intl-pluralrules": "^2.0.1",
     "jsrsasign": "^11.1.1",
     "linkify-html": "^4.3.2",

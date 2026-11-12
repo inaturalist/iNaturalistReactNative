@@ -1,5 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
-import { SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
+import { LIMITED_TAXON_FIELDS, SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiSpeciesCountSummary, ApiTaxon } from "api/types";
 import ExploreFlashList from "components/Explore/ExploreFlashList";
@@ -10,7 +10,6 @@ import type {
 } from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import i18n from "i18next";
 import React, { useCallback, useMemo } from "react";
-import Taxon from "realmModels/Taxon";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import type { SpeciesCountsSortAPIParams } from "sharedHelpers/speciesSort";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -55,7 +54,7 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
       per_page: SPECIES_PAGE_SIZE,
       ...( !currentUser && { locale } ),
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS,
+        taxon: LIMITED_TAXON_FIELDS,
       },
     },
     { enabled },

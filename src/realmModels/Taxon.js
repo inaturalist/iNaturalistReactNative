@@ -1,27 +1,8 @@
 import { Realm } from "@realm/react";
-import { LIMITED_TAXON_FIELDS } from "api/fields";
 
 import Photo from "./Photo";
 
 class Taxon extends Realm.Object {
-  static TAXON_FIELDS = {
-    ancestor_ids: true,
-    default_photo: {
-      id: true,
-      url: true,
-      attribution: true,
-      license_code: true,
-    },
-    iconic_taxon_name: true,
-    is_active: true,
-    name: true,
-    preferred_common_name: true,
-    rank: true,
-    rank_level: true,
-  };
-
-  static LIMITED_TAXON_FIELDS = LIMITED_TAXON_FIELDS;
-
   static STATEOFMATTER_LEVEL = 100;
 
   static KINGDOM_LEVEL = 70;
@@ -176,12 +157,21 @@ class Taxon extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
+      _searchableName: {
+        type: "string",
+        indexed: "full-text",
+        optional: true,
+      },
+      _synced_at: "date?",
+      ancestor_ids: "int[]",
       default_photo: {
         type: "object",
         objectType: "Photo",
         mapTo: "defaultPhoto",
         optional: true,
       },
+      iconic_taxon_name: "string?",
+      isIconic: "bool?",
       name: {
         type: "string",
         // indexed: "full-text",
@@ -193,17 +183,8 @@ class Taxon extends Realm.Object {
         mapTo: "preferredCommonName",
         optional: true,
       },
-      _searchableName: {
-        type: "string",
-        indexed: "full-text",
-        optional: true,
-      },
       rank: "string?",
       rank_level: "float?",
-      isIconic: "bool?",
-      iconic_taxon_name: "string?",
-      ancestor_ids: "int[]",
-      _synced_at: "date?",
       taxonPhotos: "TaxonPhoto[]",
     },
   };
