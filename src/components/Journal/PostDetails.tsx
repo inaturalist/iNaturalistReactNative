@@ -24,7 +24,7 @@ const PostDetails = ( ) => {
   const {
     data: post,
     isError,
-    isPending,
+    isLoading,
   } = useAuthenticatedQuery<ApiPost>(
     ["fetchPost", id],
     optsWithAuth => {
@@ -36,7 +36,7 @@ const PostDetails = ( ) => {
     },
   );
 
-  if ( isPending ) {
+  if ( isLoading ) {
     return (
       <ScreenShell testID="PostDetails.loading">
         <View className="flex-1 justify-center items-center">
