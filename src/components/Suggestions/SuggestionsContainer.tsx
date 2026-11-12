@@ -355,18 +355,44 @@ const SuggestionsContainer = ( ) => {
   const [localFilePathToCrop, setLocalFilePathToCrop] = useState<string | null>( null );
   const closeCropper = useCallback( ( ) => setLocalFilePathToCrop( null ), [] );
 
-  // Swap the cropped copy into the observation, then select it, which fetches
-  // new suggestions for it
+  // Selecting a photo fetches new suggestions for it
+  const selectPhoto = useCallback( async ( uri: string ) => {
+    const newImageParams = await createUploadParams( uri, shouldUseEvidenceLocation );
+    dispatch( {
+      type: "SELECT_PHOTO",
+      selectedPhotoUri: uri,
+      scoreImageParams: newImageParams,
+    } );
+  }, [createUploadParams, dispatch, shouldUseEvidenceLocation] );
+
+  // Swap the cropped copy into the observation, then select it
   const selectCroppedPhoto = useCallback( async ( uri: string, newLocalFilePath: string ) => {
     replacePhotoInObservation( uri, newLocalFilePath );
     const croppedUri = Photo.getLocalPhotoUri( newLocalFilePath );
-    const newImageParams = await createUploadParams( croppedUri, shouldUseEvidenceLocation );
+    if ( croppedUri ) await selectPhoto( croppedUri );
+  }, [replacePhotoInObservation, selectPhoto] );
+
+  // The selected photo's URI after edits made in the media viewer. It's
+  // selected when the viewer closes, so a run of edits fetches suggestions
+  // once, and only if the selected photo was the one edited
+  const [editedSelectedPhotoUri, setEditedSelectedPhotoUri] = useState<string | null>( null );
+  const editPhotoInViewer = useCallback( ( uri: string, newLocalFilePath: string ) => {
+    replacePhotoInObservation( uri, newLocalFilePath );
+    if ( uri === ( editedSelectedPhotoUri || selectedPhotoUri ) ) {
+      setEditedSelectedPhotoUri( Photo.getLocalPhotoUri( newLocalFilePath ) || null );
+    }
+  }, [editedSelectedPhotoUri, replacePhotoInObservation, selectedPhotoUri] );
+
+  const closeMediaViewer = useCallback( ( ) => {
     dispatch( {
-      type: "SELECT_PHOTO",
-      selectedPhotoUri: croppedUri,
-      scoreImageParams: newImageParams,
+      type: "TOGGLE_MEDIA_VIEWER",
+      mediaViewerVisible: false,
     } );
-  }, [createUploadParams, dispatch, replacePhotoInObservation, shouldUseEvidenceLocation] );
+    if ( editedSelectedPhotoUri ) {
+      setEditedSelectedPhotoUri( null );
+      selectPhoto( editedSelectedPhotoUri );
+    }
+  }, [dispatch, editedSelectedPhotoUri, selectPhoto] );
 
   const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
 
@@ -443,10 +469,10 @@ const SuggestionsContainer = ( ) => {
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => dispatch( {
-          type: "TOGGLE_MEDIA_VIEWER",
-          mediaViewerVisible: false,
-        } )}
+        onClose={closeMediaViewer}
+        onEditPhoto={photoEditingEnabled
+          ? editPhotoInViewer
+          : undefined}
         uri={selectedPhotoUri}
         photos={innerPhotos}
       />
