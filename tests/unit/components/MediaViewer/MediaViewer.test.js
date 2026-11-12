@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react-native";
+import { photoUploadPath } from "appConstants/paths";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import React from "react";
 import factory from "tests/factory";
@@ -74,6 +75,20 @@ describe( "MediaViewer", ( ) => {
         renderComponent( <MediaViewer photos={photos} editable /> );
         await screen.findByLabelText( "Delete photo" );
         expect( screen.queryByTestId( "AttributionButton" ) ).toBeFalsy( );
+      } );
+    } );
+
+    describe( "when the screen handles photo edits but not deletes", ( ) => {
+      const photos = [factory( "LocalPhoto", {
+        url: undefined,
+        localFilePath: `${photoUploadPath}/local.jpg`,
+      } )];
+
+      it( "should offer rotating and cropping without deleting", async ( ) => {
+        renderComponent( <MediaViewer photos={photos} onEditPhoto={jest.fn( )} /> );
+        expect( await screen.findByLabelText( "Rotate photo" ) ).toBeVisible( );
+        expect( screen.getByLabelText( "Crop photo" ) ).toBeVisible( );
+        expect( screen.queryByLabelText( "Delete photo" ) ).toBeNull( );
       } );
     } );
 

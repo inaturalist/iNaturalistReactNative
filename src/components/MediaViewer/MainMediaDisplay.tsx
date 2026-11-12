@@ -85,7 +85,11 @@ const MainMediaDisplay = ( {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
     const { localFilePath } = photo;
-    const canEditPhoto = editable && !photo.url && !!localFilePath;
+    // Editing is offered wherever the screen handles it, separately from
+    // deleting for now, and only for photos that haven't been uploaded
+    const canEditPhoto = ( !!onRotatePhoto || !!onCropPhoto )
+      && !photo.url
+      && !!localFilePath;
     return (
       <View className="flex-1">
         <CustomImageZoom
