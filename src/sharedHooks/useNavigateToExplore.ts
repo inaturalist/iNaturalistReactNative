@@ -12,10 +12,7 @@ import type {
 } from "providers/ExploreV2Context";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import { useCallback } from "react";
-import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useStoredLayout from "sharedHooks/useStoredLayout";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
 
 interface NavigateToExploreOptions {
   taxon?: ApiTaxon | null;
@@ -48,17 +45,11 @@ const toSubject = ( {
   return null;
 };
 
-// Single place that knows how to open Explore from outside of it: which of the
-// two Explore implementations is live, and what each one expects
+// Single place that knows how to open Explore from outside of it
 const useNavigateToExplore = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<
     "TaxonDetails" | "UserProfile" | "ProjectDetails" | "ProjectRequirements"
   >["navigation"]>( );
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
-  const setExploreView = useStore( state => state.setExploreView );
-  const { writeLayoutToStorage: writeLegacyLayout } = useStoredLayout(
-    "exploreObservationsLayout",
-  );
   const { writeLayoutToStorage: writeLayout } = useStoredLayout(
     "exploreV2ObservationsLayout",
   );
@@ -72,33 +63,7 @@ const useNavigateToExplore = ( ) => {
     layout,
   }: NavigateToExploreOptions ) => {
     if ( layout ) {
-      if ( exploreV2Enabled ) {
-        writeLayout( layout );
-      } else {
-        writeLegacyLayout( layout );
-      }
-    }
-
-    const hasPlace = Boolean( place?.id );
-
-    if ( !exploreV2Enabled ) {
-      // V1 keeps the observations/species choice in the store, not in params
-      setExploreView( tab );
-      navigation.navigate( "Explore", {
-        ...( taxon
-          ? { taxon }
-          : {} ),
-        ...( user
-          ? { user }
-          : {} ),
-        ...( project
-          ? { project }
-          : {} ),
-        ...( hasPlace
-          ? { place }
-          : { worldwide: true } ),
-      } );
-      return;
+      writeLayout( layout );
     }
 
     const subject = toSubject( { taxon, user, project } );
@@ -110,13 +75,7 @@ const useNavigateToExplore = ( ) => {
       location: placeLocation( place ),
       activeTab: tab,
     } );
-  }, [
-    exploreV2Enabled,
-    navigation,
-    setExploreView,
-    writeLayout,
-    writeLegacyLayout,
-  ] );
+  }, [navigation, writeLayout] );
 };
 
 export default useNavigateToExplore;

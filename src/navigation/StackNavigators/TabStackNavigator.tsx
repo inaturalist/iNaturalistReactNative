@@ -6,9 +6,7 @@ import Log from "components/Developer/Log";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
-import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
-import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
 import Journal from "components/Journal/Journal";
 import PostDetails from "components/Journal/PostDetails";
@@ -42,8 +40,6 @@ import {
 import { StackHostProvider } from "navigation/StackHostContext";
 import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
-import useFeatureFlag from "sharedHooks/useFeatureFlag";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -168,13 +164,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const initialRouteName
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
-  const ExploreScreen = exploreV2Enabled
-    ? ExploreV2Container
-    : ExploreContainer;
-  const RootExploreScreen = exploreV2Enabled
-    ? ExploreV2Container
-    : RootExploreContainer;
   return (
     <StackHostProvider value={{ hasBottomTabBar: true }}>
       <Stack.Navigator
@@ -203,7 +192,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name={SCREEN_NAME_ROOT_EXPLORE}
-            component={RootExploreScreen}
+            component={ExploreV2Container}
             options={{
               ...preventSwipeToGoBack,
               animation: "none",
@@ -211,7 +200,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name="Explore"
-            component={ExploreScreen}
+            component={ExploreV2Container}
           />
           <Stack.Screen
             name="ObsDetails"
