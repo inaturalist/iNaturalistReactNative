@@ -2,6 +2,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";
+import PostDetails from "components/Journal/PostDetails";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MatchContainer from "components/Match/MatchContainer";
 import MatchTaxonSearchScreen from "components/Match/MatchTaxonSearchScreen";
@@ -37,6 +38,11 @@ const addToProjectsTitle = () => (
     {t( "ADD-TO-PROJECTS" )}
   </Heading4>
 );
+const postDetailsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "JOURNAL-POST" )}
+  </Heading4>
+);
 
 const Stack = createNativeStackNavigator<SharedStackParamList>( );
 
@@ -52,6 +58,7 @@ const FadeInMatchTaxonSearchScreen = ( ) => fadeInComponent( <MatchTaxonSearchSc
 const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
 const FadeInMatchContainer = ( ) => fadeInComponent( <MatchContainer /> );
 const FadeInAddToProjects = ( ) => fadeInComponent( <AddToProjects /> );
+const FadeInPostDetails = ( ) => fadeInComponent( <PostDetails /> );
 
 const BASE_SCREEN_OPTIONS = {
   contentStyle: {
@@ -142,6 +149,11 @@ const SharedStackScreens = ( ) => (
       name="FullPageWebView"
       component={FadeInFullPageWebView}
       options={showSimpleCustomHeader}
+    />
+    <Stack.Screen
+      name="PostDetails"
+      component={FadeInPostDetails}
+      options={{ headerTitle: postDetailsTitle }}
     />
   </Stack.Group>
 );

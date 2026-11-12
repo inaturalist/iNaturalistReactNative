@@ -209,6 +209,10 @@ export type SharedStackParamList = {
     initialUrl: string;
     loggedIn: boolean;
   };
+  // From PostList and inatUrlNavigation
+  PostDetails: {
+    id: number;
+  };
 };
 
 // Note from the documentation:
@@ -345,9 +349,6 @@ export type BaseTabStackParamList = {
     userId?: number;
     userLogin?: string;
   } | undefined;
-  PostDetails: {
-    id: number;
-  };
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
