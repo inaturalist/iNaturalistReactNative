@@ -6,7 +6,10 @@ interface LayoutHook {
   writeLayoutToStorage: ( newValue: string ) => void;
 }
 
-const MAP_DEFAULT_STORAGE_KEYS = ["exploreV2ObservationsLayout"];
+// Keeps its pre-rename value so users' saved Explore layout survives
+export const EXPLORE_LAYOUT_STORAGE_KEY = "exploreV2ObservationsLayout";
+
+const MAP_DEFAULT_STORAGE_KEYS = [EXPLORE_LAYOUT_STORAGE_KEY];
 
 const useStoredLayout = ( storageKey: string ): LayoutHook => {
   const [layout, setLayout] = useState<string | null>( null );

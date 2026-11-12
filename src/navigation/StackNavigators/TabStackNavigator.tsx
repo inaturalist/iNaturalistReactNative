@@ -6,7 +6,7 @@ import Log from "components/Developer/Log";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
-import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
+import ExploreContainer from "components/Explore/ExploreContainer";
 import Help from "components/Help/Help";
 import Journal from "components/Journal/Journal";
 import PostDetails from "components/Journal/PostDetails";
@@ -192,7 +192,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name={SCREEN_NAME_ROOT_EXPLORE}
-            component={ExploreV2Container}
+            component={ExploreContainer}
             options={{
               ...preventSwipeToGoBack,
               animation: "none",
@@ -200,7 +200,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name="Explore"
-            component={ExploreV2Container}
+            component={ExploreContainer}
           />
           <Stack.Screen
             name="ObsDetails"

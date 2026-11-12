@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-native";
 import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
-import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
+import { EXPLORE_PLACE_MODE } from "providers/ExploreContext";
 import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
 import { zustandStorage } from "stores/useStore";
 
@@ -36,7 +36,7 @@ describe( "useNavigateToExplore", ( ) => {
 
     expect( mockNavigate ).toHaveBeenCalledWith( "Explore", {
       subject: { type: "taxon", taxon: { id: taxon.id, name: taxon.name } },
-      location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+      location: { placeMode: EXPLORE_PLACE_MODE.WORLDWIDE },
       activeTab: OBSERVATIONS_TAB,
     } );
   } );
@@ -60,7 +60,7 @@ describe( "useNavigateToExplore", ( ) => {
     navigateToExplore( { taxon: { name: "Aves" }, place } );
 
     expect( mockNavigate ).toHaveBeenCalledWith( "Explore", {
-      location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place },
+      location: { placeMode: EXPLORE_PLACE_MODE.PLACE, place },
       activeTab: OBSERVATIONS_TAB,
     } );
   } );
@@ -69,7 +69,7 @@ describe( "useNavigateToExplore", ( ) => {
     navigateToExplore( { taxon, place: { display_name: "Somewhere" } } );
 
     expect( mockNavigate ).toHaveBeenCalledWith( "Explore", expect.objectContaining( {
-      location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+      location: { placeMode: EXPLORE_PLACE_MODE.WORLDWIDE },
     } ) );
   } );
 
@@ -88,7 +88,7 @@ describe( "useNavigateToExplore", ( ) => {
           icon: "https://example.com/project.png",
         },
       },
-      location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place },
+      location: { placeMode: EXPLORE_PLACE_MODE.PLACE, place },
     } ) );
   } );
 

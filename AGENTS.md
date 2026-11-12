@@ -125,7 +125,7 @@ The app uses a hybrid state management approach:
   - `createUploadObservationsSlice` - Upload queue and status
   - `createSyncObservationsSlice` - Syncing observations from server
   - `createLayoutSlice` - UI preferences and flags (default vs advanced mode, obs-detail tab, screen-after-photo, shown-once flags)
-  - `createExploreV2SearchesSlice` / `createExploreV2AdvancedSearchSlice` - Explore recent and saved searches, advanced-search mode
+  - `createExploreSearchesSlice` / `createExploreAdvancedSearchSlice` - Explore recent and saved searches, advanced-search mode
   - `createMyObservationsSlice` - My Observations sort, search, per-view state, and scroll position
   - `createFeatureFlagSlice` - Feature flag state
   - See `src/stores/` for the complete list of slices.
@@ -133,7 +133,7 @@ The app uses a hybrid state management approach:
 - **React Query** - Server state management and API caching (uses `@tanstack/react-query`)
 
 - **React Context** - Feature-specific state:
-  - `ExploreV2Context` - Explore search state (subject, location, filters, sort)
+  - `ExploreContext` - Explore search state (subject, location, filters, sort)
   - `RealmContext` - Realm database access
   - Note that a context mounted inside a bottom-tab screen does **not** survive tab switches or a trip to the camera — the tab tree is unmounted and reset out from under it. State that needs to last a session belongs in a Zustand slice; see the "Screen state that has to live in Zustand" section of the doc linked below.
 
