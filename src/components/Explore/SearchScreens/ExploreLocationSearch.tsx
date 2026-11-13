@@ -32,7 +32,7 @@ interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
   onSelectNearby: ( ) => Promise<void> | void;
-  // Optional: exploreV2 relies on ExploreResults for all perms handling
+  // Optional: explore relies on ExploreResults for all perms handling
   renderPermissionsGate?: RenderLocationPermissionsGateFunction;
   requestPermissions?: ( ) => void;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;

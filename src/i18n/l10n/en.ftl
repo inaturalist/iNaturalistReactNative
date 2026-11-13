@@ -107,8 +107,6 @@ All-required-fields-have-been-filled = All required fields have been filled
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
-# Title in explore filters
-ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # Button asking if user has an existing iNaturalist account
 Already-have-an-iNaturalist-account = Already have an iNaturalist account?
@@ -149,8 +147,6 @@ APP-LANGUAGE = APP LANGUAGE
 # function if you want, but the easiest thing to do is probably just to alter
 # the order of the pieces.
 apple-full-name = { JOIN($namePrefix, $givenName, $middleName, $nickname, $familyName, $nameSuffix, separator: " ") }
-APPLY-FILTERS = APPLY FILTERS
-Apply-filters = Apply filters
 # Month of April
 April = April
 # Display name for the iconic taxa category for arachnida
@@ -225,8 +221,6 @@ CHANGE-START-DATE = CHANGE START DATE
 # Label for a button that changes a selected start date
 Change-start-date = Change start date
 Change-taxon = Change taxon
-# Button that changes the taxon filter on Explore
-Change-taxon-filter = Change taxon filter
 Change-user = Change user
 # Label for a button that cycles through zoom levels for the camera
 Change-zoom = Change zoom
@@ -537,12 +531,6 @@ EXPAND-MAP = EXPAND MAP
 # Onboarding carousel second screen description
 Experts-help-verify-and-improve-IDs = Experts help verify and improve IDs
 Explore = Explore
-EXPLORE = EXPLORE
-Explore-Filters = Explore Filters
-EXPLORE-IDENTIFIERS = EXPLORE IDENTIFIERS
-EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
-EXPLORE-OBSERVERS = EXPLORE OBSERVERS
-EXPLORE-SPECIES = EXPLORE SPECIES
 Failed-to-delete-sound = Failed to delete sound
 # Error message with log in fails
 Failed-to-log-in = Failed to log in
@@ -627,7 +615,6 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
        *[other] IDENTIFICATIONS
     }
 Identifiers = Identifiers
-Identifiers-View = Identifiers View
 # Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
 IDENTIFY = IDENTIFY
 # Title of screen asking for permission to access the camera
@@ -683,11 +670,8 @@ INATURALIST-SETTINGS = INATURALIST SETTINGS
 INATURALIST-STAFF = { $inaturalist } STAFF
 INATURALIST-STORE = INATURALIST STORE
 INATURALIST-TEAM = INATURALIST TEAM
-iNaturalist-users-who-have-left-an-identification = iNaturalist users who have left an identification on another user's observation
-iNaturalist-users-who-have-observed = iNaturalist users who have observed a particular taxon at a particular time and place
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
-Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
 # Display name for the iconic taxa category for insecta
 Insects = Insects
 # Title for dialog telling the user that an Internet connection is required
@@ -960,7 +944,6 @@ Observations-added-least-recently-appear-first = Observations added least recent
 # Description for observations sort order
 Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
-Observations-View = Observations View
 # Description for observations sort order
 Observations-with-the-most-faves-appear-first = Observations with the most faves appear first
 # Description for observations sort order
@@ -982,8 +965,6 @@ OBSERVED-AT--label = OBSERVED AT
 OBSERVED-IN--label = OBSERVED IN
 observer-must-allow-project-curators-to-view-coordinates = observer must allow project curators to view coordinates
 Observers = Observers
-# Section in Explore that shows people who added observations given a set of search filters
-Observers-View = Observers View
 # Month of October
 October = October
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
@@ -1017,7 +998,6 @@ OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
-Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
 # Display name for the iconic taxa category for other: anything that doesn't fit into another category
 Other = Other
 # Display name for the iconic taxa category for animalia: anything that is an animal, but doesn't fit into a tighter category
@@ -1361,7 +1341,6 @@ Species-first-observed-least-recently-appear-first = Species first observed leas
 # Description of the Date Observed: Newest species sort order
 Species-first-observed-recently-appear-first = Species first observed recently appear first
 Species-I-havent-observed = Species I haven't observed
-Species-View = Species View
 Species-with-the-least-observations-appear-first = Species with the least observations appear first
 Species-with-the-most-observations-appear-first = Species with the most observations appear first
 SPECIES-WITHOUT-NUMBER =
@@ -1614,11 +1593,6 @@ x-identifications =
         [one] { $count } identification
        *[other] { $count } identifications
     }
-X-Identifiers =
-    { $count ->
-        [one] { $count } Identifier
-       *[other] { $count } Identifiers
-    }
 # Label for a count of identifiers that appears above this text
 X-IDENTIFIERS--below-number =
     { $count ->
@@ -1658,11 +1632,6 @@ X-observations-uploaded =
     { $count ->
         [one] 1 observation uploaded
        *[other] { $count } observations uploaded
-    }
-X-Observers =
-    { $count ->
-        [one] { $count } Observer
-       *[other] { $count } Observers
     }
 # Label for a count of observers that appears above this text
 X-OBSERVERS--below-number =
@@ -1719,11 +1688,6 @@ X-SOUNDS =
     { $count ->
         [one] 1 SOUND
        *[other] { $count } SOUNDS
-    }
-X-Species =
-    { $count ->
-        [one] { $count } Species
-       *[other] { $count } Species
     }
 # Label for a count of observations that appears above this text
 X-SPECIES--below-number =

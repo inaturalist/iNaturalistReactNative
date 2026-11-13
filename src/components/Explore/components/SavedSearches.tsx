@@ -1,0 +1,43 @@
+import SavedSearchRow from "components/Explore/components/SavedSearchRow";
+import SearchSectionHeader
+  from "components/Explore/components/SearchSectionHeader";
+import { View } from "components/styledComponents";
+import React from "react";
+import useTranslation from "sharedHooks/useTranslation";
+import type { SavedSearch } from "stores/createExploreSearchesSlice";
+import useStore from "stores/useStore";
+
+interface Props {
+  hideHeader?: boolean;
+  onSelect: ( search: SavedSearch ) => void;
+}
+
+const SavedSearches = ( { hideHeader = false, onSelect }: Props ) => {
+  const { t } = useTranslation( );
+  const searches = useStore( state => state.exploreSavedSearches.searches );
+  const removeSearch = useStore( state => state.exploreSavedSearches.removeSearch );
+
+  if ( searches.length === 0 ) { return null; }
+
+  return (
+    <View testID="SavedSearches">
+      {!hideHeader && (
+        <SearchSectionHeader
+          icon="star-bold-outline"
+          testID="SavedSearches.header"
+          title={t( "Saved-searches" )}
+        />
+      )}
+      {searches.map( search => (
+        <SavedSearchRow
+          key={search.key}
+          onDelete={( ) => removeSearch( search.key )}
+          onPress={( ) => onSelect( search )}
+          search={search}
+        />
+      ) )}
+    </View>
+  );
+};
+
+export default React.memo( SavedSearches );

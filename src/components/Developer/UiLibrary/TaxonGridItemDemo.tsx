@@ -6,7 +6,6 @@ import {
 } from "components/SharedComponents";
 import TaxonGridItem from "components/SharedComponents/TaxonGridItem";
 import { View } from "components/styledComponents";
-import { ExploreProvider } from "providers/ExploreContext";
 import React from "react";
 
 import { makePhoto } from "./ObsListItemDemo";
@@ -39,37 +38,35 @@ const STYLE = {
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const TaxonGridItemDemo = ( ) => (
-  <ExploreProvider>
-    <ScrollViewWrapper>
-      <View className="p-2">
-        <Heading1>Media Preview</Heading1>
-        <Heading2 className="my-2">Photo</Heading2>
-        <TaxonGridItem
-          taxon={makeTaxon( {
-            default_photo: makePhoto( ),
-          } )}
-          style={STYLE}
-        />
-        <Heading2 className="my-2">No Media</Heading2>
-        <TaxonGridItem taxon={makeTaxon()} style={STYLE} />
-        <Heading2 className="my-2">No Media w/ Iconic Taxon</Heading2>
-        <TaxonGridItem
-          taxon={makeTaxon( {
-            iconic_taxon_name: "Arachnida",
-          } )}
-          style={STYLE}
-        />
-        <Heading2 className="my-2">Species Seen</Heading2>
-        <TaxonGridItem
-          taxon={makeTaxon( {
-            default_photo: makePhoto( ),
-          } )}
-          showSpeciesSeenCheckmark
-          style={STYLE}
-        />
-      </View>
-    </ScrollViewWrapper>
-  </ExploreProvider>
+  <ScrollViewWrapper>
+    <View className="p-2">
+      <Heading1>Media Preview</Heading1>
+      <Heading2 className="my-2">Photo</Heading2>
+      <TaxonGridItem
+        taxon={makeTaxon( {
+          default_photo: makePhoto( ),
+        } )}
+        style={STYLE}
+      />
+      <Heading2 className="my-2">No Media</Heading2>
+      <TaxonGridItem taxon={makeTaxon()} style={STYLE} />
+      <Heading2 className="my-2">No Media w/ Iconic Taxon</Heading2>
+      <TaxonGridItem
+        taxon={makeTaxon( {
+          iconic_taxon_name: "Arachnida",
+        } )}
+        style={STYLE}
+      />
+      <Heading2 className="my-2">Species Seen</Heading2>
+      <TaxonGridItem
+        taxon={makeTaxon( {
+          default_photo: makePhoto( ),
+        } )}
+        showSpeciesSeenCheckmark
+        style={STYLE}
+      />
+    </View>
+  </ScrollViewWrapper>
 );
 
 export default TaxonGridItemDemo;

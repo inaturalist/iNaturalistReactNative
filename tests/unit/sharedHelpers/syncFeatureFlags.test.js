@@ -15,7 +15,7 @@ const mockLogger = jest.requireMock( "sharedHelpers/logger" ).log.extend( );
 const mockGet = jest.mocked( inatjs.feature_flags.get );
 
 const PROJECTS_KEY = `client_${FeatureFlag.TraditionalProjectsEnabled}`;
-const EXPLORE_KEY = `client_${FeatureFlag.ExploreV2Enabled}`;
+const ONBOARDING_KEY = `client_${FeatureFlag.OnboardingV2Enabled}`;
 
 describe( "syncFeatureFlags", ( ) => {
   beforeEach( ( ) => {
@@ -50,7 +50,7 @@ describe( "syncFeatureFlags", ( ) => {
   } );
 
   it( "clears API values when the request fails", async ( ) => {
-    mockGet.mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: false } } );
+    mockGet.mockResolvedValueOnce( { flags: { [ONBOARDING_KEY]: false } } );
     await syncFeatureFlags( "user-jwt" );
 
     mockGet.mockRejectedValueOnce( new Error( "Network request failed" ) );
@@ -134,35 +134,35 @@ describe( "syncFeatureFlags", ( ) => {
     let resolveFirst;
     mockGet
       .mockImplementationOnce( ( ) => new Promise( resolve => { resolveFirst = resolve; } ) )
-      .mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: true } } );
+      .mockResolvedValueOnce( { flags: { [ONBOARDING_KEY]: true } } );
 
     const first = syncFeatureFlags( "user-jwt" );
     await syncFeatureFlags( "user-jwt" );
-    resolveFirst( { flags: { [EXPLORE_KEY]: false } } );
+    resolveFirst( { flags: { [ONBOARDING_KEY]: false } } );
     await first;
 
     expect( useStore.getState( ).featureFlagApiValues )
-      .toEqual( { [FeatureFlag.ExploreV2Enabled]: true } );
+      .toEqual( { [FeatureFlag.OnboardingV2Enabled]: true } );
   } );
 
   it( "ignores a response that arrives after the sync was cancelled", async ( ) => {
-    mockGet.mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: true } } );
+    mockGet.mockResolvedValueOnce( { flags: { [ONBOARDING_KEY]: true } } );
     await syncFeatureFlags( "user-jwt" );
     let resolveFetch;
     mockGet.mockImplementationOnce( ( ) => new Promise( resolve => { resolveFetch = resolve; } ) );
     const sync = syncFeatureFlags( "user-jwt" );
 
     cancelFeatureFlagSync( );
-    resolveFetch( { flags: { [EXPLORE_KEY]: false } } );
+    resolveFetch( { flags: { [ONBOARDING_KEY]: false } } );
     await sync;
 
     const { featureFlagApiValues, featureFlagApiStatus } = useStore.getState( );
-    expect( featureFlagApiValues ).toEqual( { [FeatureFlag.ExploreV2Enabled]: true } );
+    expect( featureFlagApiValues ).toEqual( { [FeatureFlag.OnboardingV2Enabled]: true } );
     expect( featureFlagApiStatus ).toEqual( { state: "loading" } );
   } );
 
   it( "ignores a failure that arrives after the sync was cancelled", async ( ) => {
-    mockGet.mockResolvedValueOnce( { flags: { [EXPLORE_KEY]: true } } );
+    mockGet.mockResolvedValueOnce( { flags: { [ONBOARDING_KEY]: true } } );
     await syncFeatureFlags( "user-jwt" );
     let rejectFetch;
     mockGet.mockImplementationOnce(
@@ -175,7 +175,7 @@ describe( "syncFeatureFlags", ( ) => {
     await sync;
 
     const { featureFlagApiValues, featureFlagApiStatus } = useStore.getState( );
-    expect( featureFlagApiValues ).toEqual( { [FeatureFlag.ExploreV2Enabled]: true } );
+    expect( featureFlagApiValues ).toEqual( { [FeatureFlag.OnboardingV2Enabled]: true } );
     expect( featureFlagApiStatus ).toEqual( { state: "loading" } );
   } );
 } );

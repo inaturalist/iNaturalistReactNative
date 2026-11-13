@@ -99,15 +99,15 @@ if ( nonUniqueKeys.length > 0 ) {
 | `createUploadObservationsSlice` | `createUploadObservationsSlice.ts` | No | Upload queue, status, progress |
 | `createSyncObservationsSlice` | `createSyncObservationsSlice.ts` | No | Server sync and deletion queue |
 | `createLayoutSlice` | `createLayoutSlice.ts` | **Yes (MMKV)** | UI preferences, onboarding flags |
-| `createExploreSlice` | `createExploreSlice.ts` | No | Explore tab view type |
-| `createRootExploreSlice` | `createRootExploreSlice.ts` | No | Root explore filters and view |
+| `createExploreSearchesSlice` | `createExploreSearchesSlice.ts` | **Yes (MMKV)** | Explore recent and saved searches |
+| `createExploreAdvancedSearchSlice` | `createExploreAdvancedSearchSlice.ts` | No | Explore advanced-search mode, shared across Explore navigators |
 | `createMyObservationsSlice` | `createMyObservationsSlice.ts` | No | My Observations sort, search, per-view state, scroll position |
 | `createFeatureFlagSlice` | `createFeatureFlagSlice.ts` | No | Feature flags for A/B testing |
 | `createFirebaseTraceSlice` | `createFirebaseTraceSlice.ts` | No | Firebase Performance monitoring |
 
 ### Persistence (MMKV)
 
-Only the `layout` slice persists, plus two legacy root-level fields:
+Only the `layout` slice and Explore's recent and saved searches persist, plus two legacy root-level fields:
 
 ```javascript
 partialize: state => ( {
@@ -138,7 +138,7 @@ MMKV backend: `src/stores/zustandMMKVBackingStorage.ts`
 1. `<Mortal>` wraps the entire tab navigator (`src/navigation/BottomTabNavigator/index.tsx`) and unmounts its children on blur. Any trip to `NoBottomTabStackNavigator` — camera, ObsEdit, PhotoLibrary — tears down all four tab stacks.
 2. `handleTabPress` in `src/navigation/BottomTabNavigator/CustomTabBarContainer.tsx` dispatches `CommonActions.reset`, remounting the tab tree. It fires when re-tapping the active tab *and* when leaving the Menu or Notifications tab — so a tab you never touched still gets rebuilt.
 
-Neither is avoidable from inside a screen, which is why several slices exist purely as a survival layer: `createMyObservationsSlice`, `createRootExploreSlice` (`rootStoredParams`), and the scroll-offset fields.
+Neither is avoidable from inside a screen, which is why several slices exist purely as a survival layer: `createMyObservationsSlice`, `createExploreAdvancedSearchSlice`, and the scroll-offset fields.
 
 Symptom to recognise: state resets when the user switches tabs or comes back from the camera, but works fine while they stay put.
 
@@ -171,7 +171,7 @@ export function useMyThing( ) {
 }
 ```
 
-`src/providers/MyObservationsContext.ts` is the worked example. Consumers keep the same `{ state, dispatch }` shape, so converting a context is close to a no-op at the call sites. **`src/providers/ExploreV2Context.tsx` has the same problem and has not been converted yet.**
+`src/providers/MyObservationsContext.ts` is the worked example. Consumers keep the same `{ state, dispatch }` shape, so converting a context is close to a no-op at the call sites. **`src/providers/ExploreContext.tsx` has the same problem and has not been converted yet.**
 
 Two rules this depends on:
 
