@@ -165,19 +165,34 @@ describe( "EvidenceList", ( ) => {
       } );
     } );
 
-    it( "should move the frame without leaving the photo", async ( ) => {
+    it( "should let the frame take any shape", async ( ) => {
       const { actor, originalImage } = await openCropper( );
 
-      drag( "PhotoCropper.handle.bottomRight", -200, -150 );
-      // Drag the frame well past the bottom-right corner, where it stops, then
-      // back halfway to the center
-      drag( "PhotoCropper.frame", 500, 500 );
-      drag( "PhotoCropper.frame", -100, -75 );
+      // Narrow the frame from the left, then shorten it from the bottom, for
+      // a tall frame over the right half of the photo
+      drag( "PhotoCropper.handle.topLeft", 200, 0 );
+      drag( "PhotoCropper.handle.bottomRight", 0, -50 );
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       await waitFor( ( ) => {
-        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 512, 384, 1536, 1152 );
+        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 1024, 0, 2048, 1280 );
       } );
+    } );
+
+    it( "should stop the frame at the edges of the photo", async ( ) => {
+      const { actor, originalImage } = await openCropper( );
+
+      drag( "PhotoCropper.handle.bottomRight", -200, -150 );
+      // Drag the same corner far past the photo's bottom-right edge
+      drag( "PhotoCropper.handle.bottomRight", 1000, 1000 );
+      await actor.press( screen.getByLabelText( "Save crop" ) );
+
+      // Back to the whole photo, which leaves nothing to crop, so the cropper
+      // closes without cropping
+      await waitFor( ( ) => {
+        expect( screen.queryByTestId( "PhotoCropper" ) ).toBeNull( );
+      } );
+      expect( originalImage.cropAsync ).not.toHaveBeenCalled( );
     } );
   } );
 } );
