@@ -9,6 +9,7 @@ import {
   Body3,
   Button,
   ButtonBar,
+  CustomFlashList,
   INatIcon,
   WarningSheet,
 } from "components/SharedComponents";
@@ -21,7 +22,7 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
 import buildProjectObservationSelection, {
@@ -30,6 +31,7 @@ import buildProjectObservationSelection, {
 import sortByTitle from "sharedHelpers/sortByTitle";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
+import { useKeyboardInfo } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -61,6 +63,7 @@ function getCompletedProjectIds(
 const AddToProjects = ( ) => {
   const { i18n, t } = useTranslation( );
   const navigation = useNavigation( );
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
   useSyncJoinedProjects( );
   const realm = useRealm( );
   const joinedProjectsCollection = useQuery(
@@ -148,24 +151,30 @@ const AddToProjects = ( ) => {
     [t],
   );
 
+  // ExploreUserSearch / TaxonSearch: pad so rows can scroll above the keyboard
   const listFooterComponent = useMemo(
     () => (
-      <View className="px-4 pt-6 pb-6">
-        <Body1>{t( "Collection-and-Umbrella-Projects" )}</Body1>
-        <Body2 className="mt-2">
-          {t(
-            "For-most-other-projects-observations-will-automatically-be-included",
-          )}
-        </Body2>
-        <Body2 className="mt-4">
-          {t( "You-cant-add-or-remove-observations-from-collection-and-umbrella-projects" )}
-        </Body2>
-        <Body2 className="mt-4">
-          {t( "To-view-this-observations-Collection-and-Umbrella-Projects" )}
-        </Body2>
-      </View>
+      <>
+        <View className="px-4 pt-6 pb-6">
+          <Body1>{t( "Collection-and-Umbrella-Projects" )}</Body1>
+          <Body2 className="mt-2">
+            {t(
+              "For-most-other-projects-observations-will-automatically-be-included",
+            )}
+          </Body2>
+          <Body2 className="mt-4">
+            {t( "You-cant-add-or-remove-observations-from-collection-and-umbrella-projects" )}
+          </Body2>
+          <Body2 className="mt-4">
+            {t( "To-view-this-observations-Collection-and-Umbrella-Projects" )}
+          </Body2>
+        </View>
+        {keyboardShown && (
+          <View style={{ height: keyboardHeight }} />
+        )}
+      </>
     ),
-    [t],
+    [keyboardHeight, keyboardShown, t],
   );
 
   const toggleProject = useCallback( ( projectId: number ) => {
@@ -296,8 +305,8 @@ const AddToProjects = ( ) => {
     [],
   );
 
-  const renderProject = useCallback(
-    ( item: RealmProject ) => {
+  const renderProject: ListRenderItem<RealmProject> = useCallback(
+    ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
       const canExpand = item.projectObservationFields.length > 0
         || validationResult.ruleGroups.some( group => group.projectId === item.id );
@@ -328,25 +337,18 @@ const AddToProjects = ( ) => {
 
   return (
     <SharedStackBottomInsetViewWrapper testID="add-to-projects">
-      {/* ObsEdit pattern: form fields in KeyboardAwareScrollView (MOB-1902) */}
-      <View className="flex-1">
-        <KeyboardAwareScrollView
-          testID="AddToProjects.list"
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-        >
-          {listHeaderComponent}
-          {joinedProjects.length === 0
-            ? listEmptyComponent
-            : joinedProjects.map( ( item, index ) => (
-              <React.Fragment key={item.id}>
-                {index > 0 && <ItemSeparator />}
-                {renderProject( item )}
-              </React.Fragment>
-            ) )}
-          {listFooterComponent}
-        </KeyboardAwareScrollView>
-      </View>
+      <CustomFlashList
+        testID="AddToProjects.list"
+        ListEmptyComponent={listEmptyComponent}
+        ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
+        data={joinedProjects}
+        extraData={validationResult}
+        keyExtractor={( project: RealmProject ) => String( project.id )}
+        keyboardDismissMode="on-drag"
+        renderItem={renderProject}
+        ItemSeparatorComponent={ItemSeparator}
+      />
       <View
         className="bg-white"
         style={DROP_SHADOW}
