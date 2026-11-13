@@ -74,14 +74,12 @@ const offlinePrediction = factory( "ModelPrediction", {
   name: "Opuntia humifusa",
   rank_level: 10,
   combined_score: 95,
-  ancestor_ids: [],
 } );
 const otherOfflinePrediction = factory( "ModelPrediction", {
   taxon_id: 752,
   name: "Opuntia engelmannii",
   rank_level: 10,
   combined_score: 95,
-  ancestor_ids: [],
 } );
 
 const deferred = ( ) => {
