@@ -1,21 +1,33 @@
-// Smallest crop, in pixels, along the image's shorter side. Matches the
-// "medium" size iNat serves (500px), so a cropped photo is never smaller than
-// what most of the app displays
+// Smallest crop, in pixels, along each side. Matches the "medium" size iNat
+// serves (500px), so a cropped photo is never smaller than what most of the
+// app displays, unless the photo itself is smaller
 export const MINIMUM_CROP_SIZE = 500;
 
+// A rectangle of the photo, in its pixels
+interface PhotoArea {
+  originX: number;
+  originY: number;
+  width: number;
+  height: number;
+}
+
 interface CropInput {
-  // Pixel size of the image being cropped
+  // Pixel size of the photo being cropped
   imageWidth: number;
   imageHeight: number;
-  // On-screen width of the image. It is shown at its own aspect ratio, so
-  // this also sets its on-screen height
-  displayWidth: number;
-  // The crop frame on screen, in points from the image's top-left corner.
-  // The frame keeps the image's aspect ratio, so its width sets its height
+  // The crop area on screen, in points. The photo may be zoomed and panned
+  // inside it
+  areaWidth: number;
+  areaHeight: number;
+  // The part of the photo the crop area shows, in pixels
+  visibleArea: PhotoArea;
+  // The crop frame, in points from the crop area's top-left corner. It can be
+  // any shape
   frame: {
     x: number;
     y: number;
     width: number;
+    height: number;
   };
   minimumCropSize?: number;
 }
@@ -33,45 +45,51 @@ const clamp = ( value: number, minimum: number, maximum: number ) => (
   Math.min( Math.max( value, minimum ), maximum )
 );
 
-// The smallest share of the image a crop may cover, so the crop's shorter
-// side stays at or above the minimum size
+// The smallest share of a side of the photo a crop may cover
 export const getMinimumCropFraction = (
-  imageWidth: number,
-  imageHeight: number,
+  imageSide: number,
   minimumCropSize = MINIMUM_CROP_SIZE,
-) => Math.min( 1, minimumCropSize / Math.min( imageWidth, imageHeight ) );
+) => Math.min( 1, minimumCropSize / imageSide );
 
-const cropAxis = ( imageSize: number, center: number, fraction: number ) => {
-  const size = Math.round( imageSize * fraction );
-  const start = clamp( Math.round( center - size / 2 ), 0, imageSize - size );
-  return { start, end: start + size };
+// One side of the crop: its size is kept between the minimum and the whole
+// side, growing around its center, and it is kept inside the photo
+const cropAxis = (
+  imageSide: number,
+  center: number,
+  size: number,
+  minimumCropSize: number,
+) => {
+  const minimumSize = Math.min( minimumCropSize, imageSide );
+  const clampedSize = Math.round( clamp( size, minimumSize, imageSide ) );
+  const start = clamp( Math.round( center - clampedSize / 2 ), 0, imageSide - clampedSize );
+  return { start, end: start + clampedSize };
 };
 
-// Converts a crop frame drawn over an image on screen into the pixel
-// rectangle of the image it covers
+// Converts a crop frame drawn over a zoomed and panned photo into the pixel
+// rectangle of the photo it covers
 const getCropRectangle = ( {
   imageWidth,
   imageHeight,
-  displayWidth,
+  areaWidth,
+  areaHeight,
+  visibleArea,
   frame,
   minimumCropSize = MINIMUM_CROP_SIZE,
 }: CropInput ): CropRectangle => {
-  const pixelsPerPoint = imageWidth / displayWidth;
-  // Share of the image the frame covers. It is the same on both axes because
-  // the frame keeps the image's aspect ratio
-  const frameFraction = frame.width / displayWidth;
-  // The image pixel under the center of the frame
-  const centerX = frame.x * pixelsPerPoint + ( frameFraction * imageWidth ) / 2;
-  const centerY = frame.y * pixelsPerPoint + ( frameFraction * imageHeight ) / 2;
-
-  // Keep the shorter side at or above the minimum, growing around the
-  // frame's center
-  const minimumFraction = getMinimumCropFraction( imageWidth, imageHeight, minimumCropSize );
-  const fraction = clamp( frameFraction, minimumFraction, 1 );
-
-  const horizontal = cropAxis( imageWidth, centerX, fraction );
-  const vertical = cropAxis( imageHeight, centerY, fraction );
-
+  const pixelsPerPointX = visibleArea.width / areaWidth;
+  const pixelsPerPointY = visibleArea.height / areaHeight;
+  const horizontal = cropAxis(
+    imageWidth,
+    visibleArea.originX + ( frame.x + frame.width / 2 ) * pixelsPerPointX,
+    frame.width * pixelsPerPointX,
+    minimumCropSize,
+  );
+  const vertical = cropAxis(
+    imageHeight,
+    visibleArea.originY + ( frame.y + frame.height / 2 ) * pixelsPerPointY,
+    frame.height * pixelsPerPointY,
+    minimumCropSize,
+  );
   return {
     startX: horizontal.start,
     startY: vertical.start,

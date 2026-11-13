@@ -1,9 +1,10 @@
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useRef, useState,
+} from "react";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { Image } from "react-native";
-import type { PanGesture } from "react-native-gesture-handler";
 import {
   Gesture,
   GestureDetector,
@@ -11,6 +12,8 @@ import {
 } from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import type { CropZoomRefType, CropZoomState } from "react-native-zoom-toolkit";
+import { CropZoom } from "react-native-zoom-toolkit";
 import type { CropRectangle } from "sharedHelpers/getCropRectangle";
 import getCropRectangle, { getMinimumCropFraction } from "sharedHelpers/getCropRectangle";
 import colors from "styles/tailwindColors";
@@ -20,6 +23,7 @@ const CORNERS: Corner[] = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
 
 // GestureHandlerRootView is third-party and not registered with nativewind
 const ROOT_STYLE: ViewStyle = { flex: 1 };
+const PHOTO_STYLE = { width: "100%", height: "100%" } as const;
 
 // Rule-of-thirds lines inside the frame
 const GRIDLINE_CLASSES = [
@@ -43,42 +47,50 @@ interface Size {
   height: number;
 }
 
-// The crop frame, in points from the photo's top-left corner. It keeps the
-// photo's aspect ratio, so its width sets its height
+// The crop frame, in points from the crop area's top-left corner. It can be
+// any shape
 interface Frame {
   x: SharedValue<number>;
   y: SharedValue<number>;
   width: SharedValue<number>;
+  height: SharedValue<number>;
 }
 
 interface CropHandleProps {
   corner: Corner;
   frame: Frame;
-  display: Size;
-  heightPerWidth: number;
-  minimumWidth: number;
-  // Waits for this handle, so a drag that starts on a corner resizes the
-  // frame instead of moving it
-  moveGesture: PanGesture;
+  area: Size;
+  // The frame's smallest size, in points, when the photo isn't zoomed
+  minimumUnzoomed: Size;
+  // How far the photo is zoomed in. Zooming in makes each point cover fewer
+  // pixels, so the frame's smallest size in points grows with it
+  zoom: SharedValue<number>;
 }
 
 const CropHandle = ( {
-  corner, frame, display, heightPerWidth, minimumWidth, moveGesture,
+  corner, frame, area, minimumUnzoomed, zoom,
 }: CropHandleProps ) => {
   const isLeft = corner === "topLeft" || corner === "bottomLeft";
   const isTop = corner === "topLeft" || corner === "topRight";
-  const start = useSharedValue( { x: 0, y: 0, width: 0 } );
+  const start = useSharedValue( {
+    x: 0, y: 0, width: 0, height: 0,
+  } );
   const cornerClasses = CORNER_CLASSES[corner];
 
   const gesture = useMemo( ( ) => Gesture.Pan( )
     .withTestId( `PhotoCropper.handle.${corner}` )
-    .blocksExternalGesture( moveGesture )
     .onStart( ( ) => {
-      start.set( { x: frame.x.get( ), y: frame.y.get( ), width: frame.width.get( ) } );
+      start.set( {
+        x: frame.x.get( ),
+        y: frame.y.get( ),
+        width: frame.width.get( ),
+        height: frame.height.get( ),
+      } );
     } )
     .onUpdate( ( { translationX, translationY } ) => {
-      const { x: startX, y: startY, width: startWidth } = start.get( );
-      const startHeight = startWidth * heightPerWidth;
+      const {
+        x: startX, y: startY, width: startWidth, height: startHeight,
+      } = start.get( );
       // The opposite corner stays put while this one is dragged
       const anchorX = isLeft
         ? startX + startWidth
@@ -86,44 +98,37 @@ const CropHandle = ( {
       const anchorY = isTop
         ? startY + startHeight
         : startY;
-      // Follow the drag on both axes, keeping the photo's aspect ratio
-      const widthFromX = startWidth + ( isLeft
-        ? -translationX
-        : translationX );
-      const widthFromY = ( startHeight + ( isTop
-        ? -translationY
-        : translationY ) ) / heightPerWidth;
-      // Stop at the photo's edges and at the minimum crop size
-      const maximumWidth = Math.min(
-        isLeft
-          ? anchorX
-          : display.width - anchorX,
-        ( isTop
-          ? anchorY
-          : display.height - anchorY ) / heightPerWidth,
-      );
+      // Each side follows the drag on its own axis, so the frame can take
+      // any shape. It stops at the crop area's edges and the minimum size
+      const maximumWidth = isLeft
+        ? anchorX
+        : area.width - anchorX;
+      const maximumHeight = isTop
+        ? anchorY
+        : area.height - anchorY;
+      const minimumWidth = Math.min( minimumUnzoomed.width * zoom.get( ), maximumWidth );
+      const minimumHeight = Math.min( minimumUnzoomed.height * zoom.get( ), maximumHeight );
       const width = Math.min(
-        Math.max( ( widthFromX + widthFromY ) / 2, minimumWidth ),
+        Math.max( startWidth + ( isLeft
+          ? -translationX
+          : translationX ), minimumWidth ),
         maximumWidth,
       );
+      const height = Math.min(
+        Math.max( startHeight + ( isTop
+          ? -translationY
+          : translationY ), minimumHeight ),
+        maximumHeight,
+      );
       frame.width.set( width );
+      frame.height.set( height );
       frame.x.set( isLeft
         ? anchorX - width
         : anchorX );
       frame.y.set( isTop
-        ? anchorY - width * heightPerWidth
+        ? anchorY - height
         : anchorY );
-    } ), [
-    corner,
-    display,
-    frame,
-    heightPerWidth,
-    isLeft,
-    isTop,
-    minimumWidth,
-    moveGesture,
-    start,
-  ] );
+    } ), [area, corner, frame, isLeft, isTop, minimumUnzoomed, start, zoom] );
 
   return (
     <GestureDetector gesture={gesture}>
@@ -143,81 +148,77 @@ interface Props {
   onCrop: ( cropRectangle: CropRectangle ) => void;
 }
 
-// Shows a photo with a crop frame the user resizes by dragging its corners
-// and moves by dragging inside it. The frame keeps the photo's aspect ratio.
+// Spike: shows a photo people can pinch to zoom and drag to pan, using
+// react-native-zoom-toolkit's CropZoom, under a crop frame of any shape that
+// they resize by dragging its corners. CropZoom's own crop area stays the
+// size of the whole photo; the frame is our own, drawn on top of it
 const PhotoCropper = ( {
   uri, saving, onCancel, onCrop,
 }: Props ) => {
   const [imageSize, setImageSize] = useState<Size | null>( null );
   const [containerSize, setContainerSize] = useState<Size | null>( null );
+  const cropZoomRef = useRef<CropZoomRefType>( null );
+  const zoom = useSharedValue( 1 );
   const frameX = useSharedValue( 0 );
   const frameY = useSharedValue( 0 );
   const frameWidth = useSharedValue( 0 );
-  const frame = useMemo( ( ) => ( { x: frameX, y: frameY, width: frameWidth } ), [
-    frameX,
-    frameY,
-    frameWidth,
-  ] );
+  const frameHeight = useSharedValue( 0 );
+  const frame = useMemo( ( ) => ( {
+    x: frameX, y: frameY, width: frameWidth, height: frameHeight,
+  } ), [frameX, frameY, frameWidth, frameHeight] );
 
   useEffect( ( ) => {
     // If the photo can't be read there is nothing to crop
     Image.getSize( uri ).then( setImageSize ).catch( onCancel );
   }, [uri, onCancel] );
 
-  const heightPerWidth = imageSize
-    ? imageSize.height / imageSize.width
-    : 1;
-
-  // The photo fitted inside the available space at its own aspect ratio
-  const display = useMemo( ( ): Size | null => {
+  // The crop area: the photo fitted inside the available space at its own
+  // aspect ratio
+  const area = useMemo( ( ): Size | null => {
     if ( !imageSize || !containerSize ) return null;
+    const heightPerWidth = imageSize.height / imageSize.width;
     const width = Math.min( containerSize.width, containerSize.height / heightPerWidth );
     return { width, height: width * heightPerWidth };
-  }, [containerSize, heightPerWidth, imageSize] );
+  }, [containerSize, imageSize] );
 
   // Start with the frame around the whole photo
   useEffect( ( ) => {
-    if ( !display ) return;
+    if ( !area ) return;
     frameX.set( 0 );
     frameY.set( 0 );
-    frameWidth.set( display.width );
-  }, [display, frameX, frameY, frameWidth] );
+    frameWidth.set( area.width );
+    frameHeight.set( area.height );
+  }, [area, frameX, frameY, frameWidth, frameHeight] );
 
-  const minimumWidth = imageSize && display
-    ? display.width * getMinimumCropFraction( imageSize.width, imageSize.height )
-    : 0;
-  const displayWidth = display?.width || 0;
-  const displayHeight = display?.height || 0;
-  const dimBorderWidth = Math.max( displayWidth, displayHeight );
+  const minimumUnzoomed = useMemo( ( ): Size => ( imageSize && area
+    ? {
+      width: area.width * getMinimumCropFraction( imageSize.width ),
+      height: area.height * getMinimumCropFraction( imageSize.height ),
+    }
+    : { width: 0, height: 0 } ), [area, imageSize] );
 
-  // Drag the whole frame, keeping it inside the photo
-  const moveStart = useSharedValue( { x: 0, y: 0 } );
-  const moveGesture = useMemo( ( ) => Gesture.Pan( )
-    .withTestId( "PhotoCropper.frame" )
-    .onStart( ( ) => {
-      moveStart.set( { x: frameX.get( ), y: frameY.get( ) } );
-    } )
-    .onUpdate( ( { translationX, translationY } ) => {
-      const { x: startX, y: startY } = moveStart.get( );
-      const width = frameWidth.get( );
-      const maximumX = displayWidth - width;
-      const maximumY = displayHeight - width * heightPerWidth;
-      frameX.set( Math.max( 0, Math.min( startX + translationX, maximumX ) ) );
-      frameY.set( Math.max( 0, Math.min( startY + translationY, maximumY ) ) );
-    } ), [displayHeight, displayWidth, frameWidth, frameX, frameY, heightPerWidth, moveStart] );
+  const trackZoom = useCallback( ( state: CropZoomState<number> ) => {
+    "worklet";
+
+    zoom.set( state.scale );
+  }, [zoom] );
+
+  const areaWidth = area?.width || 0;
+  const areaHeight = area?.height || 0;
+  const dimBorderWidth = Math.max( areaWidth, areaHeight );
 
   const frameStyle = useAnimatedStyle( ( ) => ( {
     left: frameX.get( ),
     top: frameY.get( ),
     width: frameWidth.get( ),
-    height: frameWidth.get( ) * heightPerWidth,
+    height: frameHeight.get( ),
   } ) );
   // Dim the photo outside the frame
   const dimStyle = useAnimatedStyle( ( ) => ( {
     left: frameX.get( ) - dimBorderWidth,
     top: frameY.get( ) - dimBorderWidth,
     width: frameWidth.get( ) + dimBorderWidth * 2,
-    height: frameWidth.get( ) * heightPerWidth + dimBorderWidth * 2,
+    height: frameHeight.get( ) + dimBorderWidth * 2,
     borderWidth: dimBorderWidth,
   } ) );
 
@@ -227,12 +228,20 @@ const PhotoCropper = ( {
   };
 
   const confirmCrop = ( ) => {
-    if ( !imageSize || !display ) return;
+    const visibleArea = cropZoomRef.current?.crop( ).crop;
+    if ( !imageSize || !area || !visibleArea ) return;
     const cropRectangle = getCropRectangle( {
       imageWidth: imageSize.width,
       imageHeight: imageSize.height,
-      displayWidth: display.width,
-      frame: { x: frameX.get( ), y: frameY.get( ), width: frameWidth.get( ) },
+      areaWidth: area.width,
+      areaHeight: area.height,
+      visibleArea,
+      frame: {
+        x: frameX.get( ),
+        y: frameY.get( ),
+        width: frameWidth.get( ),
+        height: frameHeight.get( ),
+      },
     } );
     const coversWholePhoto = cropRectangle.endX - cropRectangle.startX === imageSize.width
       && cropRectangle.endY - cropRectangle.startY === imageSize.height;
@@ -251,20 +260,40 @@ const PhotoCropper = ( {
         onLayout={onLayout}
         testID="PhotoCropper"
       >
-        {display && imageSize && (
-          <View className="overflow-hidden" style={display}>
-            <Image
-              source={{ uri }}
-              style={display}
-              accessibilityIgnoresInvertColors
-            />
-            <Animated.View className="absolute border-black/60" style={dimStyle} />
-            <GestureDetector gesture={moveGesture}>
-              <Animated.View className="absolute border border-white" style={frameStyle}>
+        {area && imageSize && (
+          <View className="overflow-hidden" style={area}>
+            <CropZoom
+              ref={cropZoomRef}
+              cropSize={area}
+              resolution={imageSize}
+              // Keep the photo covering the whole crop area, and so the frame
+              panMode="clamp"
+              onUpdate={trackZoom}
+            >
+              <Image
+                source={{ uri }}
+                style={PHOTO_STYLE}
+                accessibilityIgnoresInvertColors
+              />
+            </CropZoom>
+            {/* Touches pass through everything here but the corner handles, so
+                pinching and dragging inside the frame zooms and pans the photo */}
+            <View className="absolute inset-0" pointerEvents="box-none">
+              <Animated.View
+                className="absolute border-black/60"
+                style={dimStyle}
+                pointerEvents="none"
+              />
+              <Animated.View
+                className="absolute border border-white"
+                style={frameStyle}
+                pointerEvents="box-none"
+              >
                 {GRIDLINE_CLASSES.map( gridlineClasses => (
                   <Animated.View
                     key={gridlineClasses}
                     className={`absolute bg-white/50 ${gridlineClasses}`}
+                    pointerEvents="none"
                   />
                 ) )}
                 {CORNERS.map( corner => (
@@ -272,14 +301,13 @@ const PhotoCropper = ( {
                     key={corner}
                     corner={corner}
                     frame={frame}
-                    display={display}
-                    heightPerWidth={heightPerWidth}
-                    minimumWidth={minimumWidth}
-                    moveGesture={moveGesture}
+                    area={area}
+                    minimumUnzoomed={minimumUnzoomed}
+                    zoom={zoom}
                   />
                 ) )}
               </Animated.View>
-            </GestureDetector>
+            </View>
           </View>
         )}
       </View>
@@ -307,7 +335,7 @@ const PhotoCropper = ( {
               height={50}
               accessibilityLabel="Save crop"
               onPress={confirmCrop}
-              disabled={!display}
+              disabled={!area}
             />
           )}
       </View>
