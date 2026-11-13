@@ -50,6 +50,7 @@ jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
   emailAvailable: jest.fn( ( ) => Promise.resolve( true ) ),
   registerUser: jest.fn( ( ) => Promise.resolve( null ) ),
   authenticateUser: jest.fn( ( ) => Promise.resolve( { success: true } ) ),
+  resetPassword: jest.fn( ( ) => Promise.resolve( ) ),
 } ) );
 
 const actor = userEvent.setup( );
@@ -143,6 +144,37 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   const confirmExit = async ( stepId, confirmText ) => {
     const sheet = await openExitSheet( stepId );
     await actor.press( within( sheet ).getByText( i18next.t( confirmText ) ) );
+  };
+
+  const logInFrom = async stepId => {
+    const step = await screen.findByTestId( `Onboarding.${stepId}` );
+    await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.logIn` ) );
+    return screen.findByTestId( "Login.email" );
+  };
+
+  const logIn = async ( ) => {
+    await actor.type( await screen.findByTestId( "Login.email" ), "someone" );
+    await actor.type( screen.getByTestId( "Login.password" ), "a-good-password" );
+    await actor.press( screen.getByTestId( "Login.loginButton" ) );
+  };
+
+  const closeLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByLabelText( i18next.t( "Close" ) ) );
+  };
+
+  const signUpFromLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByText( /Sign up/ ) );
+  };
+
+  const resetPasswordAndGoBackToLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByText( i18next.t( "Forgot-Password" ) ) );
+    const resetButton = await screen.findByTestId( "Login.forgotPasswordButton" );
+    await actor.type( screen.getByTestId( "Login.email" ), "someone@example.com" );
+    await actor.press( resetButton );
+    await actor.press( await screen.findByText( i18next.t( "BACK-TO-LOGIN" ) ) );
   };
 
   const findMyObservations = ( ) => screen.findByText(
@@ -340,5 +372,94 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         expect( mockOnboarding.shown ).toBe( true );
       },
     );
+  } );
+
+  describe( "logging in and signing up", ( ) => {
+    it( "returns to welcome when Login opened from welcome is closed", async ( ) => {
+      renderApp( );
+      await logInFrom( "welcome" );
+      await closeLogin( );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      expect( mockOnboarding.shown ).toBeFalsy( );
+    } );
+
+    it(
+      "shows the location step, then my observations, after logging in from welcome",
+      async ( ) => {
+        renderApp( );
+        await logInFrom( "welcome" );
+        await logIn( );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+        await continueFrom( "location_explainer" );
+        expect( await findMyObservations( ) ).toBeVisible( );
+        expect( mockOnboarding.shown ).toBe( true );
+      },
+    );
+
+    it( "returns to the sign-up email step via Sign up in Login opened there", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await logInFrom( "signup_email" );
+      await signUpFromLogin( );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      expect( screen.getAllByTestId( "Onboarding.signup_email" ) ).toHaveLength( 1 );
+    } );
+
+    it( "returns to the sign-up email step when Login opened there is closed", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await logInFrom( "signup_email" );
+      await closeLogin( );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+    } );
+
+    it(
+      "shows the location step after signing up from Login during onboarding",
+      async ( ) => {
+        renderApp( );
+        await logInFrom( "welcome" );
+        await signUpFromLogin( );
+        await continueFrom( "signup_email" );
+        await continueFrom( "signup_credentials" );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      },
+    );
+
+    it(
+      "shows the location step after logging in from welcome by way of a password reset",
+      async ( ) => {
+        renderApp( );
+        await logInFrom( "welcome" );
+        await resetPasswordAndGoBackToLogin( );
+        await logIn( );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      },
+    );
+
+    it( "leaves Login when going back after a password reset", async ( ) => {
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await logInFrom( "welcome" );
+      await resetPasswordAndGoBackToLogin( );
+      await screen.findByTestId( "Login.loginButton" );
+      act( ( ) => navigationContainer.current.goBack( ) );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Login.forgotPasswordButton" ) ).toBeNull( );
+    } );
+
+    it( "opens the existing sign-up form from Login once onboarding is done", async ( ) => {
+      mockOnboarding.shown = true;
+      renderApp( );
+      await findMyObservations( );
+      await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
+      await signUpFromLogin( );
+      expect( await screen.findByTestId( "Signup.email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+    } );
   } );
 } );
