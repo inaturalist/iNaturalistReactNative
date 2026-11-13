@@ -46,10 +46,7 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
       return { type: "taxon", id: firstSegment };
     case "blog":
     case "posts":
-      if ( segments.length === 2 && parseNumericId( firstSegment ) ) {
-        return { type: "post", id: firstSegment };
-      }
-      return null;
+      return { type: "post", id: firstSegment };
     case "projects":
       return { type: "project", id: firstSegment };
     default:
