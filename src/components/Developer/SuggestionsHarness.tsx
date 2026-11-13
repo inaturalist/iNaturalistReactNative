@@ -15,9 +15,7 @@ import {
 import React, { useEffect, useReducer, useState } from "react";
 import { launchImageLibrary } from "react-native-image-picker";
 import type { UseSuggestionsSuggestion } from "sharedHooks/useSuggestions/types";
-import useSuggestionsV2, {
-  SCORE_IMAGE_TIMEOUT,
-} from "sharedHooks/useSuggestions/useSuggestionsV2";
+import useSuggestionsV2 from "sharedHooks/useSuggestions/useSuggestionsV2";
 
 import {
   CODE, H1, H2, P,
@@ -91,7 +89,7 @@ interface ProbeProps {
   photoUri?: string;
   location: { latitude: number; longitude: number } | null;
   enabled: boolean;
-  onlineTimeoutMs: number;
+  onlineTimeoutMs?: number;
 }
 
 // Owns the hook so the parent can remount it without losing its inputs
@@ -117,7 +115,7 @@ const SuggestionsProbe = ( {
     + ` loc=${location
       ? `${location.latitude},${location.longitude}`
       : "none"}`
-    + ` enabled=${enabled} timeout=${onlineTimeoutMs}`;
+    + ` enabled=${enabled} timeout=${onlineTimeoutMs ?? "default"}`;
   const status = `online=${onlineStatus} offline=${offlineStatus}`;
   useEffect( ( ) => {
     recordLog( { inputs, status, now: Date.now( ) } );
@@ -262,7 +260,7 @@ const SuggestionsHarness = ( ) => {
           enabled={enabled}
           onlineTimeoutMs={forceTimeout
             ? FORCED_TIMEOUT_MS
-            : SCORE_IMAGE_TIMEOUT}
+            : undefined}
         />
       </View>
     </ScrollViewWrapper>

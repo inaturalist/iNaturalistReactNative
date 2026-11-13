@@ -8,6 +8,10 @@ import React from "react";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import { predictImage } from "sharedHelpers/mlModel";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import {
+  INITIAL_SCORE_IMAGE_TIMEOUT,
+  RETRY_SCORE_IMAGE_TIMEOUT,
+} from "sharedHooks/useSuggestions/useOnlineSuggestions";
 import useSuggestionsV2 from "sharedHooks/useSuggestions/useSuggestionsV2";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -337,5 +341,40 @@ describe( "useSuggestionsV2", ( ) => {
     expect( result.current.usingOfflineSuggestions ).toBe( false );
     expect( topSuggestionId( result ) ).toBe( 745 );
     expect( scoreImage ).toHaveBeenCalledTimes( 2 );
+  } );
+
+  describe( "online timeout", ( ) => {
+    beforeEach( ( ) => jest.useFakeTimers( ) );
+    afterEach( ( ) => jest.useRealTimers( ) );
+
+    const advance = ms => act( async ( ) => { await jest.advanceTimersByTimeAsync( ms ); } );
+
+    it( "waits longer for the server after retry", async ( ) => {
+      scoreImage.mockImplementation( neverResolves );
+      const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+      await advance( INITIAL_SCORE_IMAGE_TIMEOUT - 1 );
+      expect( result.current.onlineStatus ).toBe( "loading" );
+      await advance( 1 );
+      expect( result.current.onlineStatus ).toBe( "timed-out" );
+
+      act( ( ) => result.current.retry( ) );
+      await advance( RETRY_SCORE_IMAGE_TIMEOUT - 1 );
+      expect( result.current.onlineStatus ).toBe( "loading" );
+      await advance( 1 );
+      expect( result.current.onlineStatus ).toBe( "timed-out" );
+    } );
+
+    it( "goes back to the shorter wait when the inputs change", async ( ) => {
+      scoreImage.mockImplementation( neverResolves );
+      const { result, rerender } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+      await advance( INITIAL_SCORE_IMAGE_TIMEOUT );
+      act( ( ) => result.current.retry( ) );
+      await advance( RETRY_SCORE_IMAGE_TIMEOUT );
+      expect( result.current.onlineStatus ).toBe( "timed-out" );
+
+      rerender( { photoUri: localPhotoUri, location } );
+      await advance( INITIAL_SCORE_IMAGE_TIMEOUT );
+      expect( result.current.onlineStatus ).toBe( "timed-out" );
+    } );
   } );
 } );
