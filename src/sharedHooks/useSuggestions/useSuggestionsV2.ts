@@ -452,7 +452,7 @@ const useSuggestionsV2 = ( {
         : "idle",
     };
   const {
-    onlineStatus, offlineStatus, onlineSuggestions, offlineSuggestions,
+    onlineStatus, offlineStatus, onlineSuggestions, offlineSuggestions, onlineError, offlineError,
   } = view;
 
   const suggestions = useMemo( ( ) => {
@@ -470,8 +470,8 @@ const useSuggestionsV2 = ( {
     isLoading: onlineStatus === "loading" || offlineStatus === "loading",
     onlineStatus,
     offlineStatus,
-    onlineError: view.onlineError,
-    offlineError: view.offlineError,
+    onlineError,
+    offlineError,
     usingOfflineSuggestions: offlineStatus === "loading"
       || offlineStatus === "fetched"
       || offlineStatus === "error",
