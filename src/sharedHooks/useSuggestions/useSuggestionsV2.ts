@@ -228,6 +228,9 @@ const fetchOnline = async ( {
       { api_token: apiToken },
     ) as OnlineSuggestionsApiResponse;
     const response = shimApiResponseForCommonAncestor( apiResponse );
+    // Saving taxa and the comparison experiment happen here, once per server
+    // response, so a run that reuses a cached response doesn't repeat them.
+    // The experiment also needs the resized photo, which only exists here
     saveTaxaToRealm( realm, response );
     if ( observationUuid ) {
       startOfflineExperimentInBackground(
