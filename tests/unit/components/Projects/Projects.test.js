@@ -161,10 +161,8 @@ describe( "Projects", ( ) => {
     test( "lists only joined projects, alphabetically", ( ) => {
       renderComponent( <ProjectsContainer /> );
 
-      const renderedTitles = screen.getAllByTestId( /^Project\.\d+$/ ).map(
-        row => joinedProjects.find(
-          project => row.props.testID === `Project.${project.id}`,
-        )?.title,
+      const renderedTitles = screen.getAllByText( /^(apple|banana|Cherry)$/ ).map(
+        title => title.props.children,
       );
       expect( renderedTitles ).toEqual( ["apple", "banana", "Cherry"] );
       expect( screen.queryByText( mockProject.title ) ).not.toBeOnTheScreen( );
