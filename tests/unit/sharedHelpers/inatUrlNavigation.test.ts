@@ -8,16 +8,16 @@ describe( "parseInatUrl", ( ) => {
     [`${HOST}/blog/12345`, "12345"],
     [`${HOST}/posts/12345`, "12345"],
     [`${HOST}/posts/12345-some-title`, "12345-some-title"],
+    [`${HOST}/blog/12345/edit`, "12345"],
+    [`${HOST}/posts/12345/edit`, "12345"],
+    [`${HOST}/blog/new`, "new"],
+    [`${HOST}/blog/archives/2024/3`, "archives"],
   ] )( "recognizes %s as post %s", ( href, id ) => {
     expect( parseInatUrl( href ) ).toEqual( { type: "post", id } );
   } );
 
   it.each( [
     `${HOST}/blog`,
-    `${HOST}/blog/archives/2024/3`,
-    `${HOST}/blog/new`,
-    `${HOST}/posts/12345/edit`,
-    `${HOST}/blog/12345/edit`,
     `${HOST}/journal/some-user/12345`,
   ] )( "leaves %s for the browser", href => {
     expect( parseInatUrl( href ) ).toBeNull( );
@@ -45,5 +45,18 @@ describe( "openInatUrl", ( ) => {
     expect( dispatch ).toHaveBeenCalledWith(
       StackActions.push( "PostDetails", { id: 12345 } ),
     );
+  } );
+
+  it( "does not navigate when the post segment is not numeric", async ( ) => {
+    const dispatch = jest.fn( );
+    const navigation = { dispatch };
+    const parsed = parseInatUrl( `${HOST}/blog/new` );
+
+    if ( !parsed ) {
+      throw new Error( "expected a post link" );
+    }
+
+    await expect( openInatUrl( parsed, navigation ) ).resolves.toBe( false );
+    expect( dispatch ).not.toHaveBeenCalled( );
   } );
 } );
