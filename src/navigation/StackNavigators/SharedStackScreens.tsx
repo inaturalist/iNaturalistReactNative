@@ -144,16 +144,18 @@ const SharedStackScreens = ( ) => (
           headerTitle: addToProjectsTitle,
         }}
       />
+      <Stack.Screen
+        name="PostDetails"
+        component={FadeInPostDetails}
+        options={{
+          headerTitle: postDetailsTitle,
+        }}
+      />
     </Stack.Group>
     <Stack.Screen
       name="FullPageWebView"
       component={FadeInFullPageWebView}
       options={showSimpleCustomHeader}
-    />
-    <Stack.Screen
-      name="PostDetails"
-      component={FadeInPostDetails}
-      options={{ headerTitle: postDetailsTitle }}
     />
   </Stack.Group>
 );
