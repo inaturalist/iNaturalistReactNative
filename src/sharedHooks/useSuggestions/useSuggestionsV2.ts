@@ -47,6 +47,12 @@ interface Location {
   longitude?: number | null;
 }
 
+// both or neither, so half a pair can't reach the server or the model
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
 export interface UseSuggestionsV2Options {
   photoUri?: string | null;
   location?: Location | null;
@@ -148,11 +154,11 @@ const resizePhoto = async ( photoUri: string ) => {
   }
 };
 
-const onlineQueryKeyPrefix = ( photoUri: string, latitude?: number, longitude?: number ) => [
+const onlineQueryKeyPrefix = ( photoUri: string, coordinates?: Coordinates ) => [
   "scoreImageV2",
   photoUri,
-  latitude ?? null,
-  longitude ?? null,
+  coordinates?.latitude ?? null,
+  coordinates?.longitude ?? null,
 ];
 
 const saveTaxaToRealm = ( realm: Realm, response: OnlineSuggestionsQueryResponse ) => {
@@ -185,8 +191,7 @@ interface RunParams {
   run: Run;
   inputKey: string;
   photoUri: string;
-  latitude?: number;
-  longitude?: number;
+  coordinates?: Coordinates;
   isConnected: () => boolean | null;
   language: string;
   locale?: string;
@@ -203,20 +208,19 @@ type OnlineOutcome =
   | { status: "timed-out" | "offline" | "cancelled" };
 
 const fetchOnline = async ( {
-  run, photoUri, latitude, longitude, language, locale, observationUuid, onlineTimeoutMs,
+  run, photoUri, coordinates, language, locale, observationUuid, onlineTimeoutMs,
   queryClient, realm,
 }: RunParams ): Promise<OnlineOutcome> => {
-  const queryKey = [...onlineQueryKeyPrefix( photoUri, latitude, longitude ), language];
+  const queryKey = [...onlineQueryKeyPrefix( photoUri, coordinates ), language];
 
   // realm and observationUuid don't affect the response, so they stay out of
   // the key
   const queryFn = async ( ) => {
     const image = await resizePhoto( photoUri );
     const apiToken = await getJWT( true );
-    const hasLocation = typeof latitude === "number" && typeof longitude === "number";
     const params = {
       image,
-      ...( hasLocation && { lat: latitude, lng: longitude } ),
+      ...( coordinates && { lat: coordinates.latitude, lng: coordinates.longitude } ),
       ...( locale && { locale } ),
     };
     const apiResponse = await scoreImage(
@@ -229,12 +233,7 @@ const fetchOnline = async ( {
       startOfflineExperimentInBackground(
         observationUuid,
         response,
-        ( ) => predictOffline( {
-          latitude,
-          longitude,
-          photoUri: image.uri,
-          realm,
-        } ),
+        ( ) => predictOffline( { ...coordinates, photoUri: image.uri, realm } ),
       );
     }
     return response;
@@ -274,7 +273,7 @@ const fetchOnline = async ( {
 
 const runSuggestions = async ( params: RunParams ) => {
   const {
-    run, inputKey, photoUri, latitude, longitude, isConnected, realm, dispatch: rawDispatch,
+    run, inputKey, photoUri, coordinates, isConnected, realm, dispatch: rawDispatch,
   } = params;
   const dispatch = ( action: Action ) => {
     if ( !run.cancelled ) rawDispatch( action );
@@ -282,9 +281,7 @@ const runSuggestions = async ( params: RunParams ) => {
 
   const runOffline = async ( ) => {
     try {
-      const offlineSuggestions = await predictOffline( {
-        latitude, longitude, photoUri, realm,
-      } );
+      const offlineSuggestions = await predictOffline( { ...coordinates, photoUri, realm } );
       dispatch( {
         type: "OFFLINE_SETTLED",
         offlineStatus: "fetched",
@@ -359,11 +356,17 @@ const useSuggestionsV2 = ( {
     { baseKey: null, count: 0 },
   );
 
-  const latitude = location?.latitude ?? undefined;
-  const longitude = location?.longitude ?? undefined;
+  const latitude = location?.latitude;
+  const longitude = location?.longitude;
+  // half a coordinate pair counts as no location
+  const coordinates = useMemo( ( ): Coordinates | undefined => (
+    typeof latitude === "number" && typeof longitude === "number"
+      ? { latitude, longitude }
+      : undefined
+  ), [latitude, longitude] );
 
   const baseKey = enabled && photoUri
-    ? JSON.stringify( [photoUri, latitude ?? null, longitude ?? null] )
+    ? JSON.stringify( [photoUri, coordinates ?? null] )
     : null;
   // the count gives each retry its own run
   const inputKey = baseKey && `${baseKey}#${retried.count}`;
@@ -406,8 +409,7 @@ const useSuggestionsV2 = ( {
         run,
         inputKey,
         photoUri,
-        latitude,
-        longitude,
+        coordinates,
         isConnected: ( ) => latest.current.isConnected,
         language: current.language,
         locale: current.locale,
@@ -425,7 +427,7 @@ const useSuggestionsV2 = ( {
       // result for a frame before the new run starts
       dispatch( { type: "RUN_ENDED" } );
     };
-  }, [inputKey, photoUri, latitude, longitude] );
+  }, [inputKey, photoUri, coordinates] );
 
   useEffect( ( ) => {
     if ( isConnected === false ) {
@@ -435,11 +437,9 @@ const useSuggestionsV2 = ( {
 
   const retry = useCallback( ( ) => {
     if ( !photoUri || !baseKey ) return;
-    queryClient.removeQueries( {
-      queryKey: onlineQueryKeyPrefix( photoUri, latitude, longitude ),
-    } );
+    queryClient.removeQueries( { queryKey: onlineQueryKeyPrefix( photoUri, coordinates ) } );
     setRetried( previous => ( { baseKey, count: previous.count + 1 } ) );
-  }, [photoUri, latitude, longitude, baseKey, queryClient] );
+  }, [photoUri, coordinates, baseKey, queryClient] );
 
   // State from previous inputs is stale. Report a run that hasn't started
   // yet as loading so callers never see a "no suggestions" frame

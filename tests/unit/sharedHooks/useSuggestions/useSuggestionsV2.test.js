@@ -151,6 +151,19 @@ describe( "useSuggestionsV2", ( ) => {
     expect( savedTaxon?.name ).toBe( "Silphium perfoliatum" );
   } );
 
+  it( "treats half a coordinate pair as no location", async ( ) => {
+    scoreImage.mockRejectedValue( new Error( "server error" ) );
+    const { result } = renderSuggestionsHook( {
+      photoUri: localPhotoUri, location: { latitude: location.latitude, longitude: null },
+    } );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    expect( scoreImage ).toHaveBeenCalledWith(
+      expect.not.objectContaining( { lat: expect.anything( ) } ),
+      { api_token: "jwt" },
+    );
+    expect( predictImage ).toHaveBeenCalledWith( expect.anything( ), undefined );
+  } );
+
   it( "sends the location with the online request", async ( ) => {
     const { result } = renderSuggestionsHook( { photoUri: localPhotoUri, location } );
     await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
