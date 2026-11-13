@@ -59,7 +59,6 @@ const TaxonSearch = ( {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
   const searchInputRef = useRef<TextInput>( null );
 
-  // Android keeps the IME up after leave when taps used keyboardShouldPersistTaps.
   useEffect( ( ) => ( ) => {
     searchInputRef.current?.blur( );
     Keyboard.dismiss( );
@@ -131,6 +130,7 @@ const TaxonSearch = ( {
         ) }
       </View>
       <FlatList
+        // "always" does not dismiss the IME; dismiss manually on leave/select.
         keyboardShouldPersistTaps="always"
         data={taxa}
         renderItem={renderItem}
