@@ -4,6 +4,7 @@
 import {
   act, fireEvent, screen, waitFor,
 } from "@testing-library/react-native";
+import { photoUploadPath } from "appConstants/paths";
 import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUploadObservations";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import i18next from "i18next";
@@ -24,6 +25,9 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
+// Unsynced photos live in photoUploads/ until they're uploaded
+const mockLocalFilePath = ( ) => `file://${photoUploadPath}/${faker.string.uuid( )}.jpg`;
+
 const mockUnsyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: null,
@@ -33,6 +37,7 @@ const mockUnsyncedObservations = [
     observationPhotos: [
       factory( "LocalObservationPhoto", {
         photo: {
+          localFilePath: mockLocalFilePath( ),
           url: faker.image.url( ),
           position: 0,
         },
@@ -47,12 +52,14 @@ const mockUnsyncedObservations = [
     observationPhotos: [
       factory( "LocalObservationPhoto", {
         photo: {
+          localFilePath: mockLocalFilePath( ),
           url: `${faker.image.url( )}/100`,
           position: 0,
         },
       } ),
       factory( "LocalObservationPhoto", {
         photo: {
+          localFilePath: mockLocalFilePath( ),
           url: `${faker.image.url( )}/200`,
           position: 1,
         },

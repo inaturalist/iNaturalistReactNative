@@ -16,7 +16,7 @@ For the upload pipeline after media is on disk, see `upload-system.md`.
 
 | File | Purpose |
 |------|---------|
-| `src/appConstants/paths.ts` | Path constants under `DocumentDirectoryPath` |
+| `src/appConstants/paths.ts` | Path constants under `DocumentDirectoryPath` (and `photoUploadCopiesPath` under `CachesDirectoryPath`) |
 | `src/realmModels/Photo.ts` | Resize for upload, local URI normalization, delete |
 | `src/realmModels/ObservationPhoto.ts` | Create obs photos, upload mapping, delete |
 | `src/realmModels/Sound.ts` | Move from cache, local URI normalization, delete |
@@ -34,6 +34,7 @@ For the upload pipeline after media is on disk, see `upload-system.md`.
 | `src/components/SoundRecorder/SoundRecorder.js` | Sound recording entry point |
 | `src/components/Suggestions/helpers/flattenUploadParams.ts` | 640px CV resize for `score_image` |
 | `src/uploaders/dataTransformation/prepareMediaForUpload.ts` | Photo/Sound → upload payload |
+| `src/uploaders/utils/withPhotoUploadCopy.ts` | Makes, hands off, and deletes the q90 copy sent for each new photo |
 | `src/components/Developer/hooks/useAppSize.ts` | Developer screen directory size breakdown |
 
 ## Filesystem Paths
@@ -48,6 +49,7 @@ All paths are defined in `src/appConstants/paths.ts` and rooted at `DocumentDire
 | `computerVisionPath` | `computerVisionSuggestions` | Resized images for `score_image` / suggestions API |
 | `soundUploadPath` | `soundUploads` | Sound recordings for upload |
 | `rollbackPhotosPath` | `rollbackPhotos` | Temporary backup copies during observation edit cancel |
+| `photoUploadCopiesPath` | `photoUploadCopies` (under `CachesDirectoryPath`, not `DocumentDirectoryPath`) | q90 copies that exist only while one photo upload request is in flight |
 | `sentinelFilePath` | `sentinelFiles` | Debug/sentinel files (not media) |
 
 **Note:** `photoLibraryPhotosPath` still uses the `galleryPhotos` folder name on disk (intentionally unchanged in MOB-431 to avoid cache-cleanup regressions).
@@ -108,8 +110,9 @@ Staging dirs are cleared on every deferred startup (see below).
 ### Display and upload
 
 - **Display:** `Photo.getLocalPhotoUri(localFilePath)` normalizes stored paths to `file://${photoUploadPath}/${filename}` so photos remain accessible after app updates.
-- **Upload:** `prepareMediaForUpload` → `ObservationPhoto.mapPhotoForUpload` → `Photo.getLocalPhotoUri` → `FileUpload`.
-- **Resize:** `Photo.resizeImageForUpload` uses `resizeImage` with max width 2048, JPEG, quality 100, `onlyScaleDown: true`. On iOS, `ph://` asset URIs use `copyAssetsFileIOS` instead of the resizer.
+- **Upload:** `uploadSingleEvidence` wraps new-photo uploads in `withPhotoUploadCopy` (`uploaders/utils/withPhotoUploadCopy.ts`), which writes a q90 copy of the stored photo to `photoUploadCopiesPath`, passes its uri through `prepareMediaForUpload` → `ObservationPhoto.mapPhotoForUpload( photo, uri )` → `FileUpload`, and deletes the copy in a `finally`. The filename sent to the server is still the stored photo's. If the copy can't be made, the stored q100 file is uploaded instead.
+- **Resize:** `Photo.resizeImageForUpload` uses `resizeImage` with max width 2048 (`PHOTO_MAX_WIDTH`), JPEG, quality 100, `onlyScaleDown: true`. On iOS, `ph://` asset URIs use `copyAssetsFileIOS` instead of the resizer.
+- **Why two qualities:** the q100 file in `photoUploads/` is what display and computer vision (offline predictions, Match, the 640px `score_image` resize) read, and its quality must not change. Only the bytes sent to the server are q90 (`UPLOAD_PHOTO_QUALITY` in `appConstants/photos.ts`). On iOS, q<100 also switches ImageIO from 4:4:4 to 4:2:0 chroma, which is most of the size saving.
 
 ### Transient `originalPhotoUri`
 
@@ -164,6 +167,7 @@ Media cache cleanup is **not** in `StartupService`. It runs from `useDeferredSta
 | `clearComputerVisionPhotos` | Remove all files in `computerVisionPath` |
 | `clearSyncedMediaForUpload` | Keep only files referenced by unsynced observations; delete rest in `photoUploadPath` and `soundUploadPath` |
 | `clearRollbackPhotos` | Remove all files in `rollbackPhotosPath` |
+| `clearStalePhotoUploadCopies` | Remove files in `photoUploadCopiesPath` older than 1 hour (orphans from a crash mid-upload; the age check avoids deleting a copy an upload is still sending) |
 
 ### `removeSyncedFilesFromDirectory` logic
 
@@ -205,7 +209,7 @@ Used by `clearSyncedMediaForUpload` for `photoUploads` and `soundUploads`:
 
 ### Upload (photo)
 
-`prepareMediaForUpload` → `ObservationPhoto.mapPhotoForUpload` → `Photo.getLocalPhotoUri` → `FileUpload`
+`uploadSingleEvidence` → `withPhotoUploadCopy` (q90 copy in `photoUploadCopiesPath`) → `prepareMediaForUpload` → `ObservationPhoto.mapPhotoForUpload( photo, copyUri )` → `FileUpload` → copy deleted
 
 ### Computer vision
 
