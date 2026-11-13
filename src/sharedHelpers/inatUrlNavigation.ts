@@ -50,23 +50,8 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
         return { type: "post", id: firstSegment };
       }
       return null;
-    case "journal": {
-      const postSegment = segments[2];
-      if ( segments.length === 3 && postSegment && parseNumericId( postSegment ) ) {
-        return { type: "post", id: postSegment };
-      }
-      return null;
-    }
-    case "projects": {
-      const postSegment = segments[3];
-      if ( segments[2] === "journal" ) {
-        if ( segments.length === 4 && postSegment && parseNumericId( postSegment ) ) {
-          return { type: "post", id: postSegment };
-        }
-        return null;
-      }
+    case "projects":
       return { type: "project", id: firstSegment };
-    }
     default:
       return null;
   }
