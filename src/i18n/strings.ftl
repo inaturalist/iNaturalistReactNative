@@ -1579,7 +1579,7 @@ We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident 
 # Onboarding location permission screen: reassurance about how location is used
 We-dont-sell-your-data = We don’t sell your data
 # Onboarding location permission screen: reassurance about how location is used
-We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this for observations you upload to iNaturalist.
+We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this for observations you upload to iNaturalist
 Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!

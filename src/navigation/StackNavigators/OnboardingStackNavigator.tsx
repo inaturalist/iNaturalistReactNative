@@ -36,12 +36,12 @@ const OnboardingStackNavigator = ( ) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {onboardingV2Enabled
-        ? ONBOARDING_STEPS.map( ( { id } ) => (
+        ? ONBOARDING_STEPS.map( ( { id, blocksBack } ) => (
           <Stack.Screen
             key={id}
             name={id}
             component={STEP_COMPONENTS[id]}
-            options={id === "location_explainer"
+            options={blocksBack
               ? preventSwipeToGoBack
               : undefined}
           />
