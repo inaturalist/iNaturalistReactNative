@@ -121,6 +121,8 @@ artifacts/
 # Claude Code local config except CLAUDE.md and shared skills
 .claude/*
 !.claude/CLAUDE.md
+# Cursor local config
+.cursor/*
 
 # Compiled tailwind CSS for jest (tests/jest.globalSetup.js)
 tests/.cache/
