@@ -17,8 +17,6 @@ const isProjectsResponse = (
 ): response is ApiResponse<ApiProjectSummary> => !!response
   && Array.isArray( ( response as ApiResponse<ApiProjectSummary> ).results );
 
-// Loads every joined project before anything is shown, because sorting in
-// the app one page at a time would move rows that are already on screen
 const fetchJoinedProjectsPage = (
   memberId: number,
   page: number,
@@ -31,11 +29,13 @@ const fetchJoinedProjectsPage = (
   ttl: -1,
 }, optsWithAuth );
 
+// Loads every joined project before anything is shown, because sorting in
+// the app one page at a time would move rows that are already on screen
 const fetchAllJoinedProjects = async (
   memberId: number,
   optsWithAuth: ApiOpts,
 ): Promise<ApiProjectSummary[]> => {
-  // The first page tells us how many pages there are; and the rest load in parallel
+  // The first page tells us how many pages there are, and the rest load in parallel
   const firstPage = await fetchJoinedProjectsPage( memberId, 1, optsWithAuth );
   if ( !isProjectsResponse( firstPage ) ) {
     return [];
