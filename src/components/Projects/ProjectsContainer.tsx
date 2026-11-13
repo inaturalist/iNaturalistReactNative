@@ -62,7 +62,7 @@ const ProjectsContainer = ( ) => {
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects: searchedProjects,
+    projects: infiniteScrollProjects,
   } = useInfiniteProjectsScroll( {
     params: apiParams,
     enabled: !showJoinedProjects && !isEmpty( apiParams ),
@@ -76,7 +76,7 @@ const ProjectsContainer = ( ) => {
 
   const projects = showJoinedProjects
     ? joinedProjects
-    : searchedProjects;
+    : infiniteScrollProjects;
 
   const tabs = [
     {
