@@ -15,6 +15,7 @@ import { updateProjectUser } from "api/projectUsers";
 import type {
   ApiObservationsSearchResponse, ApiProject,
 } from "api/types";
+import { JOINED_PROJECTS_QUERY_KEY } from "components/Projects/hooks/useJoinedProjects";
 import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
@@ -113,6 +114,7 @@ const ProjectDetailsContainer = ( ) => {
         Project.upsertRemoteProjects( [project as ApiProject], realm );
         queryClient.invalidateQueries( { queryKey: membershipQueryKey } );
         queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: [JOINED_PROJECTS_QUERY_KEY] } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
@@ -137,6 +139,7 @@ const ProjectDetailsContainer = ( ) => {
         queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
         queryClient.invalidateQueries( { queryKey: projectStatsQueryKey } );
         queryClient.invalidateQueries( { queryKey: speciesCountsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: [JOINED_PROJECTS_QUERY_KEY] } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
