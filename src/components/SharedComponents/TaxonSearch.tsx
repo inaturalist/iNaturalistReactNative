@@ -14,7 +14,7 @@ import React, {
   useEffect, useEffectEvent, useMemo, useRef,
 } from "react";
 import type { ListRenderItem, TextInput } from "react-native";
-import { FlatList } from "react-native";
+import { FlatList, Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
@@ -58,6 +58,12 @@ const TaxonSearch = ( {
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
   const searchInputRef = useRef<TextInput>( null );
+
+  // Android keeps the IME up after leave when taps used keyboardShouldPersistTaps.
+  useEffect( ( ) => ( ) => {
+    searchInputRef.current?.blur( );
+    Keyboard.dismiss( );
+  }, [] );
 
   // onTransitionEnd here is defined as an effectEvent so that the listener
   // is not redefined when `query` changes which would otherwise be an effect dep
