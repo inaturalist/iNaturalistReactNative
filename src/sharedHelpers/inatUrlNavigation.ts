@@ -58,7 +58,7 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
 // Rozenite control's nav ref can call this outside of a Screen. They behave the same.
 export async function openInatUrl(
   parsed: InatUrlTarget,
-  navigation: Pick<NavigationProp<ParamListBase>, "dispatch">,
+  navigation: NavigationProp<ParamListBase>,
 ): Promise<boolean> {
   const { type, id } = parsed;
   switch ( type ) {
