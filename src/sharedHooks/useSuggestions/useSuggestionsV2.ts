@@ -348,16 +348,16 @@ const useSuggestionsV2 = ( {
   location,
   enabled = true,
   observationUuid,
-  onlineTimeoutMs: onlineTimeoutMsOverride,
+  onlineTimeoutMs,
 }: UseSuggestionsV2Options ) => {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { isConnected } = useNetInfo( );
   const [state, dispatch] = useReducer( reducer, initialState );
-  const [retried, setRetried] = useState<{ baseKey: string | null; count: number }>(
-    { baseKey: null, count: 0 },
-  );
+  const [attempt, setAttempt] = useState( 0 );
+  // set by retry() and used up by the run it starts
+  const retryRequested = useRef( false );
 
   const latitude = location?.latitude;
   const longitude = location?.longitude;
@@ -368,19 +368,9 @@ const useSuggestionsV2 = ( {
       : undefined
   ), [latitude, longitude] );
 
-  const baseKey = enabled && photoUri
-    ? JSON.stringify( [photoUri, coordinates ?? null] )
+  const inputKey = enabled && photoUri
+    ? JSON.stringify( [photoUri, coordinates ?? null, attempt] )
     : null;
-  // the count gives each retry its own run
-  const inputKey = baseKey && `${baseKey}#${retried.count}`;
-
-  // Fall back to the on-device model quickly at first, but give the server
-  // longer when the user asked for another try
-  const onlineTimeoutMs = onlineTimeoutMsOverride ?? (
-    retried.baseKey === baseKey
-      ? RETRY_SCORE_IMAGE_TIMEOUT
-      : INITIAL_SCORE_IMAGE_TIMEOUT
-  );
 
   // Common names follow the app language. Signed-in users get it from their
   // account, so only logged-out users send it
@@ -417,11 +407,18 @@ const useSuggestionsV2 = ( {
         language: current.language,
         locale: current.locale,
         observationUuid: current.observationUuid,
-        onlineTimeoutMs: current.onlineTimeoutMs,
+        // Fall back to the on-device model quickly at first, but give the
+        // server longer when the user asked for another try
+        onlineTimeoutMs: current.onlineTimeoutMs ?? (
+          retryRequested.current
+            ? RETRY_SCORE_IMAGE_TIMEOUT
+            : INITIAL_SCORE_IMAGE_TIMEOUT
+        ),
         queryClient: current.queryClient,
         realm: current.realm,
         dispatch,
       } );
+      retryRequested.current = false;
     }
     return ( ) => {
       run.cancelled = true;
@@ -439,10 +436,12 @@ const useSuggestionsV2 = ( {
   }, [isConnected] );
 
   const retry = useCallback( ( ) => {
-    if ( !photoUri || !baseKey ) return;
+    // nothing to retry while there is no run
+    if ( !photoUri || !inputKey ) return;
     queryClient.removeQueries( { queryKey: onlineQueryKeyPrefix( photoUri, coordinates ) } );
-    setRetried( previous => ( { baseKey, count: previous.count + 1 } ) );
-  }, [photoUri, coordinates, baseKey, queryClient] );
+    retryRequested.current = true;
+    setAttempt( a => a + 1 );
+  }, [photoUri, coordinates, inputKey, queryClient] );
 
   // State from previous inputs is stale. Report a run that hasn't started
   // yet as loading so callers never see a "no suggestions" frame
