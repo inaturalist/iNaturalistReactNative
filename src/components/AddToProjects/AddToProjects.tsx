@@ -9,7 +9,6 @@ import {
   Body3,
   Button,
   ButtonBar,
-  CustomFlashList,
   INatIcon,
   WarningSheet,
 } from "components/SharedComponents";
@@ -22,7 +21,7 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import type { ListRenderItem } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
 import buildProjectObservationSelection, {
@@ -297,8 +296,8 @@ const AddToProjects = ( ) => {
     [],
   );
 
-  const renderProject: ListRenderItem<RealmProject> = useCallback(
-    ( { item } ) => {
+  const renderProject = useCallback(
+    ( item: RealmProject ) => {
       const isSelected = selectedProjectIds.has( item.id );
       const canExpand = item.projectObservationFields.length > 0
         || validationResult.ruleGroups.some( group => group.projectId === item.id );
@@ -329,18 +328,25 @@ const AddToProjects = ( ) => {
 
   return (
     <SharedStackBottomInsetViewWrapper testID="add-to-projects">
-      <CustomFlashList
-        testID="AddToProjects.list"
-        ListEmptyComponent={listEmptyComponent}
-        ListHeaderComponent={listHeaderComponent}
-        ListFooterComponent={listFooterComponent}
-        data={joinedProjects}
-        extraData={validationResult}
-        keyExtractor={( project: RealmProject ) => String( project.id )}
-        keyboardDismissMode="on-drag"
-        renderItem={renderProject}
-        ItemSeparatorComponent={ItemSeparator}
-      />
+      {/* ObsEdit pattern: form fields in KeyboardAwareScrollView (MOB-1902) */}
+      <View className="flex-1">
+        <KeyboardAwareScrollView
+          testID="AddToProjects.list"
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
+          {listHeaderComponent}
+          {joinedProjects.length === 0
+            ? listEmptyComponent
+            : joinedProjects.map( ( item, index ) => (
+              <React.Fragment key={item.id}>
+                {index > 0 && <ItemSeparator />}
+                {renderProject( item )}
+              </React.Fragment>
+            ) )}
+          {listFooterComponent}
+        </KeyboardAwareScrollView>
+      </View>
       <View
         className="bg-white"
         style={DROP_SHADOW}
