@@ -3,7 +3,9 @@ import { fetchUserMe, updateUsers } from "api/users";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
+import { UpdateMode } from "realm";
 import QueueItem from "realmModels/QueueItem";
+import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -40,6 +42,10 @@ const useWorkQueue = ( ) => {
           api_token: apiToken,
         };
         const updatedUser = await fetchUserMe( { }, options );
+        if ( !updatedUser ) {
+          logger.error( "users/me returned no user after a user update" );
+          return;
+        }
         // logger.info( `Received updated user data from API: ${JSON.stringify( updatedUser )}` );
 
         safeRealmWrite( realm, ( ) => {
@@ -48,7 +54,7 @@ const useWorkQueue = ( ) => {
           // eslint-disable-next-line max-len
           //   logger.info( `Existing user in Realm: prefers_common_names=${existingUser.prefers_common_names}, prefers_scientific_name_first=${existingUser.prefers_scientific_name_first}` );
           // }
-          realm.create( "User", updatedUser, "modified" );
+          realm.create( User, updatedUser, UpdateMode.Modified );
           // const updatedRealmUser = realm.objectForPrimaryKey( "User", updatedUser.id );
           // eslint-disable-next-line max-len
           // logger.info( `Updated user in Realm: prefers_common_names=${updatedRealmUser.prefers_common_names}, prefers_scientific_name_first=${updatedRealmUser.prefers_scientific_name_first}` );
