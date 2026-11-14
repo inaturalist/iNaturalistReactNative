@@ -157,6 +157,8 @@ April = April
 Arachnids = Arachnids
 Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
+# Accessibility hint for the close button on onboarding steps, which opens a sheet asking whether to exit
+Asks-whether-to-exit = Asks whether to exit.
 attribution-cc-by = some rights reserved (CC BY)
 attribution-cc-by-nc = some rights reserved (CC BY-NC)
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
@@ -533,6 +535,10 @@ EVIDENCE = EVIDENCE
 Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
 except = except
+# Button confirming the user wants to leave onboarding sign-up
+EXIT = EXIT
+# Header of the sheet shown when closing an onboarding sign-up step
+Exit-signup--question = Exit signup?
 EXPAND-MAP = EXPAND MAP
 # Onboarding carousel second screen description
 Experts-help-verify-and-improve-IDs = Experts help verify and improve IDs
@@ -1596,6 +1602,8 @@ Withdraws-identification = Withdraws identification
 Worldwide = Worldwide
 WORLDWIDE = WORLDWIDE
 Would-you-like-to-discard-your-current-recording-and-start-over = Would you like to discard your current recording and start over?
+# Header of the sheet shown when closing an onboarding education step
+Would-you-like-to-exit-the-demo = Would you like to exit the demo?
 Would-you-like-to-suggest-the-following-identification = Would you like to suggest the following identification?
 x-comments =
     { $count ->
@@ -1765,6 +1773,8 @@ x-uploads-failed =
        *[other] { $count } uploads failed
     }
 Yes-but-only-if-I-add-the-observation-to-the-project-myself = Yes, but only if I add the observation to the project myself
+# Button confirming the user wants to leave the onboarding demo
+YES-EXIT = YES, EXIT
 Yes-no-matter-who-adds-the-observation-to-the-project = Yes, no matter who adds the observation to the project
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
@@ -1773,11 +1783,15 @@ You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per obser
 # Onboarding location permission screen: reassurance about how location is used
 You-can-adjust-your-location-privacy-on-every-observation = You can adjust your location privacy on every observation
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
+# Body of the sheet shown when closing an onboarding education step; the demo can be replayed from Settings
+You-can-always-revisit-this-later-in-settings = You can always revisit this later in settings.
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
 You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = You can now upload your observations to iNaturalist and contribute to global biodiversity research.
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
+# Body of the sheet shown when closing an onboarding sign-up step
+You-can-only-get-identifications-from-other-people-by-creating-an-account = You can only get identifications from other people by creating an account.
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.

@@ -459,6 +459,9 @@ export type LoginStackParamList = {
   // { emailConfirmed: true }
   Login: {
     emailConfirmed?: boolean;
+    // Opened from an onboarding step, so signing in or signing up continues
+    // onboarding
+    fromOnboarding?: boolean;
     prevScreen?: string;
     projectId?: number;
   } | undefined;

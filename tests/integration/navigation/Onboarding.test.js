@@ -50,6 +50,7 @@ jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
   emailAvailable: jest.fn( ( ) => Promise.resolve( true ) ),
   registerUser: jest.fn( ( ) => Promise.resolve( null ) ),
   authenticateUser: jest.fn( ( ) => Promise.resolve( { success: true } ) ),
+  resetPassword: jest.fn( ( ) => Promise.resolve( ) ),
 } ) );
 
 const actor = userEvent.setup( );
@@ -105,16 +106,16 @@ describe( "Onboarding", ( ) => {
 } );
 
 describe( "Onboarding with OnboardingV2Enabled", ( ) => {
-  // [step, shows progress bar]
+  // [step, shows progress bar, has a close button]
   const STEPS_IN_ORDER = [
-    ["welcome", false],
-    ["obs_story", true],
-    ["community_id", true],
-    ["research_grade", true],
-    ["impact", true],
-    ["signup_email", false],
-    ["signup_credentials", false],
-    ["location_explainer", true],
+    ["welcome", false, false],
+    ["obs_story", true, true],
+    ["community_id", true, true],
+    ["research_grade", true, true],
+    ["impact", true, true],
+    ["signup_email", false, true],
+    ["signup_credentials", false, true],
+    ["location_explainer", true, false],
   ];
   const STEP_IDS = STEPS_IN_ORDER.map( ( [stepId] ) => stepId );
 
@@ -123,17 +124,66 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.next` ) );
   };
 
-  const continueToLocationStep = async ( ) => {
+  const continueTo = async targetStepId => {
     // eslint-disable-next-line no-restricted-syntax
-    for ( const stepId of STEP_IDS.slice( 0, STEP_IDS.indexOf( "location_explainer" ) ) ) {
+    for ( const stepId of STEP_IDS.slice( 0, STEP_IDS.indexOf( targetStepId ) ) ) {
       // eslint-disable-next-line no-await-in-loop
       await continueFrom( stepId );
     }
+    return screen.findByTestId( `Onboarding.${targetStepId}` );
+  };
+
+  const continueToLocationStep = ( ) => continueTo( "location_explainer" );
+
+  const openExitSheet = async stepId => {
+    const step = await screen.findByTestId( `Onboarding.${stepId}` );
+    await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.close` ) );
+    return screen.findByTestId( `Onboarding.${stepId}.exitSheet` );
+  };
+
+  const confirmExit = async ( stepId, confirmText ) => {
+    const sheet = await openExitSheet( stepId );
+    await actor.press( within( sheet ).getByText( i18next.t( confirmText ) ) );
+  };
+
+  const logInFrom = async stepId => {
+    const step = await screen.findByTestId( `Onboarding.${stepId}` );
+    await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.logIn` ) );
+    return screen.findByTestId( "Login.email" );
+  };
+
+  const logIn = async ( ) => {
+    await actor.type( await screen.findByTestId( "Login.email" ), "someone" );
+    await actor.type( screen.getByTestId( "Login.password" ), "a-good-password" );
+    await actor.press( screen.getByTestId( "Login.loginButton" ) );
+  };
+
+  const closeLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByLabelText( i18next.t( "Close" ) ) );
+  };
+
+  const signUpFromLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByText( /Sign up/ ) );
+  };
+
+  const resetPasswordAndGoBackToLogin = async ( ) => {
+    await screen.findByTestId( "Login.email" );
+    await actor.press( screen.getByText( i18next.t( "Forgot-Password" ) ) );
+    const resetButton = await screen.findByTestId( "Login.forgotPasswordButton" );
+    await actor.type( screen.getByTestId( "Login.email" ), "someone@example.com" );
+    await actor.press( resetButton );
+    await actor.press( await screen.findByText( i18next.t( "BACK-TO-LOGIN" ) ) );
   };
 
   const findMyObservations = ( ) => screen.findByText(
     i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ),
   );
+
+  // Default queries skip screens covered by another stack screen, so they
+  // can't see a screen left mounted underneath
+  const queryMounted = testID => screen.queryByTestId( testID, { includeHiddenElements: true } );
 
   const renderAppWithNavigationContainer = ( ) => {
     const container = { current: null };
@@ -207,18 +257,23 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   it(
-    "visits each step in order (progress on education and location steps), asks for location, "
-    + "then shows my observations",
+    "visits each step in order (progress on education and location steps, close on demo and "
+    + "sign-up steps), asks for location, then shows my observations",
     async ( ) => {
       renderApp( );
       // eslint-disable-next-line no-restricted-syntax
-      for ( const [stepId, showsProgress] of STEPS_IN_ORDER ) {
+      for ( const [stepId, showsProgress, hasClose] of STEPS_IN_ORDER ) {
         // eslint-disable-next-line no-await-in-loop
         const step = await screen.findByTestId( `Onboarding.${stepId}` );
         if ( showsProgress ) {
           expect( within( step ).getByTestId( "Onboarding.progress" ) ).toBeVisible( );
         } else {
           expect( within( step ).queryByTestId( "Onboarding.progress" ) ).toBeNull( );
+        }
+        if ( hasClose ) {
+          expect( within( step ).getByTestId( `Onboarding.${stepId}.close` ) ).toBeVisible( );
+        } else {
+          expect( within( step ).queryByTestId( `Onboarding.${stepId}.close` ) ).toBeNull( );
         }
         // eslint-disable-next-line no-await-in-loop
         await continueFrom( stepId );
@@ -260,7 +315,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   it(
-    "goes back one step at a time by swipe or back button, from impact to the observation story",
+    "goes back one step at a time by swipe or back button, from impact to welcome",
     async ( ) => {
       const { navigationContainer } = renderAppWithNavigationContainer( );
       const impactIndex = STEP_IDS.indexOf( "impact" );
@@ -271,8 +326,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       }
       expect( await screen.findByTestId( "Onboarding.impact" ) ).toBeVisible( );
 
-      const obsStoryIndex = STEP_IDS.indexOf( "obs_story" );
-      for ( let i = impactIndex; i > obsStoryIndex; i -= 1 ) {
+      for ( let i = impactIndex; i > 0; i -= 1 ) {
         expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).not.toBe( false );
         // Stands in for the back gesture and Android back button, which both
         // pop the step stack and can't be performed in jest
@@ -282,4 +336,129 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       }
     },
   );
+
+  describe( "exit sheets", ( ) => {
+    it( "asks before exiting the demo, and cancelling stays on the step", async ( ) => {
+      renderApp( );
+      await continueTo( "community_id" );
+      const sheet = await openExitSheet( "community_id" );
+      expect(
+        within( sheet ).getByText( i18next.t( "You-can-always-revisit-this-later-in-settings" ) ),
+      ).toBeVisible( );
+      await actor.press( within( sheet ).getByText( i18next.t( "CANCEL" ) ) );
+      expect( screen.queryByTestId( "Onboarding.community_id.exitSheet" ) ).toBeNull( );
+      expect( screen.getByTestId( "Onboarding.community_id" ) ).toBeVisible( );
+    } );
+
+    it( "exits the demo to sign-up, and going back resumes the demo", async ( ) => {
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await continueTo( "community_id" );
+      await confirmExit( "community_id", "YES-EXIT" );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      act( ( ) => navigationContainer.current.goBack( ) );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+      expect( screen.getByTestId( "Onboarding.community_id" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.community_id.exitSheet" ) ).toBeNull( );
+    } );
+
+    it( "exits sign-up to the location step", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      const sheet = await openExitSheet( "signup_email" );
+      expect( within( sheet ).getByText( i18next.t(
+        "You-can-only-get-identifications-from-other-people-by-creating-an-account",
+      ) ) ).toBeVisible( );
+      await actor.press( within( sheet ).getByText( i18next.t( "EXIT" ) ) );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+    } );
+  } );
+
+  describe( "logging in and signing up", ( ) => {
+    it.each( ["welcome", "signup_email"] )(
+      "returns to the %s step when Login opened there is closed",
+      async stepId => {
+        renderApp( );
+        await continueTo( stepId );
+        await logInFrom( stepId );
+        await closeLogin( );
+        expect( await screen.findByTestId( `Onboarding.${stepId}` ) ).toBeVisible( );
+        expect( queryMounted( "Login.email" ) ).toBeNull( );
+        expect( mockOnboarding.shown ).toBeFalsy( );
+      },
+    );
+
+    it( "shows the location step after logging in from welcome", async ( ) => {
+      renderApp( );
+      await logInFrom( "welcome" );
+      await logIn( );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+    } );
+
+    it( "returns to the sign-up email step via Sign up in Login opened there", async ( ) => {
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await continueTo( "signup_email" );
+      await logInFrom( "signup_email" );
+      await signUpFromLogin( );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+      expect(
+        screen.getAllByTestId( "Onboarding.signup_email", { includeHiddenElements: true } ),
+      ).toHaveLength( 1 );
+      act( ( ) => navigationContainer.current.goBack( ) );
+      expect( screen.getByTestId( "Onboarding.impact" ) ).toBeVisible( );
+    } );
+
+    it( "opens the onboarding sign-up step from Login opened on welcome", async ( ) => {
+      renderApp( );
+      await logInFrom( "welcome" );
+      await signUpFromLogin( );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( queryMounted( "Signup.email" ) ).toBeNull( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+    } );
+
+    it(
+      "shows the location step after logging in from welcome by way of a password reset",
+      async ( ) => {
+        renderApp( );
+        await logInFrom( "welcome" );
+        await resetPasswordAndGoBackToLogin( );
+        await logIn( );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Login.email" ) ).toBeNull( );
+      },
+    );
+
+    it( "leaves Login when going back after a password reset", async ( ) => {
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await logInFrom( "welcome" );
+      await resetPasswordAndGoBackToLogin( );
+      await screen.findByTestId( "Login.loginButton" );
+      act( ( ) => navigationContainer.current.goBack( ) );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+    } );
+
+    it( "closes Login after logging in once onboarding is done", async ( ) => {
+      mockOnboarding.shown = true;
+      renderApp( );
+      await findMyObservations( );
+      await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
+      await logIn( );
+      expect( await findMyObservations( ) ).toBeVisible( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+      expect( queryMounted( "Onboarding.location_explainer" ) ).toBeNull( );
+    } );
+
+    it( "opens the existing sign-up form from Login once onboarding is done", async ( ) => {
+      mockOnboarding.shown = true;
+      renderApp( );
+      await findMyObservations( );
+      await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
+      await signUpFromLogin( );
+      expect( await screen.findByTestId( "Signup.email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+    } );
+  } );
 } );
