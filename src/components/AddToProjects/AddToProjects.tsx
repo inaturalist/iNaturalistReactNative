@@ -69,7 +69,8 @@ function getCompletedProjectIds(
   );
 }
 
-const INPUT_ABOVE_KEYBOARD_GAP = 16;
+// Leave room so the next project field under the focused one stays visible
+const INPUT_ABOVE_KEYBOARD_GAP = 96;
 
 const AddToProjects = ( ) => {
   const { i18n, t } = useTranslation( );
