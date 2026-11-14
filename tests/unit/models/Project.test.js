@@ -31,7 +31,7 @@ describe( "Project", ( ) => {
       expect( mappedProject.project_type ).toBe( mockRemoteProject.project_type );
     } );
 
-    it( "maps rules and rule preferences", ( ) => {
+    it( "maps rules", ( ) => {
       const mockRemoteProject = factory( "RemoteProject", {
         project_observation_rules: [factory( "RemoteProjectObservationRule" )],
         rule_preferences: [{ field: "quality_grade", value: "research,needs_id" }],
@@ -39,9 +39,6 @@ describe( "Project", ( ) => {
       const mappedProject = Project.mapApiToRealm( mockRemoteProject );
 
       expect( mappedProject.project_observation_rules ).toHaveLength( 1 );
-      expect( mappedProject.rule_preferences ).toEqual( [
-        { field: "quality_grade", value: "research,needs_id" },
-      ] );
     } );
   } );
 
@@ -62,7 +59,7 @@ describe( "Project", ( ) => {
       );
     } );
 
-    it( "persists rules and rule preferences that survive mapRealmToPojo", ( ) => {
+    it( "persists rules that survive mapRealmToPojo", ( ) => {
       const mockRule = factory( "RemoteProjectObservationRule" );
       const mockRemoteProject = factory( "RemoteProject", {
         project_observation_rules: [mockRule],
@@ -77,9 +74,34 @@ describe( "Project", ( ) => {
       Project.upsertRemoteProjects( [mockRemoteProject], global.realm );
 
       const upsertedProject = global.realm.objectForPrimaryKey( "Project", mockRemoteProject.id );
-      const pojo = Project.mapRealmToPojo( upsertedProject );
-      expect( pojo.project_observation_rules ).toEqual( [mockRule] );
-      expect( pojo.rule_preferences ).toEqual( mockRemoteProject.rule_preferences );
+      const pojo = Project.mapRealmToPojo( upsertedProject, global.realm );
+      const savedTaxon = global.realm.objectForPrimaryKey( "Taxon", mockRule.taxon.id );
+      expect( Array.from( savedTaxon.ancestor_ids ) ).toEqual( mockRule.taxon.ancestor_ids );
+      expect( pojo.project_observation_rules[0].taxon.id ).toBe( mockRule.operand_id );
+    } );
+
+    it( "aborts project upsert when rule taxon fails forUpdate", ( ) => {
+      const rejectRule = factory( "RemoteProjectObservationRule", {
+        operand_id: 999001,
+      } );
+      rejectRule.taxon = {
+        ancestor_ids: [],
+        id: 999001,
+        is_active: true,
+        name: "Mystery taxon",
+        rank: "species",
+        rank_level: 10,
+      };
+      const mockRemoteProject = factory( "RemoteProject", {
+        project_observation_rules: [rejectRule],
+      } );
+
+      expect( () => {
+        Project.upsertRemoteProjects( [mockRemoteProject], global.realm );
+      } ).toThrow( "Tried to save taxon w/o ancestor_ids" );
+
+      expect( global.realm.objectForPrimaryKey( "Taxon", 999001 ) ).toBeNull( );
+      expect( global.realm.objectForPrimaryKey( "Project", mockRemoteProject.id ) ).toBeNull( );
     } );
 
     it( "replaces cached rules on re-sync", ( ) => {

@@ -9,7 +9,11 @@ import TaxonDetailsTitle from "./TaxonDetailsTitle";
 interface Props {
   onClose: () => void;
   showSpeciesSeenCheckmark: boolean;
-  taxon: object;
+  taxon?: {
+    rank: string;
+    rank_level: number;
+    id: number;
+  };
 }
 
 const BACK_BUTTON_STYLE = {

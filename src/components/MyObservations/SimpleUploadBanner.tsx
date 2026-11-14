@@ -11,7 +11,7 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  error: string | undefined;
+  error: string | undefined | null;
   handleSyncButtonPress: ( ) => void;
   progress: number;
   syncDisabled: boolean;

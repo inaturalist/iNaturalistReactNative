@@ -1,8 +1,9 @@
+import type { ErrorWithResponse, INatApiError } from "api/error";
+import handleError from "api/error";
+import type {
+  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse, ApiUntypedParams, ApiUserMe,
+} from "api/types";
 import inatjs from "inaturalistjs";
-
-import type { ErrorWithResponse } from "./error";
-import handleError from "./error";
-import type { ApiOpts, ApiUntypedParams } from "./types";
 
 const REMOTE_USER_FIELDS = {
   created_at: true,
@@ -32,12 +33,18 @@ const REMOTE_USER_PARAMS = {
   fields: REMOTE_USER_FIELDS,
 };
 
-const fetchUserMe = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) => {
+const fetchUserMe = async (
+  params: ApiUntypedParams = {},
+  opts: ApiOpts = {},
+): Promise<ApiUserMe | undefined> => {
   try {
-    const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
+    const response: ApiResponse<ApiUserMe> | null = await inatjs.users.me(
+      { ...REMOTE_USER_PARAMS, ...params, ...opts },
+    );
     return response?.results[0];
   } catch ( e ) {
-    return handleError( e as ErrorWithResponse, { throw: true } );
+    // handleError throws unless passed `throw: false`
+    throw await handleError( e as ErrorWithResponse );
   }
 };
 
@@ -58,6 +65,22 @@ const fetchRemoteUser = async (
     return handleError(
       e as ErrorWithResponse,
       { context: { functionName: "fetchRemoteUser", id, opts } },
+    );
+  }
+};
+
+const fetchUserProjects = async <T = ApiDefaultResult>(
+  params: ApiGetByIdParams,
+  opts: ApiOpts = {},
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    const response = await inatjs.users.projects( params, opts );
+    if ( !response ) { return null; }
+    return response;
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchUserProjects", opts } },
     );
   }
 };
@@ -179,11 +202,24 @@ const fetchUserEmailAvailable = async (
   }
 };
 
+const fetchTaxaObserved = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) => {
+  try {
+    return await inatjs.users.taxaObserved( params, opts );
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchTaxaObserved", opts } },
+    );
+  }
+};
+
 export {
   blockUser,
   fetchRemoteUser,
+  fetchTaxaObserved,
   fetchUserEmailAvailable,
   fetchUserMe,
+  fetchUserProjects,
   fetchUsers,
   muteUser,
   unblockUser,

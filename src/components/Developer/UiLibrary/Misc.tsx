@@ -41,8 +41,8 @@ const { useRealm } = RealmContext;
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const Misc = ( ) => {
-  const { t } = useTranslation();
-  const currentUser = useCurrentUser();
+  const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [isChecked, setIsChecked] = useState( false );
   const realm = useRealm( );

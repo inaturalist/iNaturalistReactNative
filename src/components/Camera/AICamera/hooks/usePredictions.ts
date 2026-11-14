@@ -29,6 +29,7 @@ const usePredictions = ( ) => {
     setResultTimestamp( cvResult.timestamp );
     let prediction = null;
     const { predictions } = cvResult;
+    // TODO: is this still required? Doesn't harm us though I guess.
     // As of react-native-worklets-core v1.3.0 there is a discrepancy in the way
     // objects are returned from worklets. The "object" returned is not possible
     // to be used with ...spread syntax or Object.assign which we might be using in other

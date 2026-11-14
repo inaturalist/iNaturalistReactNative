@@ -1,3 +1,5 @@
+import type { Geoprivacy } from "./geoprivacy";
+
 // https://github.com/inaturalist/iNaturalistAPI/blob/08e3aade068c50e02d0caf7a59c69ea87b70bc6e/lib/views/swagger_v1.yml.ejs#L2319-L2333
 export type License =
   | "cc-by"
@@ -75,21 +77,8 @@ export interface RealmProjectObservationField extends RealmObject {
 export interface RealmProjectObservationRule extends RealmObject {
   id: number;
   operand_id?: number;
-  operand_type?: string;
   operator: string;
   place_display_name?: string;
-  project_title?: string;
-  taxon_ancestor_ids: number[];
-  taxon_name?: string;
-  taxon_preferred_common_name?: string;
-  taxon_rank?: string;
-  taxon_rank_level?: number;
-  user_login?: string;
-}
-
-export interface RealmProjectRulePreference extends RealmObject {
-  field: string;
-  value?: string | number | boolean | null;
 }
 
 export interface RealmProject extends RealmObject {
@@ -98,7 +87,6 @@ export interface RealmProject extends RealmObject {
   projectObservationFields: RealmProjectObservationField[];
   project_observation_rules: RealmProjectObservationRule[];
   project_type?: string;
-  rule_preferences: RealmProjectRulePreference[];
   title?: string;
 }
 
@@ -188,11 +176,12 @@ interface RealmIdentification extends RealmObject {
 export interface RealmObservationPojo {
   _created_at?: Date;
   _synced_at?: Date;
+  captive?: boolean | null;
   captive_flag: boolean | null;
   comments: RealmComment[];
   comments_viewed?: boolean;
   description: string | null;
-  geoprivacy: string | null;
+  geoprivacy: Geoprivacy;
   identifications: RealmIdentification[];
   identifications_viewed?: boolean;
   latitude: number | null;
@@ -214,7 +203,7 @@ export interface RealmObservationPojo {
   species_guess: string | null;
   taxon_id: number | null;
   taxon?: RealmTaxon;
-  taxon_geoprivacy?: "open" | "private" | "obscured" | null;
+  taxon_geoprivacy?: Geoprivacy;
   time_observed_at?: string;
   timeObservedAt?: string;
   uploadErrorMessage?: string | null;

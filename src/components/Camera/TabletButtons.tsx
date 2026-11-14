@@ -5,7 +5,7 @@ import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { AnimatedStyle } from "react-native-reanimated";
-import type { TakePhotoOptions } from "react-native-vision-camera";
+import type { CapturePhotoSettings } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
 import Flash from "./Buttons/Flash";
@@ -51,7 +51,7 @@ interface Props {
   showPrediction?: boolean;
   showZoomButton: boolean;
   takePhoto: ( ) => Promise<void>;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   toggleFlash: ( ) => void;
   zoomTextValue: string;
   useLocation: boolean;

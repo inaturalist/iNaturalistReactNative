@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import map from "lodash/map";
 import trim from "lodash/trim";
 
@@ -165,7 +166,7 @@ interface User {
 export function accessibleTaxonName(
   taxon: Taxon,
   user: User | null,
-  t: ( key: string, options: object ) => string,
+  t: TFunction,
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
   if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {

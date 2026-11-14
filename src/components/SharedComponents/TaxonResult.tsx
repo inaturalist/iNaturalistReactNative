@@ -42,7 +42,7 @@ interface TaxonResultBaseProps {
   showEditButton?: boolean;
   showRemoveButton?: boolean;
   taxon: RealmTaxon | ApiTaxon;
-  testID: string;
+  testID?: string;
   vision?: boolean;
   white?: boolean;
 }

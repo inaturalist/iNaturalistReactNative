@@ -5,10 +5,12 @@ export default define( "RemoteProjectObservationRule", faker => {
   return {
     id: faker.number.int( ),
     operand_id: taxonId,
-    operand_type: "Taxon",
     operator: "in_taxon?",
     taxon: {
       ancestor_ids: [48460, 1, taxonId],
+      default_photo: {
+        url: faker.image.url( ),
+      },
       id: taxonId,
       name: faker.lorem.word( ),
       preferred_common_name: faker.lorem.word( ),

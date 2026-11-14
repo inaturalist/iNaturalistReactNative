@@ -1,3 +1,4 @@
+import type { ApiProjectType } from "api/types";
 import {
   Body2, Heading4,
 } from "components/SharedComponents";
@@ -6,7 +7,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  projectType: "collection" | "" | "umbrella";
+  projectType: ApiProjectType;
 }
 
 const AboutProjectType = ( { projectType }: Props ) => {
@@ -26,7 +27,9 @@ const AboutProjectType = ( { projectType }: Props ) => {
       about: t( "If-you-want-to-collate-compare-promote" ),
     },
   };
-  const selectedProjectType = projectTypes[projectType] || projectTypes.traditional;
+  const selectedProjectType = projectType === "collection" || projectType === "umbrella"
+    ? projectTypes[projectType]
+    : projectTypes.traditional;
 
   return (
     <View className="mt-8">

@@ -6,14 +6,18 @@ import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
 import { Alert } from "react-native";
+import type { Geoprivacy } from "realmModels/geoprivacy";
+import {
+  GEOPRIVACY_OBSCURED,
+  GEOPRIVACY_OPEN,
+  GEOPRIVACY_PRIVATE,
+} from "realmModels/geoprivacy";
 import { useCurrentUser, useFeatureFlag, useTranslation } from "sharedHooks";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import DropdownItem from "./DropdownItem";
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
-
-type Geoprivacy = null | "open" | "obscured" | "private";
 
 type UpdateObservationKey =
   | {
@@ -52,15 +56,15 @@ const OtherDataSection = ( {
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
-    value: "open" as const,
+    value: GEOPRIVACY_OPEN,
   },
   {
     label: t( "Obscured" ),
-    value: "obscured" as const,
+    value: GEOPRIVACY_OBSCURED,
   },
   {
     label: t( "Private" ),
-    value: "private" as const,
+    value: GEOPRIVACY_PRIVATE,
   }];
 
   // opposite of Seek (asking if wild, not if captive)

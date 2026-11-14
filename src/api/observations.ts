@@ -1,8 +1,19 @@
+import type { ErrorWithResponse, INatApiError } from "api/error";
+import handleError from "api/error";
+import { ICONIC_TAXA_COUNTS_FIELDS } from "api/fields";
+import type {
+  ApiDefaultResult,
+  ApiObservationFilterParams,
+  ApiObservationsSearchParams,
+  ApiOpts,
+  ApiParams,
+  ApiPhotoWithLicense,
+  ApiResponse,
+  ApiUntypedParams,
+  ApiUser,
+} from "api/types";
 import inatjs from "inaturalistjs";
-
-import type { ErrorWithResponse } from "./error";
-import handleError from "./error";
-import type { ApiOpts, ApiPhotoWithLicense, ApiUntypedParams } from "./types";
+import type { SortDirection } from "types/sorting";
 
 interface RemoteObservationWithPhotos {
   observationPhotos?: ApiPhotoWithLicense[];
@@ -54,6 +65,33 @@ const unfaveObservation = async ( params: ApiUntypedParams = {}, opts: ApiOpts =
       e as ErrorWithResponse,
       { context: { functionName: "unfaveObservation", opts } },
     );
+  }
+};
+
+export interface ObserverCountsParams extends ApiObservationFilterParams {
+  order?: ApiObservationsSearchParams["order"];
+  order_by?: "observation_count" | "species_count";
+}
+
+export interface ApiObserverCount {
+  observation_count: number;
+  species_count?: number;
+  user: ApiUser;
+  user_id?: number;
+}
+
+const fetchObservers = async (
+  params: ObserverCountsParams = {},
+  opts: ApiOpts = {},
+): Promise<ApiResponse<ApiObserverCount> | null> => {
+  try {
+    return await inatjs.observations.observers( params, opts );
+  } catch ( e ) {
+    await handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchObservers", opts } },
+    );
+    return null;
   }
 };
 
@@ -179,6 +217,62 @@ const createOrUpdateEvidence = async <P extends ApiUntypedParams, O extends ApiO
   }
 };
 
+// Accepts only a user_id for now, but could be widened to accept a login string or an array of
+// ids or logins. This endpoint was created to assist with building the grouped-by-iconic-taxa
+// view for My Observations, so for now, narrowing to number only is a deliberate simplification
+// for what this feature actually needs.
+export interface IconicTaxaCountsParams extends ApiParams {
+  user_id?: number;
+}
+
+export interface IconicTaxonCountResult {
+  count: number;
+  taxon: { name: string } | null;
+}
+
+const fetchIconicTaxaCounts = async (
+  params: IconicTaxaCountsParams = {},
+  opts: ApiOpts = {},
+): Promise<ApiResponse<IconicTaxonCountResult> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    return await inatjs.observations.iconicTaxaCounts(
+      { fields: ICONIC_TAXA_COUNTS_FIELDS, ...params },
+      opts,
+    );
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchIconicTaxaCounts", opts } },
+    );
+  }
+};
+
+export interface IdentifierCountsParams extends ApiObservationFilterParams {
+  order?: ApiObservationsSearchParams["order"];
+  order_by?: ApiObservationsSearchParams["order_by"];
+}
+
+export interface ApiIdentifierCount {
+  count: number;
+  user: ApiUser;
+  user_id?: number;
+}
+
+const fetchIdentifiers = async (
+  params: IdentifierCountsParams = {},
+  opts: ApiOpts = {},
+): Promise<ApiResponse<ApiIdentifierCount> | null> => {
+  try {
+    return await inatjs.observations.identifiers( params, opts );
+  } catch ( e ) {
+    await handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchIdentifiers", opts } },
+    );
+    return null;
+  }
+};
+
 const fetchObservationUpdates = async (
   params: ApiUntypedParams = {},
   opts: ApiOpts = {},
@@ -229,10 +323,20 @@ const deleteRemoteObservation = async (
   }
 };
 
-const fetchSpeciesCounts = async (
-  params: ApiUntypedParams = {},
+export interface SpeciesCountsParams extends ApiParams {
+  lat?: number;
+  lng?: number;
+  order?: SortDirection;
+  order_by?: "count";
+  project_id?: number;
+  taxon_id?: number | number[];
+  user_id?: number;
+}
+
+const fetchSpeciesCounts = async <T = ApiDefaultResult>(
+  params: SpeciesCountsParams = {},
   opts: ApiOpts = {},
-) => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     return inatjs.observations.speciesCounts( params, opts );
   } catch ( e ) {
@@ -292,7 +396,10 @@ export {
   createSubscription,
   deleteRemoteObservation,
   faveObservation,
+  fetchIconicTaxaCounts,
+  fetchIdentifiers,
   fetchObservationUpdates,
+  fetchObservers,
   fetchRemoteObservation,
   fetchRemoteObservations,
   fetchSpeciesCounts,

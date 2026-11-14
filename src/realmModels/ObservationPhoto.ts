@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import { PHOTO_FIELDS } from "api/fields";
 import type { ApiObservationPhoto } from "api/types";
 import inatjs, { FileUpload } from "inaturalistjs";
 import type { RealmObservation, RealmObservationPhoto, RealmPhoto } from "realmModels/types";
@@ -16,7 +17,7 @@ class ObservationPhoto extends Realm.Object {
 
   static OBSERVATION_PHOTOS_FIELDS = {
     id: true,
-    photo: Photo.PHOTO_FIELDS,
+    photo: PHOTO_FIELDS,
     position: true,
     uuid: true,
   } as const;

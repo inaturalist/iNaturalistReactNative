@@ -10,14 +10,17 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { OnboardingStepId } from "components/Onboarding/onboardingSteps";
 import type {
   ExploreV2LocationState,
+  ExploreV2Search,
   ExploreV2Subject,
   ExploreV2Tab,
 } from "providers/ExploreV2Context";
 import type { SharedData } from "sharedHooks/useShare";
 
 export interface ExploreV2EntryParams {
+  search?: ExploreV2Search;
   subject?: ExploreV2Subject | null;
   location?: ExploreV2LocationState;
   activeTab?: ExploreV2Tab;
@@ -212,7 +215,10 @@ export type SharedStackParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type OnboardingStackParamList = {
+  // The carousel shown while FeatureFlag.OnboardingV2Enabled is off
   Onboarding: undefined;
+} & {
+  [StepId in OnboardingStepId]: undefined;
 };
 
 // Screens hosted by ExploreStackNavigator (ExploreV2)
@@ -280,8 +286,8 @@ export type BaseTabStackParamList = {
     userId?: number;
     login?: string;
   };
-  // From DQAButton
-  // { observationUUID }
+  // From StatusSection and DetailsTab
+  // { observationUUID: observation.uuid }
   DataQualityAssessment: { observationUUID: string };
   Projects: undefined;
   // From LoginForm
@@ -340,9 +346,7 @@ export type BaseTabStackParamList = {
     userLogin?: string;
   } | undefined;
   PostDetails: {
-    body: string;
-    published_at: string;
-    title: string;
+    id: number;
   };
   Debug: undefined;
   UILibrary: undefined;
@@ -426,7 +430,17 @@ export type BaseNoBottomTabStackParamList = {
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
-  SoundRecorder: undefined;
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  // From AddEvidenceSheet
+  // { addEvidence: true }
+  SoundRecorder: {
+    addEvidence?: boolean;
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
+  };
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
   GroupPhotos: { lastScreen: "PhotoSharing" };

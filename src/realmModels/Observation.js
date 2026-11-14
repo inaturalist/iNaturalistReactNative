@@ -3,6 +3,7 @@ import {
   OBSERVATION_FIELD_VALUE_FIELDS,
   PROJECT_OBSERVATION_FIELDS,
   PROJECT_SUMMARY_FIELDS,
+  TAXON_SUMMARY_FIELDS,
 } from "api/fields";
 import { Alert } from "react-native";
 import { getNowISO } from "sharedHelpers/dateAndTime";
@@ -13,6 +14,7 @@ import * as uuid from "uuid";
 
 import Application from "./Application";
 import Comment from "./Comment";
+import { GEOPRIVACY_OPEN } from "./geoprivacy";
 import Identification from "./Identification";
 import ObservationFieldValue from "./ObservationFieldValue";
 import ObservationPhoto from "./ObservationPhoto";
@@ -21,10 +23,6 @@ import ProjectObservation from "./ProjectObservation";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
-
-export const GEOPRIVACY_OPEN = "open";
-export const GEOPRIVACY_OBSCURED = "obscured";
-export const GEOPRIVACY_PRIVATE = "private";
 
 const logger = log.extend( "index.js" );
 
@@ -62,7 +60,7 @@ class Observation extends Realm.Object {
     quality_grade: true,
     observation_sounds: ObservationSound.OBSERVATION_SOUNDS_FIELDS,
     observed_time_zone: true,
-    taxon: Taxon.TAXON_FIELDS,
+    taxon: TAXON_SUMMARY_FIELDS,
     taxon_geoprivacy: true,
     time_observed_at: true,
     user: User && {
@@ -344,7 +342,14 @@ class Observation extends Realm.Object {
       : evidence );
 
     const taxon = obs.taxon || null;
-    const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
+    const observationPhotos = obs.observationPhotos?.map( obsPhoto => {
+      const existingObsPhoto = existingObservation?.observationPhotos
+        ?.find( op => op.uuid === obsPhoto.uuid );
+      if ( existingObsPhoto && existingObsPhoto.position === obsPhoto.position ) {
+        return obsPhoto;
+      }
+      return { ...obsPhoto, ...timestamps };
+    } );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
     const projectObservations = Observation.prepareEmbedsForLocalSave(
       obs.projectObservations,
@@ -599,6 +604,9 @@ class Observation extends Realm.Object {
       _updated_at: "date?",
       uuid: "string",
       application: "Application?",
+      // the server's captive/cultivated result from everyone's votes; read
+      // only. captive_flag is the owner's own vote, which the app uploads
+      captive: "bool?",
       captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable

@@ -167,6 +167,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+# Explanation on observation details for an observation with casual quality grade
+Because-this-observation-is-of-a-pet-garden-plant-or-zoo-animal = Because this observation is of a pet, garden plant, or zoo animal, it is not eligible for research grade.
 # Display name for the iconic taxa category for aves
 Birds = Birds
 BLOG = BLOG
@@ -304,8 +306,6 @@ CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
-# Label for button that navigates users to the data quality screen
-Data-Quality-Assessment = Data Quality Assessment
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
 Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
 # Data Quality Assessment section label: whether or not the observation date is accurate
@@ -361,10 +361,10 @@ date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
-# Label for observations sort order
+# Label for observations or species sort order
 Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
-# Label for observations sort order
+# Label for observations or species sort order
 Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 # Label for controls over a range of dates
@@ -607,6 +607,10 @@ Help-create-Research-Grade-data-used-in-science-and-conservation = Help create R
 # Onboarding message describing one of the reasons to use iNat
 Help-protect-species = Help protect species
 Help-us-translate-the-app = Help us translate the app!
+# Onboarding location permission screen: a reason to allow location access
+Help-you-find-species-nearby = Help you find species nearby
+# Onboarding location permission screen: a reason to allow location access
+Helps-with-science-and-community = Helps with science and community
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
@@ -617,6 +621,8 @@ ID-Suggestions = ID Suggestions
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
+# Header for a project rule requiring an observation to be identified
+Identification--project-rule = Identification
 # Accessibility label for a button that shows options for an identification
 Identification-options = Identification options
 IDENTIFICATIONS-WITHOUT-NUMBER =
@@ -664,6 +670,8 @@ INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
+# Onboarding location permission screen: headline
+iNaturalist-helps-you-discover-your-local-nature = iNaturalist helps you discover your local nature, wherever in the world you are!
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
@@ -728,6 +736,8 @@ July = July
 # Month of June
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
+# Onboarding location permission screen: introduces a list of reassurances about how location is used
+Just-so-you-know = Just so you know:
 KEEP-EDITING = KEEP EDITING
 Keep-in-mind-that-project-curators = Keep in mind that project curators will still be able to add your observations to their project unless you change your account settings.
 # Display name for the iconic taxa category chromista
@@ -764,6 +774,11 @@ Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 # Header for traditonal projects join flow: curator access to hidden observation coordinates (not device GPS)
 LOCATION-PERMISSIONS = LOCATION PERMISSIONS
+# Onboarding location permission screen: introduces a list of reasons to allow location access
+Location-permissions--onboarding = Location permissions:
+# Header for a project rule requiring the observer to let project curators see
+# the true locations of their observations
+Location-permissions--project-rule = Location permissions
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 LOG-IN = LOG IN
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
@@ -791,6 +806,8 @@ maverick--identification = Maverick
 # Month of May
 May = May
 MEDIA = MEDIA
+# Header for a project rule requiring an observation to have photos or sounds
+Media--project-rule = Media
 # label in project requirements
 Media-Type = Media Type
 MEMBERS-WITHOUT-NUMBER =
@@ -816,6 +833,21 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+must-be-captive-cultivated = must be captive / cultivated
+must-be-georeferenced = must be georeferenced
+must-be-identified = must be identified
+must-be-in-taxon = must be in taxon { $name }
+must-be-observed-in-place = must be observed in { $placeName }
+must-be-on-list = must be on list
+# Header for a project rule requiring an observation's taxon to be on the
+# project's list of taxa
+Must-be-on-Project-List--project-rule = Must be on Project List
+must-be-verifiable = must be verifiable
+must-be-wild = must be wild
+must-have-a-photo = must have a photo
+must-have-a-sound = must have a sound
+must-have-media = must have media
+must-have-observation-field-x-filled-out = must have observation field "{ $name }" filled out
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -926,6 +958,8 @@ Observation-location-obscured-you-can-see-your-own = This observation’s locati
 # Displayed when user views an obscured location of someone else's observation
 # when they have permission to view the coordinates
 Observation-location-obscured-you-have-permission = This observation’s location is obscured. You have permission to see this location.
+# Subtitle on Add to Projects membership rule row (on_list?)
+Observation-must-exactly-match = Observation must exactly match one of the taxa on the project's list. Please check the project page on the iNaturalist website for details.
 # Label for a menu that shows various actions you can take for an observation
 Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
@@ -956,6 +990,7 @@ OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 OBSERVED-AT--label = OBSERVED AT
 # This label is used in ObsDetails to describe the observation location
 OBSERVED-IN--label = OBSERVED IN
+observer-must-allow-project-curators-to-view-coordinates = observer must allow project curators to view coordinates
 Observers = Observers
 # Section in Explore that shows people who added observations given a set of search filters
 Observers-View = Observers View
@@ -967,6 +1002,8 @@ Offline-suggestions-may-differ-from-online = Offline suggestions may differ from
 OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
+# Explanation on observation details for an observation with needs ID quality grade
+Once-enough-people-agree-on-the-identification = Once enough people agree on the identification, this observation can become research grade.
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
 One-or-more-projects-still-need-required-info = One or more projects still need required info. Leave and only the completed ones will be saved.
 # Adjective, as in geoprivacy
@@ -984,6 +1021,8 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 # Accessibility hint for search button in Explore header that navigates to the search interface
 Opens-search-interface = Opens search interface.
+# Connector placed between any number of alternative project rule sentences, e.g. "must be observed in Germany or must be observed in France"
+or--project-rule = or
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
@@ -1001,6 +1040,8 @@ OTHERS--notifications = OTHERS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
+# Header for a project rule requiring an observation to have a photo
+Photo--project-rule = Photo
 Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
 Photos = Photos
@@ -1040,6 +1081,8 @@ PROJECT = PROJECT
 PROJECT-ADMINS = PROJECT ADMINS
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+# Heading for the rules section on the project detail page
+PROJECT-RULES = PROJECT RULES
 project-start-time-datetime = Start time: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS
@@ -1052,6 +1095,8 @@ Protozoans = Protozoans
 Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
 # Accessibility label for pull-to-refresh on Notifications list
 Pull-to-refresh-notifications = Pull to refresh notifications
+# Onboarding location permission screen: a reason to allow location access
+Quality-data-and-good-identifications = Quality data and good identifications
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade
@@ -1179,7 +1224,6 @@ Required = Required
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
 RESEARCH-GRADE--quality-grade = RESEARCH GRADE
-Research-Grade-Status = Research Grade Status
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1306,6 +1350,8 @@ Sort-by = Sort by
 SORT-OBSERVATIONS = SORT OBSERVATIONS
 # Label for species sort menu
 SORT-SPECIES = SORT SPECIES
+# Header for a project rule requiring an observation to have a sound
+Sound--project-rule = Sound
 # Character separating current position and total duration when playing a
 # sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
 # but it should be very short.
@@ -1322,6 +1368,10 @@ sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organi
 Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = Species
+# Description of the Date Observed: Oldest species sort order
+Species-first-observed-least-recently-appear-first = Species first observed least recently appear first
+# Description of the Date Observed: Newest species sort order
+Species-first-observed-recently-appear-first = Species first observed recently appear first
 Species-I-havent-observed = Species I haven't observed
 Species-View = Species View
 Species-with-the-least-observations-appear-first = Species with the least observations appear first
@@ -1331,6 +1381,12 @@ SPECIES-WITHOUT-NUMBER =
         [one] SPECIES
        *[other] SPECIES
     }
+# Header for a project rule requiring an observation to be identified as one
+# of the taxa listed below it
+Specific-identification--project-rule = Specific identification
+# Header for a project rule requiring an observation to be in a place chosen
+# by the project
+Specific-location--project-rule = Specific location
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
@@ -1380,6 +1436,8 @@ That-username-is-unavailable = That username is unavailable
 The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident. It may be one of the IDs below.
 # Text on Match screen when there are no suggestions found at all for a user photo
 The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
+# Explanation on observation details for an observation with Research Grade quality grade
+The-community-agrees-on-an-identification = The community agrees on an identification, and this observation can now more easily be used to make new discoveries and protect nature.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
@@ -1398,10 +1456,24 @@ This-is-your-identification-other-people-may-help-confirm-it = This is your iden
 This-may-take-a-few-seconds = This may take a few seconds.
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
-This-observation-is-not-eligible-for-research-grade-status = This observation is not eligible for research grade status. Learn more in the Data Quality Assessment below.
-This-observation-is-research-grade-and-can-be-used-by-scientists = This observation is research grade and can be used by scientists!
+# Title on observation details for an observation with casual quality grade
+This-observation-is-casual = This observation is casual.
+# Title on observation details for an observation with Research Grade quality grade
+This-observation-is-Research-Grade = This observation is Research Grade
+# Subtitles on Add to Projects membership rule rows
+This-observation-must-be-in-a-specific-location = This observation must be in a specific location specified by the project. Please check the project page for details.
+This-observation-must-be-marked-captive-cultivated = This observation must be marked captive/cultivated.
+This-observation-must-be-marked-wild = This observation must be marked wild.
+This-observation-must-be-marked-wild-have-photo = This observation must be marked wild, have photo or sound evidence, have a date, and have a location.
+This-observation-must-have-a-location = This observation must have a location.
+This-observation-must-have-an-identification = This observation must have an identification.
+This-observation-must-have-an-identification-in-the-following-taxon = This observation must have an identification in the following taxon:
+This-observation-must-have-photo-evidence = This observation must have photo evidence.
+This-observation-must-have-photo-or-sound-evidence = This observation must have photo or sound evidence.
+This-observation-must-have-sound-evidence = This observation must have sound evidence.
 This-observation-needs-more-identifications = This observation needs more identifications to reach Research Grade status
-This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
+# Title on observation details for an observation with needs ID quality grade
+This-observation-needs-more-identifications--status-title = This observation needs more identifications
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
@@ -1471,6 +1543,9 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
 Using-location = Using location
+# Header for a project rule requiring an observation to be eligible for
+# Research Grade
+Verifiable--project-rule = Verifiable
 # Onboarding carousel slide 3 description
 Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 # Listing of app and build versions
@@ -1501,6 +1576,10 @@ VIEW-PROJECTS = VIEW PROJECTS
 View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
+# Onboarding location permission screen: reassurance about how location is used
+We-dont-sell-your-data = We don’t sell your data
+# Onboarding location permission screen: reassurance about how location is used
+We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this for observations you upload to iNaturalist
 Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
@@ -1691,6 +1770,8 @@ You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
+# Onboarding location permission screen: reassurance about how location is used
+You-can-adjust-your-location-privacy-on-every-observation = You can adjust your location privacy on every observation
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
@@ -1729,6 +1810,8 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x 
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
+# Subtitle on Add to Projects membership rule row (coordinates_shareable_by_project_curators?)
+Your-project-membership-settings-must-allow = Your project membership settings must allow project curators to access the true locations of your project observations. You change location permissions on the project's page.
 # Title for modal shown after account creation
 Youre-ready-to-share-your-observations = You’re ready to share your observations!
 # Text prompting the user to open Settings to grant permission after

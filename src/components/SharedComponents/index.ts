@@ -54,7 +54,6 @@ export { default as PermissionGate } from "./PermissionGate";
 export { default as PhotoCount } from "./PhotoCount";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as RadioButtonRow } from "./RadioButtonRow";
-export { default as ScrollableWithStickyHeader } from "./ScrollableWithStickyHeader";
 export { default as ScrollViewWrapper } from "./ScrollViewWrapper";
 export { default as SearchBar } from "./SearchBar";
 export { default as SearchHeader } from "./SearchHeader";

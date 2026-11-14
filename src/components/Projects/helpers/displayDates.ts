@@ -1,4 +1,5 @@
 import type { ApiProject, ProjectRulePreference } from "api/types";
+import isTraditionalProject from "components/Projects/helpers/isTraditionalProject";
 import type { i18n as i18next, TFunction } from "i18next";
 import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime";
 
@@ -26,8 +27,11 @@ const formatProjectDate = (
   t: TFunction,
   i18n: i18next,
 ): FormattedProjectDate => {
-  // "" means "traditional" which do not have date ranges
-  if ( project.project_type === "" ) {
+  // Traditional projects do not have date ranges
+  if (
+    typeof project.project_type === "string"
+    && isTraditionalProject( project.project_type )
+  ) {
     return {
       projectDate: null,
       shouldDisplayDateRange: false,

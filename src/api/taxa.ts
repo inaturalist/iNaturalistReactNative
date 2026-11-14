@@ -1,3 +1,4 @@
+import { PHOTO_FIELDS } from "api/fields";
 import inatjs from "inaturalistjs";
 
 import type { ErrorWithResponse } from "./error";
@@ -9,13 +10,6 @@ const ANCESTOR_FIELDS = {
   preferred_common_name: true,
   rank: true,
   rank_level: true,
-};
-
-const PHOTO_FIELDS = {
-  id: true,
-  attribution: true,
-  license_code: true,
-  url: true,
 };
 
 // These fields should work with all /taxa endpoints

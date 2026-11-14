@@ -34,8 +34,8 @@ import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmTaxon,
-  RealmUser,
 } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import {
   MY_OBSERVATIONS_SORT_OPTIONS,
@@ -49,10 +49,12 @@ import {
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag, selectFeatureFlagsSettled } from "stores/createFeatureFlagSlice";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
+import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import LoginSheet from "./LoginSheet";
 import MyObservationsGroupedByIconicTaxaView from "./MyObservationsGroupedByIconicTaxaView";
 import MyObservationsMapView from "./MyObservationsMapView";
@@ -67,7 +69,7 @@ import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
 interface Props {
   activeTab: string;
-  currentUser?: RealmUser;
+  currentUser: UserPojo | null;
   fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => Promise<void>;
@@ -101,6 +103,8 @@ interface Props {
   updateObservationsView: ( value: string ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
+  // True while the species list is being fetched, including its first page
+  isLoadingTaxa?: boolean;
   justFinishedSignup: boolean;
   loggedInWhileInDefaultMode?: boolean;
   refetchTaxa: ( ) => void;
@@ -165,6 +169,7 @@ const MyObservationsSimple = ( {
   updateObservationsView,
   fetchMoreTaxa,
   isFetchingTaxa,
+  isLoadingTaxa,
   justFinishedSignup,
   loggedInWhileInDefaultMode = false,
   refetchTaxa,
@@ -179,8 +184,12 @@ const MyObservationsSimple = ( {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const featureFlagsSettled = useStore( selectFeatureFlagsSettled );
+  // Keep a saved small grid selectable until the flag is known, so the bar matches the content
+  const smallGridAvailable = myObservationsSmallGridViewEnabled
+    || ( !featureFlagsSettled && layout === "smallGrid" );
   const viewOptions: ViewOption[] = ["grid", "list"];
-  if ( myObservationsSmallGridViewEnabled && currentUser ) {
+  if ( smallGridAvailable && currentUser ) {
     viewOptions.push( "smallGrid" );
   }
   if ( currentUser ) {
@@ -239,8 +248,8 @@ const MyObservationsSimple = ( {
     );
 
     const searchThisTaxon = ( ) => {
-      // fetchSpeciesCounts (logged in path) returns ApiTaxon-shaped (snake_case) taxa;
-      // the logged-out path returns real RealmTaxon (camelCase) objects.
+      // fetchSpeciesCounts and fetchTaxaObserved (logged in path) return ApiTaxon-shaped
+      // (snake_case) taxa; the logged-out path returns real RealmTaxon (camelCase) objects.
       // SpeciesCount.taxon is only typed as RealmTaxon, so narrow between both
       // shapes the same way SearchMyObservationsTaxon.tsx does.
       const taxon = speciesCount.taxon as ApiTaxon | RealmTaxon;
@@ -491,6 +500,16 @@ const MyObservationsSimple = ( {
     return null;
   };
 
+  const renderEmptyTaxaContent = ( ) => {
+    if ( showSpeciesSearchEmptyState ) {
+      return <SearchEmptyState />;
+    }
+    if ( isLoadingTaxa && isConnected !== false ) {
+      return <FullScreenActivityIndicator />;
+    }
+    return renderOfflineNotice( );
+  };
+
   function showOfflineAlert( ) {
     Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
   }
@@ -608,11 +627,7 @@ const MyObservationsSimple = ( {
             />
           </>
         )}
-        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && (
-          showSpeciesSearchEmptyState
-            ? <SearchEmptyState />
-            : renderOfflineNotice( )
-        )}
+        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderEmptyTaxaContent( ) }
       </ViewWrapper>
       {openSheet === ACTIVE_SHEET.SORT && activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet

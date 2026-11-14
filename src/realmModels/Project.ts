@@ -3,7 +3,7 @@ import type { ApiProjectSummaryWithPOF } from "api/types";
 import { UpdateMode } from "realm";
 import ProjectObservationField from "realmModels/ProjectObservationField";
 import ProjectObservationRule from "realmModels/ProjectObservationRule";
-import ProjectRulePreference from "realmModels/ProjectRulePreference";
+import Taxon from "realmModels/Taxon";
 import type { RealmProject } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -21,9 +21,6 @@ class Project extends Realm.Object {
       project_observation_rules: ( apiProject.project_observation_rules || [] ).map(
         rule => ProjectObservationRule.mapApiToRealm( rule ),
       ),
-      rule_preferences: ( apiProject.rule_preferences || [] ).map(
-        pref => ProjectRulePreference.mapApiToRealm( pref ),
-      ),
       // Leaving this here explicitly as a reminder to potentially need to refactor project_type
       // into projectType across the entire codebase for consistency with other data models
       project_type: apiProject.project_type,
@@ -37,6 +34,18 @@ class Project extends Realm.Object {
 
     safeRealmWrite( realm, ( ) => {
       apiProjects.forEach( apiProject => {
+        // For rules that require a taxon, map it to Taxon realm for offline capabilities
+        ( apiProject.project_observation_rules || [] ).forEach( rule => {
+          if ( rule.operator !== "in_taxon?" ) return;
+          const { taxon } = rule;
+          if ( !taxon?.id ) return;
+          const mappedTaxon = Taxon.mapApiToRealm( taxon, realm );
+          realm.create(
+            "Taxon",
+            Taxon.forUpdate( mappedTaxon ),
+            UpdateMode.Modified,
+          );
+        } );
         const projectMappedForRealm = Project.mapApiToRealm( apiProject );
         realm.create(
           "Project",
@@ -47,7 +56,7 @@ class Project extends Realm.Object {
     }, "upserting projects in Project" );
   }
 
-  static mapRealmToPojo( realmProject: RealmProject ) {
+  static mapRealmToPojo( realmProject: RealmProject, realm: Realm ) {
     const pojoPOFs = realmProject.projectObservationFields
       .map( pof => ProjectObservationField.mapRealmToPojo( pof ) );
     return {
@@ -59,10 +68,8 @@ class Project extends Realm.Object {
           .sort( ( a, b ) => a.position - b.position )
         : [],
       project_observation_rules: realmProject.project_observation_rules
-        .map( rule => ProjectObservationRule.mapRealmToPojo( rule ) ),
+        .map( rule => ProjectObservationRule.mapRealmToPojo( rule, realm ) ),
       project_type: realmProject.project_type,
-      rule_preferences: realmProject.rule_preferences
-        .map( pref => ProjectRulePreference.mapRealmToPojo( pref ) ),
       title: realmProject.title,
     };
   }
@@ -76,7 +83,6 @@ class Project extends Realm.Object {
       projectObservationFields: "ProjectObservationField[]",
       project_observation_rules: "ProjectObservationRule[]",
       project_type: "string?",
-      rule_preferences: "ProjectRulePreference[]",
       title: "string?",
     },
   };

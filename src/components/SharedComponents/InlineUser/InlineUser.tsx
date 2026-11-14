@@ -8,7 +8,7 @@ interface Props {
   user: {
     id: number;
     icon_url?: string;
-    login: string;
+    login?: string;
   };
   isConnected: boolean;
 }

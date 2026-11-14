@@ -13,9 +13,7 @@ import type { MyObservationsStackScreenProps } from "navigation/types";
 import { useMyObservations } from "providers/MyObservationsContext";
 import React from "react";
 import { Alert } from "react-native";
-import type {
-  RealmUser,
-} from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 import {
   MANUAL_SYNC_IN_PROGRESS,
@@ -31,7 +29,7 @@ import colors from "styles/tailwindColors";
 import SimpleUploadBannerContainer from "./SimpleUploadBannerContainer";
 
 interface Props {
-  currentUser?: RealmUser;
+  currentUser: UserPojo | null;
   numUploadableObservations: number;
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;

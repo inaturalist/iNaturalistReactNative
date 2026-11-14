@@ -1,3 +1,46 @@
+export const PHOTO_FIELDS = {
+  attribution: true,
+  hidden: true,
+  id: true,
+  license_code: true,
+  url: true,
+} as const;
+
+// The set of fields required to get all information we want
+// to store in realm
+export const TAXON_PERSISTABLE_FIELDS = {
+  ancestor_ids: true,
+  default_photo: PHOTO_FIELDS,
+  iconic_taxon_name: true,
+  id: true,
+  name: true,
+  preferred_common_name: true,
+  rank: true,
+  rank_level: true,
+};
+
+export const TAXON_SUMMARY_FIELDS = {
+  ...TAXON_PERSISTABLE_FIELDS,
+  is_active: true,
+};
+
+export const LIMITED_TAXON_FIELDS = {
+  ...TAXON_SUMMARY_FIELDS,
+  default_photo: {
+    id: true,
+    url: true,
+  },
+  representative_photo: {
+    id: true,
+    url: true,
+  },
+  taxon_photos: {
+    photo: {
+      url: true,
+    },
+  },
+};
+
 const OBSERVATION_FIELD_FIELDS = {
   allowed_values: true,
   datatype: true,
@@ -17,28 +60,12 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
 const PROJECT_OBSERVATION_RULE_FIELDS = {
   id: true,
   operand_id: true,
-  operand_type: true,
   operator: true,
   place: {
     display_name: true,
     id: true,
   },
-  project: {
-    id: true,
-    title: true,
-  },
-  taxon: {
-    ancestor_ids: true,
-    id: true,
-    name: true,
-    preferred_common_name: true,
-    rank: true,
-    rank_level: true,
-  },
-  user: {
-    id: true,
-    login: true,
-  },
+  taxon: TAXON_PERSISTABLE_FIELDS,
 };
 
 export const PROJECT_SUMMARY_FIELDS = {
@@ -109,9 +136,35 @@ export const POST_FOR_USER_FIELDS = {
   },
 };
 
+export const POST_DETAILS = {
+  body: true,
+  id: true,
+  published_at: true,
+  title: true,
+};
+
 export const ICONIC_TAXA_COUNTS_FIELDS = {
   count: true,
   taxon: {
     name: true,
   },
+};
+
+export const SPECIES_COUNTS_SUMMARY_FIELDS = {
+  taxon: {
+    id: true,
+  },
+};
+
+export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
+  taxon: {
+    iconic_taxon_name: true,
+    id: true,
+    name: true,
+    preferred_common_name: true,
+  },
+};
+
+export const SPECIES_COUNTS_DETAILS_FIELDS = {
+  taxon: LIMITED_TAXON_FIELDS,
 };

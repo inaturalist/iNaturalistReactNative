@@ -13,8 +13,9 @@ import {
 } from "api/projects";
 import { updateProjectUser } from "api/projectUsers";
 import type {
-  ApiObservationsSearchResponse, ApiProject, ApiResponse,
+  ApiObservationsSearchResponse, ApiProject,
 } from "api/types";
+import { JOINED_PROJECTS_QUERY_KEY } from "components/Projects/hooks/useJoinedProjects";
 import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
@@ -81,7 +82,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
-  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data: speciesCounts } = useAuthenticatedQuery(
     speciesCountsQueryKey,
     ( ) => fetchSpeciesCounts( {
       project_id: id,
@@ -113,6 +114,7 @@ const ProjectDetailsContainer = ( ) => {
         Project.upsertRemoteProjects( [project as ApiProject], realm );
         queryClient.invalidateQueries( { queryKey: membershipQueryKey } );
         queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: [JOINED_PROJECTS_QUERY_KEY] } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
@@ -137,6 +139,7 @@ const ProjectDetailsContainer = ( ) => {
         queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
         queryClient.invalidateQueries( { queryKey: projectStatsQueryKey } );
         queryClient.invalidateQueries( { queryKey: speciesCountsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: [JOINED_PROJECTS_QUERY_KEY] } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
@@ -211,6 +214,8 @@ const ProjectDetailsContainer = ( ) => {
       icon: project.icon,
       id: project.id,
       membership_model: project.membership_model,
+      project_observation_fields: project.project_observation_fields,
+      project_observation_rules: project.project_observation_rules,
       project_type: project.project_type,
       rule_preferences: project.rule_preferences,
       title: project.title,

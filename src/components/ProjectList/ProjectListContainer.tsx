@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import type { ApiProjectSummary, ApiProjectSummaryWithPOF } from "api/types";
-import fetchUserProjects from "api/usersTyped";
+import { fetchUserProjects } from "api/users";
 import {
   ActivityIndicator,
   Body1,
