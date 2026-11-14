@@ -8,7 +8,8 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React, { useCallback, useState } from "react";
 import { Switch } from "react-native-paper";
-import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
+import { log } from "sharedHelpers/logger";
+import syncFeatureFlags, { featureFlagsLogExtra } from "sharedHelpers/syncFeatureFlags";
 import type { FeatureFlagSource } from "sharedHooks/useFeatureFlag";
 import { resolveFeatureFlag, useFeatureFlagLayers } from "sharedHooks/useFeatureFlag";
 import type { FeatureFlagApiStatus } from "stores/createFeatureFlagSlice";
@@ -18,17 +19,34 @@ import colors from "styles/tailwindColors";
 
 import { CODE, H1, P } from "./DeveloperSharedComponents";
 
+const logger = log.extend( "FeatureFlags" );
+
+const onOff = ( enabled: boolean ) => ( enabled
+  ? "ON"
+  : "OFF" );
+
+// Logged after the store update, so the extra has the values the session uses from here on
+const logOverrideChange = ( message: string ) => {
+  logger.infoWithExtra( message, featureFlagsLogExtra( ) );
+};
+
 export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
   const layers = useFeatureFlagLayers( featureFlagKey );
   const { enabled, source } = resolveFeatureFlag( layers );
   const storeSetOverride = useStore( state => state.setFeatureFlagDebugOverride );
 
   const setOverride = useCallback(
-    ( value: boolean ) => storeSetOverride( featureFlagKey, value ),
+    ( value: boolean ) => {
+      storeSetOverride( featureFlagKey, value );
+      logOverrideChange( `Feature flag override set: ${featureFlagKey} ${onOff( value )}` );
+    },
     [featureFlagKey, storeSetOverride],
   );
   const clearOverride = useCallback(
-    () => storeSetOverride( featureFlagKey, null ),
+    () => {
+      storeSetOverride( featureFlagKey, null );
+      logOverrideChange( `Feature flag override cleared: ${featureFlagKey}` );
+    },
     [featureFlagKey, storeSetOverride],
   );
 
@@ -40,10 +58,6 @@ export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
     clearOverride,
   };
 };
-
-const onOff = ( enabled: boolean ) => ( enabled
-  ? "ON"
-  : "OFF" );
 
 const sourceLabels: Record<FeatureFlagSource, string> = {
   override: "OVERRIDE",
@@ -157,7 +171,11 @@ const FeatureFlagRow = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) =
 const FeatureFlags = () => {
   const featureFlagKeys = Object.values( FeatureFlag );
   const apiStatus = useStore( state => state.featureFlagApiStatus );
-  const clearAllOverrides = useStore( state => state.clearFeatureFlagDebugOverrides );
+  const storeClearAllOverrides = useStore( state => state.clearFeatureFlagDebugOverrides );
+  const clearAllOverrides = useCallback( ( ) => {
+    storeClearAllOverrides( );
+    logOverrideChange( "Feature flag overrides cleared" );
+  }, [storeClearAllOverrides] );
   return (
     <>
       <H1>Feature Flags</H1>
