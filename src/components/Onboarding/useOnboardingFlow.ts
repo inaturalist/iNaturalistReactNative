@@ -1,10 +1,14 @@
-import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  CommonActions, useFocusEffect, useNavigation, useRoute,
+} from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { OnboardingStackParamList } from "navigation/types";
+import { useCallback } from "react";
+import { BackHandler } from "react-native";
 import { useOnboardingShown } from "sharedHelpers/installData";
 
 import type { OnboardingStepId } from "./onboardingSteps";
-import { getNextStepId, isOnboardingStepId } from "./onboardingSteps";
+import { getNextStepId, getStepBlocksBack, isOnboardingStepId } from "./onboardingSteps";
 
 const useOnboardingFlow = ( ) => {
   const navigation = useNavigation<NativeStackNavigationProp<OnboardingStackParamList>>( );
@@ -15,6 +19,17 @@ const useOnboardingFlow = ( ) => {
     throw new Error( `useOnboardingFlow used outside an onboarding step: ${name}` );
   }
   const stepId: OnboardingStepId = name;
+  const blocksBack = getStepBlocksBack( stepId );
+
+  useFocusEffect(
+    useCallback( ( ) => {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        ( ) => blocksBack,
+      );
+      return ( ) => backHandler.remove( );
+    }, [blocksBack] ),
+  );
 
   const finishOnboarding = ( ) => {
     // Name the destination explicitly rather than relying on
