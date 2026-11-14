@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { FlashListRef } from "@shopify/flash-list";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   NON_TRADITIONAL_PROJECT_TYPES,
@@ -18,11 +19,19 @@ import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import type { ListRenderItem } from "react-native";
+import type {
+  ListRenderItem,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  TextInput as RNTextInput,
+} from "react-native";
+import { Dimensions } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
 import buildProjectObservationSelection, {
@@ -31,6 +40,7 @@ import buildProjectObservationSelection, {
 import sortByTitle from "sharedHelpers/sortByTitle";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
+import { useKeyboardInfo } from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -59,9 +69,16 @@ function getCompletedProjectIds(
   );
 }
 
+// Leave room so the next project field under the focused one stays visible
+const INPUT_ABOVE_KEYBOARD_GAP = 96;
+
 const AddToProjects = ( ) => {
   const { i18n, t } = useTranslation( );
   const navigation = useNavigation( );
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
+  const listRef = useRef<FlashListRef<RealmProject>>( null );
+  const scrollOffsetRef = useRef( 0 );
+  const focusedInputRef = useRef<RNTextInput | null>( null );
   useSyncJoinedProjects( );
   const realm = useRealm( );
   const joinedProjectsCollection = useQuery(
@@ -149,25 +166,71 @@ const AddToProjects = ( ) => {
     [t],
   );
 
+  // ExploreUserSearch / TaxonSearch: pad so rows can scroll above the keyboard
   const listFooterComponent = useMemo(
     () => (
-      <View className="px-4 pt-6 pb-6">
-        <Body1>{t( "Collection-and-Umbrella-Projects" )}</Body1>
-        <Body2 className="mt-2">
-          {t(
-            "For-most-other-projects-observations-will-automatically-be-included",
-          )}
-        </Body2>
-        <Body2 className="mt-4">
-          {t( "You-cant-add-or-remove-observations-from-collection-and-umbrella-projects" )}
-        </Body2>
-        <Body2 className="mt-4">
-          {t( "To-view-this-observations-Collection-and-Umbrella-Projects" )}
-        </Body2>
-      </View>
+      <>
+        <View className="px-4 pt-6 pb-6">
+          <Body1>{t( "Collection-and-Umbrella-Projects" )}</Body1>
+          <Body2 className="mt-2">
+            {t(
+              "For-most-other-projects-observations-will-automatically-be-included",
+            )}
+          </Body2>
+          <Body2 className="mt-4">
+            {t( "You-cant-add-or-remove-observations-from-collection-and-umbrella-projects" )}
+          </Body2>
+          <Body2 className="mt-4">
+            {t( "To-view-this-observations-Collection-and-Umbrella-Projects" )}
+          </Body2>
+        </View>
+        {keyboardShown && (
+          <View style={{ height: keyboardHeight }} />
+        )}
+      </>
     ),
-    [t],
+    [keyboardHeight, keyboardShown, t],
   );
+
+  const onListScroll = useCallback(
+    ( event: NativeSyntheticEvent<NativeScrollEvent> ) => {
+      scrollOffsetRef.current = event.nativeEvent.contentOffset.y;
+    },
+    [],
+  );
+
+  // FlashList does not auto-scroll in-row TextInputs above the keyboard.
+  const scrollInputAboveKeyboard = useCallback( ( input: RNTextInput | null ) => {
+    if ( !input || !keyboardShown || keyboardHeight === 0 ) return;
+
+    input.measureInWindow( ( _x, y, _width, height ) => {
+      const visibleBottom = Dimensions.get( "window" ).height - keyboardHeight;
+      const inputBottom = y + height;
+      if ( inputBottom <= visibleBottom - INPUT_ABOVE_KEYBOARD_GAP ) return;
+      listRef.current?.scrollToOffset( {
+        animated: true,
+        offset: scrollOffsetRef.current
+          + inputBottom
+          - ( visibleBottom - INPUT_ABOVE_KEYBOARD_GAP ),
+      } );
+    } );
+  }, [keyboardHeight, keyboardShown] );
+
+  const onInputFocus = useCallback( ( input: RNTextInput | null ) => {
+    focusedInputRef.current = input;
+    // Keyboard already open (e.g. moving between fields)
+    scrollInputAboveKeyboard( input );
+  }, [scrollInputAboveKeyboard] );
+
+  useEffect( ( ) => {
+    // Focus often lands before keyboardDidShow; wait for height + footer pad.
+    if ( !keyboardShown || keyboardHeight === 0 ) return ( ) => undefined;
+    const timer = setTimeout(
+      ( ) => scrollInputAboveKeyboard( focusedInputRef.current ),
+      100,
+    );
+    return ( ) => clearTimeout( timer );
+  }, [keyboardHeight, keyboardShown, scrollInputAboveKeyboard] );
 
   const toggleProject = useCallback( ( projectId: number ) => {
     setSelectedProjectIds( previousSelectedProjectIds => {
@@ -268,12 +331,13 @@ const AddToProjects = ( ) => {
               isValid={!validationResult.fieldErrors.some(
                 error => error.obsFieldId === pof.obsField?.id,
               )}
+              onInputFocus={onInputFocus}
             />
           ) )}
         </View>
       );
     },
-    [validationResult, t],
+    [onInputFocus, validationResult, t],
   );
 
   const renderRightIcon = useCallback(
@@ -330,6 +394,7 @@ const AddToProjects = ( ) => {
   return (
     <SharedStackBottomInsetViewWrapper testID="add-to-projects">
       <CustomFlashList
+        ref={listRef}
         testID="AddToProjects.list"
         ListEmptyComponent={listEmptyComponent}
         ListHeaderComponent={listHeaderComponent}
@@ -338,6 +403,7 @@ const AddToProjects = ( ) => {
         extraData={validationResult}
         keyExtractor={( project: RealmProject ) => String( project.id )}
         keyboardDismissMode="on-drag"
+        onScroll={onListScroll}
         renderItem={renderProject}
         ItemSeparatorComponent={ItemSeparator}
       />

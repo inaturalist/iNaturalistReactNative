@@ -6,6 +6,7 @@ import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput"
 import { Body1, Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
+import type { TextInput as RNTextInput } from "react-native";
 import type { RealmObservationField, RealmProjectObservationField } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -13,6 +14,7 @@ import colors from "styles/tailwindColors";
 interface Props {
   projectObservationField: RealmProjectObservationField;
   isValid: boolean;
+  onInputFocus?: ( input: RNTextInput | null ) => void;
 }
 
 // A field of datatype "text" that has a defined set of allowedValues needs a dedicated
@@ -22,7 +24,11 @@ const isSelectField = ( obsField: RealmObservationField ) => (
   && obsField.allowedValues.length > 1
 );
 
-const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) => {
+const ObservationFieldInput = ( {
+  projectObservationField,
+  isValid,
+  onInputFocus,
+}: Props ) => {
   const { t } = useTranslation( );
 
   const renderInput = ( obsField?: RealmObservationField ) => {
@@ -35,10 +41,20 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
 
     switch ( obsField.datatype ) {
       case "numeric":
-        return <NumericFieldInput obsFieldId={obsFieldId} />;
+        return (
+          <NumericFieldInput
+            obsFieldId={obsFieldId}
+            onInputFocus={onInputFocus}
+          />
+        );
       case "text":
       case "dna":
-        return <TextFieldInput obsFieldId={obsFieldId} />;
+        return (
+          <TextFieldInput
+            obsFieldId={obsFieldId}
+            onInputFocus={onInputFocus}
+          />
+        );
       case "date":
       case "time":
       case "datetime":
