@@ -607,6 +607,10 @@ Help-create-Research-Grade-data-used-in-science-and-conservation = Help create R
 # Onboarding message describing one of the reasons to use iNat
 Help-protect-species = Help protect species
 Help-us-translate-the-app = Help us translate the app!
+# Onboarding location permission screen: a reason to allow location access
+Help-you-find-species-nearby = Help you find species nearby
+# Onboarding location permission screen: a reason to allow location access
+Helps-with-science-and-community = Helps with science and community
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
@@ -666,6 +670,8 @@ INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
 iNaturalist-has-no-ID-suggestions-for-this-photo = iNaturalist has no ID suggestions for this photo.
 INATURALIST-HELP-PAGE = INATURALIST HELP PAGE
+# Onboarding location permission screen: headline
+iNaturalist-helps-you-discover-your-local-nature = iNaturalist helps you discover your local nature, wherever in the world you are!
 iNaturalist-helps-you-identify = iNaturalist helps you identify the plants and animals around you while generating data for science and conservation. Get connected with a community of millions scientists and naturalists who can help you learn more about nature!
 iNaturalist-identification-suggestions-are-based-on = iNaturalist's identification suggestions are based on observations and identifications made by the iNaturalist community, including { $user1 }, { $user2 }, { $user3 }, and many others.
 iNaturalist-is-a-501 = iNaturalist is a 501(c)(3) non-profit in the United States of America (Tax ID/EIN 92-1296468).
@@ -730,6 +736,8 @@ July = July
 # Month of June
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
+# Onboarding location permission screen: introduces a list of reassurances about how location is used
+Just-so-you-know = Just so you know:
 KEEP-EDITING = KEEP EDITING
 Keep-in-mind-that-project-curators = Keep in mind that project curators will still be able to add your observations to their project unless you change your account settings.
 # Display name for the iconic taxa category chromista
@@ -766,6 +774,8 @@ Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 # Header for traditonal projects join flow: curator access to hidden observation coordinates (not device GPS)
 LOCATION-PERMISSIONS = LOCATION PERMISSIONS
+# Onboarding location permission screen: introduces a list of reasons to allow location access
+Location-permissions--onboarding = Location permissions:
 # Header for a project rule requiring the observer to let project curators see
 # the true locations of their observations
 Location-permissions--project-rule = Location permissions
@@ -1085,6 +1095,8 @@ Protozoans = Protozoans
 Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
 # Accessibility label for pull-to-refresh on Notifications list
 Pull-to-refresh-notifications = Pull to refresh notifications
+# Onboarding location permission screen: a reason to allow location access
+Quality-data-and-good-identifications = Quality data and good identifications
 QUALITY-GRADE = QUALITY GRADE
 # label in project requirements
 Quality-Grade = Quality Grade
@@ -1564,6 +1576,10 @@ VIEW-PROJECTS = VIEW PROJECTS
 View-suggestions = View suggestions
 Watch-your-notifications-for-identifications = Watch your notifications for identifications!
 We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident enough to make a top ID suggestion, but here are some other suggestions:
+# Onboarding location permission screen: reassurance about how location is used
+We-dont-sell-your-data = We don’t sell your data
+# Onboarding location permission screen: reassurance about how location is used
+We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this for observations you upload to iNaturalist
 Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
@@ -1754,6 +1770,8 @@ You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
+# Onboarding location permission screen: reassurance about how location is used
+You-can-adjust-your-location-privacy-on-every-observation = You can adjust your location privacy on every observation
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.

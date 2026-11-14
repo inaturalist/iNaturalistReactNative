@@ -8,7 +8,7 @@ interface Props {
 
 const OnboardingProgressBar = ( { progress }: Props ) => (
   <View
-    className="h-[5px] w-full"
+    className="h-[6px] w-full"
     accessible
     accessibilityRole="progressbar"
     accessibilityValue={{ min: 0, max: 100, now: Math.round( progress * 100 ) }}

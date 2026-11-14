@@ -15,6 +15,11 @@ end
 node_require( "react-native/scripts/react_native_pods.rb" )
 node_require( "react-native-permissions/scripts/setup.rb" )
 
+# Prebuilt React-Core headers are not a clang module when use_frameworks! is
+# enabled, which breaks Firebase imports. Build React Native core from source.
+# TODO: remove in MOB-2000 if updating Firebase allows getting rid of this
+ENV["RCT_USE_PREBUILT_RNCORE"] = "0"
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
@@ -91,9 +96,6 @@ target "iNaturalistReactNative" do
         build_config.build_settings["APPLICATION_EXTENSION_API_ONLY"] = "NO"
       end
     end
-
-    # react_native_post_install(installer)
-    `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end
 end
 

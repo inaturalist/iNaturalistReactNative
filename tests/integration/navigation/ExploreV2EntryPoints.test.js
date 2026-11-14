@@ -101,6 +101,7 @@ beforeAll( async ( ) => {
   } );
   inatjs.taxa.fetch.mockResolvedValue( makeResponse( [mockTaxon] ) );
   inatjs.projects.search.mockResolvedValue( makeResponse( [mockProject] ) );
+  inatjs.users.projects.mockResolvedValue( makeResponse( [mockProject] ) );
   inatjs.projects.fetch.mockResolvedValue( makeResponse( [mockProject] ) );
   inatjs.projects.posts.mockResolvedValue( makeResponse( ) );
   inatjs.projects.membership.mockResolvedValue( makeResponse( ) );

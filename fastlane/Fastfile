@@ -490,12 +490,7 @@ lane :internal do
     ipa: get_ipa_path,
     changelog: changelog,
     # https://github.com/fastlane/fastlane/issues/20756
-    itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider ),
-    # The following distributes the build to our invite-only external test group
-    distribute_external: true,
-    groups: [
-      "iNat Friends"
-    ]
+    itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider )
   )
 
   slack_message = <<~MESSAGE
