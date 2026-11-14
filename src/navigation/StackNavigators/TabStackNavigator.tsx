@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
+import SuggestionsHarness from "components/Developer/SuggestionsHarness";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
@@ -97,6 +98,10 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
+const suggestionsHarnessTitle = () => (
+  // eslint-disable-next-line i18next/no-literal-string
+  <Heading4 className="text-white">SUGGESTIONS HARNESS</Heading4>
+);
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -319,6 +324,11 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
             component={Log}
             name="Log"
             options={( { headerTitle: logTitle } )}
+          />
+          <Stack.Screen
+            name="SuggestionsHarness"
+            component={SuggestionsHarness}
+            options={{ headerTitle: suggestionsHarnessTitle }}
           />
         </Stack.Group>
         {/* Header with no bottom border */}
