@@ -113,7 +113,7 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             id: "open-inat-url",
             type: "input",
             title: "Open iNat URL",
-            description: "Paste an observation, taxon, or project URL to navigate to it.",
+            description: "Paste an observation, taxon, project, or post URL.",
             value: pastedInatUrl,
             placeholder: "https://www.inaturalist.org/observations/12345",
             applyLabel: "Go",
