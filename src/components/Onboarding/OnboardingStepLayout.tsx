@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
-import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
+import ConfirmSheet from "components/SharedComponents/Sheets/ConfirmSheet";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
 import type { TFunction } from "i18next";
@@ -88,18 +88,16 @@ const OnboardingStepLayout = ( { children, footer }: Props ) => {
         </View>
       )}
       {exitSheet && exitSheetCopy && exitSheetOpen && (
-        <WarningSheet
+        <ConfirmSheet
           headerText={exitSheetCopy.headerText}
           text={exitSheetCopy.text}
-          buttonText={exitSheetCopy.buttonText}
-          secondButtonText={t( "CANCEL" )}
-          handleSecondButtonPress={closeExitSheet}
-          onPressClose={closeExitSheet}
-          confirm={( ) => {
+          confirmText={exitSheetCopy.buttonText}
+          cancelText={t( "CANCEL" )}
+          onCancel={closeExitSheet}
+          onConfirm={( ) => {
             closeExitSheet( );
             navigation.navigate( EXIT_SHEET_DESTINATIONS[exitSheet] );
           }}
-          loading={false}
           testID={`Onboarding.${name}.exitSheet`}
         />
       )}
