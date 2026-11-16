@@ -1,7 +1,7 @@
-// Smallest crop, in pixels, along each side. Matches the "medium" size iNat
-// serves (500px), so a cropped photo is never smaller than what most of the
-// app displays, unless the photo itself is smaller
-export const MINIMUM_CROP_SIZE = 500;
+// Smallest crop, in pixels, along each side, unless the photo itself is
+// smaller. Ideally low enough for tight crops of small organisms but high enough that
+// the crop still has enough detail to identify
+export const MINIMUM_CROP_SIZE = 250;
 
 // A rectangle of the photo, in its pixels
 interface PhotoArea {

@@ -189,6 +189,22 @@ describe( "EvidenceList", ( ) => {
       } );
     } );
 
+    it( "should not shrink the frame below its smallest size", async ( ) => {
+      const { actor, originalImage } = await openCropper( );
+
+      // The frame stops at 88pt so its corners' touch areas don't overlap.
+      // Drag the bottom-right corner far past the top-left one
+      drag( "PhotoCropper.handle.bottomRight", -1000, -1000 );
+      await waitForSnap( );
+      await actor.press( screen.getByLabelText( "Save crop" ) );
+
+      // The frame stops at 88pt, which shows 451 of the photo's pixels
+      // before zooming in
+      await waitFor( ( ) => {
+        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 0, 0, 451, 451 );
+      } );
+    } );
+
     it( "should stop the frame at the edges of the photo", async ( ) => {
       const { actor, originalImage } = await openCropper( );
 
