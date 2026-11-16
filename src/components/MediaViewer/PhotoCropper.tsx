@@ -20,11 +20,16 @@ import type { CropRectangle } from "sharedHelpers/getCropRectangle";
 import getCropRectangle, {
   getMinimumCropFraction,
   getVisibleArea,
+  MINIMUM_CROP_SIZE,
 } from "sharedHelpers/getCropRectangle";
 import colors from "styles/tailwindColors";
 
 type Corner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 const CORNERS: Corner[] = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
+// Smallest the frame can get on screen, so its corners stay easy to grab. To
+// crop tighter than this shows, zoom in first
+const MINIMUM_FRAME_SIZE = 88;
 
 // GestureHandlerRootView is third-party and not registered with nativewind
 const ROOT_STYLE: ViewStyle = { flex: 1 };
@@ -65,7 +70,8 @@ interface CropHandleProps {
   corner: Corner;
   frame: Frame;
   area: Size;
-  // The frame's smallest size, in points, when the photo isn't zoomed
+  // The frame's smallest size for the minimum crop, in points, when the
+  // photo isn't zoomed
   minimumUnzoomed: Size;
   // How far the photo is zoomed in. Zooming in makes each point cover fewer
   // pixels, so the frame's smallest size in points grows with it
@@ -112,8 +118,14 @@ const CropHandle = ( {
       const maximumHeight = isTop
         ? anchorY
         : area.height - anchorY;
-      const minimumWidth = Math.min( minimumUnzoomed.width * zoom.get( ), maximumWidth );
-      const minimumHeight = Math.min( minimumUnzoomed.height * zoom.get( ), maximumHeight );
+      const minimumWidth = Math.min(
+        Math.max( minimumUnzoomed.width * zoom.get( ), MINIMUM_FRAME_SIZE ),
+        maximumWidth,
+      );
+      const minimumHeight = Math.min(
+        Math.max( minimumUnzoomed.height * zoom.get( ), MINIMUM_FRAME_SIZE ),
+        maximumHeight,
+      );
       const width = Math.min(
         Math.max( startWidth + ( isLeft
           ? -translationX
@@ -205,6 +217,13 @@ const PhotoCropper = ( {
       height: area.height * getMinimumCropFraction( imageSize.height ),
     }
     : { width: 0, height: 0 } ), [area, imageSize] );
+
+  // Zooms in until the frame, filling the crop area, shows the minimum crop
+  // along the photo's shorter side, and no further. CropZoom's own limit
+  // stops at 1 pixel per point, too soon on most phones for a 250px crop
+  const maxScale = imageSize
+    ? Math.max( 1, Math.min( imageSize.width, imageSize.height ) / MINIMUM_CROP_SIZE )
+    : 1;
 
   const trackZoom = useCallback( ( state: CropZoomState<number> ) => {
     "worklet";
@@ -316,6 +335,7 @@ const PhotoCropper = ( {
               ref={cropZoomRef}
               cropSize={area}
               resolution={imageSize}
+              maxScale={maxScale}
               // Keep the photo covering the whole crop area, and so the frame
               panMode="clamp"
               onUpdate={trackZoom}
