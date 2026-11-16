@@ -1,34 +1,25 @@
+import type { PhotoTransform, Rect } from "sharedHelpers/cropZoomLayout";
+import { getRegionUnderFrame } from "sharedHelpers/cropZoomLayout";
+
 // Smallest crop, in pixels, along each side, unless the photo itself is
 // smaller. Ideally low enough for tight crops of small organisms but high enough that
 // the crop still has enough detail to identify
 export const MINIMUM_CROP_SIZE = 250;
 
-// A rectangle of the photo, in its pixels
-interface PhotoArea {
-  originX: number;
-  originY: number;
-  width: number;
-  height: number;
-}
-
 interface CropInput {
   // Pixel size of the photo being cropped
   imageWidth: number;
   imageHeight: number;
-  // The crop area on screen, in points. The photo may be zoomed and panned
-  // inside it
-  areaWidth: number;
-  areaHeight: number;
-  // The part of the photo the crop area shows, in pixels
-  visibleArea: PhotoArea;
-  // The crop frame, in points from the crop area's top-left corner. It can be
-  // any shape
-  frame: {
-    x: number;
-    y: number;
+  // The crop area on screen, in points
+  area: {
     width: number;
     height: number;
   };
+  // How CropZoom has zoomed and panned the photo inside the crop area
+  transform: PhotoTransform;
+  // The crop frame, in points from the crop area's top-left corner. It can be
+  // any shape
+  frame: Rect;
   minimumCropSize?: number;
 }
 
@@ -44,38 +35,6 @@ export interface CropRectangle {
 const clamp = ( value: number, minimum: number, maximum: number ) => (
   Math.min( Math.max( value, minimum ), maximum )
 );
-
-// The part of the photo the crop area shows, in pixels, from how CropZoom
-// zooms and pans it. CropZoom's own crop() rounds this down to whole pixels,
-// which puts a zoomed crop a pixel or two short
-export const getVisibleArea = ( {
-  imageWidth,
-  imageHeight,
-  areaWidth,
-  areaHeight,
-  scale,
-  translateX,
-  translateY,
-}: {
-  imageWidth: number;
-  imageHeight: number;
-  areaWidth: number;
-  areaHeight: number;
-  // CropZoom lays the photo out at the size of the crop area, then scales it
-  // around its center and moves it
-  scale: number;
-  translateX: number;
-  translateY: number;
-} ): PhotoArea => {
-  const pixelsPerPoint = imageWidth / areaWidth;
-  return {
-    originX: ( areaWidth / 2 - translateX / scale - areaWidth / ( 2 * scale ) ) * pixelsPerPoint,
-    originY: ( areaHeight / 2 - translateY / scale - areaHeight / ( 2 * scale ) )
-      * pixelsPerPoint,
-    width: imageWidth / scale,
-    height: imageHeight / scale,
-  };
-};
 
 // The smallest share of a side of the photo a crop may cover
 export const getMinimumCropFraction = (
@@ -102,24 +61,24 @@ const cropAxis = (
 const getCropRectangle = ( {
   imageWidth,
   imageHeight,
-  areaWidth,
-  areaHeight,
-  visibleArea,
+  area,
+  transform,
   frame,
   minimumCropSize = MINIMUM_CROP_SIZE,
 }: CropInput ): CropRectangle => {
-  const pixelsPerPointX = visibleArea.width / areaWidth;
-  const pixelsPerPointY = visibleArea.height / areaHeight;
+  const region = getRegionUnderFrame( frame, area, transform );
+  const pixelsPerPointX = imageWidth / area.width;
+  const pixelsPerPointY = imageHeight / area.height;
   const horizontal = cropAxis(
     imageWidth,
-    visibleArea.originX + ( frame.x + frame.width / 2 ) * pixelsPerPointX,
-    frame.width * pixelsPerPointX,
+    ( region.x + region.width / 2 ) * pixelsPerPointX,
+    region.width * pixelsPerPointX,
     minimumCropSize,
   );
   const vertical = cropAxis(
     imageHeight,
-    visibleArea.originY + ( frame.y + frame.height / 2 ) * pixelsPerPointY,
-    frame.height * pixelsPerPointY,
+    ( region.y + region.height / 2 ) * pixelsPerPointY,
+    region.height * pixelsPerPointY,
     minimumCropSize,
   );
   return {
