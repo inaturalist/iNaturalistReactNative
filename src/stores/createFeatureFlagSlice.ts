@@ -29,8 +29,7 @@ export enum FeatureFlag {
   TraditionalProjectsEnabled = "traditional_projects",
   MyObservationsSmallGridViewEnabled = "my_observations_small_grid_view",
   OnboardingV2Enabled = "onboarding_v2",
-  ExploreV2Enabled = "exploreV2Enabled",
-  PhotoEditingEnabled = "photoEditingEnabled",
+  PhotoEditingEnabled = "photo_editing",
 }
 
 export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [
