@@ -103,14 +103,14 @@ const MainMediaDisplay = ( {
               <TransparentCircleButton
                 onPress={( ) => onRotatePhoto( localFilePath )}
                 icon="rotate-photo"
-                accessibilityLabel="Rotate photo"
+                accessibilityLabel={t( "Rotate-photo" )}
               />
             )}
             {onCropPhoto && (
               <TransparentCircleButton
                 onPress={( ) => onCropPhoto( localFilePath )}
                 icon="crop"
-                accessibilityLabel="Crop photo"
+                accessibilityLabel={t( "Crop-photo" )}
               />
             )}
           </View>

@@ -83,10 +83,9 @@ const SuggestionsFooter = ( {
               className={!hideLocationToggleButton
                 ? "mt-4"
                 : undefined}
-              // eslint-disable-next-line i18next/no-literal-string
-              text="CROP IMAGE"
+              text={t( "CROP-PHOTO" )}
               onPress={onCropPhoto}
-              accessibilityLabel="Crop image"
+              accessibilityLabel={t( "Crop-photo" )}
             />
           )}
         </View>
