@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AdvancedSearch
-  from "components/Explore/ExploreV2/screens/AdvancedSearch";
+  from "components/Explore/screens/AdvancedSearch";
 import ExploreResults
-  from "components/Explore/ExploreV2/screens/ExploreResults";
+  from "components/Explore/screens/ExploreResults";
 import UniversalSearch
-  from "components/Explore/ExploreV2/screens/UniversalSearch";
+  from "components/Explore/screens/UniversalSearch";
 import { hideHeader } from "navigation/navigationOptions";
 import type { ExploreStackParamList } from "navigation/types";
 import React from "react";

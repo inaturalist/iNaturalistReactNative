@@ -71,8 +71,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
   useFileSystemDevTools( {
     adapter: createRNFSAdapter( RNFS ),
   } );
-  const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
-    = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
   const {
     resolvedValue: traditionalProjectsEnabled,
     setOverride: setTraditionalProjectsEnabled,
@@ -147,15 +145,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
         title: "Feature Flags",
         items: [
           {
-            id: "explore-v2",
-            type: "toggle",
-            title: "ExploreV2",
-            value: exploreV2Enabled,
-            onUpdate: () => {
-              setExploreV2Enabled( !exploreV2Enabled );
-            },
-          },
-          {
             id: "traditional-projects",
             type: "toggle",
             title: "TraditionalProjects",
@@ -181,8 +170,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       onboardingShown,
       setOnboardingShown,
       navigation,
-      exploreV2Enabled,
-      setExploreV2Enabled,
       traditionalProjectsEnabled,
       setTraditionalProjectsEnabled,
       myObservationsSmallGridViewEnabled,

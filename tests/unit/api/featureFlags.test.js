@@ -6,7 +6,7 @@ jest.mock( "inaturalistjs" );
 
 const mockGet = jest.mocked( inatjs.feature_flags.get );
 
-const EXPLORE = FeatureFlag.ExploreV2Enabled;
+const ONBOARDING = FeatureFlag.OnboardingV2Enabled;
 const PROJECTS = FeatureFlag.TraditionalProjectsEnabled;
 
 const respond = flags => mockGet.mockResolvedValue( { flags, experiments: {} } );
@@ -35,9 +35,9 @@ describe( "fetchFeatureFlags", ( ) => {
   } );
 
   it( "reads client_<name> flags by base name, including false ones", async ( ) => {
-    respond( { [`client_${EXPLORE}`]: false, [`client_${PROJECTS}`]: true } );
+    respond( { [`client_${ONBOARDING}`]: false, [`client_${PROJECTS}`]: true } );
     await expect( fetchFeatureFlags( ) ).resolves.toEqual( {
-      [EXPLORE]: false,
+      [ONBOARDING]: false,
       [PROJECTS]: true,
     } );
   } );
@@ -47,7 +47,7 @@ describe( "fetchFeatureFlags", ( ) => {
       client_some_web_flag: true,
       [`client_install_${PROJECTS}`]: true,
       [PROJECTS]: true,
-      [`client_${EXPLORE}`]: "true",
+      [`client_${ONBOARDING}`]: "true",
     } );
     await expect( fetchFeatureFlags( ) ).resolves.toEqual( {} );
   } );

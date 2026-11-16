@@ -11,11 +11,10 @@ let latestRequestId = 0;
 
 // Each flag's resolved value and the layer it came from, for remote logs, e.g.
 // {
-//   explore_v2: true,
 //   traditional_projects: false,
 //   my_observations_small_grid_view: false,
 //   onboarding_v2: false,
-//   fromOverrides: "traditional_projects,explore_v2",
+//   fromOverrides: "traditional_projects,onboarding_v2",
 //   fromApi: "",
 // }
 export const featureFlagsLogExtra = ( ) => {

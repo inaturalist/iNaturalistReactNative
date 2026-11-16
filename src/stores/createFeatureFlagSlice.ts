@@ -26,7 +26,6 @@ import type { StateCreator } from "zustand";
 export enum FeatureFlag {
   // flags should use positive language ending with `Enabled`
   // MyFeatureFlagEnabled = "my_feature",
-  ExploreV2Enabled = "explore_v2",
   TraditionalProjectsEnabled = "traditional_projects",
   MyObservationsSmallGridViewEnabled = "my_observations_small_grid_view",
   OnboardingV2Enabled = "onboarding_v2",
@@ -38,7 +37,6 @@ export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [
 
 export const hardcodedFeatureFlagDefaults: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
-  [FeatureFlag.ExploreV2Enabled]: true,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
   [FeatureFlag.OnboardingV2Enabled]: false,
@@ -46,7 +44,6 @@ export const hardcodedFeatureFlagDefaults: Record<FeatureFlag, boolean> = {
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
-  [FeatureFlag.ExploreV2Enabled]: null,
   [FeatureFlag.TraditionalProjectsEnabled]: null,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
   [FeatureFlag.OnboardingV2Enabled]: null,
