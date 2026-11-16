@@ -11,11 +11,16 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
-import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import type { CropZoomRefType, CropZoomState } from "react-native-zoom-toolkit";
 import { CropZoom } from "react-native-zoom-toolkit";
+import fitCropFrame from "sharedHelpers/fitCropFrame";
 import type { CropRectangle } from "sharedHelpers/getCropRectangle";
-import getCropRectangle, { getMinimumCropFraction } from "sharedHelpers/getCropRectangle";
+import getCropRectangle, {
+  getMinimumCropFraction,
+  getVisibleArea,
+} from "sharedHelpers/getCropRectangle";
 import colors from "styles/tailwindColors";
 
 type Corner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
@@ -65,10 +70,11 @@ interface CropHandleProps {
   // How far the photo is zoomed in. Zooming in makes each point cover fewer
   // pixels, so the frame's smallest size in points grows with it
   zoom: SharedValue<number>;
+  onRelease: ( ) => void;
 }
 
 const CropHandle = ( {
-  corner, frame, area, minimumUnzoomed, zoom,
+  corner, frame, area, minimumUnzoomed, zoom, onRelease,
 }: CropHandleProps ) => {
   const isLeft = corner === "topLeft" || corner === "bottomLeft";
   const isTop = corner === "topLeft" || corner === "topRight";
@@ -128,7 +134,10 @@ const CropHandle = ( {
       frame.y.set( isTop
         ? anchorY - height
         : anchorY );
-    } ), [area, corner, frame, isLeft, isTop, minimumUnzoomed, start, zoom] );
+    } )
+    .onEnd( ( ) => {
+      scheduleOnRN( onRelease );
+    } ), [area, corner, frame, isLeft, isTop, minimumUnzoomed, onRelease, start, zoom] );
 
   return (
     <GestureDetector gesture={gesture}>
@@ -203,6 +212,37 @@ const PhotoCropper = ( {
     zoom.set( state.scale );
   }, [zoom] );
 
+  // Once a corner is let go, the frame grows to fill the crop area and the
+  // photo zooms with it, so the part of the photo in the frame stays the same
+  const fillCropArea = useCallback( ( ) => {
+    const cropZoom = cropZoomRef.current;
+    if ( !cropZoom || !area ) return;
+    const state = cropZoom.getState( );
+    const fitted = fitCropFrame( {
+      frame: {
+        x: frameX.get( ),
+        y: frameY.get( ),
+        width: frameWidth.get( ),
+        height: frameHeight.get( ),
+      },
+      area,
+      transform: state,
+      maxScale: state.maxScale,
+    } );
+    // CropZoom animates with withTiming's defaults, so the frame does too.
+    // Moving on the same curve keeps the photo lined up with the frame
+    frameX.set( withTiming( fitted.frame.x ) );
+    frameY.set( withTiming( fitted.frame.y ) );
+    frameWidth.set( withTiming( fitted.frame.width ) );
+    frameHeight.set( withTiming( fitted.frame.height ) );
+    cropZoom.setTransformState( {
+      ...fitted.transform,
+      rotate: state.rotate,
+      rotateX: state.rotateX,
+      rotateY: state.rotateY,
+    } );
+  }, [area, frameX, frameY, frameWidth, frameHeight] );
+
   const areaWidth = area?.width || 0;
   const areaHeight = area?.height || 0;
   const dimBorderWidth = Math.max( areaWidth, areaHeight );
@@ -228,8 +268,18 @@ const PhotoCropper = ( {
   };
 
   const confirmCrop = ( ) => {
-    const visibleArea = cropZoomRef.current?.crop( ).crop;
-    if ( !imageSize || !area || !visibleArea ) return;
+    const cropZoom = cropZoomRef.current;
+    if ( !imageSize || !area || !cropZoom ) return;
+    const { scale, translateX, translateY } = cropZoom.getState( );
+    const visibleArea = getVisibleArea( {
+      imageWidth: imageSize.width,
+      imageHeight: imageSize.height,
+      areaWidth: area.width,
+      areaHeight: area.height,
+      scale,
+      translateX,
+      translateY,
+    } );
     const cropRectangle = getCropRectangle( {
       imageWidth: imageSize.width,
       imageHeight: imageSize.height,
@@ -304,6 +354,7 @@ const PhotoCropper = ( {
                     area={area}
                     minimumUnzoomed={minimumUnzoomed}
                     zoom={zoom}
+                    onRelease={fillCropArea}
                   />
                 ) )}
               </Animated.View>

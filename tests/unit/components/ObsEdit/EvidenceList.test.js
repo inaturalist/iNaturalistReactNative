@@ -1,5 +1,5 @@
 import {
-  fireEvent, screen, userEvent, waitFor,
+  act, fireEvent, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
 import { photoUploadPath } from "appConstants/paths";
 import EvidenceList from "components/ObsEdit/EvidenceList";
@@ -149,11 +149,19 @@ describe( "EvidenceList", ( ) => {
       ] );
     };
 
+    // Letting go of a corner grows the frame to fill the crop area, zooming
+    // the photo with it over 300ms. Waits a little longer so the snap is
+    // done before the test saves
+    const waitForSnap = ( ) => act( ( ) => new Promise( resolve => {
+      setTimeout( resolve, 500 );
+    } ) );
+
     it( "should crop the observation photo to the part inside the frame", async ( ) => {
       const { actor, originalImage } = await openCropper( );
 
       // Drag the bottom-right corner halfway in, framing the top-left quarter
       drag( "PhotoCropper.handle.bottomRight", -200, -150 );
+      await waitForSnap( );
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       await waitFor( ( ) => {
@@ -171,7 +179,9 @@ describe( "EvidenceList", ( ) => {
       // Narrow the frame from the left, then shorten it from the bottom, for
       // a tall frame over the right half of the photo
       drag( "PhotoCropper.handle.topLeft", 200, 0 );
+      await waitForSnap( );
       drag( "PhotoCropper.handle.bottomRight", 0, -50 );
+      await waitForSnap( );
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       await waitFor( ( ) => {
@@ -182,9 +192,10 @@ describe( "EvidenceList", ( ) => {
     it( "should stop the frame at the edges of the photo", async ( ) => {
       const { actor, originalImage } = await openCropper( );
 
-      drag( "PhotoCropper.handle.bottomRight", -200, -150 );
-      // Drag the same corner far past the photo's bottom-right edge
+      // Drag a corner of the frame around the whole photo far past the
+      // photo's edge
       drag( "PhotoCropper.handle.bottomRight", 1000, 1000 );
+      await waitForSnap( );
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       // Back to the whole photo, which leaves nothing to crop, so the cropper
