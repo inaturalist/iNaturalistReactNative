@@ -45,6 +45,38 @@ const clamp = ( value: number, minimum: number, maximum: number ) => (
   Math.min( Math.max( value, minimum ), maximum )
 );
 
+// The part of the photo the crop area shows, in pixels, from how CropZoom
+// zooms and pans it. CropZoom's own crop() rounds this down to whole pixels,
+// which puts a zoomed crop a pixel or two short
+export const getVisibleArea = ( {
+  imageWidth,
+  imageHeight,
+  areaWidth,
+  areaHeight,
+  scale,
+  translateX,
+  translateY,
+}: {
+  imageWidth: number;
+  imageHeight: number;
+  areaWidth: number;
+  areaHeight: number;
+  // CropZoom lays the photo out at the size of the crop area, then scales it
+  // around its center and moves it
+  scale: number;
+  translateX: number;
+  translateY: number;
+} ): PhotoArea => {
+  const pixelsPerPoint = imageWidth / areaWidth;
+  return {
+    originX: ( areaWidth / 2 - translateX / scale - areaWidth / ( 2 * scale ) ) * pixelsPerPoint,
+    originY: ( areaHeight / 2 - translateY / scale - areaHeight / ( 2 * scale ) )
+      * pixelsPerPoint,
+    width: imageWidth / scale,
+    height: imageHeight / scale,
+  };
+};
+
 // The smallest share of a side of the photo a crop may cover
 export const getMinimumCropFraction = (
   imageSide: number,

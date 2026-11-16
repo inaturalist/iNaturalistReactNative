@@ -1,4 +1,7 @@
-import getCropRectangle, { MINIMUM_CROP_SIZE } from "sharedHelpers/getCropRectangle";
+import getCropRectangle, {
+  getVisibleArea,
+  MINIMUM_CROP_SIZE,
+} from "sharedHelpers/getCropRectangle";
 
 // A 2048x1536 photo in a 400x300pt crop area
 const photoOnScreen = {
@@ -77,6 +80,23 @@ describe( "getCropRectangle", ( ) => {
     } );
     expect( crop ).toEqual( {
       startX: 0, startY: 0, endX: MINIMUM_CROP_SIZE, endY: MINIMUM_CROP_SIZE,
+    } );
+  } );
+} );
+
+describe( "getVisibleArea", ( ) => {
+  it( "returns the whole photo when it isn't zoomed", ( ) => {
+    expect( getVisibleArea( {
+      ...photoOnScreen, scale: 1, translateX: 0, translateY: 0,
+    } ) ).toEqual( wholePhoto );
+  } );
+
+  it( "returns the part of the photo zoomed and panned into the area", ( ) => {
+    // Zoomed in 2x, then moved right and down to show the top-left quarter
+    expect( getVisibleArea( {
+      ...photoOnScreen, scale: 2, translateX: 200, translateY: 150,
+    } ) ).toEqual( {
+      originX: 0, originY: 0, width: 1024, height: 768,
     } );
   } );
 } );
