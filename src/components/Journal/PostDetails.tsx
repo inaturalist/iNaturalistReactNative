@@ -13,13 +13,16 @@ import {
 } from "components/SharedComponents";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
-import type { TabStackScreenProps } from "navigation/types";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React from "react";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 const PostDetails = ( ) => {
-  const { params } = useRoute<TabStackScreenProps<"PostDetails">["route"]>( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"PostDetails">["route"] &
+    TabStackScreenProps<"PostDetails">["route"]
+  >( );
   const { id } = params;
   const { isConnected } = useNetInfo( );
   const { i18n, t } = useTranslation( );
