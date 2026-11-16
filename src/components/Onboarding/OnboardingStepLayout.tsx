@@ -28,11 +28,15 @@ const OnboardingStepLayout = ( { children, footer }: Props ) => {
       testID={`Onboarding.${name}`}
     >
       {progress !== null && <OnboardingProgressBar progress={progress} />}
-      <ScrollView className="flex-1" contentContainerClassName="px-[22px] pb-[20px]">
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="px-[22px]"
+        alwaysBounceVertical={false}
+      >
         {children}
       </ScrollView>
       {footer && (
-        <View className="px-[15px] pt-[10px] pb-[20px]">
+        <View className="px-[15px] pt-[10px]">
           {footer}
         </View>
       )}

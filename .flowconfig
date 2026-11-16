@@ -232,6 +232,7 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/react-native/src/private/components/virtualview/VirtualViewNativeComponent.js
 .*/node_modules/react-native/src/private/components/virtualview/VirtualViewExperimentalNativeComponent.js
 .*/node_modules/@react-native/codegen/lib/cli/combine/combine-js-to-schema.js.flow
+.*/node_modules/react-native/src/private/components/virtualview/logger/VirtualViewLogger.js
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
