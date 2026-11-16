@@ -19,7 +19,6 @@ import fitCropFrame from "sharedHelpers/fitCropFrame";
 import type { CropRectangle } from "sharedHelpers/getCropRectangle";
 import getCropRectangle, {
   getMinimumCropFraction,
-  getVisibleArea,
   MINIMUM_CROP_SIZE,
 } from "sharedHelpers/getCropRectangle";
 import colors from "styles/tailwindColors";
@@ -256,6 +255,8 @@ const PhotoCropper = ( {
     frameHeight.set( withTiming( fitted.frame.height ) );
     cropZoom.setTransformState( {
       ...fitted.transform,
+      // Unchanged, only because setTransformState needs them. The crop math
+      // assumes CropZoom never rotates or flips the photo
       rotate: state.rotate,
       rotateX: state.rotateX,
       rotateY: state.rotateY,
@@ -289,22 +290,13 @@ const PhotoCropper = ( {
   const confirmCrop = ( ) => {
     const cropZoom = cropZoomRef.current;
     if ( !imageSize || !area || !cropZoom ) return;
-    const { scale, translateX, translateY } = cropZoom.getState( );
-    const visibleArea = getVisibleArea( {
-      imageWidth: imageSize.width,
-      imageHeight: imageSize.height,
-      areaWidth: area.width,
-      areaHeight: area.height,
-      scale,
-      translateX,
-      translateY,
-    } );
+    // Not CropZoom's own crop(), which rounds down to whole pixels and puts
+    // a zoomed crop a pixel or two short
     const cropRectangle = getCropRectangle( {
       imageWidth: imageSize.width,
       imageHeight: imageSize.height,
-      areaWidth: area.width,
-      areaHeight: area.height,
-      visibleArea,
+      area,
+      transform: cropZoom.getState( ),
       frame: {
         x: frameX.get( ),
         y: frameY.get( ),

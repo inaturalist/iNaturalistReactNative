@@ -1,42 +1,29 @@
+import type { PhotoTransform, Rect } from "sharedHelpers/cropZoomLayout";
+import { getRegionUnderFrame, photoToScreen } from "sharedHelpers/cropZoomLayout";
+
 interface Size {
   width: number;
   height: number;
 }
 
-interface Frame {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-// How CropZoom shows the photo inside the crop area. The photo is laid out
-// at the size of the area, centered, then scaled around its center and moved
-interface PhotoTransform {
-  scale: number;
-  translateX: number;
-  translateY: number;
-}
-
 // One side of the fit: where the frame starts on screen and how far the
-// photo moves, given the part of the photo under the frame
+// photo moves, given where the frame starts on the photo
 const fitAxis = (
   areaSide: number,
-  // Where the frame starts, in points across the photo laid out unscaled
   regionStart: number,
   frameSide: number,
   scale: number,
 ) => {
-  const center = areaSide / 2;
-  // Centered in the area if possible
+  // Centered in the area if possible: move the photo so the frame's start
+  // on the photo lands there
   const centeredStart = ( areaSide - frameSide ) / 2;
-  const idealTranslate = centeredStart - center - ( regionStart - center ) * scale;
+  const idealTranslate = centeredStart - photoToScreen( regionStart, areaSide, scale, 0 );
   // CropZoom keeps the photo covering the whole area, so near the edge of the
   // photo the frame ends up off center, still inside the area
   const bound = ( areaSide * scale - areaSide ) / 2;
   const translate = Math.min( Math.max( idealTranslate, -bound ), bound );
   return {
-    start: center + translate + ( regionStart - center ) * scale,
+    start: photoToScreen( regionStart, areaSide, scale, translate ),
     translate,
   };
 };
@@ -50,12 +37,12 @@ const fitCropFrame = ( {
   transform,
   maxScale,
 }: {
-  frame: Frame;
+  frame: Rect;
   area: Size;
   transform: PhotoTransform;
   maxScale: number;
-} ): { frame: Frame; transform: PhotoTransform } => {
-  const { scale, translateX, translateY } = transform;
+} ): { frame: Rect; transform: PhotoTransform } => {
+  const { scale } = transform;
   const growth = Math.min(
     area.width / frame.width,
     area.height / frame.height,
@@ -65,11 +52,9 @@ const fitCropFrame = ( {
   const newScale = scale * growth;
   const width = frame.width * growth;
   const height = frame.height * growth;
-  // The frame's top-left corner in the photo, laid out unscaled
-  const regionX = ( frame.x - area.width / 2 - translateX ) / scale + area.width / 2;
-  const regionY = ( frame.y - area.height / 2 - translateY ) / scale + area.height / 2;
-  const horizontal = fitAxis( area.width, regionX, width, newScale );
-  const vertical = fitAxis( area.height, regionY, height, newScale );
+  const region = getRegionUnderFrame( frame, area, transform );
+  const horizontal = fitAxis( area.width, region.x, width, newScale );
+  const vertical = fitAxis( area.height, region.y, height, newScale );
   return {
     frame: {
       x: horizontal.start,
