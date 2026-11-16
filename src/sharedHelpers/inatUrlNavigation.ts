@@ -11,10 +11,13 @@ const ALLOWED_HOSTS = [
   "staging.inaturalist.org",
 ];
 
+const RESERVED_PEOPLE_SEGMENTS = new Set( ["new", "leaderboard"] );
+
 export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
-  | { type: "project"; id: string };
+  | { type: "project"; id: string }
+  | { type: "user"; id: string };
 
 function parseNumericId( segment: string ): number | null {
   // Matches IDs like "1234" and also slugs that start with a number ID "1234-taxon-name"
@@ -45,6 +48,18 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
       return { type: "taxon", id: firstSegment };
     case "projects":
       return { type: "project", id: firstSegment };
+    case "people": {
+      // Only /people/:login_or_id shall pass.
+      // Collection routes (new, leaderboard) or deeper member routes (followers, following,
+      // edit, etc.) fall through to the browser.
+      if ( segments.length !== 2 ) {
+        return null;
+      }
+      if ( RESERVED_PEOPLE_SEGMENTS.has( firstSegment ) ) {
+        return null;
+      }
+      return { type: "user", id: firstSegment };
+    }
     default:
       return null;
   }
@@ -106,6 +121,14 @@ export async function openInatUrl(
 
       if ( uuid ) {
         navigation.dispatch( StackActions.push( "ObsDetails", { uuid } ) );
+        return true;
+      }
+      return false;
+    }
+    case "user": {
+      const userId = parseNumericId( id );
+      if ( userId ) {
+        navigation.dispatch( StackActions.push( "UserProfile", { userId } ) );
         return true;
       }
       return false;
