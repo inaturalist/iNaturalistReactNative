@@ -333,7 +333,7 @@ describe( "cropping a photo with no suggestions", ( ) => {
     );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
 
-    await actor.press( await screen.findByText( "CROP IMAGE" ) );
+    await actor.press( await screen.findByText( "CROP PHOTO" ) );
     fireEvent( await screen.findByTestId( "PhotoCropper" ), "layout", {
       nativeEvent: { layout: { width: 400, height: 300 } },
     } );
@@ -364,7 +364,7 @@ describe( "cropping a photo with no suggestions", ( ) => {
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
 
     expect( await screen.findByText( /Primum/ ) ).toBeVisible( );
-    expect( screen.queryByText( "CROP IMAGE" ) ).toBeNull( );
+    expect( screen.queryByText( "CROP PHOTO" ) ).toBeNull( );
   } );
 
   it( "should not be offered for a photo that has been uploaded", async ( ) => {
@@ -373,7 +373,7 @@ describe( "cropping a photo with no suggestions", ( ) => {
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
 
     expect( await screen.findByText( /no ID suggestions/ ) ).toBeVisible( );
-    expect( screen.queryByText( "CROP IMAGE" ) ).toBeNull( );
+    expect( screen.queryByText( "CROP PHOTO" ) ).toBeNull( );
   } );
 } );
 

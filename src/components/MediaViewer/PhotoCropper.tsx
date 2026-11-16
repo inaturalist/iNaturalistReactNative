@@ -21,6 +21,7 @@ import getCropRectangle, {
   getMinimumCropFraction,
   MINIMUM_CROP_SIZE,
 } from "sharedHelpers/getCropRectangle";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 type Corner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
@@ -175,6 +176,7 @@ interface Props {
 const PhotoCropper = ( {
   uri, saving, onCancel, onCrop,
 }: Props ) => {
+  const { t } = useTranslation( );
   const [imageSize, setImageSize] = useState<Size | null>( null );
   const [containerSize, setContainerSize] = useState<Size | null>( null );
   const cropZoomRef = useRef<CropZoomRefType>( null );
@@ -381,7 +383,7 @@ const PhotoCropper = ( {
           size={22}
           width={50}
           height={50}
-          accessibilityLabel="Cancel crop"
+          accessibilityLabel={t( "Cancel-crop" )}
           onPress={onCancel}
           disabled={saving}
         />
@@ -396,7 +398,7 @@ const PhotoCropper = ( {
               size={22}
               width={50}
               height={50}
-              accessibilityLabel="Save crop"
+              accessibilityLabel={t( "Save-crop" )}
               onPress={confirmCrop}
               disabled={!area}
             />
