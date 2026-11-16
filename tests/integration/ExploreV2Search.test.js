@@ -26,6 +26,8 @@ import { signIn, signOut } from "tests/helpers/user";
 jest.unmock( "@react-navigation/native" );
 
 const mockUser = factory( "LocalUser", {
+  // Tests assert scientific names
+  prefers_common_names: false,
   login: faker.internet.username( ),
   locale: "en",
 } );

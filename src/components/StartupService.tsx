@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
+import User from "realmModels/User";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
@@ -36,7 +37,7 @@ const geolocationConfig = {
 
 const StartupService = ( ) => {
   const realm = useRealm( );
-  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
+  const currentUser = User.currentUser( realm )?.isValid( );
 
   useEffect( ( ) => {
     const initializeApp = async ( ) => {

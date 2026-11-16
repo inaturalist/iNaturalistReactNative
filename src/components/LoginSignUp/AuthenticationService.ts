@@ -27,6 +27,7 @@ import {
 } from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
+import User from "realmModels/User";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import { getInstallID } from "sharedHelpers/installData";
@@ -672,7 +673,7 @@ async function afterAuthenticateUser(
   }
 
   safeRealmWrite( realm, ( ) => {
-    realm.create( "User", localUser, UpdateMode.Modified );
+    realm.create( User, localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   clearAuthCache( );
   // Flipper resolves flags per user
