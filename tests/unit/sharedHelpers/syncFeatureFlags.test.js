@@ -81,7 +81,7 @@ describe( "syncFeatureFlags", ( ) => {
   } );
 
   it( "logs a debug override ahead of the API value", async ( ) => {
-    mockGet.mockResolvedValue( { flags: { [PROJECTS_KEY]: true, [EXPLORE_KEY]: true } } );
+    mockGet.mockResolvedValue( { flags: { [PROJECTS_KEY]: true, [ONBOARDING_KEY]: true } } );
     useStore.getState( )
       .setFeatureFlagDebugOverride( FeatureFlag.TraditionalProjectsEnabled, false );
 
@@ -92,7 +92,7 @@ describe( "syncFeatureFlags", ( ) => {
       expect.objectContaining( {
         [FeatureFlag.TraditionalProjectsEnabled]: false,
         fromOverrides: FeatureFlag.TraditionalProjectsEnabled,
-        fromApi: FeatureFlag.ExploreV2Enabled,
+        fromApi: FeatureFlag.OnboardingV2Enabled,
       } ),
     );
   } );
@@ -123,7 +123,7 @@ describe( "syncFeatureFlags", ( ) => {
     const sync = syncFeatureFlags( "user-jwt" );
 
     cancelFeatureFlagSync( );
-    resolveFetch( { flags: { [EXPLORE_KEY]: false } } );
+    resolveFetch( { flags: { [ONBOARDING_KEY]: false } } );
     await sync;
 
     expect( mockLogger.infoWithExtra ).not.toHaveBeenCalled( );
