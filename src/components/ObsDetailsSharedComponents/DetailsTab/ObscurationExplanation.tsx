@@ -7,8 +7,8 @@ interface Props {
   textClassName?: string;
   currentUser: { id: number } | null;
   observation: {
-    obscured?: boolean;
-    privateLatitude?: number;
+    obscured?: boolean | null;
+    privateLatitude?: number | null;
     user: {
       id: number;
     };

@@ -16,10 +16,7 @@ interface Props {
   observation: {
     geoprivacy?: string | null;
     taxon_geoprivacy?: string | null;
-    // Read via checkCamelAndSnakeCase, so either casing may be present
-    placeGuess?: string | null;
     place_guess?: string | null;
-    privatePlaceGuess?: string | null;
     private_place_guess?: string | null;
     latitude?: number | null;
     longitude?: number | null;

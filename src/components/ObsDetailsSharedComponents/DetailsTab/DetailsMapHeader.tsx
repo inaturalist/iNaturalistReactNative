@@ -10,17 +10,15 @@ interface Props {
   currentUser: { id: number } | null;
   observation: {
     // Read by DetailsMapHeader and ObscurationExplanation
-    obscured?: boolean;
-    privateLatitude?: number;
+    obscured?: boolean | null;
+    privateLatitude?: number | null;
     user: {
       id: number;
     };
     // Read by ObservationLocation
     geoprivacy?: string | null;
     taxon_geoprivacy?: string | null;
-    placeGuess?: string | null;
     place_guess?: string | null;
-    privatePlaceGuess?: string | null;
     private_place_guess?: string | null;
     latitude?: number | null;
     longitude?: number | null;
