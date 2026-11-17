@@ -64,6 +64,7 @@ const CommunityTaxon = ( {
       : (
         <Pressable
           accessibilityRole="button"
+          accessibilityHint={t( "Navigates-to-taxon-details" )}
           className="shrink"
           onPress={handlePress}
           testID={`ObsDetails.taxon.${taxonId}`}
@@ -71,7 +72,6 @@ const CommunityTaxon = ( {
           <DisplayTaxonName
             taxon={communityTaxon}
             testID={`ObsDetails.taxon.${taxonId}`}
-            accessibilityHint={t( "Navigates-to-taxon-details" )}
             topTextComponent={Heading1}
             bottomTextComponent={Subheading1}
           />
