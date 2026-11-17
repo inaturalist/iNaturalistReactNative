@@ -5,6 +5,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
+import type { Geoprivacy } from "realmModels/geoprivacy";
 
 interface Props {
   currentUser: { id: number } | null;
@@ -16,8 +17,8 @@ interface Props {
       id: number;
     };
     // Read by ObservationLocation
-    geoprivacy?: string | null;
-    taxon_geoprivacy?: string | null;
+    geoprivacy?: Geoprivacy;
+    taxon_geoprivacy?: Geoprivacy;
     place_guess?: string | null;
     private_place_guess?: string | null;
     latitude?: number | null;

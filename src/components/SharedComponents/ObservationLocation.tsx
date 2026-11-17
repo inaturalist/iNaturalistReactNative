@@ -4,6 +4,7 @@ import { Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
+import type { Geoprivacy } from "realmModels/geoprivacy";
 import {
   GEOPRIVACY_OBSCURED,
   GEOPRIVACY_PRIVATE,
@@ -14,8 +15,8 @@ interface Props {
   classNameMargin?: string;
   details?: boolean; // Same as withCoordinates && withGeoprivacy
   observation: {
-    geoprivacy?: string | null;
-    taxon_geoprivacy?: string | null;
+    geoprivacy?: Geoprivacy;
+    taxon_geoprivacy?: Geoprivacy;
     place_guess?: string | null;
     private_place_guess?: string | null;
     latitude?: number | null;
