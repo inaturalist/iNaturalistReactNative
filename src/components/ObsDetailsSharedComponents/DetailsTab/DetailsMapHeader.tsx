@@ -6,9 +6,10 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 import type { Geoprivacy } from "realmModels/geoprivacy";
+import type { UserPojo } from "realmModels/User";
 
 interface Props {
-  currentUser: { id: number } | null;
+  currentUser: UserPojo | null;
   observation: {
     // Read by DetailsMapHeader and ObscurationExplanation
     obscured?: boolean | null;

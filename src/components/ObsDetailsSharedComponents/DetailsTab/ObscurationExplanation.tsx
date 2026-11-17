@@ -1,11 +1,12 @@
 import classnames from "classnames";
 import { Body4 } from "components/SharedComponents";
 import React from "react";
+import type { UserPojo } from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
   textClassName?: string;
-  currentUser: { id: number } | null;
+  currentUser: UserPojo | null;
   observation: {
     obscured?: boolean | null;
     privateLatitude?: number | null;
