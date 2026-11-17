@@ -10,14 +10,14 @@ import * as React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  metric: string,
-  votes: [Object],
-  loadingAgree: boolean,
-  loadingDisagree: boolean,
-  loadingMetric: ?string,
-  setVote: Function,
-  removeVote: Function
+interface Props {
+  metric: string;
+  votes: [object];
+  loadingAgree: boolean;
+  loadingDisagree: boolean;
+  loadingMetric: ?string;
+  setVote: Function;
+  removeVote: Function;
 }
 
 const getUserVote = ( currentUser, metric, votes ) => {
