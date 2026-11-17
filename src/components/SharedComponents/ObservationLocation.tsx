@@ -4,6 +4,7 @@ import { Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
+import type { Geoprivacy } from "realmModels/geoprivacy";
 import {
   GEOPRIVACY_OBSCURED,
   GEOPRIVACY_PRIVATE,
@@ -13,7 +14,20 @@ import { useTranslation } from "sharedHooks";
 interface Props {
   classNameMargin?: string;
   details?: boolean; // Same as withCoordinates && withGeoprivacy
-  observation: object;
+  observation: {
+    geoprivacy?: Geoprivacy;
+    taxon_geoprivacy?: Geoprivacy;
+    // checkCamelAndSnakeCase looks up both casings
+    placeGuess?: string | null;
+    place_guess?: string | null;
+    privatePlaceGuess?: string | null;
+    private_place_guess?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    privateLatitude?: number | null;
+    privateLongitude?: number | null;
+    positional_accuracy?: number | null;
+  };
   withCoordinates?: boolean;
   withGeoprivacy?: boolean;
 }
