@@ -50,7 +50,9 @@ const ConfirmSheet = ( {
       containerClass="pt-[27px]"
     >
       <View className="px-[30px] pb-5" testID={testID}>
-        <Body1 className="mb-3" testID="bottom-sheet-header">{headerText}</Body1>
+        <Body1 className="mb-3" accessibilityRole="header" testID="bottom-sheet-header">
+          {headerText}
+        </Body1>
         <Body2 className="mb-6">{text}</Body2>
         <ButtonBar buttonConfiguration={buttons} />
       </View>
