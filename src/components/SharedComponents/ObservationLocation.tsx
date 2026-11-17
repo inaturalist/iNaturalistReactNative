@@ -17,7 +17,10 @@ interface Props {
   observation: {
     geoprivacy?: Geoprivacy;
     taxon_geoprivacy?: Geoprivacy;
+    // checkCamelAndSnakeCase looks up both casings
+    placeGuess?: string | null;
     place_guess?: string | null;
+    privatePlaceGuess?: string | null;
     private_place_guess?: string | null;
     latitude?: number | null;
     longitude?: number | null;
