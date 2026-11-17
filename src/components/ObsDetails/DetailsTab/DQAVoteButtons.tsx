@@ -1,5 +1,3 @@
-// @flow
-
 import {
   ActivityIndicator,
   Body3,
@@ -15,9 +13,9 @@ interface Props {
   votes: [object];
   loadingAgree: boolean;
   loadingDisagree: boolean;
-  loadingMetric: ?string;
-  setVote: Function;
-  removeVote: Function;
+  loadingMetric?: string | null | undefined;
+  setVote: ( { metric, vote }: { metric: string; vote: boolean } ) => void;
+  removeVote: ( { metric, vote }: { metric: string; vote: boolean } ) => void;
 }
 
 const getUserVote = ( currentUser, metric, votes ) => {
@@ -57,7 +55,7 @@ const DQAVoteButtons = ( {
   loadingMetric,
   setVote,
   removeVote,
-}: Props ): React.Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const userAgrees = getUserVote( currentUser, metric, votes );
@@ -125,11 +123,11 @@ const DQAVoteButtons = ( {
   return (
     <View className="flex-row items-center justify-between w-[97px] gap-x-[11px]">
       <View className="flex-row items-center w-1/2">
-        {renderAgree()}
+        {renderAgree( )}
         {renderVoteCount( true, metric, votes )}
       </View>
       <View className="flex-row items-center w-1/2">
-        {renderDisagree()}
+        {renderDisagree( )}
         {renderVoteCount( false, metric, votes )}
       </View>
     </View>
