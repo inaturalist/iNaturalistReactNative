@@ -1,8 +1,7 @@
 import {
   CommonActions, useFocusEffect, useNavigation, useRoute,
 } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { OnboardingStackParamList } from "navigation/types";
+import type { OnboardingStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import { BackHandler } from "react-native";
 import { useOnboardingShown } from "sharedHelpers/installData";
@@ -11,7 +10,7 @@ import type { OnboardingStepId } from "./onboardingSteps";
 import { getNextStepId, getStepBlocksBack, isOnboardingStepId } from "./onboardingSteps";
 
 const useOnboardingFlow = ( ) => {
-  const navigation = useNavigation<NativeStackNavigationProp<OnboardingStackParamList>>( );
+  const navigation = useNavigation<OnboardingStackScreenProps<OnboardingStepId>["navigation"]>( );
   const { name } = useRoute( );
   const [, setOnboardingShown] = useOnboardingShown( );
 
@@ -53,7 +52,16 @@ const useOnboardingFlow = ( ) => {
     }
   };
 
+  // Opens Login on top of the step, so closing Login goes back to it
+  const logIn = ( ) => {
+    navigation.navigate( "LoginStackNavigator", {
+      screen: "Login",
+      params: { fromOnboarding: true },
+    } );
+  };
+
   return {
+    logIn,
     proceedToNext,
     stepId,
   };
