@@ -1,6 +1,7 @@
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
 import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
+import { Keyboard } from "react-native";
 import useStore from "stores/useStore";
 
 const useNavigateWithTaxonSelected = (
@@ -25,6 +26,9 @@ const useNavigateWithTaxonSelected = (
   const vision = options?.vision;
 
   const navigateWithTaxonSelected = useCallback( ( selectedTaxon: object | undefined ) => {
+    // Dismiss before navigate so Android does not leave the IME covering ObsEdit.
+    Keyboard.dismiss( );
+
     if ( selectedTaxon === undefined ) {
       updateObservationKeys( {
         owners_identification_from_vision: false,

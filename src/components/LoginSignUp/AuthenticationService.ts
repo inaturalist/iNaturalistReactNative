@@ -1,5 +1,4 @@
 import type { QueryClient } from "@tanstack/query-core";
-import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent";
 import { fetchUserEmailAvailable, fetchUserMe } from "api/users";
 import type { ApiResponse, ApisauceInstance } from "apisauce";
@@ -654,7 +653,7 @@ async function afterAuthenticateUser(
   const options = {
     api_token: apiToken,
   };
-  const remoteUser = await fetchUserMe( { }, options ) as ApiUser;
+  const remoteUser = await fetchUserMe( { }, options );
   const localUser = remoteUser
     ? {
       ...remoteUser,

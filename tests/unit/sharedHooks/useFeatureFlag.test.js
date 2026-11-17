@@ -45,21 +45,23 @@ describe( "resolveFeatureFlag", ( ) => {
 } );
 
 describe( "useFeatureFlag", ( ) => {
-  it( "returns the hard-coded default before any API values arrive", ( ) => {
-    const { result } = renderHook( ( ) => useFeatureFlag( FeatureFlag.ExploreV2Enabled ) );
-    expect( result.current ).toBe( true );
-  } );
+  const PROJECTS = FeatureFlag.TraditionalProjectsEnabled;
 
-  it( "lets an API value turn a default-on flag off", ( ) => {
-    setApiValues( { [FeatureFlag.ExploreV2Enabled]: false } );
-    const { result } = renderHook( ( ) => useFeatureFlag( FeatureFlag.ExploreV2Enabled ) );
+  it( "returns the hard-coded default before any API values arrive", ( ) => {
+    const { result } = renderHook( ( ) => useFeatureFlag( PROJECTS ) );
     expect( result.current ).toBe( false );
   } );
 
-  it( "lets a Debug override win over an API value", ( ) => {
-    setApiValues( { [FeatureFlag.ExploreV2Enabled]: false } );
-    useStore.getState( ).setFeatureFlagDebugOverride( FeatureFlag.ExploreV2Enabled, true );
-    const { result } = renderHook( ( ) => useFeatureFlag( FeatureFlag.ExploreV2Enabled ) );
+  it( "lets an API value turn a default-off flag on", ( ) => {
+    setApiValues( { [PROJECTS]: true } );
+    const { result } = renderHook( ( ) => useFeatureFlag( PROJECTS ) );
     expect( result.current ).toBe( true );
+  } );
+
+  it( "lets a Debug override win over an API value", ( ) => {
+    setApiValues( { [PROJECTS]: true } );
+    useStore.getState( ).setFeatureFlagDebugOverride( PROJECTS, false );
+    const { result } = renderHook( ( ) => useFeatureFlag( PROJECTS ) );
+    expect( result.current ).toBe( false );
   } );
 } );

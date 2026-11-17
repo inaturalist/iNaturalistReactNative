@@ -2,6 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
+import { showLocationStep, showSignUpStep } from "components/Onboarding/onboardingNavigation";
 import {
   Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
   WarningSheet,
@@ -130,6 +131,10 @@ const LoginForm = ( {
       // Set a state to zustand that we just logged in while in default mode
       setLoggedInWhileInDefaultMode( isDefaultMode );
     }
+    if ( params?.fromOnboarding ) {
+      showLocationStep( navigation );
+      return;
+    }
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
@@ -150,6 +155,14 @@ const LoginForm = ( {
     setIsDefaultMode,
     setLoggedInWhileInDefaultMode,
   ] );
+
+  const openSignUp = ( ) => {
+    if ( params?.fromOnboarding ) {
+      showSignUpStep( navigation );
+    } else {
+      navigation.navigate( "SignUp" );
+    }
+  };
 
   const scrollToItem = useCallback( ( ) => {
     firstInputFieldRef.current.measureLayout(
@@ -221,7 +234,7 @@ const LoginForm = ( {
           !keyboardShown && "mb-[35px]",
         )}
         i18nKey="Dont-have-an-account"
-        onPress={( ) => navigation.navigate( "SignUp" )}
+        onPress={openSignUp}
         components={[
           <Body1
             key="0"

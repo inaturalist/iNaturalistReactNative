@@ -1,6 +1,6 @@
 import { act } from "@testing-library/react-native";
-import savedSearchKey from "components/Explore/ExploreV2/helpers/savedSearchKey";
-import { defaultExploreV2Filters, EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
+import savedSearchKey from "components/Explore/helpers/savedSearchKey";
+import { defaultExploreFilters, EXPLORE_PLACE_MODE } from "providers/ExploreContext";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import useStore from "stores/useStore";
@@ -15,10 +15,10 @@ export const savedSearch = ( overrides = {} ) => {
   const { savedAt = 1, ...searchOverrides } = overrides;
   const search = {
     subject: taxonSubject( 12 ),
-    location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+    location: { placeMode: EXPLORE_PLACE_MODE.WORLDWIDE },
     sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
     speciesSortBy: SPECIES_SORT.COUNT_DESC,
-    filters: defaultExploreV2Filters,
+    filters: defaultExploreFilters,
     ...searchOverrides,
   };
   return { ...search, key: savedSearchKey( search ), savedAt };

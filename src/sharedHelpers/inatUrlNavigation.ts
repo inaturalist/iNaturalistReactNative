@@ -14,7 +14,8 @@ const ALLOWED_HOSTS = [
 export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
-  | { type: "project"; id: string };
+  | { type: "project"; id: string }
+  | { type: "post"; id: string };
 
 function parseNumericId( segment: string ): number | null {
   // Matches IDs like "1234" and also slugs that start with a number ID "1234-taxon-name"
@@ -43,6 +44,9 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
       return { type: "observation", id: firstSegment };
     case "taxa":
       return { type: "taxon", id: firstSegment };
+    case "blog":
+    case "posts":
+      return { type: "post", id: firstSegment };
     case "projects":
       return { type: "project", id: firstSegment };
     default:
@@ -62,6 +66,14 @@ export async function openInatUrl(
       const taxonID = parseNumericId( id );
       if ( taxonID ) {
         navigation.dispatch( StackActions.push( "TaxonDetails", { id: taxonID } ) );
+        return true;
+      }
+      return false;
+    }
+    case "post": {
+      const postId = parseNumericId( id );
+      if ( postId ) {
+        navigation.dispatch( StackActions.push( "PostDetails", { id: postId } ) );
         return true;
       }
       return false;

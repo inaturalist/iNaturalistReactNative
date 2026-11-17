@@ -1,6 +1,9 @@
 import type { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { searchProjects } from "api/projects";
+import type { ApiProjectSummary, ApiResponse } from "api/types";
 import flatten from "lodash/flatten";
+import { useTranslation } from "react-i18next";
+import sortByTitle from "sharedHelpers/sortByTitle";
 import {
   useAuthenticatedInfiniteQuery,
 } from "sharedHooks";
@@ -11,7 +14,6 @@ export interface UseInfiniteProjectsScrollOptions {
   params: {
     fields: typeof PROJECT_SUMMARY_FIELDS;
     q: string;
-    member_id?: number;
     lat?: number;
     lng?: number;
     featured?: boolean;
@@ -24,6 +26,7 @@ export interface UseInfiniteProjectsScrollOptions {
 const useInfiniteProjectsScroll = (
   { params: newInputParams, enabled }: UseInfiniteProjectsScrollOptions,
 ) => {
+  const { i18n } = useTranslation( );
   const baseParams = {
     ...newInputParams,
     per_page: ITEMS_PER_PAGE,
@@ -62,22 +65,14 @@ const useInfiniteProjectsScroll = (
     /* eslint-enable consistent-return */
   );
 
-  const pages = data?.pages;
+  const pages: ApiResponse<ApiProjectSummary>[] | undefined = data?.pages;
   const allResults = pages?.map( page => page?.results );
   const flattenedProjects = flatten( allResults );
   // If the server has a requested order, keep it (e.g. Nearby tab's order_by=distance);
   // otherwise, alphabetize
   const projects = baseParams.order_by
     ? flattenedProjects
-    : flattenedProjects.sort( ( a, b ) => {
-      if ( a.title < b.title ) {
-        return -1;
-      }
-      if ( a.title > b.title ) {
-        return 1;
-      }
-      return 0;
-    } );
+    : sortByTitle( flattenedProjects, i18n.language );
 
   return {
     isFetching,

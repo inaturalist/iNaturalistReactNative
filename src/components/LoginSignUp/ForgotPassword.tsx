@@ -42,7 +42,7 @@ const ForgotPassword = ( ) => {
             secondButtonText={t( "BACK-TO-LOGIN" )}
             handleSecondButtonPress={( ) => {
               setShowSheet( false );
-              navigation.navigate( "LoginStackNavigator", { screen: "Login" } );
+              navigation.goBack( );
             }}
             buttonType="focus"
             loading={false}

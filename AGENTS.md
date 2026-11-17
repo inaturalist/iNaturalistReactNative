@@ -59,7 +59,7 @@ npm run lint:rubocop    # Ruby linting (fastlane)
 npm run lint:tsc        # TypeScript checking
 ```
 
-**Note on `lint:tsc`:** The repo has a large pre-existing TypeScript error baseline (over 1,000 errors), so a clean run is not expected. The standard is to add no new errors in files you touch — verify by filtering the tsc output for your filenames and comparing against the pre-change state. TS7016 implicit-`any` errors from importing untyped `.js` modules are part of the accepted baseline; do not add `@ts-ignore` comments for them.
+**Note on `lint:tsc`:** The repo has a large pre-existing TypeScript error baseline (roughly 970 errors as of November 2026), so a clean run is not expected. The standard is to add no new errors in files you touch — verify by filtering the tsc output for your filenames and comparing against the pre-change state. TS7016 implicit-`any` errors from importing untyped `.js` modules are part of the accepted baseline; do not add `@ts-ignore` comments for them.
 
 **Never silence a type error you can't honestly fix.** Casts (`as unknown as X`), non-null `!`, and widening a type to `object`/`Function` quiet `tsc` while leaving the mismatch in shipped code. If an error is a legitimate mismatch that can't be resolved within the scope of your change, leave it reported
 
@@ -125,7 +125,7 @@ The app uses a hybrid state management approach:
   - `createUploadObservationsSlice` - Upload queue and status
   - `createSyncObservationsSlice` - Syncing observations from server
   - `createLayoutSlice` - UI preferences and flags (default vs advanced mode, obs-detail tab, screen-after-photo, shown-once flags)
-  - `createExploreSlice` / `createRootExploreSlice` - Explore screen filters and state
+  - `createExploreSearchesSlice` / `createExploreAdvancedSearchSlice` - Explore recent and saved searches, advanced-search mode
   - `createMyObservationsSlice` - My Observations sort, search, per-view state, and scroll position
   - `createFeatureFlagSlice` - Feature flag state
   - See `src/stores/` for the complete list of slices.
@@ -133,7 +133,7 @@ The app uses a hybrid state management approach:
 - **React Query** - Server state management and API caching (uses `@tanstack/react-query`)
 
 - **React Context** - Feature-specific state:
-  - `ExploreContext` - Complex explore screen state
+  - `ExploreContext` - Explore search state (subject, location, filters, sort)
   - `RealmContext` - Realm database access
   - Note that a context mounted inside a bottom-tab screen does **not** survive tab switches or a trip to the camera — the tab tree is unmounted and reset out from under it. State that needs to last a session belongs in a Zustand slice; see the "Screen state that has to live in Zustand" section of the doc linked below.
 

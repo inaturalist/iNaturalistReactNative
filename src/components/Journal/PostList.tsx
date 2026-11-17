@@ -46,11 +46,7 @@ const PostList = ( {
   const emptyComponent = useMemo( () => <ActivityIndicator size={50} />, [] );
 
   const onPressPost = useCallback( ( post: ApiPostForUser ) => {
-    navigation.navigate( "PostDetails", {
-      body: post.body,
-      published_at: post.published_at,
-      title: post.title,
-    } );
+    navigation.navigate( "PostDetails", { id: post.id } );
   }, [navigation] );
 
   const renderPost: ListRenderItem<ApiPostForUser> = useCallback(

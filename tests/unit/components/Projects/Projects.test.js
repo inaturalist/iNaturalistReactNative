@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ProjectsContainer from "components/Projects/ProjectsContainer";
 import React from "react";
-import { useAuthenticatedInfiniteQuery } from "sharedHooks";
+import { useAuthenticatedInfiniteQuery, useAuthenticatedQuery } from "sharedHooks";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
@@ -38,6 +38,17 @@ const infiniteScrollResults = results => ( {
 jest.mock( "sharedHooks/useAuthenticatedInfiniteQuery", ( ) => ( {
   __esModule: true,
   default: jest.fn( ( ) => infiniteScrollResults( [mockProject] ) ),
+} ) );
+
+let mockCurrentUser = null;
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockCurrentUser,
+} ) );
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ( ) => ( { data: [], isFetching: false } ) ),
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -125,5 +136,36 @@ describe( "Projects", ( ) => {
     fireEvent.changeText( input, "" );
     const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
     expect( dateRange ).toBeTruthy( );
+  } );
+
+  describe( "Joined tab", ( ) => {
+    const joinedProjects = ["banana", "Cherry", "apple"].map(
+      title => factory( "RemoteProject", { title } ),
+    );
+
+    beforeEach( ( ) => {
+      mockCurrentUser = factory( "LocalUser" );
+      useAuthenticatedQuery.mockImplementation( ( ) => ( {
+        data: joinedProjects,
+        isFetching: false,
+      } ) );
+      useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
+        [mockProject],
+      ) );
+    } );
+
+    afterEach( ( ) => {
+      mockCurrentUser = null;
+    } );
+
+    test( "lists only joined projects, alphabetically", ( ) => {
+      renderComponent( <ProjectsContainer /> );
+
+      const renderedTitles = screen.getAllByText( /^(apple|banana|Cherry)$/ ).map(
+        title => title.props.children,
+      );
+      expect( renderedTitles ).toEqual( ["apple", "banana", "Cherry"] );
+      expect( screen.queryByText( mockProject.title ) ).not.toBeOnTheScreen( );
+    } );
   } );
 } );
