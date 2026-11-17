@@ -15,7 +15,7 @@ interface Props {
   headerText: string;
   hidden?: boolean;
   insideModal?: boolean;
-  loading: boolean;
+  loading?: boolean;
   onPressClose: ( ) => void;
   secondButtonText?: string;
   testID?: string;

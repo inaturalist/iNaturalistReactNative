@@ -1,22 +1,20 @@
-// @flow
-
 import {
   WarningSheet,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React from "react";
 import Observation from "realmModels/Observation";
+import type { RealmObservationPojo } from "realmModels/types";
 import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
-type Props = {
-  onPressClose: Function,
-  discardObservation: Function,
-  observations: Object[],
-  onSave?: Function
+interface Props {
+  onPressClose: ( ) => void;
+  discardObservation: ( ) => void;
+  observations: RealmObservationPojo[];
+  onSave?: ( ) => void;
 }
 
 const DiscardObservationSheet = ( {
@@ -24,7 +22,7 @@ const DiscardObservationSheet = ( {
   discardObservation,
   observations,
   onSave,
-}: Props ): Node => {
+}: Props ) => {
   const realm = useRealm( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const multipleObservations = observations.length > 1;
@@ -56,7 +54,9 @@ const DiscardObservationSheet = ( {
         saveAllObservations( );
         if ( typeof ( onSave ) === "function" ) onSave( );
       }}
-      secondButtonText={multipleObservations && t( "SAVE-ALL" )}
+      secondButtonText={multipleObservations
+        ? t( "SAVE-ALL" )
+        : undefined}
       buttonText={multipleObservations
         ? t( "DISCARD-ALL" )
         : t( "DISCARD-OBSERVATION" )}
