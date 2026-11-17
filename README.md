@@ -335,7 +335,7 @@ fastlane beta
 fastlane prod
 ```
 
-### Release Script
+### Internal Release Script
 
 1. Merge latest of main into beta
 1. Build from the beta branch
@@ -384,8 +384,13 @@ fastlane prod
 1. `bundle exec fastlane internal` to distribute the builds to internal test groups in TestFlight and the Play Store
 1. `bundle exec fastlane beta` to distribute the builds to external test groups in TestFlight and the Play Store
 1. Make a PR from beta into main
-1. If it's the end of the release cycle, `bundle exec fastlane prod` to prepare an App Store release on App Store Connect.
+
+### Production Release Script
+
+1. Merge latest of beta into release
+1. `bundle exec fastlane prod` to prepare an App Store release on App Store Connect.
 After this command line call, attach the latest build to the new version in the App Store Connect UI on the web and submit for review with manual release control. Haven't figured out a good way to automate this without submitting to review at the same time, maybe impossible.
 1. After receiving OK during iteration meeting, make App Store release available
     1. Start the staged release in App Store Connect
     1. Mark the Github release as the latest non-pre-release
+
