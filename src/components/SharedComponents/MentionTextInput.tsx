@@ -98,10 +98,9 @@ const MentionTextInput = ( {
   const inputRef = useRef<RNTextInput | null>( null );
   const [debouncedQuery, setDebouncedQuery] = useState( "" );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>( null );
-  // Cursor position, or null when a range of text is selected. iOS and
-  // Android fire onChangeText and onSelectionChange in different orders, so
-  // both handlers read the latest text and cursor from refs, and the state
-  // copy of the cursor is only used for rendering
+  // Cursor position, or null when a range of text is selected. The handlers
+  // read the latest text and cursor from refs, and the state copy of the
+  // cursor is only used for rendering
   const [cursor, setCursor] = useState<number | null>( currentValue.length );
   const cursorRef = useRef<number | null>( currentValue.length );
   const textRef = useRef( currentValue );
@@ -109,14 +108,16 @@ const MentionTextInput = ( {
   // setNativeProps. Fabric ignores a text prop that matches this, even if
   // the user has typed since, so see handleSelectUser
   const lastPushedTextRef = useRef( defaultValue );
-  // Cursor position right after the user picked from the list. When
-  // punctuation follows the mention, the cursor sits at the end of a complete
-  // mention, so keep the list closed until the user types or moves the cursor
-  const [pickedAt, setPickedAt] = useState<number | null>( null );
-  const pickedAtRef = useRef<number | null>( null );
-  const clearPickedAt = useCallback( ( ) => {
-    pickedAtRef.current = null;
-    setPickedAt( null );
+  // Only typing opens the list. Moving the cursor, e.g. dragging it back
+  // through a mention, or the cursor move after picking a user, closes it.
+  // Both platforms fire onChangeText before onSelectionChange, so a selection
+  // change with no text change since the last one is a cursor-only move
+  const [isTyping, setIsTyping] = useState( false );
+  const isTypingRef = useRef( false );
+  const textAtLastSelectionRef = useRef( currentValue );
+  const updateIsTyping = useCallback( ( typing: boolean ) => {
+    isTypingRef.current = typing;
+    setIsTyping( typing );
   }, [] );
 
   useImperativeHandle( ref, ( ) => ( {
@@ -130,7 +131,7 @@ const MentionTextInput = ( {
     if ( debounceRef.current ) {
       clearTimeout( debounceRef.current );
     }
-    const query = position === null || pickedAtRef.current !== null
+    const query = position === null || !isTypingRef.current
       ? ""
       : getMentionAtCursor( text, position )?.query ?? "";
     debounceRef.current = setTimeout( ( ) => {
@@ -142,9 +143,9 @@ const MentionTextInput = ( {
   const handleChangeText = useCallback( ( text: string ) => {
     onChangeText( text );
     textRef.current = text;
-    clearPickedAt( );
+    updateIsTyping( true );
     updateQuery( text, cursorRef.current );
-  }, [clearPickedAt, onChangeText, updateQuery] );
+  }, [onChangeText, updateIsTyping, updateQuery] );
 
   const handleSelectionChange = useCallback(
     ( event: TextInputSelectionChangeEvent ) => {
@@ -154,13 +155,13 @@ const MentionTextInput = ( {
         : null;
       cursorRef.current = position;
       setCursor( position );
-      // Android reports the cursor move from setSelection after a pick
-      if ( position !== pickedAtRef.current ) {
-        clearPickedAt( );
+      if ( textRef.current === textAtLastSelectionRef.current ) {
+        updateIsTyping( false );
       }
+      textAtLastSelectionRef.current = textRef.current;
       updateQuery( textRef.current, position );
     },
-    [clearPickedAt, updateQuery],
+    [updateIsTyping, updateQuery],
   );
 
   const { users, isLoading } = useUserSearch( debouncedQuery );
@@ -188,10 +189,12 @@ const MentionTextInput = ( {
       lastPushedTextRef.current = newValue;
       inputRef.current?.setSelection( newCursor, newCursor );
       textRef.current = newValue;
+      // So Android's report of the cursor move from setSelection counts as a
+      // cursor-only move
+      textAtLastSelectionRef.current = newValue;
       cursorRef.current = newCursor;
       setCursor( newCursor );
-      pickedAtRef.current = newCursor;
-      setPickedAt( newCursor );
+      updateIsTyping( false );
       if ( debounceRef.current ) {
         clearTimeout( debounceRef.current );
         debounceRef.current = null;
@@ -199,10 +202,10 @@ const MentionTextInput = ( {
       setDebouncedQuery( "" );
       onChangeText( newValue );
     },
-    [onChangeText],
+    [onChangeText, updateIsTyping],
   );
 
-  const mention = cursor === null || pickedAt !== null
+  const mention = cursor === null || !isTyping
     ? null
     : getMentionAtCursor( currentValue, cursor );
   const query = mention?.query ?? "";
@@ -266,6 +269,7 @@ const MentionTextInput = ( {
       {showList && (
         <View
           className="bg-white border border-lightGray rounded-lg overflow-hidden max-h-[200px]"
+          testID="MentionTextInput.list"
         >
           <ScrollView keyboardShouldPersistTaps="handled">
             {listedUsers.length === 0

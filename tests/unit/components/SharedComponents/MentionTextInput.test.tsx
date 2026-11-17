@@ -66,6 +66,14 @@ const listedLogins = ( ) => screen
   .queryAllByText( /^[a-z0-9_-]+$/ )
   .map( node => node.props.children );
 
+// Moves the cursor without changing the text, e.g. dragging it with a long press
+const moveCursorTo = ( cursor: number ) => {
+  fireEvent( screen.getByTestId( "MentionTextInput.input" ), "selectionChange", {
+    nativeEvent: { selection: { start: cursor, end: cursor } },
+  } );
+};
+
+// Both platforms fire onChangeText before onSelectionChange when typing
 const typeAt = ( text: string, cursor: number ) => {
   const input = screen.getByTestId( "MentionTextInput.input" );
   fireEvent.changeText( input, text );
@@ -106,10 +114,31 @@ describe( "MentionTextInput", ( ) => {
     typeAt( "hello @ku and goodbye", 9 );
     act( ( ) => { jest.advanceTimersByTime( 400 ); } );
     expect( screen.getByText( "kueda" ) ).toBeVisible( );
-    fireEvent( screen.getByTestId( "MentionTextInput.input" ), "selectionChange", {
-      nativeEvent: { selection: { start: 21, end: 21 } },
-    } );
+    moveCursorTo( 21 );
     expect( screen.queryByText( "kueda" ) ).toBeNull( );
+  } );
+
+  it( "does not open the list when the cursor is dragged through a mention", ( ) => {
+    renderComponent( <Harness initialValue="hi @kueda thanks" /> );
+    typeAt( "hi @kueda thanks!", 17 );
+    // Drag the cursor back through "@kueda", one character at a time
+    for ( let position = 16; position >= 0; position -= 1 ) {
+      moveCursorTo( position );
+      expect( screen.queryByTestId( "MentionTextInput.list" ) ).toBeNull( );
+    }
+    act( ( ) => { jest.advanceTimersByTime( 400 ); } );
+    expect( screen.queryByTestId( "MentionTextInput.list" ) ).toBeNull( );
+    expect( mockUseUserSearch ).not.toHaveBeenCalledWith( expect.stringMatching( /^k/ ) );
+  } );
+
+  it( "opens the list when the user types after moving the cursor into a mention", ( ) => {
+    renderComponent( <Harness initialValue="hi @kueda thanks" /> );
+    moveCursorTo( 6 );
+    expect( screen.queryByTestId( "MentionTextInput.list" ) ).toBeNull( );
+    typeAt( "hi @kuxeda thanks", 7 );
+    act( ( ) => { jest.advanceTimersByTime( 400 ); } );
+    expect( mockUseUserSearch ).toHaveBeenLastCalledWith( "kux" );
+    expect( screen.getByText( "kueda" ) ).toBeVisible( );
   } );
 
   it( "inserts the selected user at the cursor and keeps the rest of the text", ( ) => {
@@ -155,9 +184,7 @@ describe( "MentionTextInput", ( ) => {
     expect( mockSetNativeProps ).toHaveBeenLastCalledWith( { text: "@kueda, thanks" } );
     expect( mockSetSelection ).toHaveBeenCalledWith( 6, 6 );
     // Android reports the cursor move from setSelection
-    fireEvent( screen.getByTestId( "MentionTextInput.input" ), "selectionChange", {
-      nativeEvent: { selection: { start: 6, end: 6 } },
-    } );
+    moveCursorTo( 6 );
     act( ( ) => { jest.advanceTimersByTime( 400 ); } );
     expect( screen.queryByText( "kueda" ) ).toBeNull( );
     expect( screen.queryByText( /No results/ ) ).toBeNull( );
