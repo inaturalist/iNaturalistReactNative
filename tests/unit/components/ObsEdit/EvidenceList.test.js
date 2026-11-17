@@ -126,7 +126,9 @@ describe( "EvidenceList", ( ) => {
       setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: true } );
       jest.spyOn( Image, "getSize" ).mockResolvedValue( { width: 2048, height: 1536 } );
       const croppedImage = { saveToFileAsync: jest.fn( ) };
-      const originalImage = { cropAsync: jest.fn( async ( ) => croppedImage ) };
+      // Cropping redraws the photo upright first, even without rotation
+      const uprightImage = { cropAsync: jest.fn( async ( ) => croppedImage ) };
+      const originalImage = { rotateAsync: jest.fn( async ( ) => uprightImage ) };
       Images.loadFromFileAsync.mockResolvedValueOnce( originalImage );
       const actor = userEvent.setup( );
       await openLocalPhoto( actor );
@@ -137,7 +139,7 @@ describe( "EvidenceList", ( ) => {
       await waitFor( ( ) => {
         expect( getByGestureTestId( "PhotoCropper.handle.bottomRight" ) ).toBeTruthy( );
       } );
-      return { actor, originalImage };
+      return { actor, uprightImage };
     };
 
     const drag = ( gestureTestId, translationX, translationY ) => {
@@ -157,7 +159,7 @@ describe( "EvidenceList", ( ) => {
     } ) );
 
     it( "should crop the observation photo to the part inside the frame", async ( ) => {
-      const { actor, originalImage } = await openCropper( );
+      const { actor, uprightImage } = await openCropper( );
 
       // Drag the bottom-right corner halfway in, framing the top-left quarter
       drag( "PhotoCropper.handle.bottomRight", -200, -150 );
@@ -165,7 +167,7 @@ describe( "EvidenceList", ( ) => {
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       await waitFor( ( ) => {
-        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 0, 0, 1024, 768 );
+        expect( uprightImage.cropAsync ).toHaveBeenCalledWith( 0, 0, 1024, 768 );
       } );
       await waitFor( ( ) => {
         const { photo } = useStore.getState( ).currentObservation.observationPhotos[0];
@@ -174,7 +176,7 @@ describe( "EvidenceList", ( ) => {
     } );
 
     it( "should let the frame take any shape", async ( ) => {
-      const { actor, originalImage } = await openCropper( );
+      const { actor, uprightImage } = await openCropper( );
 
       // Narrow the frame from the left, then shorten it from the bottom, for
       // a tall frame over the right half of the photo
@@ -185,12 +187,12 @@ describe( "EvidenceList", ( ) => {
       await actor.press( screen.getByLabelText( "Save crop" ) );
 
       await waitFor( ( ) => {
-        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 1024, 0, 2048, 1280 );
+        expect( uprightImage.cropAsync ).toHaveBeenCalledWith( 1024, 0, 2048, 1280 );
       } );
     } );
 
     it( "should not shrink the frame below its smallest size", async ( ) => {
-      const { actor, originalImage } = await openCropper( );
+      const { actor, uprightImage } = await openCropper( );
 
       // The frame stops at 88pt so its corners' touch areas don't overlap.
       // Drag the bottom-right corner far past the top-left one
@@ -201,12 +203,12 @@ describe( "EvidenceList", ( ) => {
       // The frame stops at 88pt, which shows 451 of the photo's pixels
       // before zooming in
       await waitFor( ( ) => {
-        expect( originalImage.cropAsync ).toHaveBeenCalledWith( 0, 0, 451, 451 );
+        expect( uprightImage.cropAsync ).toHaveBeenCalledWith( 0, 0, 451, 451 );
       } );
     } );
 
     it( "should stop the frame at the edges of the photo", async ( ) => {
-      const { actor, originalImage } = await openCropper( );
+      const { actor, uprightImage } = await openCropper( );
 
       // Drag a corner of the frame around the whole photo far past the
       // photo's edge
@@ -219,7 +221,7 @@ describe( "EvidenceList", ( ) => {
       await waitFor( ( ) => {
         expect( screen.queryByTestId( "PhotoCropper" ) ).toBeNull( );
       } );
-      expect( originalImage.cropAsync ).not.toHaveBeenCalled( );
+      expect( uprightImage.cropAsync ).not.toHaveBeenCalled( );
     } );
   } );
 } );
