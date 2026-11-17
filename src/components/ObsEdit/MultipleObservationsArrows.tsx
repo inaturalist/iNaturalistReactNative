@@ -1,19 +1,17 @@
-// @flow
-
 import { Heading2, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
-  currentObservationIndex: number,
-  setCurrentObservationIndex: Function,
-  observations: Object[],
-  setResetScreen: Function,
-  transitionAnimation: Function,
-  transitionAnimationRef: Object
+interface Props {
+  currentObservationIndex: number;
+  setCurrentObservationIndex: ( index: number ) => void;
+  // Only the length is read
+  observations: object[];
+  setResetScreen: ( resetScreen: boolean ) => void;
+  transitionAnimation: ( ) => void;
+  transitionAnimationRef: Animated.Value;
 }
 
 const MultipleObservationsArrows = ( {
@@ -23,7 +21,7 @@ const MultipleObservationsArrows = ( {
   setResetScreen,
   transitionAnimation,
   transitionAnimationRef,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const animatedStyle = {
