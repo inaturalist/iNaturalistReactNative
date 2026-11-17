@@ -1,10 +1,15 @@
+import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
-  screen, userEvent,
+  act, screen, userEvent, within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
+import RootStackNavigator from "navigation/RootStackNavigator";
+import React, { useContext } from "react";
 import { Image } from "react-native";
-import { renderApp } from "tests/helpers/render";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { renderApp, renderAppWithComponent } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -95,4 +100,102 @@ describe( "Onboarding", ( ) => {
       await screen.findByText( i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ) ),
     ).toBeVisible( );
   } );
+} );
+
+describe( "Onboarding with OnboardingV2Enabled", ( ) => {
+  // [step, shows progress bar]
+  const STEPS_IN_ORDER = [
+    ["welcome", false],
+    ["obs_story", true],
+    ["community_id", true],
+    ["research_grade", true],
+    ["impact", true],
+    ["signup_email", false],
+    ["signup_credentials", false],
+    ["location_explainer", true],
+  ];
+
+  const continueFrom = async stepId => {
+    const step = await screen.findByTestId( `Onboarding.${stepId}` );
+    await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.next` ) );
+  };
+
+  beforeAll( async ( ) => {
+    await initI18next( );
+    jest.spyOn( Image, "prefetch" ).mockResolvedValue( true );
+  } );
+
+  beforeEach( ( ) => {
+    mockOnboarding.shown = false;
+    setStoreStateFeatureFlags( { [FeatureFlag.OnboardingV2Enabled]: true } );
+  } );
+
+  afterEach( ( ) => {
+    setStoreStateFeatureFlags( { } );
+  } );
+
+  it( "shows the welcome step instead of the carousel", async ( ) => {
+    renderApp( );
+    expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+    expect( screen.queryByTestId( "OnboardingCarousel" ) ).toBeNull( );
+  } );
+
+  it(
+    "visits each step in order (progress on education and location steps), then my observations",
+    async ( ) => {
+      renderApp( );
+      // eslint-disable-next-line no-restricted-syntax
+      for ( const [stepId, showsProgress] of STEPS_IN_ORDER ) {
+        // eslint-disable-next-line no-await-in-loop
+        const step = await screen.findByTestId( `Onboarding.${stepId}` );
+        if ( showsProgress ) {
+          expect( within( step ).getByTestId( "Onboarding.progress" ) ).toBeVisible( );
+        } else {
+          expect( within( step ).queryByTestId( "Onboarding.progress" ) ).toBeNull( );
+        }
+        // eslint-disable-next-line no-await-in-loop
+        await continueFrom( stepId );
+      }
+      expect(
+        await screen.findByText( i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ) ),
+      ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.welcome" ) ).toBeNull( );
+      expect( mockOnboarding.shown ).toBe( true );
+    },
+  );
+
+  it(
+    "goes back one step at a time by swipe or back button, from impact to the observation story",
+    async ( ) => {
+      const container = { current: null };
+      const ContainerProbe = ( ) => {
+        container.current = useContext( NavigationContainerRefContext );
+        return null;
+      };
+      renderAppWithComponent(
+        <>
+          <ContainerProbe />
+          <RootStackNavigator />
+        </>,
+      );
+      const stepIds = STEPS_IN_ORDER.map( ( [stepId] ) => stepId );
+      const impactIndex = stepIds.indexOf( "impact" );
+      // eslint-disable-next-line no-restricted-syntax
+      for ( const stepId of stepIds.slice( 0, impactIndex ) ) {
+        // eslint-disable-next-line no-await-in-loop
+        await continueFrom( stepId );
+      }
+      expect( await screen.findByTestId( "Onboarding.impact" ) ).toBeVisible( );
+
+      const obsStoryIndex = stepIds.indexOf( "obs_story" );
+      for ( let i = impactIndex; i > obsStoryIndex; i -= 1 ) {
+        expect( container.current.getCurrentOptions( ).gestureEnabled ).not.toBe( false );
+        // Stands in for the back gesture and Android back button, which both
+        // pop the step stack and can't be performed in jest
+        act( ( ) => container.current.goBack( ) );
+        expect( screen.queryByTestId( `Onboarding.${stepIds[i]}` ) ).toBeNull( );
+        expect( screen.getByTestId( `Onboarding.${stepIds[i - 1]}` ) ).toBeVisible( );
+      }
+    },
+  );
 } );

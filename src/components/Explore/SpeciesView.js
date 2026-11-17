@@ -1,6 +1,6 @@
 // @flow
 
-import { SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
+import { LIMITED_TAXON_FIELDS, SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
 import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem";
 import i18n from "i18next";
@@ -9,7 +9,6 @@ import {
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
-import Taxon from "realmModels/Taxon";
 import {
   useCurrentUser,
   useGridLayout,
@@ -80,7 +79,7 @@ const SpeciesView = ( {
       ...params,
       ...( !currentUser && { locale } ),
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS,
+        taxon: LIMITED_TAXON_FIELDS,
       },
     },
     {

@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { LIMITED_TAXON_FIELDS } from "api/fields";
 import { fetchSearchResults } from "api/search";
 import type { ApiOpts } from "api/types";
 import { RealmContext } from "providers/contexts";
@@ -51,7 +52,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
           q: taxonQuery,
           sources: "taxa",
           fields: {
-            taxon: Taxon.LIMITED_TAXON_FIELDS,
+            taxon: LIMITED_TAXON_FIELDS,
           },
         },
         optsWithAuth,

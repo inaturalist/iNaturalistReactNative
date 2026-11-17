@@ -119,6 +119,7 @@ const SignUpConfirmationForm = ( ) => {
         <LoginSignUpInputField
           ref={usernameRef}
           accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
+          autoComplete="username-new"
           headerText={t( "CHOOSE-A-USERNAME" )}
           onChangeText={( text: string ) => setUsername( text )}
           testID="Signup.username"

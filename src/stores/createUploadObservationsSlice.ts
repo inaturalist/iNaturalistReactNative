@@ -25,6 +25,9 @@ interface UploadObservationsState {
   abortController: AbortController | null;
   currentUpload: RealmObservation | null;
   errorsByUuid: object;
+  // Uuids whose upload created them on the server this launch (not persisted), so small grid
+  // sections can keep them pinned until a cached page includes them
+  firstUploadUuids: string[];
   multiError: string | null;
   initialNumObservationsInQueue: number;
   numUploadsAttempted: number;
@@ -38,6 +41,7 @@ interface UploadObservationsState {
 interface UploadObservationsActions {
   resetUploadObservationsSlice: ( ) => void;
   addUploadError: ( error: string, obsUUID: string ) => void;
+  addFirstUploadUuid: ( uuid: string ) => void;
   stopAllUploads: ( ) => void;
   setCannotUploadObservations: ( ) => void;
   setStartUploadObservations: ( ) => void;
@@ -61,6 +65,7 @@ const DEFAULT_STATE: UploadObservationsState = {
   abortController: null,
   currentUpload: null,
   errorsByUuid: {},
+  firstUploadUuids: [],
   // Single error caught during multiple obs upload
   multiError: null,
   initialNumObservationsInQueue: 0,
@@ -80,13 +85,13 @@ const countEvidenceIncrements = (
 ): number => {
   const evidenceToUpload = upload?.[evidence];
   if ( evidenceToUpload && evidenceToUpload.length > 0 ) {
-    const evidenceNeedsUpdate = evidenceToUpload
-      .filter( e => e.wasSynced( ) ).length;
     const evidenceNeedsSync = evidenceToUpload
       .filter( e => !e.wasSynced( ) ).length;
-    // since we're incrementing by half when evidence is attached to
-    // an observation, we also want to count half the total increments for previously
-    // synced evidence
+    // the uploader only sends an update (a half increment) for previously synced
+    // photos that changed; previously synced sounds are never updated
+    const evidenceNeedsUpdate = evidence === "observationPhotos"
+      ? evidenceToUpload.filter( e => e.wasSynced( ) && e.needsSync( ) ).length
+      : 0;
     return evidenceNeedsSync + ( evidenceNeedsUpdate / 2 );
   }
   return 0;
@@ -170,6 +175,11 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       ],
     },
     multiError: error,
+  } ) ),
+  addFirstUploadUuid: uuid => set( state => ( {
+    firstUploadUuids: state.firstUploadUuids.includes( uuid )
+      ? state.firstUploadUuids
+      : [...state.firstUploadUuids, uuid],
   } ) ),
   stopAllUploads: ( ) => {
     deactivateKeepAwake( );

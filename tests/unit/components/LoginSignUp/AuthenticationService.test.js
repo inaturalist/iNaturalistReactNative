@@ -16,6 +16,7 @@ import RNSInfo, {
   getItem,
   IntegrityViolationError,
 } from "react-native-sensitive-info";
+import syncFeatureFlags, { cancelFeatureFlagSync } from "sharedHelpers/syncFeatureFlags";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 
@@ -27,6 +28,12 @@ const defaultGetItemImplementation = async ( key, o ) => {
   }
   return null;
 };
+
+jest.mock( "sharedHelpers/syncFeatureFlags", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+  cancelFeatureFlagSync: jest.fn( ),
+} ) );
 
 jest.mock( "navigation/navigationUtils", ( ) => ( {
   navigationRef: {
@@ -56,6 +63,11 @@ const mockUserWithoutUploadedObs = factory( "RemoteUser", {
 
 test( "authenticates user", async ( ) => {
   inatjs.users.me.mockResolvedValue( makeResponse( [mockUserWithUploadedObs] ) );
+  let signedInUserAtSync;
+  jest.mocked( syncFeatureFlags ).mockImplementation( ( ) => {
+    signedInUserAtSync = global.realm.objects( "User" ).filtered( "signedIn == true" )[0]?.login;
+    return Promise.resolve( );
+  } );
 
   const scope = nock( API_HOST )
     .post( "/oauth/token" )
@@ -82,9 +94,15 @@ test( "authenticates user", async ( ) => {
   await expect( isCurrentUser( USERNAME ) ).resolves.toEqual( true );
   await expect( isLoggedIn() ).resolves.toEqual( true );
 
+  // Feature flags are refetched once, after the signed-in user is saved
+  expect( syncFeatureFlags ).toHaveBeenCalledWith( JWT );
+  expect( syncFeatureFlags ).toHaveBeenCalledTimes( 1 );
+  expect( signedInUserAtSync ).toEqual( USERNAME );
+
   // Sign out
   await signOut();
   await expect( isLoggedIn() ).resolves.toEqual( false );
+  expect( cancelFeatureFlagSync ).toHaveBeenCalledTimes( 1 );
 
   scope.done();
   scope2.done();

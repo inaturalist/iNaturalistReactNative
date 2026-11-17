@@ -55,6 +55,20 @@ subprojects { sub ->
                     && it.android.defaultConfig.minSdkVersion.apiLevel < rootProject.ext.minSdkVersion) {
                     it.android.defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
                 }
+                // Detox assembleAndroidTest (mergeDebugAndroidTestNativeLibs) fails on these
+                // duplicates after vision-camera 5.2.2. Re-check after vision-camera or Detox updates.
+                it.android {
+                    packaging {
+                        jniLibs {
+                            pickFirsts += [
+                                '**/libc++_shared.so',
+                                '**/libfbjni.so',
+                                '**/libjsi.so',
+                                '**/libreactnative.so',
+                            ]
+                        }
+                    }
+                }
             }
         }
     }

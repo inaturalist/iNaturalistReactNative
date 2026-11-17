@@ -5,7 +5,7 @@ import TabletButtons from "components/Camera/TabletButtons";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import type { AnimatedStyle } from "react-native-reanimated";
-import type { TakePhotoOptions } from "react-native-vision-camera";
+import type { CapturePhotoSettings } from "react-native-vision-camera";
 
 const isTablet = DeviceInfo.isTablet( );
 
@@ -20,7 +20,7 @@ interface Props {
   flipCamera: ( ) => void;
   handleZoomButtonPress: ( ) => void;
   hasFlash: boolean;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   zoomTextValue: string;
   showZoomButton: boolean;
 }

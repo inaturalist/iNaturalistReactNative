@@ -19,6 +19,9 @@ interface SyncObservationsState {
   deleteQueue: string[];
   deletionsCompletedAt: Date | null;
   initialNumDeletionsInQueue: number;
+  // Uuids deleted since launch, so views built from cached search results can
+  // keep hiding them, even if a lagging search index returns them again
+  locallyDeletedObservationUuids: string[];
   syncingStatus: SyncingStatus;
 }
 
@@ -45,6 +48,7 @@ const DEFAULT_STATE: SyncObservationsState = {
   deleteQueue: [],
   deletionsCompletedAt: null,
   initialNumDeletionsInQueue: 0,
+  locallyDeletedObservationUuids: [],
   syncingStatus: SYNC_PENDING,
 };
 
@@ -63,6 +67,7 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, 
         + ( typeof uuids === "string"
           ? 1
           : uuids.length ),
+      locallyDeletedObservationUuids: state.locallyDeletedObservationUuids.concat( uuids ),
     } );
   } ),
   removeFromDeleteQueue: ( ) => set( state => {

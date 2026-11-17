@@ -93,6 +93,18 @@ describe( "OtherDataSection", () => {
     expect( geoprivacyHeader ).toBeVisible( );
   } );
 
+  it( "saves obscured geoprivacy when that option is confirmed", ( ) => {
+    renderOtherDataSection( );
+
+    fireEvent.press( screen.getByLabelText( /Select geoprivacy status/ ) );
+    fireEvent.press( screen.getByRole( "button", { name: "Obscured" } ) );
+    fireEvent.press( screen.getByRole( "button", { name: "CONFIRM" } ) );
+
+    expect( mockUpdateObservationKeys ).toHaveBeenCalledWith( {
+      geoprivacy: "obscured",
+    } );
+  } );
+
   describe( "projects row", () => {
     it( "shows Add to Projects when no projects are selected", ( ) => {
       renderOtherDataSection( {

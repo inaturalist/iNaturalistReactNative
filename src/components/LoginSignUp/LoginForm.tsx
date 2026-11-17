@@ -54,9 +54,9 @@ const LoginForm = ( {
   const { isDefaultMode, setIsDefaultMode, setLoggedInWhileInDefaultMode }
     = useLayoutPrefs();
   const firstInputFieldRef = useRef( null );
-  const emailRef = useRef<TextInput>( null );
+  const usernameRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
-  const [email, setEmail] = useState( "" );
+  const [username, setUsername] = useState( "" );
   const [password, setPassword] = useState( "" );
   const [error, setError] = useState<string | null>( null );
   const [loading, setLoading] = useState( false );
@@ -87,8 +87,8 @@ const LoginForm = ( {
   }, [loginAgain, navigation, renderSignOutButton] );
 
   const blurFields = () => {
-    if ( emailRef.current ) {
-      emailRef.current.blur();
+    if ( usernameRef.current ) {
+      usernameRef.current.blur();
     }
     if ( passwordRef.current ) {
       passwordRef.current.blur();
@@ -258,13 +258,15 @@ const LoginForm = ( {
             !loginAgain
               ? (
                 <LoginSignUpInputField
-                  ref={emailRef}
+                  ref={usernameRef}
                   accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-                  autoComplete="email"
+                  autoComplete="username"
                   headerText={t( "USERNAME-OR-EMAIL" )}
+                  // the field is _actually_ a username, but is often an email so hint email
+                  // for keyboard type so `@` and `.` are more often available
                   inputMode="email"
                   keyboardType="email-address"
-                  onChangeText={( text: string ) => setEmail( text )}
+                  onChangeText={( text: string ) => setUsername( text )}
                   testID="Login.email"
                   // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
                   // textContentType prevents visual flickering, which is a temporary issue
@@ -315,14 +317,14 @@ const LoginForm = ( {
           className={classnames( "mt-[30px]", {
             "mt-5": error,
           } )}
-          disabled={( !loginAgain && !email ) || !password}
+          disabled={( !loginAgain && !username ) || !password}
           forceDark
           level="focus"
           loading={loading}
           onPress={() => logIn( async () => authenticateUser(
             loginAgain
               ? currentUser.login
-              : email.trim( ),
+              : username.trim( ),
             password,
             realm,
           ) )}

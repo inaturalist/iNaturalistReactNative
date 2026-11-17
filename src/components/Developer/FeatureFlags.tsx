@@ -1,32 +1,30 @@
 /* eslint-disable i18next/no-literal-string */
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
-  SwitchRow,
+  Body2,
+  Body3,
+  Button,
 } from "components/SharedComponents";
-import React, { useCallback } from "react";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import { flagEnabledForAdminTestFlight } from "sharedHooks/useFeatureFlag";
+import { Pressable, View } from "components/styledComponents";
+import React, { useCallback, useState } from "react";
+import { Switch } from "react-native-paper";
+import syncFeatureFlags from "sharedHelpers/syncFeatureFlags";
+import type { FeatureFlagSource } from "sharedHooks/useFeatureFlag";
+import { resolveFeatureFlag, useFeatureFlagLayers } from "sharedHooks/useFeatureFlag";
+import type { FeatureFlagApiStatus } from "stores/createFeatureFlagSlice";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
-import { H1, H2 } from "./DeveloperSharedComponents";
+import { CODE, H1, P } from "./DeveloperSharedComponents";
 
 export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
-  const currentUser = useCurrentUser();
-  const featureFlagConfig = useStore( state => state.featureFlagConfig );
-  const featureFlagOverrides = useStore( state => state.featureFlagDebugOverrides );
+  const layers = useFeatureFlagLayers( featureFlagKey );
+  const { enabled, source } = resolveFeatureFlag( layers );
   const storeSetOverride = useStore( state => state.setFeatureFlagDebugOverride );
 
-  const isFlagEnabledForAdminTestFlight
-      = flagEnabledForAdminTestFlight( featureFlagKey, currentUser );
-  const rawValue = isFlagEnabledForAdminTestFlight || featureFlagConfig[featureFlagKey];
-  const overrideValue = featureFlagOverrides[featureFlagKey];
-
-  const resolvedValue = overrideValue === null
-    ? rawValue
-    : overrideValue;
-
   const setOverride = useCallback(
-    ( enabled: boolean ) => storeSetOverride( featureFlagKey, enabled ),
+    ( value: boolean ) => storeSetOverride( featureFlagKey, value ),
     [featureFlagKey, storeSetOverride],
   );
   const clearOverride = useCallback(
@@ -35,59 +33,151 @@ export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
   );
 
   return {
-    resolvedValue,
-    rawValue,
-    overrideValue,
+    resolvedValue: enabled,
+    source,
+    layers,
     setOverride,
     clearOverride,
   };
 };
 
-const trimFlagName = ( featureFlagKey: FeatureFlag ) => featureFlagKey.replace( "Enabled", "" );
+const onOff = ( enabled: boolean ) => ( enabled
+  ? "ON"
+  : "OFF" );
 
-const getStatusText = ( enabled: boolean ) => ( enabled
-  ? "Enabled"
-  : "Disabled" );
+const sourceLabels: Record<FeatureFlagSource, string> = {
+  override: "OVERRIDE",
+  api: "API",
+  adminTestFlight: "ADMIN TESTFLIGHT",
+  hardcoded: "DEFAULT",
+};
 
-const FeatureFlagToggle = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) => {
+const formatTime = ( timestamp: number ) => new Date( timestamp ).toLocaleTimeString( );
+
+const signedInText = ( signedIn: boolean ) => ( signedIn
+  ? "signed in"
+  : "signed out" );
+
+const apiStatusText = ( status: FeatureFlagApiStatus ) => {
+  switch ( status.state ) {
+    case "loading":
+      return "API: fetching…";
+    case "loaded":
+      return `API: fetched ${formatTime( status.fetchedAt )}, ${signedInText( status.signedIn )}`;
+    case "error":
+      return `API: failed ${formatTime( status.failedAt )}, ${signedInText( status.signedIn )}. `
+        + "Using hard-coded defaults.";
+    default:
+      return "API: not fetched";
+  }
+};
+
+const apiValueText = ( apiValue: boolean | undefined, status: FeatureFlagApiStatus ) => {
+  if ( apiValue !== undefined ) return onOff( apiValue );
+  if ( status.state === "loaded" ) return "not in Flipper";
+  return "not fetched";
+};
+
+const DetailRow = ( { label, value }: { label: string; value: string } ) => (
+  <View className="flex-row mb-1">
+    <Body3 className="w-[150px]">{label}</Body3>
+    <Body3 className="flex-1">{value}</Body3>
+  </View>
+);
+
+const FeatureFlagRow = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) => {
+  const [expanded, setExpanded] = useState( false );
+  const apiStatus = useStore( state => state.featureFlagApiStatus );
   const {
     resolvedValue,
-    rawValue,
-    overrideValue,
+    source,
+    layers,
     setOverride,
     clearOverride,
   } = useFeatureFlagForDebug( featureFlagKey );
-  const hasOverride = overrideValue !== null;
+
   return (
-    <>
-      <H2>{`${trimFlagName( featureFlagKey )}: ${getStatusText( resolvedValue )}`}</H2>
-      <SwitchRow
-        label={`Override default value of ${rawValue}`}
-        value={hasOverride}
-        onValueChange={() => ( hasOverride
-          ? clearOverride()
-          : setOverride( rawValue ) )}
-      />
-      {hasOverride && (
-        <SwitchRow
-          label="Enable"
-          value={overrideValue}
-          onValueChange={() => setOverride( !overrideValue )}
-          classNames="mt-[15px]"
+    <View className="border-b border-lightGray py-3">
+      <View className="flex-row items-center">
+        <Pressable
+          className="flex-1 mr-3"
+          accessibilityRole="button"
+          accessibilityLabel={`${featureFlagKey}: ${onOff( resolvedValue )}`}
+          accessibilityState={{ expanded }}
+          onPress={( ) => setExpanded( !expanded )}
+          testID={`FeatureFlags.${featureFlagKey}`}
+        >
+          <Body2>
+            {`${expanded
+              ? "▾"
+              : "▸"} ${featureFlagKey}`}
+          </Body2>
+          <Body3 className="ml-4">
+            {`${onOff( resolvedValue )} · ${sourceLabels[source]}`}
+          </Body3>
+        </Pressable>
+        <Switch
+          value={resolvedValue}
+          onValueChange={setOverride}
+          color={colors.inatGreen}
+          accessibilityLabel={`Override ${featureFlagKey}`}
+          testID={`FeatureFlags.${featureFlagKey}.switch`}
         />
+      </View>
+      {expanded && (
+        <View className="ml-4 mt-2">
+          <CODE optionalClassName="mb-2">{`client_${featureFlagKey}`}</CODE>
+          <DetailRow label="Hard-coded default" value={onOff( layers.hardcoded )} />
+          <DetailRow label="API" value={apiValueText( layers.apiValue, apiStatus )} />
+          <DetailRow
+            label="Admin TestFlight"
+            value={layers.adminTestFlight
+              ? "ON"
+              : "—"}
+          />
+          <DetailRow
+            label="Local override"
+            value={layers.override === null
+              ? "none"
+              : onOff( layers.override )}
+          />
+          {layers.override !== null && (
+            <Button
+              text="CLEAR OVERRIDE"
+              onPress={clearOverride}
+              className="mt-2"
+            />
+          )}
+        </View>
       )}
-    </>
+    </View>
   );
 };
 
 const FeatureFlags = () => {
   const featureFlagKeys = Object.values( FeatureFlag );
+  const apiStatus = useStore( state => state.featureFlagApiStatus );
+  const clearAllOverrides = useStore( state => state.clearFeatureFlagDebugOverrides );
   return (
     <>
       <H1>Feature Flags</H1>
+      <P>{apiStatusText( apiStatus )}</P>
+      <P>API values are fetched on app start and on login / logout.</P>
+      <P>Toggling a flag sets a local override. Overrides reset on app start.</P>
       {featureFlagKeys.map( featureFlagKey => (
-        <FeatureFlagToggle key={featureFlagKey} featureFlagKey={featureFlagKey} />
+        <FeatureFlagRow key={featureFlagKey} featureFlagKey={featureFlagKey} />
       ) )}
+      <Button
+        text="REFETCH FLAGS"
+        onPress={async ( ) => syncFeatureFlags( await getJWT( ) )}
+        disabled={apiStatus.state === "loading"}
+        className="mt-3"
+      />
+      <Button
+        text="CLEAR ALL OVERRIDES"
+        onPress={clearAllOverrides}
+        className="mt-3"
+      />
     </>
   );
 };

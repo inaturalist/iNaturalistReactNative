@@ -21,7 +21,10 @@ import { startOfflineExperimentInBackground } from "./suggestionComparisonExperi
 import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
 import { predictOffline } from "./useOfflineSuggestions";
 
-const SCORE_IMAGE_TIMEOUT = 5_000;
+// Keep the first request short so we fall back to offline suggestions quickly,
+// but if the user explicitly retries, allow more time to get online suggestions
+export const INITIAL_SCORE_IMAGE_TIMEOUT = 5_000;
+export const RETRY_SCORE_IMAGE_TIMEOUT = 10_000;
 
 const { useRealm } = RealmContext;
 
@@ -41,7 +44,7 @@ interface UseOnlineSuggestionsResponse {
   };
   timedOut: boolean;
   error: Error | null;
-  resetTimeout: () => void;
+  resetTimeout: ( options?: { isRetry?: boolean } ) => void;
   refetch: () => void;
 }
 
@@ -89,6 +92,7 @@ const useOnlineSuggestions = (
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
+  const [timeoutMs, setTimeoutMs] = useState( INITIAL_SCORE_IMAGE_TIMEOUT );
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser();
   // Use locale in case there is no user session
@@ -151,15 +155,18 @@ const useOnlineSuggestions = (
         onFetchError( { isOnline: true } );
         setTimedOut( true );
       }
-    }, SCORE_IMAGE_TIMEOUT );
+    }, timeoutMs );
 
     return ( ) => {
       clearTimeout( timer );
     };
-  }, [onlineSuggestions, queryKey, queryClient, onFetchError] );
+  }, [onlineSuggestions, queryKey, queryClient, onFetchError, timeoutMs] );
 
-  const resetTimeout = useCallback( ( ) => {
+  const resetTimeout = useCallback( ( { isRetry = false }: { isRetry?: boolean } = {} ) => {
     setTimedOut( false );
+    setTimeoutMs( isRetry
+      ? RETRY_SCORE_IMAGE_TIMEOUT
+      : INITIAL_SCORE_IMAGE_TIMEOUT );
   }, [] );
 
   useEffect( () => {

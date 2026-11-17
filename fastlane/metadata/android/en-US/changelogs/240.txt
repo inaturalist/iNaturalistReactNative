@@ -1,0 +1,6 @@
+FIXED
+* Bug fixes and performance improvements
+* Back button on Explore
+
+NEW
+* Implement date sort on Me tab species

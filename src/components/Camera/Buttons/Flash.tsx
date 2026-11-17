@@ -4,14 +4,14 @@ import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
 import type { AnimatedStyle } from "react-native-reanimated";
-import type { TakePhotoOptions } from "react-native-vision-camera";
+import type { CapturePhotoSettings } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
   rotatableAnimatedStyle: AnimatedStyle;
   toggleFlash: ( ) => void;
   hasFlash?: boolean;
-  takePhotoOptions: TakePhotoOptions;
+  takePhotoOptions: CapturePhotoSettings;
   flashClassName?: string;
 }
 
@@ -28,7 +28,7 @@ const Flash = ( {
   let testID = "";
   let accessibilityHint = "";
   let name = "";
-  switch ( takePhotoOptions.flash ) {
+  switch ( takePhotoOptions.flashMode ) {
     case "on":
       name = "flash-on";
       testID = "flash-button-label-flash";

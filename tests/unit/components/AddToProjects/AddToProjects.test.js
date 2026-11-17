@@ -5,6 +5,7 @@ import {
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
+import Taxon from "realmModels/Taxon";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -87,6 +88,29 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByText( mockProjects[0].title ) ).toBeVisible( );
     expect( screen.getByText( mockProjects[1].title ) ).toBeVisible( );
     expect( screen.getAllByText( "Traditional Project" ).length ).toBe( 2 );
+  } );
+
+  it( "lists joined projects in title order", ( ) => {
+    const titles = mockProjects.map( project => project.title );
+    const untitled = factory( "LocalProject", { title: "" } );
+    mockProjects.push( untitled );
+    mockProjects[0].title = "Banana";
+    mockProjects[1].title = "apple";
+    try {
+      renderAddToProjects( );
+
+      expect(
+        screen.getAllByTestId( /^AddToProjects\.project\./ ).map( row => row.props.testID ),
+      ).toEqual( [
+        `AddToProjects.project.${mockProjects[1].id}`,
+        `AddToProjects.project.${mockProjects[0].id}`,
+        `AddToProjects.project.${untitled.id}`,
+      ] );
+    } finally {
+      mockProjects.pop( );
+      mockProjects[0].title = titles[0];
+      mockProjects[1].title = titles[1];
+    }
   } );
 
   it( "renders selected projects with expanded chooser", async ( ) => {
@@ -262,6 +286,183 @@ describe( "AddToProjects", ( ) => {
     expect( mockGoBack ).toHaveBeenCalled( );
   } );
 
+  describe( "when a selected project has membership rules", ( ) => {
+    const rulesProject = mockProjects[1];
+    const originalFields = rulesProject.projectObservationFields;
+    const realmRule = ( operator, overrides = {} ) => ( {
+      id: Math.floor( Math.random( ) * 1_000_000 ),
+      operator,
+      ...overrides,
+    } );
+    const ruleRow = operator => screen.getByTestId(
+      `ProjectRuleRow.${rulesProject.id}.${operator}`,
+    );
+
+    beforeAll( ( ) => {
+      rulesProject.projectObservationFields = [];
+      rulesProject.project_observation_rules = [
+        realmRule( "identified?" ),
+        realmRule( "wild?" ),
+        realmRule( "observed_in_place?" ),
+        realmRule( "in_taxon?", { operand_id: 4789 } ),
+      ];
+      const sanderlingTaxon = Taxon.forUpdate( Taxon.mapApiToRealm( {
+        ancestor_ids: [48460, 1, 3, 4789],
+        id: 4789,
+        is_active: true,
+        name: "Calidris alba",
+        preferred_common_name: "Sanderling",
+        rank: "species",
+        rank_level: 10,
+      } ) );
+      global.realm.write( ( ) => {
+        global.realm.create( "Taxon", sanderlingTaxon, "modified" );
+      } );
+    } );
+
+    beforeEach( ( ) => {
+      useStore.setState( {
+        currentObservation: {
+          ...useStore.getState( ).currentObservation,
+          latitude: 37.7,
+          longitude: -122.4,
+        },
+      } );
+    } );
+
+    afterAll( ( ) => {
+      rulesProject.projectObservationFields = originalFields;
+      rulesProject.project_observation_rules = [];
+    } );
+
+    it( "expands a project that only has rules", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect( screen.getByText( "Identification" ) ).toBeVisible( );
+      expect( screen.getByText( "Wild" ) ).toBeVisible( );
+      expect( screen.getByText( "Specific location" ) ).toBeVisible( );
+      expect( screen.getByText( "Specific identification" ) ).toBeVisible( );
+      expect(
+        screen.getByText( "To add to this project, all required fields must be filled" ),
+      ).toBeVisible( );
+    } );
+
+    it( "shows pass and fail icons for rules checked on the device", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect( within( ruleRow( "identified?" ) ).getByText( iconGlyph( "triangle-exclamation" ) ) )
+        .toBeVisible( );
+      expect( within( ruleRow( "wild?" ) ).getByText( iconGlyph( "checkmark-circle" ) ) )
+        .toBeVisible( );
+    } );
+
+    it( "shows requirement sentences under rule rows for pass, fail, and unknown", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect(
+        within( ruleRow( "identified?" ) ).getByText(
+          "This observation must have an identification.",
+        ),
+      ).toBeVisible( );
+      expect(
+        within( ruleRow( "wild?" ) ).getByText( "This observation must be marked wild." ),
+      ).toBeVisible( );
+      const placeRow = within( ruleRow( "observed_in_place?" ) );
+      expect(
+        placeRow.getByText(
+          // eslint-disable-next-line max-len
+          "This observation must be in a specific location specified by the project. Please check the project page for details.",
+        ),
+      ).toBeVisible();
+      const taxonRow = within( ruleRow( "in_taxon?" ) );
+      expect(
+        taxonRow.getByText(
+          "This observation must have an identification in the following taxon:",
+        ),
+      ).toBeVisible( );
+      expect( taxonRow.getByText( "Sanderling" ) ).toBeVisible( );
+    } );
+
+    it( "shows no icon for rules only the server can check", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      const placeRow = within( ruleRow( "observed_in_place?" ) );
+      expect( placeRow.getByText( "Required" ) ).toBeVisible( );
+      expect( placeRow.queryByText( iconGlyph( "triangle-exclamation" ) ) ).toBeNull( );
+      expect( placeRow.queryByText( iconGlyph( "checkmark-circle" ) ) ).toBeNull( );
+    } );
+
+    it( "lists the rule taxa without making them pressable", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      const taxonRow = within( ruleRow( "in_taxon?" ) );
+      expect( taxonRow.getByText( "Sanderling" ) ).toBeVisible( );
+      expect( taxonRow.queryByRole( "button" ) ).toBeNull( );
+    } );
+
+    it( "shows Missing info sheet when SAVE is pressed with a failing rule", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
+
+    it( "saves when device-checked rules pass and a server-only rule is unknown", async ( ) => {
+      useStore.setState( {
+        currentObservation: {
+          ...useStore.getState( ).currentObservation,
+          taxon: { ancestor_ids: [48460, 1, 3, 4789], id: 4789 },
+        },
+      } );
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+
+      expect(
+        screen.getByText( "All required fields have been filled" ),
+      ).toBeVisible( );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+
+      expect(
+        useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
+      ).toEqual( [mockProjects[0].id, rulesProject.id] );
+      expect( mockGoBack ).toHaveBeenCalled( );
+    } );
+
+    it( "drops the project with a failing rule when LEAVE is pressed", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( rulesProject.title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      await actor.press( screen.getByText( "LEAVE" ) );
+
+      expect(
+        useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
+      ).toEqual( [mockProjects[0].id] );
+      await waitFor( ( ) => {
+        expect( mockGoBack ).toHaveBeenCalled( );
+      } );
+    } );
+  } );
+
   describe( "when a selected project has a required field", ( ) => {
     beforeAll( ( ) => {
       mockProjects[1].projectObservationFields[0].required = true;
@@ -345,9 +546,9 @@ describe( "AddToProjects", ( ) => {
       renderAddToProjects( );
 
       await actor.press( screen.getByText( mockProjects[1].title ) );
-      // Project 0 is already selected in beforeEach, so two pickers are visible
-      const [, projectOneSelectResponse] = screen.getAllByText( "Select a response" );
-      await actor.press( projectOneSelectResponse );
+      const projectOneIndex = screen.getAllByTestId( /^AddToProjects\.project\./ )
+        .findIndex( row => row.props.testID === `AddToProjects.project.${mockProjects[1].id}` );
+      await actor.press( screen.getAllByText( "Select a response" )[projectOneIndex] );
 
       const picker = await screen.findByTestId( "ReactNativePicker" );
       fireEvent( picker, "onValueChange", selectedValue );

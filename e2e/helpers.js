@@ -35,6 +35,11 @@ export async function iNatE2eBeforeAll( device ) {
 }
 
 export async function iNatE2eBeforeEach( device ) {
+  if ( device.getPlatform( ) === "ios" ) {
+    // The simulator keychain survives app uninstall. A leftover access token
+    // makes startup refresh the JWT, get a 401, and push Login over onboarding.
+    await device.clearKeychain( );
+  }
   const launchAppOptions = {
     newInstance: true,
     permissions: {

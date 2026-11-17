@@ -9,6 +9,5 @@ export default define( "LocalProject", faker => ( {
   projectObservationFields: [pofFactory( "LocalProjectObservationField" )],
   project_observation_rules: [],
   project_type: "",
-  rule_preferences: [],
   title: faker.lorem.sentence(),
 } ) );
