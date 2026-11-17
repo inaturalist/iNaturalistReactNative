@@ -19,7 +19,7 @@ interface Props {
   observationId: number;
   uuid: string;
   refetchSubscriptions: () => void;
-  subscriptions: object;
+  subscriptions: object[];
 }
 
 const ObsDetailsDefaultModeHeaderRight = ( {

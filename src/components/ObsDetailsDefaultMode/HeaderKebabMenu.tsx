@@ -1,8 +1,6 @@
-// @flow
 import { createSubscription } from "api/observations";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
@@ -12,11 +10,11 @@ import {
 
 const observationsUrl = "https://www.inaturalist.org/observations";
 
-type Props = {
-  observationId: number,
-  uuid: string,
-  refetchSubscriptions: Function,
-  subscriptions: Object
+interface Props {
+  observationId: number;
+  uuid: string;
+  refetchSubscriptions: ( ) => void;
+  subscriptions: object[];
 }
 
 const HeaderKebabMenu = ( {
@@ -24,7 +22,7 @@ const HeaderKebabMenu = ( {
   uuid,
   refetchSubscriptions,
   subscriptions,
-}: Props ): Node => {
+}: Props ) => {
   const currentUser = useCurrentUser( );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
@@ -47,13 +45,13 @@ const HeaderKebabMenu = ( {
     try {
       return await Share.share( sharingOptions );
     } catch ( error ) {
-      Alert.alert( error.message );
+      Alert.alert( ( error as Error ).message );
       return null;
     }
   };
 
   const { mutate: toggleSubscriptionMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createSubscription( params, optsWithAuth ),
+    ( params: { uuid: string }, optsWithAuth ) => createSubscription( params, optsWithAuth ),
     {
       onSuccess: () => {
         refetchSubscriptions();
@@ -69,7 +67,7 @@ const HeaderKebabMenu = ( {
     try {
       return await toggleSubscriptionMutate( { uuid } );
     } catch ( error ) {
-      Alert.alert( error.message );
+      Alert.alert( ( error as Error ).message );
       return null;
     }
   };

@@ -42,7 +42,7 @@ interface Props {
   refetchRemoteObservation: () => void;
   refetchSubscriptions: () => void;
   showAddCommentSheet: boolean;
-  subscriptions: object;
+  subscriptions: object[];
   wasSynced: boolean;
   uuid: string;
 }
