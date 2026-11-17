@@ -1,0 +1,7 @@
+FIXED
+* Bug fixes and performance improvements
+* Joined projects list updates right away after joining or leaving a project
+
+UPDATED
+* Blog and journal post links open directly to the post
+* Joined and featured projects are sorted by title
