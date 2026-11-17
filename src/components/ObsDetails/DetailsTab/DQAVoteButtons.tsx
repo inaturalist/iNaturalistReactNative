@@ -5,12 +5,20 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
+import type { UserPojo } from "realmModels/User";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+// TODO: or { agree } | { vote_flag }?
+interface Vote {
+  user_id: number;
+  agree: boolean;
+  vote_flag: boolean;
+}
+
 interface Props {
   metric: string;
-  votes: [object];
+  votes: Vote[];
   loadingAgree: boolean;
   loadingDisagree: boolean;
   loadingMetric?: string | null | undefined;
@@ -18,7 +26,7 @@ interface Props {
   removeVote: ( { metric, vote }: { metric: string; vote: boolean } ) => void;
 }
 
-const getUserVote = ( currentUser, metric, votes ) => {
+const getUserVote = ( currentUser: UserPojo | null, metric: string, votes: Vote[] ) => {
   if ( votes && votes.length > 0 ) {
     const match = votes.find( element => ( element.user_id === currentUser?.id ) );
     if ( match ) {
@@ -31,7 +39,7 @@ const getUserVote = ( currentUser, metric, votes ) => {
   return null;
 };
 
-const renderVoteCount = ( status, metric, votes ) => {
+const renderVoteCount = ( status: boolean, metric: string, votes: Vote[] ) => {
   if ( !votes ) return null;
 
   const count = votes
