@@ -1,8 +1,7 @@
-// @flow
 import classNames from "classnames";
 import AddObsButton from "components/AddObsBottomSheet/AddObsButton";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
+import type { ComponentProps } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getShadow } from "styles/global";
@@ -14,14 +13,17 @@ const DROP_SHADOW = getShadow( {
   elevation: 20,
 } );
 
-type Props = {
-  tabs: Object[],
-};
+interface Props {
+  // Every tab is spread into NavButton, so a tab is exactly NavButton's props
+  tabs: ComponentProps<typeof NavButton>[];
+}
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const CustomTabBar = ( { tabs }: Props ): Node => {
-  const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
+const CustomTabBar = ( { tabs }: Props ) => {
+  const tabList: React.ReactNode[] = tabs.map(
+    tab => <NavButton {...tab} key={tab.testID} />,
+  );
   tabList.splice(
     -2,
     0,
