@@ -1,5 +1,3 @@
-// @flow
-
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import Attribution from "components/ObsDetailsSharedComponents/DetailsTab/Attribution";
 import {
@@ -10,16 +8,26 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
+import type { Geoprivacy } from "realmModels/geoprivacy";
+import type { License } from "realmModels/types";
 
 import GeoprivacyStatus from "./GeoprivacyStatus";
 
-type Props = {
-  observation: Object
+interface Props {
+  observation: {
+    id: number;
+    application?: { name?: string } | null;
+    geoprivacy?: Geoprivacy;
+    license_code: License | null;
+    user?: {
+      name?: string | null;
+      login?: string;
+    };
+  };
 }
 
-const DetailsSection = ( { observation }: Props ): Node => {
+const DetailsSection = ( { observation }: Props ) => {
   const application = observation?.application?.name;
 
   if ( !observation ) return null;
