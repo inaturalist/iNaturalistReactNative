@@ -1,5 +1,4 @@
 import type { QueryClient } from "@tanstack/query-core";
-import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent";
 import { fetchUserEmailAvailable, fetchUserMe } from "api/users";
 import type { ApiResponse, ApisauceInstance } from "apisauce";
@@ -34,6 +33,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import syncFeatureFlags, { cancelFeatureFlagSync } from "sharedHelpers/syncFeatureFlags";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
@@ -267,6 +267,7 @@ const signOut = async (
     queryClient: undefined,
   },
 ) => {
+  cancelFeatureFlagSync( );
   // This makes sure also any cookies will be deleted too (MOB-589)
   const apiClient = createAPI();
   // Don't await on this endpoint, to not delay the signout process
@@ -652,7 +653,7 @@ async function afterAuthenticateUser(
   const options = {
     api_token: apiToken,
   };
-  const remoteUser = await fetchUserMe( { }, options ) as ApiUser;
+  const remoteUser = await fetchUserMe( { }, options );
   const localUser = remoteUser
     ? {
       ...remoteUser,
@@ -674,6 +675,8 @@ async function afterAuthenticateUser(
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   clearAuthCache( );
+  // Flipper resolves flags per user
+  syncFeatureFlags( apiToken );
   return {
     success: true,
     observationsCount: remoteUser?.observations_count,

@@ -20,7 +20,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
-import type { ExploreV2Tab } from "providers/ExploreV2Context";
+import type { ExploreTab } from "providers/ExploreContext";
 import React, { useCallback, useEffect, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
@@ -130,7 +130,7 @@ const UserProfile = ( ) => {
     );
   }
 
-  const exploreUser = ( tab: ExploreV2Tab ) => navigateToExplore( { user, tab } );
+  const exploreUser = ( tab: ExploreTab ) => navigateToExplore( { user, tab } );
 
   const onObservationPressed = ( ) => exploreUser( OBSERVATIONS_TAB );
 

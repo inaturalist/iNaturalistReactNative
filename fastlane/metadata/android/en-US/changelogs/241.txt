@@ -1,0 +1,7 @@
+FIXED
+* Bug fixes and performance improvements
+* Me tab and profile observation and species counts not matching or not updating after deleting
+
+UPDATED
+* Upload banner appears with just one observation to upload
+* Traditional project rules show more detail when adding an observation to a project

@@ -1,12 +1,12 @@
-import { useFocusEffect } from "@react-navigation/native";
-import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
+import { useNavigation } from "@react-navigation/native";
+import ConfirmSheet from "components/SharedComponents/Sheets/ConfirmSheet";
 import type { TFunction } from "i18next";
+import type { OnboardingStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
-import { BackHandler } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
-import type { OnboardingExitSheet } from "./onboardingSteps";
-import useOnboardingFlow from "./useOnboardingFlow";
+import type { OnboardingExitSheet, OnboardingStepId } from "./onboardingSteps";
+import { EXIT_SHEET_DESTINATIONS, getExitSheet } from "./onboardingSteps";
 
 const getExitSheetCopy = ( sheet: OnboardingExitSheet, t: TFunction ) => (
   sheet === "demo"
@@ -22,44 +22,32 @@ const getExitSheetCopy = ( sheet: OnboardingExitSheet, t: TFunction ) => (
     }
 );
 
-// The current step's exit sheet, for any step layout: exitSheet is null on
-// steps without one, which show no close button. Render exitSheetElement
-// last so the sheet sits above the step.
-const useOnboardingExitSheet = ( ) => {
+// The step's exit sheet, for any step layout: exitSheet is null on steps
+// without one, which show no close button. Render exitSheetElement last so the
+// sheet sits above the step.
+const useOnboardingExitSheet = ( stepId: OnboardingStepId ) => {
   const { t } = useTranslation( );
-  const { stepId, exitSheet, exit } = useOnboardingFlow( );
+  const navigation = useNavigation<OnboardingStackScreenProps<OnboardingStepId>["navigation"]>( );
   const [exitSheetOpen, setExitSheetOpen] = useState( false );
+  const exitSheet = getExitSheet( stepId );
 
   const openExitSheet = useCallback( ( ) => setExitSheetOpen( true ), [] );
-  const closeExitSheet = useCallback( ( ) => setExitSheetOpen( false ), [] );
-
-  useFocusEffect(
-    useCallback( ( ) => {
-      const backHandler = BackHandler.addEventListener( "hardwareBackPress", ( ) => {
-        if ( !exitSheetOpen ) return false;
-        closeExitSheet( );
-        return true;
-      } );
-      return ( ) => backHandler.remove( );
-    }, [exitSheetOpen, closeExitSheet] ),
-  );
+  const closeExitSheet = ( ) => setExitSheetOpen( false );
 
   let exitSheetElement = null;
   if ( exitSheet && exitSheetOpen ) {
     const copy = getExitSheetCopy( exitSheet, t );
     exitSheetElement = (
-      <WarningSheet
+      <ConfirmSheet
         headerText={copy.headerText}
         text={copy.text}
-        buttonText={copy.buttonText}
-        secondButtonText={t( "CANCEL" )}
-        handleSecondButtonPress={closeExitSheet}
-        onPressClose={closeExitSheet}
-        confirm={( ) => {
+        confirmText={copy.buttonText}
+        cancelText={t( "CANCEL" )}
+        onCancel={closeExitSheet}
+        onConfirm={( ) => {
           closeExitSheet( );
-          exit( exitSheet );
+          navigation.navigate( EXIT_SHEET_DESTINATIONS[exitSheet] );
         }}
-        loading={false}
         testID={`Onboarding.${stepId}.exitSheet`}
       />
     );

@@ -12,27 +12,18 @@ import type {
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { OnboardingStepId } from "components/Onboarding/onboardingSteps";
 import type {
-  ExploreV2LocationState,
-  ExploreV2Search,
-  ExploreV2Subject,
-  ExploreV2Tab,
-} from "providers/ExploreV2Context";
+  ExploreLocationState,
+  ExploreSearch,
+  ExploreSubject,
+  ExploreTab,
+} from "providers/ExploreContext";
 import type { SharedData } from "sharedHooks/useShare";
 
-export interface ExploreV2EntryParams {
-  search?: ExploreV2Search;
-  subject?: ExploreV2Subject | null;
-  location?: ExploreV2LocationState;
-  activeTab?: ExploreV2Tab;
-}
-
-// Params sent to ExploreV1, read in components/Explore/hooks/useParams.js
-interface LegacyExploreParams {
-  taxon?: { id?: number; name?: string; preferred_common_name?: string | null };
-  user?: { id?: number; login?: string; icon_url?: string | null };
-  project?: { id?: number; title?: string };
-  place?: { id?: number; display_name?: string } | null;
-  worldwide?: boolean;
+export interface ExploreEntryParams {
+  search?: ExploreSearch;
+  subject?: ExploreSubject | null;
+  location?: ExploreLocationState;
+  activeTab?: ExploreTab;
 }
 
 // Note from the documentation:
@@ -209,6 +200,10 @@ export type SharedStackParamList = {
     initialUrl: string;
     loggedIn: boolean;
   };
+  // From PostList and inatUrlNavigation
+  PostDetails: {
+    id: number;
+  };
 };
 
 export type OnboardingStepParamList = {
@@ -223,7 +218,7 @@ export type OnboardingStackParamList = {
   Onboarding: undefined;
 } & OnboardingStepParamList;
 
-// Screens hosted by ExploreStackNavigator (ExploreV2)
+// Screens hosted by ExploreStackNavigator (Explore)
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type ExploreStackParamList = {
@@ -251,7 +246,7 @@ export type BaseTabStackParamList = {
   RootExplore: undefined;
   // Explore opened from another screen (TaxonDetails, UserProfile,
   // ProjectDetails, ProjectRequirements) rather than from the Explore tab.
-  Explore: ExploreV2EntryParams & LegacyExploreParams;
+  Explore: ExploreEntryParams;
   // From NotificationsListItem
   // {
   //   uuid: notification.resource_uuid,
@@ -347,15 +342,11 @@ export type BaseTabStackParamList = {
     userId?: number;
     userLogin?: string;
   } | undefined;
-  PostDetails: {
-    body: string;
-    published_at: string;
-    title: string;
-  };
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
   Log: undefined;
+  SuggestionsHarness: undefined;
   Settings: undefined;
   About: undefined;
   Donate: undefined;
@@ -463,16 +454,13 @@ export type LoginStackParamList = {
   // { emailConfirmed: true }
   Login: {
     emailConfirmed?: boolean;
-    // Opened from the onboarding sign-up email step, so signing up goes back
-    // to it instead of starting a second sign-up
-    fromSignUp?: boolean;
+    // Opened from an onboarding step, so signing in or signing up continues
+    // onboarding
+    fromOnboarding?: boolean;
     prevScreen?: string;
     projectId?: number;
   } | undefined;
   SignUp: undefined;
-  // The onboarding sign-up steps, while FeatureFlag.OnboardingV2Enabled is on
-  signup_email: OnboardingStepParamList["signup_email"];
-  signup_credentials: OnboardingStepParamList["signup_credentials"];
   ForgotPassword: undefined;
   LearnMore: undefined;
   SignUpConfirmation: {
@@ -514,7 +502,7 @@ export type TabStackScreenProps<T extends keyof TabStackParamList> =
   >;
 
 // ExploreStackNavigator is nested inside RootExplore. This composite type
-// acknowledges ExploreV2 screens access to outer-stack routes
+// acknowledges Explore screens access to outer-stack routes
 export type ExploreStackScreenProps<T extends keyof ExploreStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<ExploreStackParamList, T>,

@@ -1,5 +1,5 @@
+import { LIMITED_TAXON_FIELDS } from "api/fields";
 import inatjs from "inaturalistjs";
-import Taxon from "realmModels/Taxon";
 import type { ScoreImageFile } from "sharedHooks/useSuggestions/types";
 
 import type { ErrorWithResponse, INatApiError } from "./error";
@@ -14,7 +14,7 @@ const PARAMS = {
   fields: {
     combined_score: true,
     vision_score: true,
-    taxon: Taxon.LIMITED_TAXON_FIELDS,
+    taxon: LIMITED_TAXON_FIELDS,
   },
 } as const;
 

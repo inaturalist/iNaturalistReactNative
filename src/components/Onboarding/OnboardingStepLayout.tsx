@@ -1,3 +1,4 @@
+import { useRoute } from "@react-navigation/native";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
@@ -8,9 +9,8 @@ import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import OnboardingProgressBar from "./OnboardingProgressBar";
-import { getStepProgress } from "./onboardingSteps";
+import { getStepProgress, isOnboardingStepId } from "./onboardingSteps";
 import useOnboardingExitSheet from "./useOnboardingExitSheet";
-import useOnboardingFlow from "./useOnboardingFlow";
 
 interface Props extends PropsWithChildren {
   // Usually the step's primary button, pinned below the scrolling content
@@ -23,14 +23,17 @@ interface Props extends PropsWithChildren {
 const OnboardingStepLayout = ( { children, footer }: Props ) => {
   const { t } = useTranslation( );
   const insets = useSafeAreaInsets( );
-  const { stepId } = useOnboardingFlow( );
-  const { exitSheet, exitSheetElement, openExitSheet } = useOnboardingExitSheet( );
-  const progress = getStepProgress( stepId );
+  const { name } = useRoute( );
+  if ( !isOnboardingStepId( name ) ) {
+    throw new Error( `OnboardingStepLayout used outside an onboarding step: ${name}` );
+  }
+  const progress = getStepProgress( name );
+  const { exitSheet, exitSheetElement, openExitSheet } = useOnboardingExitSheet( name );
 
   return (
     <ScreenShell
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
-      testID={`Onboarding.${stepId}`}
+      testID={`Onboarding.${name}`}
     >
       {progress !== null && <OnboardingProgressBar progress={progress} />}
       {exitSheet && (
@@ -42,7 +45,7 @@ const OnboardingStepLayout = ( { children, footer }: Props ) => {
             accessibilityLabel={t( "Close" )}
             accessibilityHint={t( "Asks-whether-to-exit" )}
             onPress={openExitSheet}
-            testID={`Onboarding.${stepId}.close`}
+            testID={`Onboarding.${name}.close`}
           />
         </View>
       )}

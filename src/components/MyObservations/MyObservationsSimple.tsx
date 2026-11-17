@@ -49,7 +49,8 @@ import {
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag, selectFeatureFlagsSettled } from "stores/createFeatureFlagSlice";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
@@ -183,8 +184,12 @@ const MyObservationsSimple = ( {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const featureFlagsSettled = useStore( selectFeatureFlagsSettled );
+  // Keep a saved small grid selectable until the flag is known, so the bar matches the content
+  const smallGridAvailable = myObservationsSmallGridViewEnabled
+    || ( !featureFlagsSettled && layout === "smallGrid" );
   const viewOptions: ViewOption[] = ["grid", "list"];
-  if ( myObservationsSmallGridViewEnabled && currentUser ) {
+  if ( smallGridAvailable && currentUser ) {
     viewOptions.push( "smallGrid" );
   }
   if ( currentUser ) {

@@ -11,6 +11,7 @@ import type { UserLocation } from "../../sharedHelpers/fetchCoarseUserLocation";
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
 import type { UseInfiniteProjectsScrollOptions } from "./hooks/useInfiniteProjectsScroll";
 import useInfiniteProjectsScroll from "./hooks/useInfiniteProjectsScroll";
+import useJoinedProjects from "./hooks/useJoinedProjects";
 import Projects from "./Projects";
 
 export enum TAB_ID {
@@ -37,10 +38,10 @@ const ProjectsContainer = ( ) => {
     fields: PROJECT_SUMMARY_FIELDS,
   };
 
+  const showJoinedProjects = currentTabId === TAB_ID.JOINED && searchInput.length === 0;
+
   if ( searchInput.length > 0 ) {
     apiParams.q = searchInput;
-  } else if ( currentTabId === TAB_ID.JOINED ) {
-    apiParams.member_id = memberId;
   } else if ( currentTabId === TAB_ID.FEATURED ) {
     apiParams.featured = true;
   } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
@@ -61,11 +62,21 @@ const ProjectsContainer = ( ) => {
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects,
+    projects: infiniteScrollProjects,
   } = useInfiniteProjectsScroll( {
     params: apiParams,
-    enabled: !isEmpty( apiParams ),
+    enabled: !showJoinedProjects && !isEmpty( apiParams ),
   } );
+
+  // Joined projects all load at once, so this tab has no next page to fetch
+  const {
+    isFetching: isFetchingJoinedProjects,
+    projects: joinedProjects,
+  } = useJoinedProjects( memberId, showJoinedProjects );
+
+  const projects = showJoinedProjects
+    ? joinedProjects
+    : infiniteScrollProjects;
 
   const tabs = [
     {
@@ -99,10 +110,10 @@ const ProjectsContainer = ( ) => {
   }
 
   const handleFetchNextPage = useCallback( () => {
-    if ( currentTabId !== TAB_ID.FEATURED ) {
+    if ( currentTabId !== TAB_ID.FEATURED && !showJoinedProjects ) {
       fetchNextPage();
     }
-  }, [currentTabId, fetchNextPage] );
+  }, [currentTabId, fetchNextPage, showJoinedProjects] );
 
   return (
     <>
@@ -110,8 +121,10 @@ const ProjectsContainer = ( ) => {
         currentTabId={currentTabId}
         fetchNextPage={handleFetchNextPage}
         hasPermissions={hasPermissions}
-        isFetchingNextPage={isFetchingNextPage}
-        isLoading={isFetching}
+        isFetchingNextPage={!showJoinedProjects && isFetchingNextPage}
+        isLoading={showJoinedProjects
+          ? isFetchingJoinedProjects
+          : isFetching}
         memberId={memberId}
         projects={projects}
         requestPermissions={requestPermissions}

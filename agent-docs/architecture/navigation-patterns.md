@@ -47,7 +47,7 @@ RootStackNavigator (NativeStack)
 
 Screens available from TabStackNavigator AND NoBottomTabStackNavigator:
 - **Hidden header**: ObsEdit, LocationPicker, TaxonDetails, PhotoSharing
-- **Centered header**: Match, Suggestions, SuggestionsTaxonSearch, MatchTaxonSearchScreen, AddToProjects
+- **Centered header**: Match, Suggestions, SuggestionsTaxonSearch, MatchTaxonSearchScreen, AddToProjects, PostDetails
 - **Custom header**: FullPageWebView
 
 All wrapped with `fadeInComponent()` for fade-in animation.

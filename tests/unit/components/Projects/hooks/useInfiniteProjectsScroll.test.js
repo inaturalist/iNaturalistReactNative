@@ -4,7 +4,7 @@ import factory from "tests/factory";
 
 const mockProjects = [
   factory( "RemoteProject", { title: "Charlie" } ),
-  factory( "RemoteProject", { title: "Alpha" } ),
+  factory( "RemoteProject", { title: "alpha" } ),
   factory( "RemoteProject", { title: "Bravo" } ),
 ];
 
@@ -28,7 +28,7 @@ describe( "useInfiniteProjectsScroll", ( ) => {
       params: { featured: true },
       enabled: true,
     } ) );
-    expect( titles( result.current.projects ) ).toEqual( ["Alpha", "Bravo", "Charlie"] );
+    expect( titles( result.current.projects ) ).toEqual( ["alpha", "Bravo", "Charlie"] );
   } );
 
   it( "keeps the server order when order_by is requested", ( ) => {
@@ -36,6 +36,6 @@ describe( "useInfiniteProjectsScroll", ( ) => {
       params: { order_by: "distance" },
       enabled: true,
     } ) );
-    expect( titles( result.current.projects ) ).toEqual( ["Charlie", "Alpha", "Bravo"] );
+    expect( titles( result.current.projects ) ).toEqual( ["Charlie", "alpha", "Bravo"] );
   } );
 } );

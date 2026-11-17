@@ -3,15 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
 import Developer from "components/Developer/Developer";
 import Log from "components/Developer/Log";
+import SuggestionsHarness from "components/Developer/SuggestionsHarness";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
-import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
-import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
 import Journal from "components/Journal/Journal";
-import PostDetails from "components/Journal/PostDetails";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import Notifications from "components/Notifications/Notifications";
@@ -42,8 +40,6 @@ import {
 import { StackHostProvider } from "navigation/StackHostContext";
 import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
-import useFeatureFlag from "sharedHooks/useFeatureFlag";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -83,11 +79,6 @@ const notificationsTitle = () => (
     {t( "NOTIFICATIONS" )}
   </Heading4>
 );
-const postDetailsTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "JOURNAL-POST" )}
-  </Heading4>
-);
 
 // eslint-disable-next-line i18next/no-literal-string
 const debugTitle = () => <Heading4 className="text-white">DEBUG</Heading4>;
@@ -97,6 +88,10 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
+const suggestionsHarnessTitle = () => (
+  // eslint-disable-next-line i18next/no-literal-string
+  <Heading4 className="text-white">SUGGESTIONS HARNESS</Heading4>
+);
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -115,7 +110,6 @@ const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 const FadeInJournal = ( ) => fadeInComponent( <Journal /> );
-const FadeInPostDetails = ( ) => fadeInComponent( <PostDetails /> );
 
 const BASE_SCREEN_OPTIONS = {
   headerBackButtonDisplayMode: "minimal",
@@ -168,13 +162,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const initialRouteName
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
-  const ExploreScreen = exploreV2Enabled
-    ? ExploreV2Container
-    : ExploreContainer;
-  const RootExploreScreen = exploreV2Enabled
-    ? ExploreV2Container
-    : RootExploreContainer;
   return (
     <StackHostProvider value={{ hasBottomTabBar: true }}>
       <Stack.Navigator
@@ -203,7 +190,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name={SCREEN_NAME_ROOT_EXPLORE}
-            component={RootExploreScreen}
+            component={ExploreContainer}
             options={{
               ...preventSwipeToGoBack,
               animation: "none",
@@ -211,7 +198,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name="Explore"
-            component={ExploreScreen}
+            component={ExploreContainer}
           />
           <Stack.Screen
             name="ObsDetails"
@@ -289,11 +276,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
             component={FadeInJournal}
             options={LIST_OPTIONS}
           />
-          <Stack.Screen
-            name="PostDetails"
-            component={FadeInPostDetails}
-            options={{ headerTitle: postDetailsTitle }}
-          />
         </Stack.Group>
         {/* Developer Stack Group */}
         <Stack.Group
@@ -319,6 +301,11 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
             component={Log}
             name="Log"
             options={( { headerTitle: logTitle } )}
+          />
+          <Stack.Screen
+            name="SuggestionsHarness"
+            component={SuggestionsHarness}
+            options={{ headerTitle: suggestionsHarnessTitle }}
           />
         </Stack.Group>
         {/* Header with no bottom border */}

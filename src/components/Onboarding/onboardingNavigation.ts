@@ -16,7 +16,12 @@ export const showLocationStep = ( navigation: RootNavigation ) => {
   );
 };
 
-// Opens Login on top of whatever is showing, so closing it goes back there
-export const openLogin = ( navigation: RootNavigation, params: { fromSignUp: boolean } ) => {
-  navigation.navigate( "LoginStackNavigator", { screen: "Login", params } );
+// Shows the sign-up email step, popping back to it when it's already in the
+// onboarding stack (Login was opened from it) instead of stacking a second copy
+export const showSignUpStep = ( navigation: RootNavigation ) => {
+  navigation.navigate(
+    "OnboardingStackNavigator",
+    { screen: "signup_email", pop: true },
+    { pop: true },
+  );
 };

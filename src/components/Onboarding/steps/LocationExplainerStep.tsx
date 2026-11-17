@@ -1,4 +1,3 @@
-import { useFocusEffect } from "@react-navigation/native";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
@@ -7,8 +6,7 @@ import Body2 from "components/SharedComponents/Typography/Body2";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import { Image, View } from "components/styledComponents";
 import LocationIndicatorIcon from "images/svg/location_indicator_onboarding.svg";
-import React, { useCallback, useState } from "react";
-import { BackHandler } from "react-native";
+import React, { useState } from "react";
 import { requestMultiple } from "react-native-permissions";
 import Animated, { Easing, FadeIn } from "react-native-reanimated";
 import { log } from "sharedHelpers/logger";
@@ -106,13 +104,6 @@ const LocationExplainerStep = ( ) => {
   const { t } = useTranslation( );
   const { stepId, proceedToNext } = useOnboardingFlow( );
   const [requesting, setRequesting] = useState( false );
-
-  useFocusEffect(
-    useCallback( ( ) => {
-      const backHandler = BackHandler.addEventListener( "hardwareBackPress", ( ) => true );
-      return ( ) => backHandler.remove( );
-    }, [] ),
-  );
 
   const requestLocationAndContinue = async ( ) => {
     setRequesting( true );

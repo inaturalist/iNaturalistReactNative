@@ -112,6 +112,7 @@ inatjs.observation_field_values.create.mockResolvedValue( makeResponse( ) );
 inatjs.observation_field_values.update.mockResolvedValue( makeResponse( ) );
 inatjs.observation_field_values.delete.mockResolvedValue( undefined );
 inatjs.computervision.score_image.mockResolvedValue( makeResponse( ) );
+inatjs.feature_flags.get.mockResolvedValue( { flags: {}, experiments: {} } );
 
 // Set up mocked fetch for testing (or disabling) fetch requests
 fetchMock.enableMocks( );

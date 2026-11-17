@@ -1,4 +1,4 @@
-import { getNextStepId, getStepProgress } from "components/Onboarding/onboardingSteps";
+import { getStepProgress } from "components/Onboarding/onboardingSteps";
 
 describe( "getStepProgress", ( ) => {
   it( "returns null for steps without a progress bar", ( ) => {
@@ -11,21 +11,5 @@ describe( "getStepProgress", ( ) => {
     expect( getStepProgress( "obs_story" ) ).toBe( 1 / 8 );
     expect( getStepProgress( "impact" ) ).toBe( 4 / 8 );
     expect( getStepProgress( "location_explainer" ) ).toBe( 7 / 8 );
-  } );
-} );
-
-describe( "getNextStepId", ( ) => {
-  const SIGN_UP_STEPS = ["signup_email", "signup_credentials"] as const;
-
-  it( "follows the order of the flow it's given, not the first-run order", ( ) => {
-    expect( getNextStepId( ["impact", "welcome"], "impact" ) ).toBe( "welcome" );
-  } );
-
-  it( "returns null on the flow's last step", ( ) => {
-    expect( getNextStepId( SIGN_UP_STEPS, "signup_credentials" ) ).toBeNull( );
-  } );
-
-  it( "throws for a step that isn't part of the flow", ( ) => {
-    expect( ( ) => getNextStepId( SIGN_UP_STEPS, "impact" ) ).toThrow( );
   } );
 } );

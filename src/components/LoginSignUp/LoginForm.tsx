@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
-import useAfterSignIn from "components/Onboarding/useAfterSignIn";
+import { showLocationStep, showSignUpStep } from "components/Onboarding/onboardingNavigation";
 import {
   Body1, Body2, Button, CloseButton, INatIcon, List2,
   WarningSheet,
@@ -18,9 +18,7 @@ import { Trans } from "react-i18next";
 import type { ScrollView, TextInput } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import { useCurrentUser } from "sharedHooks";
-import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import Error from "./Error";
@@ -57,8 +55,6 @@ const LoginForm = ( {
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
   const [showModal, setShowModal] = useState( false );
-  const onboardingV2Enabled = useFeatureFlag( FeatureFlag.OnboardingV2Enabled );
-  const afterSignIn = useAfterSignIn( );
 
   const onSignOut = async () => {
     await signOut( { realm, clearRealm: true } );
@@ -104,22 +100,24 @@ const LoginForm = ( {
   }, [navigation] );
 
   const navigateAfterLogIn = useCallback( ( ) => {
-    afterSignIn( navigation, ( ) => {
-      if ( params?.prevScreen && params?.projectId ) {
-        navigation.navigate( "TabNavigator", {
-          screen: "ObservationsTab",
+    if ( params?.fromOnboarding ) {
+      showLocationStep( navigation );
+      return;
+    }
+    if ( params?.prevScreen && params?.projectId ) {
+      navigation.navigate( "TabNavigator", {
+        screen: "ObservationsTab",
+        params: {
+          screen: "ProjectDetails",
           params: {
-            screen: "ProjectDetails",
-            params: {
-              id: params.projectId,
-            },
+            id: params.projectId,
           },
-        } );
-      } else {
-        navigation.getParent( )?.goBack( );
-      }
-    } );
-  }, [afterSignIn, navigation, params] );
+        },
+      } );
+    } else {
+      navigation.getParent( )?.goBack( );
+    }
+  }, [navigation, params] );
 
   const logIn = useCallback( async ( logInCallback: () => Promise<AuthenticateUserResult> ) => {
     setLoading( true );
@@ -136,13 +134,10 @@ const LoginForm = ( {
   }, [applySignInPrefs, navigateAfterLogIn] );
 
   const openSignUp = ( ) => {
-    if ( !onboardingV2Enabled ) {
-      navigation.navigate( "SignUp" );
-    } else if ( params?.fromSignUp ) {
-      // Login was opened from the sign-up email step, so return to it
-      navigation.getParent( )?.goBack( );
+    if ( params?.fromOnboarding ) {
+      showSignUpStep( navigation );
     } else {
-      navigation.navigate( "signup_email" );
+      navigation.navigate( "SignUp" );
     }
   };
 

@@ -1,7 +1,7 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import type {
-  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse, ApiUntypedParams,
+  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse, ApiUntypedParams, ApiUserMe,
 } from "api/types";
 import inatjs from "inaturalistjs";
 
@@ -33,12 +33,18 @@ const REMOTE_USER_PARAMS = {
   fields: REMOTE_USER_FIELDS,
 };
 
-const fetchUserMe = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) => {
+const fetchUserMe = async (
+  params: ApiUntypedParams = {},
+  opts: ApiOpts = {},
+): Promise<ApiUserMe | undefined> => {
   try {
-    const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
+    const response: ApiResponse<ApiUserMe> | null = await inatjs.users.me(
+      { ...REMOTE_USER_PARAMS, ...params, ...opts },
+    );
     return response?.results[0];
   } catch ( e ) {
-    return handleError( e as ErrorWithResponse, { throw: true } );
+    // handleError throws unless passed `throw: false`
+    throw await handleError( e as ErrorWithResponse );
   }
 };
 

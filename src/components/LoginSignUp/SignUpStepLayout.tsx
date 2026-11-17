@@ -37,7 +37,7 @@ const SignUpStepLayout = ( { backgroundSource, children, footer }: Props ) => {
   const insets = useSafeAreaInsets( );
   const { width } = useWindowDimensions( );
   const { stepId } = useOnboardingFlow( );
-  const { exitSheet, exitSheetElement, openExitSheet } = useOnboardingExitSheet( );
+  const { exitSheet, exitSheetElement, openExitSheet } = useOnboardingExitSheet( stepId );
   const backgroundHeight = width * BACKGROUND_ASPECT_RATIO;
   const backgroundStyle = { width, height: backgroundHeight };
   // Shrinks on short screens so the form stays above the fold
