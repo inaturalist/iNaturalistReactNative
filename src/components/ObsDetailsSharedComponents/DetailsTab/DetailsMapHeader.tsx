@@ -1,23 +1,26 @@
-// @flow
-
 import ObscurationExplanation
   from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   ObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  currentUser: { id: number },
-  observation: Object
+interface Props {
+  currentUser: { id: number } | null;
+  observation: {
+    obscured?: boolean;
+    privateLatitude?: number;
+    user: {
+      id: number;
+    };
+  };
 }
 
 const DetailsMapHeader = ( {
   currentUser,
   observation,
-}: Props ): Node => (
+}: Props ) => (
   <View className="flex-1 flex-col">
     <ObservationLocation
       observation={observation}
