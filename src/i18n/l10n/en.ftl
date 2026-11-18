@@ -1131,6 +1131,8 @@ OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 # Tab on notifications showing notifications about content created by others.
 # Should be 16 characters or fewer or it will be ellipsized.
 OTHERS--notifications = OTHERS
+# Onboarding community identification screen: explains the sample activity feed below it
+Our-global-community-works-together-to-help-identify-the-species-youre-looking-at = Our global community works together to help identify the species you're looking at.
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
@@ -1290,6 +1292,9 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Onboarding community identification screen: headline. The word "identify" is
+# underlined for emphasis
+Real-people-will-identify-your-observation = <0>Real people will </0><1>identify</1><0> your observation.</0>
 # Heading above the list of recently used searches
 Recent-searches = Recent searches
 # Help text for the button that opens the sound recorder
