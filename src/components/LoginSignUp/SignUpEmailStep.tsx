@@ -24,7 +24,7 @@ const SignUpEmailStep = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation<NativeStackNavigationProp<OnboardingStepParamList>>( );
   const {
-    stepId, proceedToNext, logIn, signedIn,
+    stepId, logIn, signedIn,
   } = useOnboardingFlow( );
   const emailRef = useRef<TextInput>( null );
   const [email, setEmail] = useState( "" );
@@ -55,7 +55,7 @@ const SignUpEmailStep = ( ) => {
     setChecking( false );
     if ( availability === "available" ) {
       if ( !navigation.isFocused( ) ) return;
-      proceedToNext( { email: trimmedEmail } );
+      navigation.navigate( "signup_credentials", { email: trimmedEmail } );
     } else if ( availability === "taken" ) {
       setError( t( "That-email-is-already-associated-with-an-account" ) );
     } else {

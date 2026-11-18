@@ -23,7 +23,7 @@ const OnboardingPlaceholderStep = ( ) => {
           <Button
             level="focus"
             text={t( "CONTINUE" )}
-            onPress={( ) => proceedToNext( )}
+            onPress={proceedToNext}
             testID={`Onboarding.${stepId}.next`}
           />
           {STEPS_WITH_LOG_IN.includes( stepId ) && (

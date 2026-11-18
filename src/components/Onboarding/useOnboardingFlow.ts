@@ -1,7 +1,7 @@
 import {
   CommonActions, useFocusEffect, useNavigation, useRoute,
 } from "@react-navigation/native";
-import type { OnboardingStackScreenProps, OnboardingStepParamList } from "navigation/types";
+import type { OnboardingStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import { BackHandler } from "react-native";
 import { useOnboardingShown } from "sharedHelpers/installData";
@@ -9,9 +9,6 @@ import { useOnboardingShown } from "sharedHelpers/installData";
 import { showLocationStep } from "./onboardingNavigation";
 import type { OnboardingStepId } from "./onboardingSteps";
 import { getNextStepId, getStepBlocksBack, isOnboardingStepId } from "./onboardingSteps";
-
-// What a step hands to the next one; only the sign-up email step passes anything
-type NextStepParams = OnboardingStepParamList["signup_credentials"];
 
 const useOnboardingFlow = ( ) => {
   const navigation = useNavigation<OnboardingStackScreenProps<OnboardingStepId>["navigation"]>( );
@@ -49,15 +46,12 @@ const useOnboardingFlow = ( ) => {
     setOnboardingShown( true );
   };
 
-  const proceedToNext = ( params?: NextStepParams ) => {
+  const proceedToNext = ( ) => {
     const nextStepId = getNextStepId( stepId );
     if ( !nextStepId ) {
       finishOnboarding( );
     } else if ( nextStepId === "signup_credentials" ) {
-      if ( !params ) {
-        throw new Error( `${stepId} must pass the email to signup_credentials` );
-      }
-      navigation.navigate( nextStepId, params );
+      throw new Error( `${stepId} must navigate to signup_credentials itself, with the email` );
     } else {
       navigation.navigate( nextStepId );
     }
