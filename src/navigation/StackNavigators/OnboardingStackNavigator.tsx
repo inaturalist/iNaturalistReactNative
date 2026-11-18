@@ -43,6 +43,11 @@ const OnboardingStackNavigator = ( ) => {
 
   return (
     <Stack.Navigator
+      // The flag arrives from the API after launch, so remount to read
+      // initialRouteName again once the steps exist
+      key={onboardingV2Enabled
+        ? "steps"
+        : "carousel"}
       initialRouteName={initialRouteName}
       screenOptions={{ headerShown: false }}
     >

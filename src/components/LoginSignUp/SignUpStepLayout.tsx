@@ -106,7 +106,6 @@ const SignUpStepLayout = ( {
       >
         <View style={contentTopSpacerStyle} />
         {children}
-        <View className="grow" />
       </ScrollView>
       {footer && (
         <View className="items-center px-[21px] pb-[20px]">

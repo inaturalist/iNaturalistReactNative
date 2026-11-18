@@ -52,6 +52,7 @@ const SignUpEmailForm = ( { onAvailable, onSignedIn, testID }: Props ) => {
   };
 
   const continueWithEmail = async ( ) => {
+    setError( null );
     setChecking( true );
     const availability = await checkEmailAvailability( trimmedEmail );
     setChecking( false );

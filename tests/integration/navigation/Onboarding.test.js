@@ -373,6 +373,15 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       expect( pressHardwareBack( ) ).toBe( false );
     } );
 
+    it( "resumes at the location step when the flag turns on after launch", async ( ) => {
+      setStoreStateFeatureFlags( { } );
+      renderApp( );
+      expect( await screen.findByTestId( "OnboardingCarousel" ) ).toBeVisible( );
+      setStoreStateFeatureFlags( { [FeatureFlag.OnboardingV2Enabled]: true } );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+      expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
+    } );
+
     it( "shows the carousel when OnboardingV2Enabled is off", async ( ) => {
       setStoreStateFeatureFlags( { } );
       renderApp( );
@@ -565,6 +574,23 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         expect( screen.queryByText( connectionError ) ).toBeNull( );
       },
     );
+
+    it( "clears a connection error when Continue is pressed again", async ( ) => {
+      emailAvailable.mockRejectedValueOnce( new Error( "Network request failed" ) );
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await continueTo( "signup_email" );
+      await enterEmail( "new@example.com" );
+      await actor.press( continueButton( ) );
+      const connectionError = i18next.t( "Connection-problem-Please-try-again-later" );
+      expect( await screen.findByText( connectionError ) ).toBeVisible( );
+      // Button ignores presses for a moment after each one
+      await waitFor( ( ) => expect( continueButton( ) ).toBeEnabled( ) );
+      await actor.press( continueButton( ) );
+      expect( await screen.findByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+      act( ( ) => navigationContainer.current.goBack( ) );
+      expect( await findEmailStep( ) ).toBeVisible( );
+      expect( screen.queryByText( connectionError ) ).toBeNull( );
+    } );
 
     it( "locks the email field while the email is being checked", async ( ) => {
       let finishCheck;
