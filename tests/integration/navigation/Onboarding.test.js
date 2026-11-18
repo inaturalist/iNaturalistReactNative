@@ -12,8 +12,10 @@ import { BackHandler, Image } from "react-native";
 import { requestMultiple, RESULTS } from "react-native-permissions";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import factory from "tests/factory";
 import { renderApp, renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
+import { signIn, signOut } from "tests/helpers/user";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -353,6 +355,30 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       }
     },
   );
+
+  describe( "relaunching after signing in during onboarding", ( ) => {
+    beforeEach( async ( ) => {
+      await signIn( factory( "LocalUser" ) );
+    } );
+
+    afterEach( async ( ) => {
+      await signOut( );
+    } );
+
+    it( "resumes at the location step, where Android back leaves the app", async ( ) => {
+      const pressHardwareBack = mockHardwareBack( );
+      renderApp( );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+      expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
+      expect( pressHardwareBack( ) ).toBe( false );
+    } );
+
+    it( "shows the carousel when OnboardingV2Enabled is off", async ( ) => {
+      setStoreStateFeatureFlags( { } );
+      renderApp( );
+      expect( await screen.findByTestId( "OnboardingCarousel" ) ).toBeVisible( );
+    } );
+  } );
 
   describe( "exit sheets", ( ) => {
     it( "asks before exiting the demo, and cancelling stays on the step", async ( ) => {

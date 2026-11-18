@@ -24,14 +24,16 @@ const useOnboardingFlow = ( ) => {
   const stepId: OnboardingStepId = name;
   const blocksBack = getStepBlocksBack( stepId );
 
+  // A step that blocks back still lets back close the app when it's the
+  // first screen
   useFocusEffect(
     useCallback( ( ) => {
       const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
-        ( ) => blocksBack,
+        ( ) => blocksBack && navigation.canGoBack( ),
       );
       return ( ) => backHandler.remove( );
-    }, [blocksBack] ),
+    }, [blocksBack, navigation] ),
   );
 
   const finishOnboarding = ( ) => {

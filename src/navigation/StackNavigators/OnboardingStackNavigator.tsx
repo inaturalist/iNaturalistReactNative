@@ -14,6 +14,7 @@ import { preventSwipeToGoBack } from "navigation/navigationOptions";
 import type { OnboardingStackParamList } from "navigation/types";
 import type { ComponentType } from "react";
 import React from "react";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
@@ -32,9 +33,19 @@ const STEP_COMPONENTS: Record<OnboardingStepId, ComponentType> = {
 
 const OnboardingStackNavigator = ( ) => {
   const onboardingV2Enabled = useFeatureFlag( FeatureFlag.OnboardingV2Enabled );
+  const currentUser = useCurrentUser( );
+  // A user who signed in during onboarding but quit before finishing it
+  // resumes at the location step. Only read on mount, so signing in
+  // mid-flow doesn't move the user.
+  const initialRouteName = onboardingV2Enabled && currentUser
+    ? "location_explainer"
+    : undefined;
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={initialRouteName}
+      screenOptions={{ headerShown: false }}
+    >
       {onboardingV2Enabled
         ? ONBOARDING_STEPS.map( ( { id, blocksBack } ) => (
           <Stack.Screen
