@@ -166,8 +166,10 @@ const SCREENS = Object.fromEntries( Object.entries( IMPLEMENTATIONS ).map(
   )],
 ) );
 
-// `from` puts a screen under Match, as when arriving from the camera
-export const renderMatch = ( { from } = {} ) => {
+// `from` puts a screen under Match, as when arriving from the camera.
+// `screens` swaps a destination stub for a real screen, or adds a screen
+// Match itself never goes to, so a scenario can follow a longer journey.
+export const renderMatch = ( { from, screens = {} } = {} ) => {
   const navigationRef = createNavigationContainerRef( );
   // A fresh client per render so a cached CV response from another scenario
   // can't leak in
@@ -193,8 +195,17 @@ export const renderMatch = ( { from } = {} ) => {
               <Stack.Navigator>
                 <Stack.Screen name="Match" component={Component} />
                 {DESTINATIONS.map( name => (
-                  <Stack.Screen key={name} name={name} component={Destination} />
+                  <Stack.Screen
+                    key={name}
+                    name={name}
+                    component={screens[name] || Destination}
+                  />
                 ) )}
+                {Object.keys( screens )
+                  .filter( name => !DESTINATIONS.includes( name ) )
+                  .map( name => (
+                    <Stack.Screen key={name} name={name} component={screens[name]} />
+                  ) )}
               </Stack.Navigator>
             </NavigationContainer>
           </BottomSheetModalProvider>
@@ -206,6 +217,8 @@ export const renderMatch = ( { from } = {} ) => {
   return {
     impl,
     currentRoute: ( ) => navigationRef.getCurrentRoute( ),
+    // Names of the screens in the stack, bottom first
+    stack: ( ) => navigationRef.getRootState( )?.routes.map( route => route.name ),
     goBack: ( ) => act( ( ) => navigationRef.goBack( ) ),
   };
 };

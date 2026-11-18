@@ -6,7 +6,9 @@
 // Scenarios marked SUSPECTED BUG enforce behavior that is probably wrong, on
 // purpose: fixing it should be a deliberate change to the expectation.
 import * as Exify from "@lodev09/react-native-exify";
-import { screen, userEvent, waitFor } from "@testing-library/react-native";
+import {
+  act, screen, userEvent, waitFor,
+} from "@testing-library/react-native";
 import * as apiError from "api/error";
 import { photoLibraryPhotosPath, rotatedOriginalPhotosPath } from "appConstants/paths";
 import initI18next from "i18n/initI18next";
@@ -1306,8 +1308,8 @@ describe( "Fourth pass: boundaries and stale data", ( ) => {
     expect( world.onlineCalls( ) ).toHaveLength( 1 );
   } );
 
-  it( "R-LOC-18 location previously denied and blocked: the prompt points to settings "
-    + "", async ( ) => {
+  it( "R-LOC-18 location previously denied and blocked: the prompt points to "
+    + "settings", async ( ) => {
     world.blockLocationPermission( );
     const { impl } = await showMatchWith( makeNewObservation( ), CONFIDENT_RESULTS );
     expect( world.gps.watching ).toBe( 0 );
@@ -1333,5 +1335,147 @@ describe( "Fourth pass: boundaries and stale data", ( ) => {
       id: TAXA.cupPlant.id,
       representativePhoto: { ...representativePhoto, isRepresentativeButOtherTaxon: true },
     } );
+  } );
+} );
+
+describe( "Fifth pass: taxa already stored on the device", ( ) => {
+  const storeCupPlantWithPhoto = ( ) => realm( ).write( ( ) => {
+    realm( ).create( "Taxon", {
+      id: TAXA.cupPlant.id,
+      name: TAXA.cupPlant.name,
+      preferred_common_name: TAXA.cupPlant.preferred_common_name,
+      rank: "species",
+      rank_level: 10,
+      ancestor_ids: [47126, TAXA.cupPlant.id],
+      default_photo: { id: 501, url: "https://static.example/501/square.jpg" },
+    }, "modified" );
+  } );
+
+  // SUSPECTED BUG: the photo area reads `defaultPhoto`, but stored taxa expose
+  // `default_photo`, and an empty stored photo list skips the fallback anyway
+  it( "R-PHOTO-04 offline: a stored taxon's photo is never shown beside the observation "
+    + "photo", async ( ) => {
+    storeCupPlantWithPhoto( );
+    world.setNetwork( false );
+    world.setObservation( observationWithLocation( ) );
+    const { impl } = renderMatch( );
+    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
+    await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( {
+      id: TAXA.cupPlant.id, showsCommonName: true,
+    } );
+    expect( screen.getByTestId( "MatchScreen.ObsPhoto" ) ).toBeVisible( );
+    expect( screen.queryByTestId( "TaxonDetails.photo.501" ) ).toBeNull( );
+  } );
+
+  // SUSPECTED BUG: the API's taxon_photos never reach the device's taxonPhotos
+  // and the API's default_photo is read as defaultPhoto, so only the
+  // representative photo is ever available and the 2 and 3 photo layouts
+  // never appear
+  it( "R-PHOTO-05 online with a representative, a default and 3 taxon photos: only "
+    + "1 taxon photo shows", async ( ) => {
+    const taxonWithPhotos = {
+      ...TAXA.cupPlant,
+      ancestor_ids: [47126, TAXA.cupPlant.id],
+      representative_photo: { id: 9001, url: "https://static.example/9001/medium.jpg" },
+      default_photo: { id: 501, url: "https://static.example/501/square.jpg" },
+      taxon_photos: [
+        { photo: { id: 601, url: "https://static.example/601/medium.jpg" } },
+        { photo: { id: 602, url: "https://static.example/602/medium.jpg" } },
+        { photo: { id: 603, url: "https://static.example/603/medium.jpg" } },
+      ],
+    };
+    await showMatchWith( observationWithLocation( ), [suggestion( taxonWithPhotos, 95 )] );
+    await screen.findByTestId( "TaxonDetails.photo.9001" );
+    expect( screen.queryAllByTestId( /^TaxonDetails\.photo\.\d+$/ ) ).toHaveLength( 1 );
+    const stored = realm( ).objectForPrimaryKey( "Taxon", TAXA.cupPlant.id );
+    expect( stored.taxonPhotos ).toHaveLength( 0 );
+  } );
+
+  it( "R-SAVE-10 with a stored copy of the taxon, Edit still gets the API's copy, "
+    + "readable after the re-save", async ( ) => {
+    storeCupPlantWithPhoto( );
+    const cupPlantFromApi = {
+      ...TAXA.cupPlant,
+      ancestor_ids: [47126, TAXA.cupPlant.id],
+      default_photo: { id: 501, url: "https://static.example/501/square.jpg" },
+    };
+    const observation = observationWithLocation( );
+    const { impl, currentRoute } = await showMatchWith( observation, [
+      suggestion( cupPlantFromApi, 95 ),
+    ] );
+    await impl.pressEdit( actor );
+    await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "ObsEdit" ) );
+    // The API's plain copy, still readable after the stored taxon was re-saved
+    expect( useStore.getState( ).currentObservation.taxon.default_photo.url )
+      .toBe( "https://static.example/501/square.jpg" );
+  } );
+} );
+
+describe( "Sixth pass", ( ) => {
+  it( "R-RESULT-16 the AI camera's own guess isn't shown while Match analyzes", async ( ) => {
+    useStore.setState( {
+      aICameraSuggestion: suggestion( TAXA.cupPlant, 90 ),
+    } );
+    world.setObservation( observationWithLocation( ) );
+    const { impl } = renderMatch( );
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 1 ) );
+    expect( impl.read( ALL_TAXA ).analyzing ).toBe( true );
+    expect( screen.queryAllByText( "Cup Plant" ) ).toHaveLength( 0 );
+  } );
+
+  it( "R-LOC-19 blocked location, open Settings from the prompt, allow, come back: GPS "
+    + "starts", async ( ) => {
+    const { AppState } = jest.requireActual( "react-native" );
+    const originalState = AppState.currentState;
+    AppState.currentState = "active";
+    // Only listeners added in this scenario; earlier ones belong to unmounted screens
+    const listenersBefore = AppState.addEventListener.mock.calls.length;
+    try {
+      world.blockLocationPermission( );
+      const { impl } = await showMatchWith( makeNewObservation( ), CONFIDENT_RESULTS );
+      await impl.pressAddLocation( actor );
+      await waitFor( ( ) => expect(
+        screen.getByText( /previously denied location permissions/ ),
+      ).toBeVisible( ) );
+      const { checkMultiple } = jest.requireMock( "react-native-permissions" );
+      checkMultiple.mockImplementation( async permissions => permissions.reduce(
+        ( acc, permission ) => ( { ...acc, [permission]: RESULTS.GRANTED } ),
+        {},
+      ) );
+      const changeHandlers = AppState.addEventListener.mock.calls
+        .slice( listenersBefore )
+        .filter( ( [event] ) => event === "change" )
+        .map( ( [, handler] ) => handler );
+      await world.advance( 0 );
+      await act( async ( ) => {
+        await Promise.all( changeHandlers.map( handler => handler( "background" ) ) );
+      } );
+      await act( async ( ) => {
+        await Promise.all( changeHandlers.map( handler => handler( "active" ) ) );
+      } );
+      await waitFor( ( ) => expect( world.gps.watching ).toBe( 1 ) );
+      await world.deliverGpsFix( { latitude: 10, longitude: 20 } );
+      await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 2 ) );
+    } finally {
+      AppState.currentState = originalState;
+    }
+  } );
+
+  it( "R-NET-15 the API answers with an empty response", async ( ) => {
+    const { computervision } = jest.requireMock( "inaturalistjs" );
+    computervision.score_image.mockImplementation( async ( ) => undefined );
+    world.setObservation( observationWithLocation( ) );
+    const { impl } = renderMatch( );
+    await world.advance( 4_500 );
+    // Same as an error: 3 tries, then the on-device model
+    expect( world.onlineCalls( ) ).toHaveLength( 3 );
+    expect( world.offlineCalls( ) ).toHaveLength( 1 );
+    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.compassPlant.id } );
+    // The same unawaited logging as R-NET-05
+    expect( unawaitedApiErrors ).toHaveLength( 3 );
   } );
 } );
