@@ -25,6 +25,9 @@
 
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
+# Onboarding observation story screen: checklist item completeing "An
+# observation is:". Text in tags is bold
+a-photo-or-sound-recording = <0>a </0><1>photo</1><0> or </0><1>sound recording</1>
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -113,6 +116,9 @@ Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 # Display name for the iconic taxa category for amphibia
 Amphibians = Amphibians
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
+# Onboarding observation story screen: introduces a checklist of what makes an
+# observation; each item that follows completes this sentence
+An-observation-is = An observation is:
 # Message shown to the user after they have left the AI camera where they may
 # have seen a species suggestion but before they land on the match screen,
 # where they might see a better suggestion.
@@ -157,6 +163,9 @@ Are-you-an-educator = Are you an educator wanting to use iNaturalist with your s
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Accessibility hint for the close button on onboarding steps, which opens a sheet asking whether to exit
 Asks-whether-to-exit = Asks whether to exit.
+# Onboarding observation story screen: checklist item completing "An
+# observation is:". Text in tags is bold
+at-the-time-and-place-you-saw-it = <0>at the </0><1>time and place</1><0> you saw it.</0>
 attribution-cc-by = some rights reserved (CC BY)
 attribution-cc-by-nc = some rights reserved (CC BY-NC)
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
@@ -1068,6 +1077,9 @@ observer-must-allow-project-curators-to-view-coordinates = observer must allow p
 Observers = Observers
 # Month of October
 October = October
+# Onboarding observation story screen: checklist item completing "An
+# observation is:". Text in tags is bold
+of-one-living-thing = <0>of </0><1>one living thing</1>
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
 Offline-suggestions-may-differ-from-online = Offline suggestions may differ from online suggestions, and taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
