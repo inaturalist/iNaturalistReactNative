@@ -537,6 +537,9 @@ Edits-this-observations-taxon = Edits this observation's taxon
 EDUCATORS = EDUCATORS
 EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
+# Common name of the frog Espadarana prosoblepon, shown in the sample
+# observation on the onboarding observation story screen
+Emerald-Glass-Frog = Emerald Glass Frog
 # Button that enables the camera's flash
 Enable-flash = Enable flash
 # Button that enables the camera to use location for suggestions
@@ -1735,6 +1738,9 @@ We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this f
 # Title of a camera tip about arachnids
 Web-burrow-or-surroundings = Web, burrow, or surroundings
 Welcome-back = Welcome back!
+# Onboarding observation story screen: label for the row showing what was seen
+# in the sample observation
+What = What
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 # Onboarding observation story screen: label for the row showing when the
