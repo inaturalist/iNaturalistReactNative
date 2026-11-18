@@ -122,7 +122,8 @@ unconditional `bg-white` while `text-white` beat `text-darkGray`, leaving white
 text on a white background — invisible, but still laid out and still tappable.
 
 **Which side wins** is whichever value Tailwind emits later. For colors that's
-the key order of `colors` in `tailwind.config.js`, so a base of `bg-white` or
+the key order of `colors` in `src/styles/tailwindTheme.json` (which
+`tailwind.config.js` reads), so a base of `bg-white` or
 `text-white` beats nearly any override — and reordering that config can break a
 component nobody touched.
 
