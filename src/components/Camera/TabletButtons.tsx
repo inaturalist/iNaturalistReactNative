@@ -13,6 +13,7 @@ import GreenCheckmark from "./Buttons/GreenCheckmark";
 import Location from "./Buttons/Location";
 import TakePhoto from "./Buttons/TakePhoto";
 import Zoom from "./Buttons/Zoom";
+import UploadCoachmark from "./Tips/UploadCoachmark";
 
 // h-10/w-10 = 2.5rem = 40px. Written as the literal Tailwind scale class
 // rather than an interpolated `h-[${CAMERA_BUTTON_DIM}px]` string: nativewind
@@ -58,6 +59,7 @@ interface Props {
   toggleLocation: ( ) => void;
   isDefaultMode: boolean;
   completeSentinelFile: ( ) => Promise<void>;
+  showUploadCoachmark?: boolean;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -96,6 +98,7 @@ const TabletButtons = ( {
   toggleLocation,
   isDefaultMode,
   completeSentinelFile,
+  showUploadCoachmark,
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -167,6 +170,7 @@ const TabletButtons = ( {
       { showZoomButton && <CameraButtonPlaceholder extraClassName="mt-[25px]" /> }
       { hasPhotoLibraryButton && (
         <View className="absolute bottom-6">
+          {showUploadCoachmark && <UploadCoachmark />}
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={disabledPhotoLibrary}

@@ -583,6 +583,8 @@ GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Onboarding message describing one of the reasons to use iNat
 Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
+# One-time tip in the sheet shown the first time the AI camera is opened
+Get-close-and-keep-your-photo-in-focus = Get close and keep your photo in focus
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
@@ -775,6 +777,8 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
+# One-time tip in the sheet shown the first time the AI camera is opened
+Look-for-wild-plants-animals-and-fungi = Look for wild plants, animals, and fungi
 # When the user searches their own observations for something they haven't observed
 Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
     Looks like you haven't observed this yet.
@@ -1030,6 +1034,8 @@ PEOPLE--title = PEOPLE
 Photo--project-rule = Photo
 Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
+# One-time tip in the sheet shown the first time the AI camera is opened
+Photograph-one-organism-at-a-time = Photograph one organism at a time
 Photos = Photos
 Photos-you-take-will-appear-here = Photos you take will appear here
 # Display name for the iconic taxa category for plantae
@@ -1397,6 +1403,8 @@ Syncing = Syncing...
 # Help text for the button that opens the multi-capture camera
 Take-photo = Take photo
 Take-photos = Take photos
+# One-time tip shown the first time the multi-capture camera is opened
+Take-photos-from-different-angles-to-help-with-identification = Take photos from different angles to help with identification
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 # Shown in place of a group of observations that failed to load, prompting the user to
 # request them again
@@ -1567,6 +1575,8 @@ We-dont-sell-your-data = We don’t sell your data
 We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this for observations you upload to iNaturalist
 Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
+# Header of the sheet shown the first time the AI camera is opened
+What-makes-a-good-observation = What makes a good observation?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
 WIKIPEDIA = WIKIPEDIA
@@ -1747,6 +1757,8 @@ You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per obser
 # Onboarding location permission screen: reassurance about how location is used
 You-can-adjust-your-location-privacy-on-every-observation = You can adjust your location privacy on every observation
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
+# One-time tip in the AI camera pointing at the button that opens the photo library
+You-can-also-upload-photos-from-your-gallery = You can also upload photos from your gallery
 # Body of the sheet shown when closing an onboarding education step; the demo can be replayed from Settings
 You-can-always-revisit-this-later-in-settings = You can always revisit this later in settings.
 You-can-click-join-on-the-project-page = You can click “join” on the project page.

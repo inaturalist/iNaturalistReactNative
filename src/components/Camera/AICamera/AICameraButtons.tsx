@@ -6,6 +6,7 @@ import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
 import TakePhoto from "components/Camera/Buttons/TakePhoto";
 import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
+import UploadCoachmark from "components/Camera/Tips/UploadCoachmark";
 import { View } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
@@ -33,6 +34,7 @@ interface Props {
   useLocation: boolean;
   toggleLocation: ( ) => void;
   completeSentinelFile: ( ) => Promise<void>;
+  showUploadCoachmark?: boolean;
 }
 
 const AICameraButtons = ( {
@@ -52,6 +54,7 @@ const AICameraButtons = ( {
   useLocation,
   toggleLocation,
   completeSentinelFile,
+  showUploadCoachmark,
 }: Props ) => {
   const { bottom } = useSafeAreaInsets( );
   const { isDefaultMode } = useLayoutPrefs();
@@ -79,6 +82,7 @@ const AICameraButtons = ( {
         toggleLocation={toggleLocation}
         isDefaultMode={isDefaultMode}
         completeSentinelFile={completeSentinelFile}
+        showUploadCoachmark={showUploadCoachmark}
       />
     );
   }
@@ -136,6 +140,7 @@ const AICameraButtons = ( {
           />
         </View>
         <View>
+          {showUploadCoachmark && <UploadCoachmark />}
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={takingPhoto}

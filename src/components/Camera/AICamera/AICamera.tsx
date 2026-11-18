@@ -1,8 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import useOneTimeTip, { CAMERA_TIP } from "components/Camera/hooks/useOneTimeTip";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
+import GoodObservationSheet from "components/Camera/Tips/GoodObservationSheet";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
@@ -140,6 +142,24 @@ const AICamera = ( {
 
   const { t } = useTranslation();
 
+  // One-time tips: the good-observation sheet first, then the upload coachmark
+  const {
+    alreadyShown: goodObservationSheetShown,
+    markShown: markGoodObservationSheetShown,
+    shouldShow: showGoodObservationSheet,
+  } = useOneTimeTip( CAMERA_TIP.GOOD_OBSERVATION_SHEET );
+  const {
+    markShown: markUploadCoachmarkShown,
+    shouldShow: uploadCoachmarkPending,
+  } = useOneTimeTip( CAMERA_TIP.UPLOAD_COACHMARK );
+  const showUploadCoachmark = goodObservationSheetShown && uploadCoachmarkPending;
+
+  // Leaving the camera also counts as having seen the coachmark. Screen
+  // readers activate controls without the touch that dismisses it below
+  useEffect( ( ) => ( ) => {
+    if ( showUploadCoachmark ) markUploadCoachmarkShown( );
+  }, [markUploadCoachmarkShown, showUploadCoachmark] );
+
   const resetCameraOnFocus = useCallback( ( ) => {
     setResult( null );
     resetZoom( );
@@ -227,7 +247,16 @@ const AICamera = ( {
   };
 
   return (
-    <>
+    // onTouchStart sees every touch on the camera without claiming it, so the
+    // tap that dismisses the coachmark still reaches the control underneath.
+    // This View is always rendered so the camera isn't remounted when the
+    // coachmark goes away
+    <View
+      className="flex-1"
+      onTouchStart={showUploadCoachmark
+        ? markUploadCoachmarkShown
+        : undefined}
+    >
       {device && (
         <View className="w-full h-full absolute z-0">
           <FrameProcessorCamera
@@ -334,8 +363,12 @@ const AICamera = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
         completeSentinelFile={() => completeSentinelFile( sentinelFileName )}
+        showUploadCoachmark={showUploadCoachmark}
       />
-    </>
+      {showGoodObservationSheet && (
+        <GoodObservationSheet onDismiss={markGoodObservationSheetShown} />
+      )}
+    </View>
   );
 };
 
