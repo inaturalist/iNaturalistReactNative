@@ -16,7 +16,11 @@ interface Props {
   animationOut?: string;
   disableSwipeDirection?: boolean;
   noAnimation?: boolean;
+  // Android back closes the modal unless this is false
+  closeOnBackPress?: boolean;
 }
+
+const ignoreBackPress = ( ) => undefined;
 
 const modalStyle = {
   flex: 1,
@@ -36,6 +40,7 @@ const Modal = ( {
   animationOut,
   backdropOpacity,
   closeModal,
+  closeOnBackPress = true,
   disableSwipeDirection,
   fullScreen = false,
   noAnimation = false,
@@ -52,8 +57,9 @@ const Modal = ( {
       isVisible={showModal}
       onBackdropPress={closeModal}
       onSwipeComplete={closeModal}
-      // Always close the modal when Android back button pressed
-      onRequestClose={closeModal}
+      onRequestClose={closeOnBackPress
+        ? closeModal
+        : ignoreBackPress}
       swipeDirection={swipeDirection}
       useNativeDriverForBackdrop
       useNativeDriver

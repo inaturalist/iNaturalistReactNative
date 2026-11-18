@@ -48,6 +48,8 @@ interface Props {
     { onClose, photoCount }: { onClose: ( ) => void; photoCount: number}
   ) => React.JSX.Element;
   onClose?: ( ) => void;
+  // Called when the cropper opens or closes
+  onCroppingChange?: ( cropping: boolean ) => void;
   onDeletePhoto?: ( uri: string ) => void;
   onDeleteSound?: ( uri: string ) => void;
   // Called with a photo's current URI and the path of its edited copy.
@@ -63,6 +65,7 @@ const MediaViewer = ( {
   deleting,
   header,
   onClose = ( ) => undefined,
+  onCroppingChange,
   onDeletePhoto,
   onDeleteSound,
   onEditPhoto,
@@ -136,6 +139,11 @@ const MediaViewer = ( {
   const [localFilePathToCrop, setLocalFilePathToCrop] = useState<string | null>( null );
   const [savingCrop, setSavingCrop] = useState( false );
   const uriToCrop = Photo.getLocalPhotoUri( localFilePathToCrop || undefined );
+  const cropping = !!uriToCrop;
+  useEffect( ( ) => {
+    onCroppingChange?.( cropping );
+    return ( ) => onCroppingChange?.( false );
+  }, [cropping, onCroppingChange] );
   const closeCropper = useCallback( ( ) => setLocalFilePathToCrop( null ), [] );
   const cropPhoto = useCallback( async ( cropRectangle: CropRectangle ) => {
     if ( !localFilePathToCrop ) return;

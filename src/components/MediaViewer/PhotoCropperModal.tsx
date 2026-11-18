@@ -37,6 +37,9 @@ const PhotoCropperModal = ( { localFilePath, onClose, onEditPhoto }: Props ) => 
       showModal={!!uri}
       fullScreen
       closeModal={onClose}
+      // Android's back gesture starts at the screen edges, where the crop
+      // frame's corners usually are, so dragging a corner would close the modal
+      closeOnBackPress={false}
       disableSwipeDirection
       modal={(
         <View

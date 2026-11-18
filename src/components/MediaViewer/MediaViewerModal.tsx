@@ -1,6 +1,6 @@
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import Modal from "components/SharedComponents/Modal";
-import React from "react";
+import React, { useState } from "react";
 
 interface PhotoItem {
   attribution?: string;
@@ -45,28 +45,36 @@ const MediaViewerModal = ( {
   showModal,
   sounds,
   uri,
-}: Props ) => (
-  <Modal
-    showModal={showModal}
-    fullScreen
-    closeModal={onClose}
-    disableSwipeDirection
-    modal={(
-      <MediaViewer
-        autoPlaySound={autoPlaySound}
-        editable={editable}
-        deleting={deleting}
-        header={header}
-        onClose={onClose}
-        onDeletePhoto={onDeletePhoto}
-        onDeleteSound={onDeleteSound}
-        onEditPhoto={onEditPhoto}
-        photos={photos}
-        sounds={sounds}
-        uri={uri}
-      />
-    )}
-  />
-);
+}: Props ) => {
+  const [cropping, setCropping] = useState( false );
+
+  return (
+    <Modal
+      showModal={showModal}
+      fullScreen
+      closeModal={onClose}
+      // Android's back gesture starts at the screen edges, where the crop
+      // frame's corners usually are, so dragging a corner would close the viewer
+      closeOnBackPress={!cropping}
+      disableSwipeDirection
+      modal={(
+        <MediaViewer
+          autoPlaySound={autoPlaySound}
+          editable={editable}
+          deleting={deleting}
+          header={header}
+          onClose={onClose}
+          onCroppingChange={setCropping}
+          onDeletePhoto={onDeletePhoto}
+          onDeleteSound={onDeleteSound}
+          onEditPhoto={onEditPhoto}
+          photos={photos}
+          sounds={sounds}
+          uri={uri}
+        />
+      )}
+    />
+  );
+};
 
 export default MediaViewerModal;
