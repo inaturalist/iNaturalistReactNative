@@ -1,7 +1,7 @@
 // State from one observation that outlives it and shows up in the next
-// observation or on another screen during the same app session. Each scenario
-// enforces today's (buggy) behavior on purpose: fixing the bug should be a
-// deliberate change to the expectation.
+// observation or on another screen during the same app session. Scenarios
+// tagged [bug] enforce today's (buggy) behavior on purpose: fixing the bug
+// should be a deliberate change to the expectation.
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
   createNavigationContainerRef,
@@ -34,7 +34,7 @@ import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
-import { renderMatch } from "./MatchRequirements/matchHarness";
+import { renderMatch } from "./matchHarness";
 import {
   ICONIC_TAXA,
   makeNewObservation,
@@ -42,7 +42,7 @@ import {
   makeWorld,
   suggestion,
   TAXA,
-} from "./MatchRequirements/matchWorld";
+} from "./matchWorld";
 
 jest.unmock( "@react-navigation/native" );
 
@@ -193,7 +193,7 @@ describe( "Observation flow state that outlives the observation", ( ) => {
   // back to that "editing" observation whenever it wasn't opened from
   // ObsDetails, so browsing any species in Explore centers its map on, and
   // pins, the place where the person made their last observation.
-  it( "S-01 after saving on Match, a species page opened from Explore pins the saved "
+  it( "S-01 [bug] after saving on Match, a species page opened from Explore pins the saved "
     + "observation's location on its map", async ( ) => {
     const observation = makeNewObservation( {
       latitude: 41.5, longitude: -93.6, positional_accuracy: 5,
@@ -228,7 +228,7 @@ describe( "Observation flow state that outlives the observation", ( ) => {
   // ObsDetails' Suggest ID only calls setObservations. So while Suggestions
   // loads for a different observation, the last AI camera species is offered
   // as a suggestion, and tapping it adds that species as an ID.
-  it( "S-02 after saving on Match, Suggest ID on another observation offers the earlier "
+  it( "S-02 [bug] after saving on Match, Suggest ID on another observation offers the earlier "
     + "AI camera species while loading", async ( ) => {
     await observeWithAICameraAndSaveOnMatch( makeNewObservation( {
       latitude: 41.5, longitude: -93.6, positional_accuracy: 5,
@@ -294,7 +294,7 @@ describe( "Regrouping imported photos after viewing them in ObsEdit", ( ) => {
   // to GroupPhotos, and setObservations picks the new current observation by
   // that old index. After combining, the batch is shorter than the index, so
   // ObsEdit opens with no current observation: no photos, no fields, no Save.
-  it( "S-03 viewing the 2nd of 2 imported observations, going back and combining them "
+  it( "S-03 [bug] viewing the 2nd of 2 imported observations, going back and combining them "
     + "opens an empty ObsEdit", async ( ) => {
     renderApp( );
     await navigateToPhotoImporterFromMyObs( );
@@ -322,7 +322,7 @@ describe( "Regrouping imported photos after viewing them in ObsEdit", ( ) => {
   // for all observations, and the standard camera counts it toward the
   // 20-photos-per-observation limit (on top of the current observation's own
   // photos, which prepareCamera puts in cameraUris).
-  it( "S-04 after importing 19 photos as 19 observations, the camera won't add a "
+  it( "S-04 [bug] after importing 19 photos as 19 observations, the camera won't add a "
     + "photo to one that has a single photo", async ( ) => {
     const fileNames = Array.from( { length: 19 }, ( _, i ) => `photo-${i}.jpg` );
     jest.spyOn( ImagePicker, "launchImageLibrary" ).mockImplementation( ( ) => ( {

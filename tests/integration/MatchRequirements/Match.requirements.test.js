@@ -3,8 +3,9 @@
 // behavior. When V2 runs these, a different outcome has to be written down as
 // an explicit V2 expectation, not discovered.
 //
-// Scenarios marked SUSPECTED BUG enforce behavior that is probably wrong, on
-// purpose: fixing it should be a deliberate change to the expectation.
+// Scenarios tagged [bug] in their title enforce behavior that is probably
+// wrong, on purpose: fixing it should be a deliberate change to the
+// expectation. A SUSPECTED BUG comment on each explains the cause.
 import * as Exify from "@lodev09/react-native-exify";
 import {
   act, screen, userEvent, waitFor,
@@ -348,6 +349,52 @@ describe( "Choosing and saving", ( ) => {
     await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "TabNavigator" ) );
     expect( savedObservation( observation.uuid ) ).toBeFalsy( );
   } );
+
+  // SUSPECTED BUG: addCameraRollUris pushes into the array it finds in the
+  // store, and resetObservationFlowSlice puts the same DEFAULT_STATE array
+  // back, so camera-roll copies pile up for the whole app session. Every Save
+  // on Match then stamps the new observation's location into the EXIF of
+  // every photo the app saved to the camera roll earlier.
+  it( "B-01 [bug] saving a second observation rewrites the location of the first one's "
+    + "camera-roll photo", async ( ) => {
+    const { resetObservationFlowSlice, addCameraRollUris } = useStore.getState( );
+    Exify.write.mockClear( );
+    try {
+      // First observation: AI camera at the trailhead, saved from Match
+      resetObservationFlowSlice( ); // what the AI camera button does first
+      addCameraRollUris( ["ph://trailhead-photo"] ); // the camera's photo-library copy
+      const first = makeNewObservation( {
+        latitude: 41.5, longitude: -93.6, positional_accuracy: 5,
+      } );
+      const firstVisit = await showMatchWith( first, CONFIDENT_RESULTS );
+      await firstVisit.impl.pressSave( actor );
+      await waitFor( ( ) => expect( firstVisit.currentRoute( ).name ).toBe( "TabNavigator" ) );
+      expect( Exify.write ).toHaveBeenCalledTimes( 1 );
+      screen.unmount( );
+
+      // Second observation, somewhere else
+      world.reset( );
+      Exify.write.mockClear( );
+      resetObservationFlowSlice( );
+      expect( useStore.getState( ).cameraRollUris ).toEqual( ["ph://trailhead-photo"] );
+      addCameraRollUris( ["ph://summit-photo"] );
+      const second = makeNewObservation( {
+        latitude: 44.2, longitude: -71.3, positional_accuracy: 5,
+      } );
+      const secondVisit = await showMatchWith( second, CONFIDENT_RESULTS );
+      await secondVisit.impl.pressSave( actor );
+      await waitFor( ( ) => expect( secondVisit.currentRoute( ).name ).toBe( "TabNavigator" ) );
+      expect( Exify.write ).toHaveBeenCalledTimes( 2 );
+      expect( Exify.write ).toHaveBeenCalledWith( "ph://trailhead-photo", expect.objectContaining( {
+        GPSLatitude: 44.2,
+        GPSLongitude: -71.3,
+      } ) );
+    } finally {
+      // The leaked array is module-level state; empty it for later scenarios
+      useStore.getState( ).resetObservationFlowSlice( );
+      useStore.getState( ).cameraRollUris.splice( 0 );
+    }
+  } );
 } );
 
 describe( "Leaving to other screens", ( ) => {
@@ -447,7 +494,7 @@ describe( "Network", ( ) => {
     expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.compassPlant.id } );
   } );
 
-  it( "R-NET-05 API errors (500): tries 3 times over about 4 seconds, then uses the "
+  it( "R-NET-05 [bug] API errors (500): tries 3 times over about 4 seconds, then uses the "
     + "on-device model", async ( ) => {
     world.onlineAlwaysFails( 500 );
     world.setObservation( observationWithLocation( ) );
@@ -498,7 +545,7 @@ describe( "Network", ( ) => {
 
   // SUSPECTED BUG: the hook rethrows the model's error during render, and
   // main has no error boundary, so in the app this takes the whole app down
-  it( "R-NET-07 offline and the on-device model fails: the screen crashes", async ( ) => {
+  it( "R-NET-07 [bug] offline and the on-device model fails: the screen crashes", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     const { impl } = renderMatch( );
@@ -509,7 +556,8 @@ describe( "Network", ( ) => {
 
   // SUSPECTED BUG: losing the connection throws away an online answer the
   // person is already looking at
-  it( "R-NET-08 connection drops while a result is showing: the result is replaced", async ( ) => {
+  it( "R-NET-08 [bug] connection drops while a result is showing: "
+    + "the result is replaced", async ( ) => {
     const { impl } = await showMatchWith( observationWithLocation( ), CONFIDENT_RESULTS );
     await world.setNetwork( false );
     // Briefly looks like nothing was found, with no “Analyzing” overlay
@@ -548,6 +596,44 @@ describe( "Network", ( ) => {
     expect( impl.read( ALL_TAXA ).top ).toMatchObject( {
       id: TAXA.cupPlant.id,
       showsCommonName: true,
+    } );
+  } );
+
+  // SUSPECTED BUG: once the first request times out, useOnlineSuggestions
+  // keeps `timedOut` true for good and hides every online answer. The GPS fix
+  // still makes the screen show "Analyzing" and ask the API again with the
+  // location, but that answer is thrown away and the on-device guess stays.
+  it( "B-02 [bug] after a slow first answer, the online answer asked for with the GPS "
+    + "location is ignored", async ( ) => {
+    const observation = makeNewObservation( );
+    world.setObservation( observation );
+    const { impl, currentRoute } = renderMatch( );
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 1 ) );
+    await world.advance( 5_000 );
+    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
+    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.compassPlant.id } );
+
+    await world.deliverGpsFix( { latitude: 10, longitude: 20 } );
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 2 ) );
+    expect( world.onlineCalls( )[1] ).toMatchObject( { lat: 10, lng: 20 } );
+    expect( impl.read( ALL_TAXA ).analyzing ).toBe( true );
+    // The API answers the new request quickly and confidently
+    await world.respondOnline( [suggestion( TAXA.rosinweed, 97 )], { call: 1 } );
+    // The on-device model is run again with the location too
+    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    await world.advance( 1_000 );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.compassPlant.id } );
+    expect( impl.read( ALL_TAXA ).alternatives ).not.toContain( TAXA.rosinweed.id );
+
+    await impl.pressSave( actor );
+    await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "TabNavigator" ) );
+    expect( savedObservation( observation.uuid ) ).toMatchObject( {
+      taxon: { id: TAXA.compassPlant.id },
+      latitude: 10,
+      longitude: 20,
     } );
   } );
 } );
@@ -635,7 +721,7 @@ describe( "Location", ( ) => {
   // SUSPECTED BUG: the GPS answer is ignored until a photo upload has been
   // prepared, which never happens offline, so the observation is saved
   // without the location the phone found
-  it( "R-LOC-06 offline from the start: the GPS location is never added to the "
+  it( "R-LOC-06 [bug] offline from the start: the GPS location is never added to the "
     + "observation", async ( ) => {
     world.setNetwork( false );
     const observation = makeNewObservation( );
@@ -736,7 +822,7 @@ describe( "Location", ( ) => {
   // SUSPECTED BUG: the place name is looked up with the location from before
   // the fix that triggered it, so it is missing after one fix and one fix
   // behind after more
-  it( "R-LOC-12 GPS answers: the place name lags one fix behind", async ( ) => {
+  it( "R-LOC-12 [bug] GPS answers: the place name lags one fix behind", async ( ) => {
     Geocoder.geocodePosition.mockImplementation( ( { lat } ) => Promise.resolve( [
       lat === 38.51
         ? { locality: "Fort Ross", adminArea: "CA", countryCode: "US" }
@@ -765,6 +851,46 @@ describe( "Location", ( ) => {
     await goBack( );
     await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "Match" ) );
     await waitFor( ( ) => expect( world.gps.watching ).toBe( 2 ) );
+  } );
+
+  // SUSPECTED BUG: the GPS watch is a focus effect and `needLocation` never
+  // turns off, so coming back from the location picker starts GPS again and
+  // the next fix silently replaces the location the person just picked
+  it( "B-03 [bug] GPS failed, location picked by hand: coming back restarts GPS and the "
+    + "next fix replaces the pick", async ( ) => {
+    const observation = makeNewObservation( );
+    const { impl, currentRoute, goBack } = await showMatchWith( observation, CONFIDENT_RESULTS );
+    await world.failGps( );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).addLocationBusy ).toBe( false ) );
+    await impl.pressAddLocation( actor );
+    await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "LocationPicker" ) );
+    await world.pickLocation( { latitude: 10, longitude: 20 } );
+    await goBack( );
+    await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "Match" ) );
+    expect( impl.read( ALL_TAXA ).map ).toBe( true );
+    // GPS starts again even though the observation now has a location
+    expect( world.gps.watching ).toBe( 2 );
+
+    await world.deliverGpsFix( { latitude: 38.5, longitude: -123.2 } );
+    await world.advance( 1_000 );
+    expect( useStore.getState( ).currentObservation ).toMatchObject( {
+      latitude: 38.5,
+      longitude: -123.2,
+      // ...while the picked place's name stays, so the two now disagree
+      place_guess: "Picked place",
+    } );
+    // and the AI is asked again with the GPS position, not the pick
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 2 ) );
+    expect( world.onlineCalls( )[1] ).toMatchObject( { lat: 38.5, lng: -123.2 } );
+    await world.respondOnline( CONFIDENT_RESULTS );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+
+    await impl.pressSave( actor );
+    await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "TabNavigator" ) );
+    expect( savedObservation( observation.uuid ) ).toMatchObject( {
+      latitude: 38.5,
+      longitude: -123.2,
+    } );
   } );
 } );
 
@@ -802,7 +928,7 @@ describe( "Coming back and changing your mind", ( ) => {
 
   // SUSPECTED BUG: the screen keeps looking for the earlier pick, finds
   // nothing, and shows no match even though the new results have a confident one
-  it( "R-CHOOSE-03 a chosen suggestion missing from the new GPS results: no match shown "
+  it( "R-CHOOSE-03 [bug] a chosen suggestion missing from the new GPS results: no match shown "
     + "", async ( ) => {
     const observation = makeNewObservation( );
     const { impl, currentRoute } = await showMatchWith( observation, CONFIDENT_RESULTS );
@@ -827,7 +953,8 @@ describe( "Coming back and changing your mind", ( ) => {
 
   // SUSPECTED BUG: a group the person picked goes to ObsEdit marked as the
   // AI's ID, while saving the same pick from Match marks it as theirs
-  it( "R-NAV-05 edit after picking a group: ObsEdit gets the group as an AI ID", async ( ) => {
+  it( "R-NAV-05 [bug] edit after picking a group: "
+    + "ObsEdit gets the group as an AI ID", async ( ) => {
     const { impl, currentRoute } = await showMatchWith( observationWithLocation( ), [] );
     await impl.chooseGroup( actor, ICONIC_TAXA[0] );
     await impl.pressEdit( actor );
@@ -1044,7 +1171,7 @@ describe( "Deeper: photos, map, and returning with a location", ( ) => {
 
   // SUSPECTED BUG: the button says the location gives better IDs, but a
   // location picked by hand is never sent to the AI
-  it( "R-LOC-14 location picked by hand: the map appears but the AI isn't asked again "
+  it( "R-LOC-14 [bug] location picked by hand: the map appears but the AI isn't asked again "
     + "", async ( ) => {
     world.denyLocationPermission( );
     const { impl, currentRoute, goBack } = await showMatchWith(
@@ -1068,7 +1195,7 @@ describe( "Deeper: photos, map, and returning with a location", ( ) => {
 describe( "Deeper: the on-device model", ( ) => {
   // SUSPECTED BUG: the location only reaches the model through the online
   // request's parameters, which are never prepared offline
-  it( "R-NET-10 offline from the start: the on-device model ignores the observation's "
+  it( "R-NET-10 [bug] offline from the start: the on-device model ignores the observation's "
     + "location", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
@@ -1229,7 +1356,8 @@ describe( "Third pass: edges", ( ) => {
   // SUSPECTED BUG: the stop waits for an online attempt that never happens,
   // so offline visits end only by the trace's own 10 second timeout and are
   // reported as timeouts
-  it( "R-PERF-03 offline from the start: the performance trace is never stopped", async ( ) => {
+  it( "R-PERF-03 [bug] offline from the start: "
+    + "the performance trace is never stopped", async ( ) => {
     const stopFirebaseTrace = jest.fn( );
     useStore.setState( { stopFirebaseTrace } );
     world.setNetwork( false );
@@ -1279,7 +1407,8 @@ describe( "Fourth pass: boundaries and stale data", ( ) => {
 
   // SUSPECTED BUG: the device's stored taxon is merged over the API's, so an
   // outdated stored name wins, even though the fresh one is then saved
-  it( "R-RESULT-15 a name stored on the device beats the fresh one from the API", async ( ) => {
+  it( "R-RESULT-15 [bug] a name stored on the device beats "
+    + "the fresh one from the API", async ( ) => {
     realm( ).write( ( ) => {
       realm( ).create( "Taxon", {
         id: TAXA.cupPlant.id,
@@ -1353,7 +1482,7 @@ describe( "Fifth pass: taxa already stored on the device", ( ) => {
 
   // SUSPECTED BUG: the photo area reads `defaultPhoto`, but stored taxa expose
   // `default_photo`, and an empty stored photo list skips the fallback anyway
-  it( "R-PHOTO-04 offline: a stored taxon's photo is never shown beside the observation "
+  it( "R-PHOTO-04 [bug] offline: a stored taxon's photo is never shown beside the observation "
     + "photo", async ( ) => {
     storeCupPlantWithPhoto( );
     world.setNetwork( false );
@@ -1373,7 +1502,7 @@ describe( "Fifth pass: taxa already stored on the device", ( ) => {
   // and the API's default_photo is read as defaultPhoto, so only the
   // representative photo is ever available and the 2 and 3 photo layouts
   // never appear
-  it( "R-PHOTO-05 online with a representative, a default and 3 taxon photos: only "
+  it( "R-PHOTO-05 [bug] online with a representative, a default and 3 taxon photos: only "
     + "1 taxon photo shows", async ( ) => {
     const taxonWithPhotos = {
       ...TAXA.cupPlant,

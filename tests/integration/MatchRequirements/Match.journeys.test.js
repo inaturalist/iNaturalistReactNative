@@ -1,6 +1,6 @@
-// Bugs found by following a person from Match to the screens next to it and
-// back, with those screens rendered for real instead of stubbed. Each scenario
-// enforces today's (buggy) behavior on purpose: fixing the bug should be a
+// Following a person from Match to the screens next to it and back, with
+// those screens rendered for real instead of stubbed. Scenarios tagged [bug]
+// enforce today's (buggy) behavior on purpose: fixing the bug should be a
 // deliberate change to the expectation.
 import {
   screen, userEvent, waitFor,
@@ -156,7 +156,7 @@ describe( "Match → Edit → species page", ( ) => {
   // THIS TAXON. Discard there leaves the flow without saving
   // (useExitObservationFlow) and without the warning ObsEdit would give, so
   // the new observation is gone.
-  it( "J-01 Edit, Identify, species info: Discard throws away the new observation "
+  it( "J-01 [bug] Edit, Identify, species info: Discard throws away the new observation "
     + "with no warning", async ( ) => {
     const observation = observationWithLocation( );
     const { impl, currentRoute, stack } = await showMatchWith(
@@ -200,7 +200,7 @@ describe( "Match → Edit → back to Match", ( ) => {
   // `unsavedChanges`. So if GPS hasn't settled before the person taps the
   // pencil, backing out warns about changes they never made, and the only way
   // back to Match throws the location away. Match then starts GPS again.
-  it( "J-02 Edit before GPS settles, then back: warns about changes the person "
+  it( "J-02 [bug] Edit before GPS settles, then back: warns about changes the person "
     + "didn't make and drops the location", async ( ) => {
     const observation = makeNewObservation( );
     const { impl, currentRoute } = await showMatchWith(
@@ -238,7 +238,7 @@ describe( "Match → Edit → back to Match", ( ) => {
   // coordinates but no place name (the camera's lookup timed out, or Match's
   // own lookup lags, see R-LOC-12), so just opening ObsEdit and backing out
   // warns about changes, and discarding drops the place name.
-  it( "J-03 Edit on an observation without a place name, then back: warns about "
+  it( "J-03 [bug] Edit on an observation without a place name, then back: warns about "
     + "changes the person didn't make", async ( ) => {
     geocodeSpy = jest.spyOn( Geocoder, "geocodePosition" ).mockImplementation(
       ( ) => Promise.resolve( [{ locality: "Ames", adminArea: "IA", countryCode: "US" }] ),
@@ -282,7 +282,7 @@ describe( "Match → My Observations", ( ) => {
   // to wherever My Observations was last scrolled (useNavigateToObsEdit.ts:46).
   // So after a trip to ObsEdit and back, saving on Match lands the person
   // part way down their list with the new observation out of sight.
-  it( "J-04 Edit and back, then Save: My Observations is told to reopen scrolled "
+  it( "J-04 [bug] Edit and back, then Save: My Observations is told to reopen scrolled "
     + "down, away from the new observation", async ( ) => {
     // How far down My Observations the person was before opening the camera
     useStore.setState( { myObsOffset: 2400, myObsOffsetToRestore: 0 } );
