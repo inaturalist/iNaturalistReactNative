@@ -2,6 +2,7 @@ import { tailwindFontBold } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistItem";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
+import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
 import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
@@ -13,19 +14,13 @@ import Body3 from "components/SharedComponents/Typography/Body3";
 import Body4 from "components/SharedComponents/Typography/Body4";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import List2 from "components/SharedComponents/Typography/List2";
-import { Text, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import { formatDateString } from "sharedHelpers/dateAndTime";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
-
-// For strings whose <1> spans are bold
-const BOLD_SPANS = [
-  <Text key="0" />,
-  <Text key="1" className={tailwindFontBold} />,
-];
 
 // Hardcoded sample obsservtion for the story card
 const STORY_OBSERVATION = {
@@ -143,10 +138,7 @@ const ObsStoryStep = ( ) => {
       <Heading1 accessibilityRole="header">
         <Trans
           i18nKey="Every-observation-tells-a-story"
-          components={[
-            <Text key="0" />,
-            <Text key="1" className="underline" />,
-          ]}
+          components={UNDERLINED_SPANS}
         />
       </Heading1>
       <Body2 className="my-3">{t( "An-observation-is" )}</Body2>
