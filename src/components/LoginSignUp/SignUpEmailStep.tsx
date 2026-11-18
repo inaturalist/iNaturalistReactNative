@@ -118,7 +118,7 @@ const SignUpEmailStep = ( ) => {
       />
       <View className="mt-[39px]">
         <ThirdPartySignInButtons
-          disabled={checking}
+          disabled={busy}
           onBusyChange={setSigningIn}
           onSignedIn={signedIn}
         />

@@ -594,16 +594,19 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
     } );
 
-    it( "holds off Continue while signing in with Google", async ( ) => {
+    it( "holds off Continue and the Google button while signing in with Google", async ( ) => {
       let finishSignIn;
       signInWithGoogle.mockReturnValueOnce( new Promise( resolve => { finishSignIn = resolve; } ) );
       renderApp( );
       await continueTo( "signup_email" );
       await enterEmail( "new@example.com" );
-      await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
+      const googleButton = screen.getByTestId( "ThirdPartySignIn.google" );
+      await actor.press( googleButton );
       expect( continueButton( ) ).toBeDisabled( );
+      expect( googleButton ).toBeDisabled( );
       await act( async ( ) => finishSignIn( { success: false } ) );
       expect( continueButton( ) ).toBeEnabled( );
+      expect( googleButton ).toBeEnabled( );
     } );
 
     it( "shows the location step after signing in with Google during onboarding", async ( ) => {

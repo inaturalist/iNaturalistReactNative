@@ -2,7 +2,7 @@ import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { Image, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useState } from "react";
+import React from "react";
 import { Platform } from "react-native";
 import { log } from "sharedHelpers/logger";
 import useTranslation from "sharedHooks/useTranslation";
@@ -17,32 +17,24 @@ const { useRealm } = RealmContext;
 const logger = log.extend( "ThirdPartySignInButtons" );
 
 interface Props {
-  // Disables the buttons while the screen is busy with something else, like
-  // a username/password login
-  disabled?: boolean;
-  // Called with true when a sign-in starts and false when it ends, so the
-  // screen can show it's busy and hold off its own submit
-  onBusyChange?: ( busy: boolean ) => void;
+  // True while the screen is busy, including with a sign-in started here
+  disabled: boolean;
+  // Called with true when a sign-in starts and false when it ends. The screen
+  // owns the busy state: it disables these buttons and its own submit with it.
+  onBusyChange: ( busy: boolean ) => void;
   onSignedIn: ( ) => void;
 }
 
 // Sign in with Apple (iOS only) and Google. An unsuccessful sign-in does
 // nothing here: a cancel needs no message, and the helpers have already
 // alerted about a failure. An unexpected error is only logged.
-const ThirdPartySignInButtons = ( { disabled = false, onBusyChange, onSignedIn }: Props ) => {
+const ThirdPartySignInButtons = ( { disabled, onBusyChange, onSignedIn }: Props ) => {
   const { t } = useTranslation( );
   const realm = useRealm( );
   const applySignInPrefs = useApplySignInPrefs( );
-  const [signingIn, setSigningIn] = useState( false );
-  const buttonsDisabled = disabled || signingIn;
-
-  const setBusy = ( busy: boolean ) => {
-    setSigningIn( busy );
-    onBusyChange?.( busy );
-  };
 
   const signIn = async ( signInWithProvider: ( ) => Promise<AuthenticateUserResult> ) => {
-    setBusy( true );
+    onBusyChange( true );
     let result: AuthenticateUserResult;
     try {
       result = await signInWithProvider( );
@@ -50,7 +42,7 @@ const ThirdPartySignInButtons = ( { disabled = false, onBusyChange, onSignedIn }
       logger.error( "Third-party sign-in failed unexpectedly", signInError );
       result = { success: false };
     } finally {
-      setBusy( false );
+      onBusyChange( false );
     }
     if ( !result.success ) return;
     applySignInPrefs( result.observationsCount );
@@ -66,7 +58,7 @@ const ThirdPartySignInButtons = ( { disabled = false, onBusyChange, onSignedIn }
         { Platform.OS === "ios" && (
           <INatIconButton
             onPress={( ) => signIn( ( ) => signInWithApple( realm ) )}
-            disabled={buttonsDisabled}
+            disabled={disabled}
             className="mr-8"
             icon="apple"
             // The svg icon for the Apple logo was downloaded from Apple,
@@ -84,7 +76,7 @@ const ThirdPartySignInButtons = ( { disabled = false, onBusyChange, onSignedIn }
         ) }
         <INatIconButton
           onPress={( ) => signIn( ( ) => signInWithGoogle( realm ) )}
-          disabled={buttonsDisabled}
+          disabled={disabled}
           backgroundColor={colors.white}
           accessibilityLabel={t( "Sign-in-with-Google" )}
           mode="contained"
