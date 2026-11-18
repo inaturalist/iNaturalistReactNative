@@ -421,6 +421,12 @@ datetime-format-long = Pp
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-long-with-zone = Pp (zzz)
+# Medium-length datetime with time zone, e.g. the sample observation in
+# onboarding. See complete list of formatting styles at
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
+# characters at
+# https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
+datetime-format-medium-with-zone = PP · p zzz
 # Shorter datetime, e.g. on observation detail view
 # See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-short = M/d/yy h:mm a
@@ -1731,7 +1737,16 @@ Web-burrow-or-surroundings = Web, burrow, or surroundings
 Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
+# Onboarding observation story screen: label for the row showing when the
+# sample observation was made
+When = When
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
+# Onboarding observation story screen: label for the row showing where the
+# sample observation was made
+Where = Where
+# Onboarding observation story screen: label for the row showing who made the
+# sample observation
+Who = Who
 # Title of a camera tip about fishes
 Whole-body-from-the-side--fishes = Whole body from the side
 # Title of a camera tip about mammals

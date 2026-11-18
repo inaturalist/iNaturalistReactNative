@@ -3,11 +3,18 @@ import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistIt
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
+import INatIcon from "components/SharedComponents/INatIcon";
+import ObservationLocation from "components/SharedComponents/ObservationLocation";
+import Body1 from "components/SharedComponents/Typography/Body1";
 import Body2 from "components/SharedComponents/Typography/Body2";
+import Body3 from "components/SharedComponents/Typography/Body3";
+import Body4 from "components/SharedComponents/Typography/Body4";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import { Text, View } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
+import { formatDateString } from "sharedHelpers/dateAndTime";
 import useTranslation from "sharedHooks/useTranslation";
 
 // For strings whose <1> spans are bold
@@ -15,6 +22,62 @@ const BOLD_SPANS = [
   <Text key="0" />,
   <Text key="1" className={tailwindFontBold} />,
 ];
+
+// Hardcoded sample obsservtion for the story card
+const STORY_OBSERVATION = {
+  userLogin: "tiwane",
+  placeGuess: "Heredia, Sarapiquí, Costa Rica",
+  observedOn: "2023-03-25T20:38:00-06:00",
+  timeZone: "America/Costa_Rica",
+};
+
+interface StoryCardRowProps extends PropsWithChildren {
+  label: string;
+}
+
+const StoryCardRow = ( { label, children }: StoryCardRowProps ) => (
+  <View className="flex-row items-center">
+    <Body1 className={`w-[52px] mr-[19px] ${tailwindFontBold}`}>{label}</Body1>
+    <View className="flex-1">{children}</View>
+  </View>
+);
+
+const StoryCard = ( ) => {
+  const { t, i18n } = useTranslation( );
+
+  return (
+    <View
+      className={
+        "mt-[47px] mx-[3px] gap-[11px] rounded-[30px] border-4 border-inatGreen "
+        + "bg-lightGreen p-5"
+      }
+    >
+      <StoryCardRow label={t( "Who" )}>
+        <View className="flex-row items-center">
+          {/* placeholder until the bundled avatar is added */}
+          <INatIcon name="person" size={22} />
+          <Body3 className="ml-[7px]">{STORY_OBSERVATION.userLogin}</Body3>
+        </View>
+      </StoryCardRow>
+      <StoryCardRow label={t( "Where" )}>
+        <ObservationLocation observation={{ place_guess: STORY_OBSERVATION.placeGuess }} />
+      </StoryCardRow>
+      <StoryCardRow label={t( "When" )}>
+        <View className="flex-row items-center">
+          <INatIcon name="date" size={13} />
+          <Body4 className="ml-[5px]">
+            {formatDateString(
+              STORY_OBSERVATION.observedOn,
+              t( "datetime-format-medium-with-zone" ),
+              i18n,
+              { timeZone: STORY_OBSERVATION.timeZone },
+            )}
+          </Body4>
+        </View>
+      </StoryCardRow>
+    </View>
+  );
+};
 
 const ObsStoryStep = ( ) => {
   const { t } = useTranslation( );
@@ -57,6 +120,7 @@ const ObsStoryStep = ( ) => {
           <Trans i18nKey="at-the-time-and-place-you-saw-it" components={BOLD_SPANS} />
         </OnboardingChecklistItem>
       </View>
+      <StoryCard />
     </OnboardingStepLayout>
   );
 };
