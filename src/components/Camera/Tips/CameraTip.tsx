@@ -5,8 +5,8 @@ import React, { useEffect } from "react";
 import { AccessibilityInfo } from "react-native";
 
 interface Props {
-  // Adds an arrow on that side of the bubble, pointing away from it
-  arrow?: "right";
+  // Adds an arrow under the bubble's right corner, pointing down
+  arrow?: "down-right";
   // Positions the tip; it has no position of its own
   className?: string;
   testID?: string;
@@ -25,18 +25,23 @@ const CameraTip = ( {
 
   return (
     <View
-      className={classnames( "flex-row items-center", className )}
+      className={classnames( "items-end", className )}
       pointerEvents="none"
       testID={testID}
     >
-      <View className="shrink bg-white rounded-2xl px-5 py-4">
+      <View
+        className={classnames(
+          "bg-white rounded-2xl px-5 py-4",
+          { "rounded-br-none": arrow === "down-right" },
+        )}
+      >
         <Body2>{text}</Body2>
       </View>
-      {arrow === "right" && (
+      {arrow === "down-right" && (
         <View
           className={classnames(
-            "border-t-[10px] border-b-[10px] border-y-[#00000000]",
-            "border-l-[16px] border-l-white",
+            "border-l-[10px] border-r-[10px] border-x-[#00000000]",
+            "border-t-[16px] border-t-white",
           )}
         />
       )}

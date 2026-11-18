@@ -22,7 +22,7 @@ const MultiCaptureTip = ( { hasNewPhotos }: Props ) => {
 
   return (
     <CameraTip
-      className="absolute top-4 left-5 right-5 justify-center"
+      className="absolute top-4 self-center mx-5"
       testID="MultiCaptureTip"
       text={t( "Take-photos-from-different-angles-to-help-with-identification" )}
     />
