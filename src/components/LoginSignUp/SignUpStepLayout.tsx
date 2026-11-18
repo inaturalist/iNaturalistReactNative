@@ -1,6 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import useOnboardingExitSheet from "components/Onboarding/useOnboardingExitSheet";
-import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import {
   Image, LinearGradient, ScrollView, View,
@@ -27,17 +25,21 @@ interface Props extends PropsWithChildren {
   backgroundSource: ImageSourcePropType;
   // Pinned to the bottom of the screen, below the scrolling content
   footer?: ReactNode;
+  // Shows a close button when set
+  onClose?: ( ) => void;
+  // Also prefixes the back and close buttons' testIDs
+  testID: string;
 }
 
-// Frame for the onboarding sign-up steps: a dark photo background, a back
-// button, and a close button on steps with an exit sheet
-const SignUpStepLayout = ( { backgroundSource, children, footer }: Props ) => {
+// Frame for the sign-up screens: a dark photo background, a back button, and
+// an optional close button
+const SignUpStepLayout = ( {
+  backgroundSource, children, footer, onClose, testID,
+}: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const insets = useSafeAreaInsets( );
   const { width } = useWindowDimensions( );
-  const { stepId } = useOnboardingFlow( );
-  const { exitSheet, exitSheetElement, openExitSheet } = useOnboardingExitSheet( stepId );
   const backgroundHeight = width * BACKGROUND_ASPECT_RATIO;
   const backgroundStyle = { width, height: backgroundHeight };
   // Shrinks on short screens so the form stays above the fold
@@ -54,7 +56,7 @@ const SignUpStepLayout = ( { backgroundSource, children, footer }: Props ) => {
     <View
       className="flex-1 bg-black"
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
-      testID={`Onboarding.${stepId}`}
+      testID={testID}
     >
       <StatusBar barStyle="light-content" />
       <Image
@@ -80,17 +82,17 @@ const SignUpStepLayout = ( { backgroundSource, children, footer }: Props ) => {
           color={colors.white}
           accessibilityLabel={t( "Go-back" )}
           onPress={( ) => navigation.goBack( )}
-          testID={`Onboarding.${stepId}.back`}
+          testID={`${testID}.back`}
         />
-        {exitSheet && (
+        {onClose && (
           <INatIconButton
             icon="close"
             size={19}
             color={colors.white}
             accessibilityLabel={t( "Close" )}
             accessibilityHint={t( "Asks-whether-to-exit" )}
-            onPress={openExitSheet}
-            testID={`Onboarding.${stepId}.close`}
+            onPress={onClose}
+            testID={`${testID}.close`}
           />
         )}
       </View>
@@ -111,7 +113,6 @@ const SignUpStepLayout = ( { backgroundSource, children, footer }: Props ) => {
           {footer}
         </View>
       )}
-      {exitSheetElement}
     </View>
   );
 };

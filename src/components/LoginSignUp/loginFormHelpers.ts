@@ -31,43 +31,31 @@ function showSignInWithAppleFailed() {
 }
 
 async function signInWithApple( realm: Realm ): Promise<AuthenticateUserResult> {
-  // Request sign in w/ apple. This should pop up some system UI for signing
-  // in
-  let appleAuthRequestResponse;
   try {
-    appleAuthRequestResponse = await appleAuth.performRequest( {
+    // Request sign in w/ apple. This should pop up some system UI for signing
+    // in
+    const appleAuthRequestResponse = await appleAuth.performRequest( {
       requestedOperation: appleAuth.Operation.LOGIN,
       // Note: it appears putting FULL_NAME first is important, see issue #293
       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
     } );
-  } catch ( appleAuthRequestError ) {
-    if ( ( appleAuthRequestError as AppleAuthError ).code === appleAuth.Error.CANCELED ) {
-      // The user canceled sign in, no need to log
-      return { success: false };
-    }
-    logger.error( "Apple auth request failed", appleAuthRequestError );
-    showSignInWithAppleFailed();
-    return { success: false };
-  }
 
-  // Check if auth was successful
-  let credentialState;
-  try {
-    credentialState = await appleAuth.getCredentialStateForUser(
+    // Check if auth was successful
+    const credentialState = await appleAuth.getCredentialStateForUser(
       appleAuthRequestResponse.user,
     );
-  } catch ( credentialStateError ) {
-    logger.error( "Failed to get Apple credential state", credentialStateError );
-    showSignInWithAppleFailed();
-    return { success: false };
-  }
+    if ( credentialState !== appleAuth.State.AUTHORIZED ) {
+      // We only get here if the user does not grant access... I think, so no
+      // need to log an error
+      logger.info( "Apple auth failed, credentialState: ", credentialState );
+      showSignInWithAppleFailed();
+      return { success: false };
+    }
 
-  // If it was, send the identity token to iNat for verification and iNat
-  // auth
-  if ( credentialState === appleAuth.State.AUTHORIZED ) {
-    // Note that we're supporting an irregular assertion that is a JSON object
-    // w/ the actual identityToken (which is itself a JSON Web Token), and
-    // the user's name, which we only get from Apple the *first* time that
+    // If it was, send the identity token to iNat for verification and iNat
+    // auth. Note that we're supporting an irregular assertion that is a JSON
+    // object w/ the actual identityToken (which is itself a JSON Web Token),
+    // and the user's name, which we only get from Apple the *first* time that
     // grant permission, so the server cannot access it when it verifies the
     // token
     const assertion = JSON.stringify( {
@@ -81,19 +69,16 @@ async function signInWithApple( realm: Realm ): Promise<AuthenticateUserResult> 
         nameSuffix: appleAuthRequestResponse?.fullName?.nameSuffix,
       } ),
     } );
-    try {
-      return await authenticateUserByAssertion( "apple", assertion, realm );
-    } catch ( authenticateUserByAssertionError ) {
-      logger.error( "Assertion with Apple token failed", authenticateUserByAssertionError );
-      showSignInWithAppleFailed();
+    return await authenticateUserByAssertion( "apple", assertion, realm );
+  } catch ( signInError ) {
+    if ( ( signInError as AppleAuthError ).code === appleAuth.Error.CANCELED ) {
+      // The user canceled sign in, no need to log
       return { success: false };
     }
+    logger.error( "Sign in with Apple failed", signInError );
+    showSignInWithAppleFailed();
+    return { success: false };
   }
-  // We only get here if the user does not grant access... I think, so no need
-  // to log an error
-  logger.info( "Apple auth failed, credentialState: ", credentialState );
-  showSignInWithAppleFailed();
-  return { success: false };
 }
 
 GoogleSignin.configure( {
@@ -112,56 +97,26 @@ function showSignInWithGoogleFailed() {
   );
 }
 
-async function confirmGooglePlayServices() {
+async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult> {
   try {
     await GoogleSignin.hasPlayServices( );
-    return true;
-  } catch ( hasPlayServicesError ) {
+    const signInResp = await GoogleSignin.signIn();
+    if ( signInResp.type === "cancelled" ) return { success: false };
+    const tokens = await GoogleSignin.getTokens();
+    if ( !tokens?.accessToken ) throw new Error( "Google returned no access token" );
+    return await authenticateUserByAssertion( "google", tokens.accessToken, realm );
+  } catch ( signInError ) {
     if (
-      ( hasPlayServicesError as { code: string } ).code
+      ( signInError as { code?: string } ).code
       === googleStatusCodes.PLAY_SERVICES_NOT_AVAILABLE
     ) {
       Alert.alert(
         t( "Google-Play-Services-Not-Installed" ),
         t( "You-must-install-Google-Play-Services-to-sign-in-with-Google" ),
       );
-      return false;
+      return { success: false };
     }
-    logger.error( "Failed to check for Google Play Services", hasPlayServicesError );
-    showSignInWithGoogleFailed();
-    return false;
-  }
-}
-
-async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult> {
-  const hasPlayServices = await confirmGooglePlayServices( );
-  if ( !hasPlayServices ) return { success: false };
-  let signInResp;
-  try {
-    signInResp = await GoogleSignin.signIn();
-  } catch ( signInError ) {
-    logger.error( "Failed to sign in with Google", signInError );
-    showSignInWithGoogleFailed();
-    return { success: false };
-  }
-  if ( signInResp.type === "cancelled" ) return { success: false };
-  let tokens;
-  try {
-    tokens = await GoogleSignin.getTokens();
-  } catch ( getTokensError ) {
-    logger.error( "Failed to get tokens from Google", getTokensError );
-    showSignInWithGoogleFailed();
-    return { success: false };
-  }
-  if ( !tokens?.accessToken ) {
-    logger.error( "Google returned no access token" );
-    showSignInWithGoogleFailed();
-    return { success: false };
-  }
-  try {
-    return await authenticateUserByAssertion( "google", tokens.accessToken, realm );
-  } catch ( authenticateUserByAssertionError ) {
-    logger.error( "Assertion with Google token failed", authenticateUserByAssertionError );
+    logger.error( "Sign in with Google failed", signInError );
     showSignInWithGoogleFailed();
     return { success: false };
   }

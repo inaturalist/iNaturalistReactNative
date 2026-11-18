@@ -4,7 +4,6 @@ import { Image, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React from "react";
 import { Platform } from "react-native";
-import { log } from "sharedHelpers/logger";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -13,8 +12,6 @@ import { signInWithApple, signInWithGoogle } from "./loginFormHelpers";
 import useApplySignInPrefs from "./useApplySignInPrefs";
 
 const { useRealm } = RealmContext;
-
-const logger = log.extend( "ThirdPartySignInButtons" );
 
 interface Props {
   // True while the screen is busy, including with a sign-in started here
@@ -27,7 +24,7 @@ interface Props {
 
 // Sign in with Apple (iOS only) and Google. An unsuccessful sign-in does
 // nothing here: a cancel needs no message, and the helpers have already
-// alerted about a failure. An unexpected error is only logged.
+// alerted about a failure.
 const ThirdPartySignInButtons = ( { disabled, onBusyChange, onSignedIn }: Props ) => {
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -35,15 +32,7 @@ const ThirdPartySignInButtons = ( { disabled, onBusyChange, onSignedIn }: Props 
 
   const signIn = async ( signInWithProvider: ( ) => Promise<AuthenticateUserResult> ) => {
     onBusyChange( true );
-    let result: AuthenticateUserResult;
-    try {
-      result = await signInWithProvider( );
-    } catch ( signInError ) {
-      logger.error( "Third-party sign-in failed unexpectedly", signInError );
-      result = { success: false };
-    } finally {
-      onBusyChange( false );
-    }
+    const result = await signInWithProvider( ).finally( ( ) => onBusyChange( false ) );
     if ( !result.success ) return;
     applySignInPrefs( result.observationsCount );
     onSignedIn( );

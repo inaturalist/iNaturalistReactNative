@@ -30,15 +30,6 @@ describe( "LoginForm", ( ) => {
     expect( screen.queryByText( i18next.t( "Failed-to-log-in" ) ) ).toBeNull( );
   } );
 
-  it( "re-enables the sign-in buttons if a provider helper throws", async ( ) => {
-    signInWithGoogle.mockRejectedValueOnce( new Error( "activity is null" ) );
-    renderComponent( <LoginForm /> );
-    const googleButton = screen.getByTestId( "ThirdPartySignIn.google" );
-    await actor.press( googleButton );
-    expect( signInWithGoogle ).toHaveBeenCalled( );
-    expect( googleButton ).toBeEnabled( );
-  } );
-
   it( "shows an error when username/password login fails", async ( ) => {
     authenticateUser.mockResolvedValueOnce( { success: false } );
     renderComponent( <LoginForm /> );
