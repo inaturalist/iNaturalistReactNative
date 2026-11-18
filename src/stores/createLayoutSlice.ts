@@ -30,7 +30,7 @@ export interface LayoutSlice {
     setScreenAfterPhotoEvidence: ( screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE ) => void;
     isAllAddObsOptionsMode: boolean;
     setIsAllAddObsOptionsMode: ( isAllAddObsOptionsMode: boolean ) => void;
-    shownOnce: Record<string, boolean>;
+    shownOnce: object;
     setShownOnce: ( key: string ) => void;
     resetShownOnce: ( ) => void;
     loginBannerDismissed: boolean;

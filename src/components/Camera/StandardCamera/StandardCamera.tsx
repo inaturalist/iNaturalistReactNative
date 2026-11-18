@@ -2,10 +2,9 @@ import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
-import useOneTimeTip, { CAMERA_TIP } from "components/Camera/hooks/useOneTimeTip";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
-import CameraTip from "components/Camera/Tips/CameraTip";
+import MultiCaptureTip from "components/Camera/Tips/MultiCaptureTip";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { RefObject } from "react";
@@ -130,18 +129,6 @@ const StandardCamera = ( {
     }, [] ),
   );
 
-  // One-time tip that goes away for good once a photo is taken
-  const {
-    markShown: markMultiCaptureTipShown,
-    shouldShow: showMultiCaptureTip,
-  } = useOneTimeTip( CAMERA_TIP.MULTI_CAPTURE );
-  const hasNewPhotos = newPhotoUris.length > 0;
-  useEffect( ( ) => {
-    if ( showMultiCaptureTip && hasNewPhotos ) {
-      markMultiCaptureTipShown( );
-    }
-  }, [hasNewPhotos, markMultiCaptureTipShown, showMultiCaptureTip] );
-
   const deletePhotoByUri = useCallback( async ( photoUri: string ) => {
     if ( !deletePhotoFromObservation ) return;
     deletePhotoFromObservation( photoUri );
@@ -245,13 +232,7 @@ const StandardCamera = ( {
             />
           )}
           <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />
-          {showMultiCaptureTip && (
-            <CameraTip
-              className="absolute top-4 left-5 right-5 justify-center"
-              testID="MultiCaptureTip"
-              text={t( "Take-photos-from-different-angles-to-help-with-identification" )}
-            />
-          )}
+          <MultiCaptureTip hasNewPhotos={newPhotoUris.length > 0} />
           <CameraOptionsButtons
             handleZoomButtonPress={handleZoomButtonPress}
             disabled={disallowAddingPhotos}

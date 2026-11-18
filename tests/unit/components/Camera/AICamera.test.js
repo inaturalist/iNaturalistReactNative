@@ -1,14 +1,9 @@
-import {
-  act, fireEvent, render, screen,
-} from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import AICamera from "components/Camera/AICamera/AICamera";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import i18next from "i18next";
 import React from "react";
-import { AccessibilityInfo } from "react-native";
 import * as useTaxon from "sharedHooks/useTaxon";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
 
 const mockTaxonPrediction = {
   id: 144351,
@@ -146,83 +141,5 @@ describe( "AI Camera", ( ) => {
     const taxonIcon = screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" );
 
     expect( taxonIcon ).toBeVisible( );
-  } );
-} );
-
-describe( "AI Camera one-time tips", ( ) => {
-  const sheetHeader = ( ) => i18next.t( "What-makes-a-good-observation" );
-  const coachmarkText = ( ) => i18next.t( "You-can-also-upload-photos-from-your-gallery" );
-  // Components from the previous test can still be mounted, hence act
-  const setOnboardingFlag = enabled => act( ( ) => {
-    useStore.getState( ).setFeatureFlagApiValues(
-      { [FeatureFlag.OnboardingV2Enabled]: enabled },
-      true,
-    );
-  } );
-  const resetShownOnce = ( ) => act( ( ) => {
-    useStore.getState( ).layout.resetShownOnce( );
-  } );
-
-  beforeEach( ( ) => {
-    resetShownOnce( );
-    setOnboardingFlag( true );
-  } );
-
-  afterEach( ( ) => {
-    resetShownOnce( );
-    setOnboardingFlag( false );
-  } );
-
-  it( "shows no tips while the onboarding flag is off", ( ) => {
-    setOnboardingFlag( false );
-    render( <AICamera /> );
-
-    expect( screen.queryByText( sheetHeader( ) ) ).toBeFalsy( );
-    expect( screen.queryByTestId( "UploadCoachmark" ) ).toBeFalsy( );
-  } );
-
-  it( "shows the good-observation sheet first, without the coachmark", ( ) => {
-    render( <AICamera /> );
-
-    expect( screen.getByText( sheetHeader( ) ) ).toBeVisible( );
-    expect( screen.queryByTestId( "UploadCoachmark" ) ).toBeFalsy( );
-  } );
-
-  it( "replaces the sheet with the upload coachmark on continue, for good", ( ) => {
-    const { unmount } = render( <AICamera /> );
-
-    fireEvent.press( screen.getByTestId( "GoodObservationSheet.continue" ) );
-
-    expect( screen.queryByText( sheetHeader( ) ) ).toBeFalsy( );
-    expect( screen.getByText( coachmarkText( ) ) ).toBeVisible( );
-
-    unmount( );
-    render( <AICamera /> );
-    expect( screen.queryByText( sheetHeader( ) ) ).toBeFalsy( );
-  } );
-
-  it( "announces the coachmark and dismisses it on the next touch", ( ) => {
-    const announce = jest.spyOn( AccessibilityInfo, "announceForAccessibility" );
-    useStore.getState( ).layout.setShownOnce( "camera-tip-good-observation" );
-    render( <AICamera /> );
-
-    expect( announce ).toHaveBeenCalledWith( coachmarkText( ) );
-
-    // Touches bubble, so one on any control reaches the camera's root view
-    fireEvent( screen.getByTestId( "take-photo-button" ), "touchStart" );
-
-    expect( screen.queryByTestId( "UploadCoachmark" ) ).toBeFalsy( );
-    expect( useStore.getState( ).layout.shownOnce["camera-tip-upload"] ).toBe( true );
-  } );
-
-  it( "does not show the coachmark again after the camera was left", ( ) => {
-    useStore.getState( ).layout.setShownOnce( "camera-tip-good-observation" );
-    const { unmount } = render( <AICamera /> );
-    expect( screen.getByTestId( "UploadCoachmark" ) ).toBeVisible( );
-
-    unmount( );
-    render( <AICamera /> );
-
-    expect( screen.queryByTestId( "UploadCoachmark" ) ).toBeFalsy( );
   } );
 } );

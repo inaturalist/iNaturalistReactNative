@@ -59,7 +59,6 @@ interface Props {
   toggleLocation: ( ) => void;
   isDefaultMode: boolean;
   completeSentinelFile: ( ) => Promise<void>;
-  showUploadCoachmark?: boolean;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -98,7 +97,6 @@ const TabletButtons = ( {
   toggleLocation,
   isDefaultMode,
   completeSentinelFile,
-  showUploadCoachmark,
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -170,7 +168,7 @@ const TabletButtons = ( {
       { showZoomButton && <CameraButtonPlaceholder extraClassName="mt-[25px]" /> }
       { hasPhotoLibraryButton && (
         <View className="absolute bottom-6">
-          {showUploadCoachmark && <UploadCoachmark />}
+          <UploadCoachmark />
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={disabledPhotoLibrary}

@@ -34,7 +34,6 @@ interface Props {
   useLocation: boolean;
   toggleLocation: ( ) => void;
   completeSentinelFile: ( ) => Promise<void>;
-  showUploadCoachmark?: boolean;
 }
 
 const AICameraButtons = ( {
@@ -54,7 +53,6 @@ const AICameraButtons = ( {
   useLocation,
   toggleLocation,
   completeSentinelFile,
-  showUploadCoachmark,
 }: Props ) => {
   const { bottom } = useSafeAreaInsets( );
   const { isDefaultMode } = useLayoutPrefs();
@@ -82,7 +80,6 @@ const AICameraButtons = ( {
         toggleLocation={toggleLocation}
         isDefaultMode={isDefaultMode}
         completeSentinelFile={completeSentinelFile}
-        showUploadCoachmark={showUploadCoachmark}
       />
     );
   }
@@ -140,7 +137,7 @@ const AICameraButtons = ( {
           />
         </View>
         <View>
-          {showUploadCoachmark && <UploadCoachmark />}
+          <UploadCoachmark />
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={takingPhoto}
