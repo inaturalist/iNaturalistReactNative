@@ -1,6 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
 import { showLocationStep, showSignUpStep } from "components/Onboarding/onboardingNavigation";
 import {
@@ -119,9 +118,15 @@ const LoginForm = ( {
     }
   }, [navigation, params] );
 
-  const logIn = useCallback( async ( logInCallback: () => Promise<AuthenticateUserResult> ) => {
+  const logIn = async ( ) => {
     setLoading( true );
-    const result = await logInCallback( );
+    const result = await authenticateUser(
+      loginAgain
+        ? currentUser.login
+        : username.trim( ),
+      password,
+      realm,
+    );
     setLoading( false );
 
     if ( !result.success ) {
@@ -131,7 +136,7 @@ const LoginForm = ( {
 
     applySignInPrefs( result.observationsCount );
     navigateAfterLogIn( );
-  }, [applySignInPrefs, navigateAfterLogIn] );
+  };
 
   const openSignUp = ( ) => {
     if ( params?.fromOnboarding ) {
@@ -274,13 +279,7 @@ const LoginForm = ( {
           forceDark
           level="focus"
           loading={loading}
-          onPress={() => logIn( async () => authenticateUser(
-            loginAgain
-              ? currentUser.login
-              : username.trim( ),
-            password,
-            realm,
-          ) )}
+          onPress={logIn}
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
