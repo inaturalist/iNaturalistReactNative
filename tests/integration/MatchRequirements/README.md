@@ -49,6 +49,8 @@ These are pinned as they behave today (see [Suspected bugs](#suspected-bugs)).
 - `ObservationFlowState.test.js` (`S-…`) covers the observation-flow state
   that Match shares with other screens. Some of what it checks shows up on
   other screens, not on Match.
+- [`REQUIREMENTS.md`](REQUIREMENTS.md) lists every scenario by ID, grouped by
+  topic, with suspected bugs marked.
 
 ## Suspected bugs
 
@@ -65,7 +67,8 @@ npx jest tests/integration/MatchRequirements -t "^(?!.*\[bug\])"
 ```
 
 The IDs are referenced from the acceptance criteria, the product spec and the
-Product quiz, so keep them stable. Renumbering means updating all three.
+Product quiz, so keep them stable. Renumbering means updating all three, plus
+`REQUIREMENTS.md`.
 
 ## Running against V2
 
