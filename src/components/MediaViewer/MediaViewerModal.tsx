@@ -25,6 +25,7 @@ interface Props {
   onClose?: ( ) => void;
   onDeletePhoto?: ( uri: string ) => void;
   onDeleteSound?: ( uri: string ) => void;
+  onEditPhoto?: ( uri: string, newLocalFilePath: string ) => void;
   photos?: PhotoItem[];
   sounds?: SoundItem[];
   showModal: boolean;
@@ -39,6 +40,7 @@ const MediaViewerModal = ( {
   onClose = ( ) => undefined,
   onDeletePhoto,
   onDeleteSound,
+  onEditPhoto,
   photos = [],
   showModal,
   sounds,
@@ -58,6 +60,7 @@ const MediaViewerModal = ( {
         onClose={onClose}
         onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}
+        onEditPhoto={onEditPhoto}
         photos={photos}
         sounds={sounds}
         uri={uri}

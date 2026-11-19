@@ -79,6 +79,10 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
     resolvedValue: myObservationsSmallGridViewEnabled,
     setOverride: setMyObservationsSmallGridViewEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.MyObservationsSmallGridViewEnabled );
+  const {
+    resolvedValue: photoEditingEnabled,
+    setOverride: setPhotoEditingEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.PhotoEditingEnabled );
 
   const sections = useMemo(
     () => [
@@ -162,6 +166,15 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
               setMyObservationsSmallGridViewEnabled( !myObservationsSmallGridViewEnabled );
             },
           },
+          {
+            id: "photo-editing",
+            type: "toggle",
+            title: "Photo Editing",
+            value: photoEditingEnabled,
+            onUpdate: () => {
+              setPhotoEditingEnabled( !photoEditingEnabled );
+            },
+          },
         ],
       } ),
     ],
@@ -174,6 +187,8 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       setTraditionalProjectsEnabled,
       myObservationsSmallGridViewEnabled,
       setMyObservationsSmallGridViewEnabled,
+      photoEditingEnabled,
+      setPhotoEditingEnabled,
     ],
   );
 

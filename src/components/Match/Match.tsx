@@ -45,6 +45,8 @@ interface Props {
   iconicTaxon?: RealmTaxon;
   setIconicTaxon: ( taxon: RealmTaxon ) => void;
   taxonToSave?: ApiTaxon;
+  onEditPhoto?: ( uri: string, newLocalFilePath: string ) => void;
+  onMediaViewerClosed?: ( ) => void;
 }
 
 const Match = ( {
@@ -62,6 +64,8 @@ const Match = ( {
   iconicTaxon,
   setIconicTaxon,
   taxonToSave,
+  onEditPhoto,
+  onMediaViewerClosed,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -92,6 +96,8 @@ const Match = ( {
             taxon={taxon}
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}
+            onEditPhoto={onEditPhoto}
+            onMediaViewerClosed={onMediaViewerClosed}
           />
           { !suggestionsLoading
           && (
@@ -153,6 +159,8 @@ const Match = ( {
             taxon={taxon}
             obsPhotos={obsPhotos}
             navToTaxonDetails={navToTaxonDetails}
+            onEditPhoto={onEditPhoto}
+            onMediaViewerClosed={onMediaViewerClosed}
           />
           <View className="mt-5 mb-[30px]">
             <AdditionalSuggestionsScroll
@@ -200,6 +208,8 @@ const Match = ( {
           taxon={taxon}
           obsPhotos={obsPhotos}
           navToTaxonDetails={navToTaxonDetails}
+          onEditPhoto={onEditPhoto}
+          onMediaViewerClosed={onMediaViewerClosed}
         />
         <View className="border-[1.5px] border-white" />
         {!latitude
