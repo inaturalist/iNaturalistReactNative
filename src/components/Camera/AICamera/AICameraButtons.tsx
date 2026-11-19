@@ -1,5 +1,4 @@
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
-import CameraTips from "components/Camera/Buttons/CameraTips";
 import Close from "components/Camera/Buttons/Close";
 import Flash from "components/Camera/Buttons/Flash";
 import Location from "components/Camera/Buttons/Location";
@@ -104,9 +103,6 @@ const AICameraButtons = ( {
         className="absolute right-0 bottom-[6px] h-full justify-end items-end flex gap-y-9"
         pointerEvents="box-none"
       >
-        <View>
-          <CameraTips rotatableAnimatedStyle={rotatableAnimatedStyle} />
-        </View>
         {!isDefaultMode && (
           <View>
             <Location

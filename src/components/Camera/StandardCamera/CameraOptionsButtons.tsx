@@ -1,5 +1,4 @@
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
-import CameraTips from "components/Camera/Buttons/CameraTips";
 import Flash from "components/Camera/Buttons/Flash";
 import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
@@ -43,10 +42,6 @@ const CameraOptionsButtons = ( {
 }: Props ) => {
   const renderPhoneCameraOptions = () => (
     <>
-      <CameraTips
-        rotatableAnimatedStyle={rotatableAnimatedStyle}
-        cameraTipsClassName="absolute top-[18px] right-[18px]"
-      />
       <Flash
         toggleFlash={toggleFlash}
         hasFlash={hasFlash}
