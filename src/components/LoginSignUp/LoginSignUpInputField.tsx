@@ -26,7 +26,9 @@ const LoginSignUpInputField = ( {
   inputMode,
   keyboardType,
   onChangeText,
+  onSubmitEditing,
   ref,
+  returnKeyType,
   secureTextEntry = false,
   testID,
   textContentType,
@@ -49,6 +51,8 @@ const LoginSignUpInputField = ( {
       keyboardType={keyboardType}
       mode="outlined"
       onChangeText={onChangeText}
+      onSubmitEditing={onSubmitEditing}
+      returnKeyType={returnKeyType}
       secureTextEntry={secureTextEntry}
       selectionColor={String( colors?.darkGray )}
       spellCheck={false}

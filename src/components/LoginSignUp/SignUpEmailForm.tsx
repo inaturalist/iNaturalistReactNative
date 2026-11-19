@@ -84,6 +84,10 @@ const SignUpEmailForm = ( { onAvailable, onSignedIn, testID }: Props ) => {
           inputMode="email"
           keyboardType="email-address"
           onChangeText={onChangeEmail}
+          onSubmitEditing={( ) => {
+            if ( trimmedEmail && !busy ) continueWithEmail( );
+          }}
+          returnKeyType="go"
           testID={`${testID}.email`}
           textContentType="emailAddress"
         />
