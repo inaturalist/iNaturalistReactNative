@@ -63,7 +63,10 @@ jest.mock( "components/LoginSignUp/loginFormHelpers", ( ) => ( {
   signInWithGoogle: jest.fn( ),
 } ) );
 
-const actor = userEvent.setup( );
+// userEvent holds every press for RN's 130ms minimum press duration, so fake
+// timers let presses advance the clock instead of sleeping. They're enabled
+// per test because initI18next in beforeAll waits on a real timer.
+const actor = userEvent.setup( { advanceTimers: jest.advanceTimersByTime } );
 
 const closeCarousel = async ( ) => {
   await actor.press( await screen.findByLabelText( i18next.t( "Close" ) ) );
@@ -76,7 +79,12 @@ describe( "Onboarding", ( ) => {
   } );
 
   beforeEach( ( ) => {
+    jest.useFakeTimers( );
     mockOnboarding.shown = false;
+  } );
+
+  afterEach( ( ) => {
+    jest.useRealTimers( );
   } );
 
   it( "shows the login screen after the carousel is closed", async ( ) => {
@@ -252,6 +260,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   beforeEach( ( ) => {
+    jest.useFakeTimers( );
     mockOnboarding.shown = false;
     setStoreStateFeatureFlags( { [FeatureFlag.OnboardingV2Enabled]: true } );
     requestMultiple.mockReset( );
@@ -264,6 +273,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   afterEach( ( ) => {
+    jest.useRealTimers( );
     setStoreStateFeatureFlags( { } );
     addBackListener?.mockRestore( );
     addBackListener = undefined;
