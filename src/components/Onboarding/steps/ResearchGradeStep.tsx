@@ -3,7 +3,12 @@ import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
+import DateDisplay from "components/SharedComponents/DateDisplay";
+import INatIcon from "components/SharedComponents/INatIcon";
+import ObservationLocation from "components/SharedComponents/ObservationLocation";
+import TaxonResult from "components/SharedComponents/TaxonResult";
 import Body2 from "components/SharedComponents/Typography/Body2";
+import Body3 from "components/SharedComponents/Typography/Body3";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
@@ -11,10 +16,26 @@ import React from "react";
 import { Trans } from "react-i18next";
 import useTranslation from "sharedHooks/useTranslation";
 
+// Hardcoded sample observation for the Research Grade card
+const RESEARCH_GRADE_OBSERVATION = {
+  // No time zone, so it shows the same time on every device
+  observedOn: "2026-10-03T10:45:00",
+  placeGuess: "334 Naturalist Way, San Francisco, CA",
+};
+
 const HERO_PHOTO_ASPECT_RATIO = 352 / 212;
 
 const ResearchGradeCard = ( ) => {
   const { t } = useTranslation( );
+  const spottedCucumberBeetle = {
+    id: 55487,
+    name: "Diabrotica undecimpunctata",
+    preferred_common_name: t( "Spotted-Cucumber-Beetle" ),
+    rank: "species",
+    rank_level: 10,
+    // for the placeholder icon until the bundled taxon photo is added
+    iconic_taxon_name: "Insecta",
+  };
 
   return (
     <View className="mt-[40px] mx-[4px]">
@@ -31,6 +52,28 @@ const ResearchGradeCard = ( ) => {
         >
           <Heading5>{t( "RESEARCH-GRADE--quality-grade" )}</Heading5>
         </View>
+      </View>
+      <View
+        className="gap-[11px] rounded-b-[20px] border border-lightGray bg-white px-[15px] py-[11px]"
+      >
+        <View className="flex-row items-center justify-between">
+          <View className="flex-row items-center">
+            {/* placeholder until the bundled avatar is added */}
+            <INatIcon name="person" size={22} />
+            <Body3 className="ml-[7px]">{t( "you--observer" )}</Body3>
+          </View>
+          <DateDisplay dateString={RESEARCH_GRADE_OBSERVATION.observedOn} literalTime />
+        </View>
+        <TaxonResult
+          taxon={spottedCucumberBeetle}
+          unpressable
+          fromLocal={false}
+          fetchRemote={false}
+          asListItem={false}
+        />
+        <ObservationLocation
+          observation={{ place_guess: RESEARCH_GRADE_OBSERVATION.placeGuess }}
+        />
       </View>
     </View>
   );

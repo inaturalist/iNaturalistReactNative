@@ -1966,6 +1966,9 @@ Yes-but-only-if-I-add-the-observation-to-the-project-myself = Yes, but only if I
 # Button confirming the user wants to leave the onboarding demo
 YES-EXIT = YES, EXIT
 Yes-no-matter-who-adds-the-observation-to-the-project = Yes, no matter who adds the observation to the project
+# Onboarding Research Grade screen: shown in place of a username on a sample
+# observation, to show it as the user's own
+you--observer = you
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
