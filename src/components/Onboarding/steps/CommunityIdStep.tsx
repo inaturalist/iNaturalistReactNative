@@ -4,6 +4,7 @@ import CARD_SHADOW from "components/Onboarding/onboardingCardShadow";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
+import useOnboardingScreenView from "components/Onboarding/useOnboardingScreenView";
 import Button from "components/SharedComponents/Buttons/Button";
 import TaxonResult from "components/SharedComponents/TaxonResult";
 import Body2 from "components/SharedComponents/Typography/Body2";
@@ -71,6 +72,7 @@ const CommunityIdStep = ( ) => {
     },
   };
   const { stepId, proceedToNext } = useOnboardingFlow( );
+  useOnboardingScreenView( stepId );
 
   return (
     <OnboardingStepLayout

@@ -4,6 +4,7 @@ import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistIt
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
+import useOnboardingScreenView from "components/Onboarding/useOnboardingScreenView";
 import Button from "components/SharedComponents/Buttons/Button";
 import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
 import INatIcon from "components/SharedComponents/INatIcon";
@@ -129,6 +130,7 @@ const StoryCard = ( ) => {
 const ObsStoryStep = ( ) => {
   const { t } = useTranslation( );
   const { stepId, proceedToNext } = useOnboardingFlow( );
+  useOnboardingScreenView( stepId );
 
   return (
     <OnboardingStepLayout

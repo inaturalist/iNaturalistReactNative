@@ -3,6 +3,7 @@ import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistIt
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
+import useOnboardingScreenView from "components/Onboarding/useOnboardingScreenView";
 import Button from "components/SharedComponents/Buttons/Button";
 import DateDisplay from "components/SharedComponents/DateDisplay";
 import ObservationLocation from "components/SharedComponents/ObservationLocation";
@@ -91,6 +92,7 @@ const ResearchGradeCard = ( ) => {
 const ResearchGradeStep = ( ) => {
   const { t } = useTranslation( );
   const { stepId, proceedToNext } = useOnboardingFlow( );
+  useOnboardingScreenView( stepId );
 
   return (
     <OnboardingStepLayout
