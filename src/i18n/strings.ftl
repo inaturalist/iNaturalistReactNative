@@ -1524,6 +1524,9 @@ Specific-location--project-rule = Specific location
 Spines-and-texture = Spines and texture
 # Body of the camera tip "Colors and patterns" for fishes
 Spots-stripes-and-bars-are-often-what-tells-similar-species-apart = Spots, stripes, and bars are often what tells similar species apart.
+# Common name of the beetle species Diabrotica undecimpunctata, shown in the
+# sample activity feed on the onboarding community identification screen
+Spotted-Cucumber-Beetle = Spotted Cucumber Beetle
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
@@ -1701,6 +1704,10 @@ Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = Us
 Use-your-devices-microphone-to-record-animal-sounds-and-share-them = Use your device’s microphone to record animal sounds and share them to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
+# Onboarding community identification screen: header of a sample activity feed
+# entry where another person identified the user's observation. userName is a
+# username. Text in <1> tags is bold
+user-identified-your-observation = <1>{ $userName }</1><0> identified your observation!</0>
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
@@ -1955,6 +1962,10 @@ You-can-only-add-20-photos-per-observation = You can only add 20 photos per obse
 # Body of the sheet shown when closing an onboarding sign-up step
 You-can-only-get-identifications-from-other-people-by-creating-an-account = You can only get identifications from other people by creating an account.
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
+# Onboarding community identification screen: a note left with a sample
+# identification of a spotted beetle, explaining how the identifier knew what
+# it was
+You-can-tell-because-of-the-spots = You can tell because of the spots!
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.

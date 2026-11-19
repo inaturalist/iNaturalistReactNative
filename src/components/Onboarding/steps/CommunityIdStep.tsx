@@ -1,3 +1,5 @@
+import { tailwindFontBold } from "appConstants/fontFamilies";
+import classnames from "classnames";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
@@ -24,9 +26,10 @@ const CARD_SHADOW = {
 interface DemoFeedItemProps extends PropsWithChildren {
   // A description of what happened, e.g. "you created an observation with an identification"
   header: ReactNode;
+  highlighted?: boolean;
 }
 
-const DemoFeedItem = ( { header, children }: DemoFeedItemProps ) => (
+const DemoFeedItem = ( { header, highlighted, children }: DemoFeedItemProps ) => (
   <View className="gap-[6px]">
     <View className="flex-row items-center px-[15px]">
       {/* placeholder until the bundled avatar is added */}
@@ -34,7 +37,10 @@ const DemoFeedItem = ( { header, children }: DemoFeedItemProps ) => (
       <Body3 className="ml-[7px] flex-1">{header}</Body3>
     </View>
     <View
-      className="rounded-[10px] border border-lightGray bg-white px-[15px] py-[11px]"
+      className={classnames( "rounded-[10px] border border-lightGray px-[15px] py-[11px]", {
+        "bg-lightGreen": highlighted,
+        "bg-white": !highlighted,
+      } )}
       style={CARD_SHADOW}
     >
       {children}
@@ -50,6 +56,15 @@ const CommunityIdStep = ( ) => {
     preferred_common_name: t( "Leaf-Beetles" ),
     rank: "family",
     rank_level: 30,
+    // for the placeholder icon until the bundled taxon photo is added
+    iconic_taxon_name: "Insecta",
+  };
+  const spottedCucumberBeetle = {
+    id: 55487,
+    name: "Diabrotica undecimpunctata",
+    preferred_common_name: t( "Spotted-Cucumber-Beetle" ),
+    rank: "species",
+    rank_level: 10,
     // for the placeholder icon until the bundled taxon photo is added
     iconic_taxon_name: "Insecta",
   };
@@ -86,6 +101,45 @@ const CommunityIdStep = ( ) => {
         >
           <TaxonResult
             taxon={leafBeetles}
+            unpressable
+            fromLocal={false}
+            fetchRemote={false}
+            asListItem={false}
+          />
+        </DemoFeedItem>
+        <DemoFeedItem
+          highlighted
+          header={(
+            <Trans
+              i18nKey="user-identified-your-observation"
+              values={{ userName: "3eetlefan" }}
+              components={BOLD_SPANS}
+            />
+          )}
+        >
+          <TaxonResult
+            taxon={spottedCucumberBeetle}
+            unpressable
+            fromLocal={false}
+            fetchRemote={false}
+            asListItem={false}
+          />
+          <Body2 className={`mt-[10px] ${tailwindFontBold}`}>
+            {t( "You-can-tell-because-of-the-spots" )}
+          </Body2>
+        </DemoFeedItem>
+        <DemoFeedItem
+          highlighted
+          header={(
+            <Trans
+              i18nKey="user-identified-your-observation"
+              values={{ userName: "2manycoleopteraaa" }}
+              components={BOLD_SPANS}
+            />
+          )}
+        >
+          <TaxonResult
+            taxon={spottedCucumberBeetle}
             unpressable
             fromLocal={false}
             fetchRemote={false}
