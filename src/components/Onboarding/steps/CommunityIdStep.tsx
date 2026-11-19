@@ -1,5 +1,6 @@
 import { tailwindFontBold } from "appConstants/fontFamilies";
 import classnames from "classnames";
+import CARD_SHADOW from "components/Onboarding/onboardingCardShadow";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
@@ -15,14 +16,6 @@ import { Trans } from "react-i18next";
 import type { ImageSourcePropType } from "react-native";
 import bundledImageUrl from "sharedHelpers/bundledImageUrl";
 import useTranslation from "sharedHooks/useTranslation";
-
-const CARD_SHADOW = {
-  shadowColor: "#000000",
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.25,
-  shadowRadius: 4,
-  elevation: 4,
-} as const;
 
 interface DemoFeedItemProps extends PropsWithChildren {
   avatar: ImageSourcePropType;

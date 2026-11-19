@@ -1,3 +1,4 @@
+import CARD_SHADOW from "components/Onboarding/onboardingCardShadow";
 import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistItem";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
@@ -39,7 +40,7 @@ const ResearchGradeCard = ( ) => {
   };
 
   return (
-    <View className="mt-[40px] mx-[4px]">
+    <View className="mt-[40px] mx-[4px] rounded-[20px] bg-white" style={CARD_SHADOW}>
       <View
         className="w-full overflow-hidden rounded-t-[20px]"
         style={{ aspectRatio: HERO_PHOTO_ASPECT_RATIO }}
