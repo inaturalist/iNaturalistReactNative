@@ -783,11 +783,17 @@ Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
 It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
+# Onboarding Research Grade screen: checklist item completing "Your
+# observation can become Research Grade when:". Text in <1> tags is bold
+it-has-a-photo-or-sound-date-and-location = <0>it has a </0><1>photo or sound</1><0>, </0><1>date</1><0>, and </0><1>location</1>
 It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
 # Label for suggested list of organisms from computer vision in the Match screen new user flow
 It-might-also-be = It might also be
 # Label for suggested list of organisms from computer vision in the Match screen new user flow when there is no top suggestion
 It-might-be-one-of-these = It might be one of these
+# Onboarding Research Grade screen: checklist item completing "Your
+# observation can become Research Grade when:". Text in <1> tags is bold
+it-passes-iNaturalists-standards-for-good-data = <0>it passes iNaturalist's standards for </0><1>good data</1>
 # Month of January
 January = January
 JOIN = JOIN
@@ -1347,6 +1353,9 @@ Required = Required
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
 RESEARCH-GRADE--quality-grade = RESEARCH GRADE
+# Onboarding Research Grade screen: shown above the Continue button. Text in
+# <1> tags is bold
+Research-Grade-observations-can-more-easily-be-used-to = <0>Research Grade observations can more easily be used to </0><1>make new discoveries</1><0> and </0><1>protect nature.</1>
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1587,6 +1596,9 @@ The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident
 The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
 # Explanation on observation details for an observation with Research Grade quality grade
 The-community-agrees-on-an-identification = The community agrees on an identification, and this observation can now more easily be used to make new discoveries and protect nature.
+# Onboarding Research Grade screen: checklist item completing "Your
+# observation can become Research Grade when:". Text in <1> tags is bold
+the-community-vets-the-identification = <0>the community </0><1>vets the identification</1>
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
@@ -1638,6 +1650,8 @@ To-sync-your-observations-to-iNaturalist = To sync your observations to iNatural
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
 To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
+# Onboarding Research Grade screen: headline. Text in <1> tags is underlined
+Together-we-help-observations-reach-Research-Grade = <0>Together, we help observations reach </0><1>Research Grade</1><0>.</0>
 Toggle-map-type = Toggle map type
 # Accessibility hint for tapping a collapsible section header
 Toggles-the-section-open-or-closed = Toggles the section open or closed.
@@ -2004,6 +2018,9 @@ You-will-see-notifications = You’ll see notifications here once you log in & u
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+# Onboarding Research Grade screen: introduces a checklist of the
+# requirements for an observation to become Research Grade
+Your-observation-can-become-Research-Grade-when = Your observation can become Research Grade when:
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
