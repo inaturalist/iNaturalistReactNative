@@ -129,6 +129,17 @@ const CommunityIdStep = ( ) => {
           </Body2>
         </DemoFeedItem>
         <DemoFeedItem
+          header={(
+            <Trans
+              i18nKey="user-added-a-comment"
+              values={{ userName: "5amfieldwork" }}
+              components={BOLD_SPANS}
+            />
+          )}
+        >
+          <Body2 className={tailwindFontBold}>{t( "Nice-shot" )}</Body2>
+        </DemoFeedItem>
+        <DemoFeedItem
           highlighted
           header={(
             <Trans

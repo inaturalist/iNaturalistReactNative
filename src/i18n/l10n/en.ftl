@@ -988,6 +988,9 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+# Onboarding community identification screen: a sample comment someone left on
+# the user's observation, complimenting the photo
+Nice-shot = Nice shot!
 # As a categorical answer to the question presented on joining traditional projects: Do you want private coordinates be shared?
 No = No
 # Error message when no camera can be found
@@ -1704,6 +1707,10 @@ Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = Us
 Use-your-devices-microphone-to-record-animal-sounds-and-share-them = Use your device’s microphone to record animal sounds and share them to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
+# Onboarding community identification screen: header of a sample activity feed
+# entry where another person commented on the user's observation. userName is
+# a username. Text in <1> tags is bold
+user-added-a-comment = <1>{ $userName }</1><0> added a comment</0>
 # Onboarding community identification screen: header of a sample activity feed
 # entry where another person identified the user's observation. userName is a
 # username. Text in <1> tags is bold
