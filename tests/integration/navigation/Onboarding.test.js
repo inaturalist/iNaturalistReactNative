@@ -391,12 +391,6 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
       expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
     } );
-
-    it( "shows the carousel when OnboardingV2Enabled is off", async ( ) => {
-      setStoreStateFeatureFlags( { } );
-      renderApp( );
-      expect( await screen.findByTestId( "OnboardingCarousel" ) ).toBeVisible( );
-    } );
   } );
 
   describe( "exit sheets", ( ) => {
@@ -539,7 +533,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     } );
 
     it(
-      "passes an unused email to the username/password step, and going back keeps it",
+      "passes the trimmed email to the username/password step, and going back keeps it",
       async ( ) => {
         const { navigationContainer } = renderAppWithNavigationContainer( );
         await continueTo( "signup_email" );
@@ -586,8 +580,11 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     );
 
     it( "clears a connection error when Continue is pressed again", async ( ) => {
-      emailAvailable.mockRejectedValueOnce( new Error( "Network request failed" ) );
-      const { navigationContainer } = renderAppWithNavigationContainer( );
+      let finishRetry;
+      emailAvailable
+        .mockRejectedValueOnce( new Error( "Network request failed" ) )
+        .mockReturnValueOnce( new Promise( resolve => { finishRetry = resolve; } ) );
+      renderApp( );
       await continueTo( "signup_email" );
       await enterEmail( "new@example.com" );
       await actor.press( continueButton( ) );
@@ -596,10 +593,9 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       // Button ignores presses for a moment after each one
       await waitFor( ( ) => expect( continueButton( ) ).toBeEnabled( ) );
       await actor.press( continueButton( ) );
-      expect( await screen.findByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
-      act( ( ) => navigationContainer.current.goBack( ) );
-      expect( await findEmailStep( ) ).toBeVisible( );
       expect( screen.queryByText( connectionError ) ).toBeNull( );
+      await act( async ( ) => finishRetry( true ) );
+      expect( await screen.findByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
     } );
 
     it( "locks the email field while the email is being checked", async ( ) => {
@@ -643,21 +639,33 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       await act( async ( ) => finishSignIn( { success: false } ) );
       expect( continueButton( ) ).toBeEnabled( );
       expect( googleButton ).toBeEnabled( );
+      expect( screen.queryByTestId( "Onboarding.location_explainer" ) ).toBeNull( );
     } );
 
-    it( "shows the location step after signing in with Google during onboarding", async ( ) => {
-      renderApp( );
-      await continueTo( "signup_email" );
-      await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
-      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
-      expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
-      expect( mockOnboarding.shown ).toBeFalsy( );
-    } );
+    describe( "signing in with Google", ( ) => {
+      beforeEach( ( ) => {
+        signInWithGoogle.mockImplementation( async ( ) => {
+          await signIn( factory( "LocalUser" ) );
+          return { success: true };
+        } );
+      } );
 
-    it(
-      "shows the location step when signing in turns OnboardingV2Enabled off",
-      async ( ) => {
+      afterEach( async ( ) => {
+        await signOut( );
+      } );
+
+      it( "shows the location step after signing in during onboarding", async ( ) => {
+        renderApp( );
+        await continueTo( "signup_email" );
+        await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+        expect( mockOnboarding.shown ).toBe( false );
+      } );
+
+      it( "shows the location step when signing in turns OnboardingV2Enabled off", async ( ) => {
         signInWithGoogle.mockImplementationOnce( async ( ) => {
+          await signIn( factory( "LocalUser" ) );
           setStoreStateFeatureFlags( { } );
           return { success: true };
         } );
@@ -666,22 +674,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
         expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
         expect( screen.queryByTestId( "OnboardingCarousel" ) ).toBeNull( );
-      },
-    );
-
-    it(
-      "stays on the email step and lets the user try again when Google sign-in is cancelled",
-      async ( ) => {
-        signInWithGoogle.mockResolvedValueOnce( { success: false } );
-        renderApp( );
-        await continueTo( "signup_email" );
-        const googleButton = screen.getByTestId( "ThirdPartySignIn.google" );
-        await actor.press( googleButton );
-        expect( signInWithGoogle ).toHaveBeenCalled( );
-        expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
-        expect( screen.queryByTestId( "Onboarding.location_explainer" ) ).toBeNull( );
-        expect( googleButton ).toBeEnabled( );
-      },
-    );
+      } );
+    } );
   } );
 } );

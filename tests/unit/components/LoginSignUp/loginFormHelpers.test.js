@@ -1,5 +1,5 @@
 import { appleAuth } from "@invertase/react-native-apple-authentication";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 import { authenticateUserByAssertion } from "components/LoginSignUp/AuthenticationService";
 import { signInWithApple, signInWithGoogle } from "components/LoginSignUp/loginFormHelpers";
 import i18next from "i18next";
@@ -54,6 +54,21 @@ describe( "loginFormHelpers", ( ) => {
       appleAuth.performRequest.mockRejectedValueOnce( { code: "1000" } );
       expect( await signInWithApple( realm ) ).toEqual( { success: false } );
       expect( Alert.alert ).toHaveBeenCalledTimes( 1 );
+      expect( Alert.alert ).toHaveBeenCalledWith(
+        i18next.t( "Sign-in-with-Apple-Failed" ),
+        expect.any( String ),
+      );
+    } );
+
+    it( "alerts when Apple doesn't authorize the credential", async ( ) => {
+      appleAuth.performRequest.mockResolvedValueOnce( { user: "apple-user" } );
+      appleAuth.getCredentialStateForUser.mockResolvedValueOnce( 0 );
+      expect( await signInWithApple( realm ) ).toEqual( { success: false } );
+      expect( Alert.alert ).toHaveBeenCalledWith(
+        i18next.t( "Sign-in-with-Apple-Failed" ),
+        expect.any( String ),
+      );
+      expect( authenticateUserByAssertion ).not.toHaveBeenCalled( );
     } );
 
     it( "alerts when checking the Apple credential fails", async ( ) => {
@@ -111,6 +126,19 @@ describe( "loginFormHelpers", ( ) => {
         expect.any( String ),
       );
       expect( authenticateUserByAssertion ).not.toHaveBeenCalled( );
+    } );
+
+    it( "alerts that Google Play Services is missing when it isn't installed", async ( ) => {
+      GoogleSignin.hasPlayServices.mockRejectedValueOnce( {
+        code: statusCodes.PLAY_SERVICES_NOT_AVAILABLE,
+      } );
+      expect( await signInWithGoogle( realm ) ).toEqual( { success: false } );
+      expect( Alert.alert ).toHaveBeenCalledTimes( 1 );
+      expect( Alert.alert ).toHaveBeenCalledWith(
+        i18next.t( "Google-Play-Services-Not-Installed" ),
+        i18next.t( "You-must-install-Google-Play-Services-to-sign-in-with-Google" ),
+      );
+      expect( GoogleSignin.signIn ).not.toHaveBeenCalled( );
     } );
   } );
 } );
