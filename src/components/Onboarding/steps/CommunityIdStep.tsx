@@ -13,6 +13,7 @@ import type { PropsWithChildren, ReactNode } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
 import type { ImageSourcePropType } from "react-native";
+import bundledImageUrl from "sharedHelpers/bundledImageUrl";
 import useTranslation from "sharedHooks/useTranslation";
 
 const CARD_SHADOW = {
@@ -62,8 +63,9 @@ const CommunityIdStep = ( ) => {
     preferred_common_name: t( "Leaf-Beetles" ),
     rank: "family",
     rank_level: 30,
-    // for the placeholder icon until the bundled taxon photo is added
-    iconic_taxon_name: "Insecta",
+    default_photo: {
+      url: bundledImageUrl( require( "images/onboarding/taxon_leaf_beetles.jpg" ) ),
+    },
   };
   const spottedCucumberBeetle = {
     id: 55487,
@@ -71,8 +73,9 @@ const CommunityIdStep = ( ) => {
     preferred_common_name: t( "Spotted-Cucumber-Beetle" ),
     rank: "species",
     rank_level: 10,
-    // for the placeholder icon until the bundled taxon photo is added
-    iconic_taxon_name: "Insecta",
+    default_photo: {
+      url: bundledImageUrl( require( "images/onboarding/taxon_spotted_cucumber_beetle.jpg" ) ),
+    },
   };
   const { stepId, proceedToNext } = useOnboardingFlow( );
 

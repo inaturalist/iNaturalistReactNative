@@ -90,8 +90,11 @@ const StoryCard = ( ) => {
             />
           </View>
           <View className="flex-row items-center">
-            {/* placeholder until the bundled taxon photo is added */}
-            <View className="w-[42px] h-[42px] rounded-[8px] bg-lightGray" />
+            <Image
+              source={require( "images/onboarding/taxon_emerald_glass_frog.jpg" )}
+              className="h-[42px] w-[42px] rounded-[8px]"
+              accessibilityIgnoresInvertColors
+            />
             <View className="ml-[10px] flex-1">
               <DisplayTaxonName
                 taxon={taxon}

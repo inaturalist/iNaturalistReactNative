@@ -13,6 +13,7 @@ import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { Image, View } from "components/styledComponents";
 import React from "react";
 import { Trans } from "react-i18next";
+import bundledImageUrl from "sharedHelpers/bundledImageUrl";
 import useTranslation from "sharedHooks/useTranslation";
 
 // Hardcoded sample observation for the Research Grade card
@@ -32,8 +33,9 @@ const ResearchGradeCard = ( ) => {
     preferred_common_name: t( "Spotted-Cucumber-Beetle" ),
     rank: "species",
     rank_level: 10,
-    // for the placeholder icon until the bundled taxon photo is added
-    iconic_taxon_name: "Insecta",
+    default_photo: {
+      url: bundledImageUrl( require( "images/onboarding/taxon_spotted_cucumber_beetle.jpg" ) ),
+    },
   };
 
   return (
