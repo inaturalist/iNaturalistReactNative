@@ -4,15 +4,15 @@ import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
-import INatIcon from "components/SharedComponents/INatIcon";
 import TaxonResult from "components/SharedComponents/TaxonResult";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import type { PropsWithChildren, ReactNode } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
+import type { ImageSourcePropType } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 const CARD_SHADOW = {
@@ -24,16 +24,22 @@ const CARD_SHADOW = {
 } as const;
 
 interface DemoFeedItemProps extends PropsWithChildren {
+  avatar: ImageSourcePropType;
   // A description of what happened, e.g. "you created an observation with an identification"
   header: ReactNode;
   highlighted?: boolean;
 }
 
-const DemoFeedItem = ( { header, highlighted, children }: DemoFeedItemProps ) => (
+const DemoFeedItem = ( {
+  avatar, header, highlighted, children,
+}: DemoFeedItemProps ) => (
   <View className="gap-[6px]">
     <View className="flex-row items-center px-[15px]">
-      {/* placeholder until the bundled avatar is added */}
-      <INatIcon name="person" size={22} />
+      <Image
+        source={avatar}
+        className="h-[22px] w-[22px] rounded-full"
+        accessibilityIgnoresInvertColors
+      />
       <Body3 className="ml-[7px] flex-1">{header}</Body3>
     </View>
     <View
@@ -92,6 +98,7 @@ const CommunityIdStep = ( ) => {
       </Body2>
       <View className="mt-[29px] gap-[24px]">
         <DemoFeedItem
+          avatar={require( "images/onboarding/avatar_you.png" )}
           header={(
             <Trans
               i18nKey="you-created-an-observation-with-an-identification"
@@ -108,6 +115,7 @@ const CommunityIdStep = ( ) => {
           />
         </DemoFeedItem>
         <DemoFeedItem
+          avatar={require( "images/onboarding/avatar_3eetlefan.png" )}
           highlighted
           header={(
             <Trans
@@ -129,6 +137,7 @@ const CommunityIdStep = ( ) => {
           </Body2>
         </DemoFeedItem>
         <DemoFeedItem
+          avatar={require( "images/onboarding/avatar_5amfieldwork.png" )}
           header={(
             <Trans
               i18nKey="user-added-a-comment"
@@ -140,6 +149,7 @@ const CommunityIdStep = ( ) => {
           <Body2 className={tailwindFontBold}>{t( "Nice-shot" )}</Body2>
         </DemoFeedItem>
         <DemoFeedItem
+          avatar={require( "images/onboarding/avatar_2manycoleopteraaa.png" )}
           highlighted
           header={(
             <Trans

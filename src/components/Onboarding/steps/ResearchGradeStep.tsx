@@ -4,14 +4,13 @@ import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTr
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
 import DateDisplay from "components/SharedComponents/DateDisplay";
-import INatIcon from "components/SharedComponents/INatIcon";
 import ObservationLocation from "components/SharedComponents/ObservationLocation";
 import TaxonResult from "components/SharedComponents/TaxonResult";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import Heading5 from "components/SharedComponents/Typography/Heading5";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import React from "react";
 import { Trans } from "react-i18next";
 import useTranslation from "sharedHooks/useTranslation";
@@ -39,11 +38,15 @@ const ResearchGradeCard = ( ) => {
 
   return (
     <View className="mt-[40px] mx-[4px]">
-      {/* placeholder until the bundled photo is added */}
       <View
-        className="w-full rounded-t-[20px] bg-lightGray"
+        className="w-full overflow-hidden rounded-t-[20px]"
         style={{ aspectRatio: HERO_PHOTO_ASPECT_RATIO }}
       >
+        <Image
+          source={require( "images/onboarding/research_grade_spotted_cucumber_beetle.jpg" )}
+          className="h-full w-full"
+          accessibilityIgnoresInvertColors
+        />
         <View
           className={
             "absolute bottom-[20px] right-[19px] rounded-[5px] border border-inatGreen "
@@ -58,8 +61,11 @@ const ResearchGradeCard = ( ) => {
       >
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center">
-            {/* placeholder until the bundled avatar is added */}
-            <INatIcon name="person" size={22} />
+            <Image
+              source={require( "images/onboarding/avatar_you.png" )}
+              className="h-[22px] w-[22px] rounded-full"
+              accessibilityIgnoresInvertColors
+            />
             <Body3 className="ml-[7px]">{t( "you--observer" )}</Body3>
           </View>
           <DateDisplay dateString={RESEARCH_GRADE_OBSERVATION.observedOn} literalTime />

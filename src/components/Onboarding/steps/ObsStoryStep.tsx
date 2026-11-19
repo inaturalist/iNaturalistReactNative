@@ -14,7 +14,7 @@ import Body3 from "components/SharedComponents/Typography/Body3";
 import Body4 from "components/SharedComponents/Typography/Body4";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import List2 from "components/SharedComponents/Typography/List2";
-import { View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
@@ -69,18 +69,26 @@ const StoryCard = ( ) => {
     >
       <StoryCardRow label={t( "Who" )}>
         <View className="flex-row items-center">
-          {/* placeholder until the bundled avatar is added */}
-          <INatIcon name="person" size={22} />
+          <Image
+            source={require( "images/onboarding/avatar_tiwane.png" )}
+            className="h-[22px] w-[22px] rounded-full"
+            accessibilityIgnoresInvertColors
+          />
           <Body3 className="ml-[7px]">{STORY_OBSERVATION.userLogin}</Body3>
         </View>
       </StoryCardRow>
       <StoryCardRow label={t( "What" )} alignTop>
         <View className="gap-[15px]">
-          {/* placeholder until the bundled photo is added */}
           <View
-            className="w-full rounded-[4px] bg-lightGray"
+            className="w-full overflow-hidden rounded-[4px]"
             style={{ aspectRatio: STORY_PHOTO_ASPECT_RATIO }}
-          />
+          >
+            <Image
+              source={require( "images/onboarding/story_glass_frog.jpg" )}
+              className="h-full w-full"
+              accessibilityIgnoresInvertColors
+            />
+          </View>
           <View className="flex-row items-center">
             {/* placeholder until the bundled taxon photo is added */}
             <View className="w-[42px] h-[42px] rounded-[8px] bg-lightGray" />
