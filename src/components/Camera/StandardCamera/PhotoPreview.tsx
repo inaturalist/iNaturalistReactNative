@@ -51,10 +51,10 @@ const PhotoPreview = ( {
         "text-white",
         "text-center",
         "text-xl",
-        "w-full",
+        "mx-4",
       )}
     >
-      {t( "Photos-you-take-will-appear-here" )}
+      {t( "Tip-take-photos-of-the-organism-at-different-angles" )}
     </Subheading1>
   );
   if ( isTablet && isLandscapeMode ) {
@@ -71,7 +71,7 @@ const PhotoPreview = ( {
           "top-[50%]",
         )}
       >
-        {t( "Photos-you-take-will-appear-here" )}
+        {t( "Tip-take-photos-of-the-organism-at-different-angles" )}
       </Subheading1>
     );
   }
