@@ -19,6 +19,16 @@ const httpError = status => Object.assign( new Error( `HTTP ${status}` ), {
   },
 } );
 
+// The real inaturalistjs wraps each taxon in its Taxon model, which adds
+// camelCase copies (taxonPhotos, defaultPhoto, representativePhoto) that the
+// app reads
+const InatTaxon = jest.requireActual( "inaturalistjs/lib/models/taxon" );
+const withInatTaxon = item => ( item?.taxon
+  ? { ...item, taxon: new InatTaxon( item.taxon ) }
+  : item );
+// A taxa.fetch response as inaturalistjs returns it
+export const taxaResponse = taxa => makeResponse( taxa.map( t => new InatTaxon( t ) ) );
+
 const deferred = ( ) => {
   let resolve;
   let reject;
@@ -217,10 +227,12 @@ export const makeWorld = ( ) => {
       ? world.online.pending.at( -1 )
       : world.online.pending[call];
     if ( !d ) throw new Error( "No online CV request is waiting" );
+    const response = makeResponse( results );
     await act( async ( ) => {
       d.resolve( {
-        ...makeResponse( results ),
-        ...( commonAncestor && { common_ancestor: commonAncestor } ),
+        ...response,
+        results: response.results.map( withInatTaxon ),
+        ...( commonAncestor && { common_ancestor: withInatTaxon( commonAncestor ) } ),
       } );
     } );
   };

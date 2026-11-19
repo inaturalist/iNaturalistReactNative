@@ -89,11 +89,11 @@ In `Match.requirements.test.js`.
 | R-NET-07 | **bug** | Offline and the on-device model fails: the screen crashes |
 | R-NET-08 | **bug** | Connection drops while a result is showing: the result is replaced |
 | R-NET-09 |  | Offline: names come from taxa the app has seen before |
-| R-NET-10 | **bug** | Offline from the start: the on-device model ignores the observation's location |
+| R-NET-10 |  | Offline from the start: the on-device model runs without the observation's location, then again with it |
 | R-NET-10b |  | Falling back after an online attempt: the on-device model uses the location |
 | R-NET-11 |  | Offline, nothing confident but a common ancestor: the ancestor is the match |
-| R-NET-12 |  | Offline, a human among the predictions: shows only human |
-| R-NET-13 |  | Offline from the start, then the connection returns: the API is never asked |
+| R-NET-12 |  | Offline, the model's prediction is human: shows only human |
+| R-NET-13 |  | Offline from the start, then the connection returns: the held request goes out and its answer is ignored |
 | R-NET-15 |  | The API answers with an empty response |
 | B-02 | **bug** | After a slow first answer, the online answer asked for with the GPS location is ignored |
 
@@ -108,7 +108,7 @@ In `Match.requirements.test.js`.
 | R-LOC-03 |  | GPS answers before the AI does: asks again with the location |
 | R-LOC-04 |  | GPS keeps improving: the location updates but the AI is only asked again once |
 | R-LOC-05 |  | Connection drops while GPS is still fixing: the on-device model runs again with the location |
-| R-LOC-06 | **bug** | Offline from the start: the GPS location is never added to the observation |
+| R-LOC-06 |  | Offline from the start: the GPS location is added to the observation |
 | R-LOC-07 |  | No location permission: asks the AI without location and offers to add one |
 | R-LOC-08 |  | Add location without permission, then grant it: uses GPS and asks the AI again |
 | R-LOC-09 |  | Add location without permission, then close the prompt: opens the location picker |
@@ -142,8 +142,9 @@ In `Match.requirements.test.js`.
 | R-PHOTO-01 |  | Tapping the observation photo opens the media viewer |
 | R-PHOTO-02 |  | More than one photo: shows how many |
 | R-PHOTO-03 |  | Tapping the match's representative photo opens its taxon page with that photo |
-| R-PHOTO-04 | **bug** | Offline: a stored taxon's photo is never shown beside the observation photo |
-| R-PHOTO-05 | **bug** | Online with a representative, a default and 3 taxon photos: only 1 taxon photo shows |
+| R-PHOTO-04 | **bug** | Offline, a stored taxon with a default photo but no taxon photos: no taxon photo shows |
+| R-PHOTO-05 |  | Online with a representative, a default and 3 taxon photos: the representative first, then taxon photos, 3 in all |
+| R-PHOTO-06 |  | Offline, a taxon an earlier online Match stored: its taxon photos show |
 
 ## What Match sends the AI
 

@@ -1,17 +1,23 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import NetInfo from "@react-native-community/netinfo";
 import {
   createNavigationContainerRef,
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { onlineManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, render, screen } from "@testing-library/react-native";
 import MatchContainer from "components/Match/MatchContainer";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+// As StartupService does: React Query pauses requests while NetInfo says offline
+onlineManager.setEventListener( setOnline => NetInfo.addEventListener( state => {
+  setOnline( !!state.isConnected );
+} ) );
 
 // Each implementation of the Match screen under test. V2 adds an entry with
 // its own component and reader once it exists.

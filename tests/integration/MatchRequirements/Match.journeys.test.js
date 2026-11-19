@@ -13,7 +13,6 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import Geocoder from "react-native-geocoder-reborn";
 import useStore from "stores/useStore";
-import { makeResponse } from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 import { renderMatch } from "./matchHarness";
@@ -23,34 +22,15 @@ import {
   makeWorld,
   suggestion,
   TAXA,
+  taxaResponse,
 } from "./matchWorld";
 
 jest.unmock( "@react-navigation/native" );
 
-// NetInfo whose answer can change mid-test and re-render whoever is listening
-jest.mock( "@react-native-community/netinfo", ( ) => {
-  const mockReact = jest.requireActual( "react" );
-  let mockState = { isConnected: true, isInternetReachable: true, type: "wifi" };
-  const mockListeners = new Set( );
-  global.mockNetwork = {
-    set: next => {
-      mockState = { ...mockState, ...next };
-      mockListeners.forEach( listener => listener( mockState ) );
-    },
-  };
-  const subscribe = listener => {
-    mockListeners.add( listener );
-    return ( ) => mockListeners.delete( listener );
-  };
-  const mockNetInfo = {
-    configure: jest.fn( ),
-    fetch: jest.fn( async ( ) => mockState ),
-    refresh: jest.fn( async ( ) => mockState ),
-    addEventListener: jest.fn( subscribe ),
-    useNetInfo: ( ) => mockReact.useSyncExternalStore( subscribe, ( ) => mockState ),
-  };
-  return { __esModule: true, default: mockNetInfo, ...mockNetInfo };
-} );
+jest.mock(
+  "@react-native-community/netinfo",
+  ( ) => jest.requireActual( "./mockNetInfo" ).default( ),
+);
 
 // Analytics-only experiment that runs the on-device model on 1% of online
 // requests; it would make on-device call counts random
@@ -111,7 +91,7 @@ beforeEach( ( ) => {
     return result;
   } );
   // What the species page loads
-  inatjs.taxa.fetch.mockResolvedValue( makeResponse( [TAXA.cupPlant] ) );
+  inatjs.taxa.fetch.mockResolvedValue( taxaResponse( [TAXA.cupPlant] ) );
 } );
 
 afterEach( ( ) => {

@@ -32,30 +32,10 @@ import {
 
 jest.unmock( "@react-navigation/native" );
 
-// NetInfo whose answer can change mid-test and re-render whoever is listening
-jest.mock( "@react-native-community/netinfo", ( ) => {
-  const mockReact = jest.requireActual( "react" );
-  let mockState = { isConnected: true, isInternetReachable: true, type: "wifi" };
-  const mockListeners = new Set( );
-  global.mockNetwork = {
-    set: next => {
-      mockState = { ...mockState, ...next };
-      mockListeners.forEach( listener => listener( mockState ) );
-    },
-  };
-  const subscribe = listener => {
-    mockListeners.add( listener );
-    return ( ) => mockListeners.delete( listener );
-  };
-  const mockNetInfo = {
-    configure: jest.fn( ),
-    fetch: jest.fn( async ( ) => mockState ),
-    refresh: jest.fn( async ( ) => mockState ),
-    addEventListener: jest.fn( subscribe ),
-    useNetInfo: ( ) => mockReact.useSyncExternalStore( subscribe, ( ) => mockState ),
-  };
-  return { __esModule: true, default: mockNetInfo, ...mockNetInfo };
-} );
+jest.mock(
+  "@react-native-community/netinfo",
+  ( ) => jest.requireActual( "./mockNetInfo" ).default( ),
+);
 
 // Analytics-only experiment that runs the on-device model on 1% of online
 // requests; it would make on-device call counts random
@@ -710,18 +690,14 @@ describe( "Location", ( ) => {
     expect( world.offlineCalls( ).at( -1 ).location ).toEqual( { latitude: 10, longitude: 20 } );
     await world.respondOffline( [prediction( TAXA.rosinweed, 92 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).top?.id ).toBe( TAXA.rosinweed.id ) );
-    // Surprising: it also sends the API a second request while offline
-    expect( world.onlineCalls( ) ).toHaveLength( 2 );
-    expect( world.onlineCalls( )[1] ).toMatchObject( { lat: 10, lng: 20 } );
+    // React Query holds requests while offline, so the API isn't asked again
+    expect( world.onlineCalls( ) ).toHaveLength( 1 );
     expect( useStore.getState( ).currentObservation ).toMatchObject( {
       latitude: 10, longitude: 20,
     } );
   } );
 
-  // SUSPECTED BUG: the GPS answer is ignored until a photo upload has been
-  // prepared, which never happens offline, so the observation is saved
-  // without the location the phone found
-  it( "R-LOC-06 [bug] offline from the start: the GPS location is never added to the "
+  it( "R-LOC-06 offline from the start: the GPS location is added to the "
     + "observation", async ( ) => {
     world.setNetwork( false );
     const observation = makeNewObservation( );
@@ -733,10 +709,14 @@ describe( "Location", ( ) => {
     expect( world.gps.watching ).toBe( 1 );
     await world.deliverGpsFix( { latitude: 10, longitude: 20 } );
     await world.advance( 1_000 );
-    expect( useStore.getState( ).currentObservation.latitude ).toBeUndefined( );
+    expect( useStore.getState( ).currentObservation ).toMatchObject( {
+      latitude: 10, longitude: 20,
+    } );
+    // and the on-device model runs again with it
+    expect( world.offlineCalls( ).at( -1 ).location ).toEqual( { latitude: 10, longitude: 20 } );
     await impl.pressSave( actor );
     await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "TabNavigator" ) );
-    expect( savedObservation( observation.uuid ).latitude ).toBeNull( );
+    expect( savedObservation( observation.uuid ).latitude ).toBe( 10 );
   } );
 
   it( "R-LOC-07 no location permission: asks the AI without location and offers to add "
@@ -1193,10 +1173,10 @@ describe( "Deeper: photos, map, and returning with a location", ( ) => {
 } );
 
 describe( "Deeper: the on-device model", ( ) => {
-  // SUSPECTED BUG: the location only reaches the model through the online
-  // request's parameters, which are never prepared offline
-  it( "R-NET-10 [bug] offline from the start: the on-device model ignores the observation's "
-    + "location", async ( ) => {
+  // The location reaches the model through the online request's parameters,
+  // which are prepared after the first run
+  it( "R-NET-10 offline from the start: the on-device model runs without the observation's "
+    + "location, then again with it", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     renderMatch( );
@@ -1204,6 +1184,12 @@ describe( "Deeper: the on-device model", ( ) => {
     expect( world.offlineCalls( )[0] ).toMatchObject( {
       useGeomodel: false,
       location: undefined,
+    } );
+    await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
+    await waitFor( ( ) => expect( world.offlineCalls( ).length ).toBeGreaterThan( 1 ) );
+    expect( world.offlineCalls( ).at( -1 ) ).toMatchObject( {
+      useGeomodel: true,
+      location: { latitude: 41.5, longitude: -93.6 },
     } );
   } );
 
@@ -1220,6 +1206,8 @@ describe( "Deeper: the on-device model", ( ) => {
     } );
   } );
 
+  // The on-device model always sends an ancestor scoring over 78 when it has
+  // predictions, at worst Life itself
   it( "R-NET-11 offline, nothing confident but a common ancestor: the ancestor is the "
     + "match", async ( ) => {
     world.setNetwork( false );
@@ -1228,24 +1216,24 @@ describe( "Deeper: the on-device model", ( ) => {
     await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
     await world.respondOffline(
       [prediction( TAXA.cupPlant, 50 ), prediction( TAXA.compassPlant, 40 )],
-      { commonAncestor: prediction( TAXA.silphium, 75 ) },
+      { commonAncestor: prediction( TAXA.silphium, 90 ) },
     );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
     expect( impl.read( ALL_TAXA ) ).toMatchObject( {
-      top: { id: TAXA.silphium.id, confidence: 75 },
+      top: { id: TAXA.silphium.id, confidence: 90 },
       alternatives: [TAXA.cupPlant.id, TAXA.compassPlant.id],
     } );
   } );
 
-  it( "R-NET-12 offline, a human among the predictions: shows only human", async ( ) => {
+  // The on-device model sends a human only when it is the top prediction by
+  // more than 1.5 times the next, and then alone; any other mix with a human
+  // comes back empty (as in R-NET-02)
+  it( "R-NET-12 offline, the model's prediction is human: shows only human", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     const { impl } = renderMatch( );
     await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
-    await world.respondOffline( [
-      prediction( TAXA.cupPlant, 95 ),
-      prediction( TAXA.human, 60 ),
-    ] );
+    await world.respondOffline( [prediction( TAXA.human, 95 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
     expect( impl.read( ALL_TAXA ) ).toMatchObject( {
       top: { id: TAXA.human.id },
@@ -1253,8 +1241,10 @@ describe( "Deeper: the on-device model", ( ) => {
     } );
   } );
 
-  it( "R-NET-13 offline from the start, then the connection returns: the API is never "
-    + "asked", async ( ) => {
+  // React Query holds the request while offline and sends it on reconnecting,
+  // but Match has already settled on the on-device answer
+  it( "R-NET-13 offline from the start, then the connection returns: the held request "
+    + "goes out and its answer is ignored", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     const { impl } = renderMatch( );
@@ -1262,8 +1252,9 @@ describe( "Deeper: the on-device model", ( ) => {
     await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
     await world.setNetwork( true );
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 1 ) );
+    await world.respondOnline( [suggestion( TAXA.rosinweed, 95 )] );
     await world.advance( 6_000 );
-    expect( world.onlineCalls( ) ).toHaveLength( 0 );
     expect( impl.read( ALL_TAXA ) ).toMatchObject( {
       top: { id: TAXA.cupPlant.id },
       learnMore: "species",
@@ -1481,9 +1472,11 @@ describe( "Fifth pass: taxa already stored on the device", ( ) => {
   } );
 
   // SUSPECTED BUG: the photo area reads `defaultPhoto`, but stored taxa expose
-  // `default_photo`, and an empty stored photo list skips the fallback anyway
-  it( "R-PHOTO-04 [bug] offline: a stored taxon's photo is never shown beside the observation "
-    + "photo", async ( ) => {
+  // `default_photo`, and an empty stored photo list skips the fallback anyway.
+  // A taxon an online Match stored has its photo list (R-PHOTO-06), so this
+  // only hits taxa stored some other way without one
+  it( "R-PHOTO-04 [bug] offline, a stored taxon with a default photo but no taxon photos: "
+    + "no taxon photo shows", async ( ) => {
     storeCupPlantWithPhoto( );
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
@@ -1498,28 +1491,42 @@ describe( "Fifth pass: taxa already stored on the device", ( ) => {
     expect( screen.queryByTestId( "TaxonDetails.photo.501" ) ).toBeNull( );
   } );
 
-  // SUSPECTED BUG: the API's taxon_photos never reach the device's taxonPhotos
-  // and the API's default_photo is read as defaultPhoto, so only the
-  // representative photo is ever available and the 2 and 3 photo layouts
-  // never appear
-  it( "R-PHOTO-05 [bug] online with a representative, a default and 3 taxon photos: only "
-    + "1 taxon photo shows", async ( ) => {
-    const taxonWithPhotos = {
-      ...TAXA.cupPlant,
-      ancestor_ids: [47126, TAXA.cupPlant.id],
-      representative_photo: { id: 9001, url: "https://static.example/9001/medium.jpg" },
-      default_photo: { id: 501, url: "https://static.example/501/square.jpg" },
-      taxon_photos: [
-        { photo: { id: 601, url: "https://static.example/601/medium.jpg" } },
-        { photo: { id: 602, url: "https://static.example/602/medium.jpg" } },
-        { photo: { id: 603, url: "https://static.example/603/medium.jpg" } },
-      ],
-    };
-    await showMatchWith( observationWithLocation( ), [suggestion( taxonWithPhotos, 95 )] );
+  const cupPlantWithPhotos = {
+    ...TAXA.cupPlant,
+    ancestor_ids: [47126, TAXA.cupPlant.id],
+    representative_photo: { id: 9001, url: "https://static.example/9001/medium.jpg" },
+    default_photo: { id: 501, url: "https://static.example/501/square.jpg" },
+    taxon_photos: [
+      { photo: { id: 601, url: "https://static.example/601/medium.jpg" } },
+      { photo: { id: 602, url: "https://static.example/602/medium.jpg" } },
+      { photo: { id: 603, url: "https://static.example/603/medium.jpg" } },
+    ],
+  };
+  const shownTaxonPhotos = ( ) => screen.queryAllByTestId( /^TaxonDetails\.photo\.\d+$/ )
+    .map( el => el.props.testID.split( "." ).pop( ) );
+
+  it( "R-PHOTO-05 online with a representative, a default and 3 taxon photos: the "
+    + "representative first, then taxon photos, 3 in all", async ( ) => {
+    await showMatchWith( observationWithLocation( ), [suggestion( cupPlantWithPhotos, 95 )] );
     await screen.findByTestId( "TaxonDetails.photo.9001" );
-    expect( screen.queryAllByTestId( /^TaxonDetails\.photo\.\d+$/ ) ).toHaveLength( 1 );
+    expect( shownTaxonPhotos( ) ).toEqual( ["9001", "601", "602"] );
+    // The taxon photos are also stored for later
     const stored = realm( ).objectForPrimaryKey( "Taxon", TAXA.cupPlant.id );
-    expect( stored.taxonPhotos ).toHaveLength( 0 );
+    expect( stored.taxonPhotos ).toHaveLength( 3 );
+  } );
+
+  it( "R-PHOTO-06 offline, a taxon an earlier online Match stored: its taxon photos "
+    + "show", async ( ) => {
+    await showMatchWith( observationWithLocation( ), [suggestion( cupPlantWithPhotos, 95 )] );
+    screen.unmount( );
+
+    world.setNetwork( false );
+    world.setObservation( observationWithLocation( ) );
+    const { impl } = renderMatch( );
+    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
+    await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    expect( shownTaxonPhotos( ) ).toEqual( ["601", "602", "603"] );
   } );
 
   it( "R-SAVE-10 with a stored copy of the taxon, Edit still gets the API's copy, "

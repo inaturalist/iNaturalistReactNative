@@ -25,8 +25,8 @@ These are pinned as they behave today (see [Suspected bugs](#suspected-bugs)).
 
 | Where the person notices it | IDs |
 | --- | --- |
-| Wrong or missing result: a confident match lost after GPS, an online answer replaced when the connection drops or ignored after a slow start, an out-of-date name, too few species photos, a crash when the on-device model fails offline | R-CHOOSE-03, R-NET-08, B-02, R-RESULT-15, R-PHOTO-04, R-PHOTO-05, R-NET-07 |
-| Location: lost offline, overwritten after picking by hand, never used to ask the AI again, place name one fix behind, ignored by the on-device model offline | R-LOC-06, B-03, R-LOC-14, R-LOC-12, R-NET-10 |
+| Wrong or missing result: a confident match lost after GPS, an online answer replaced when the connection drops or ignored after a slow start, an out-of-date name, no species photo offline for some stored taxa, a crash when the on-device model fails offline | R-CHOOSE-03, R-NET-08, B-02, R-RESULT-15, R-PHOTO-04, R-NET-07 |
+| Location: overwritten after picking by hand, never used to ask the AI again, place name one fix behind | B-03, R-LOC-14, R-LOC-12 |
 | Saved data: earlier camera-roll photos get the new location, a picked group goes to ObsEdit as an AI ID | B-01, R-NAV-05 |
 | Round trips: Discard on a species page reached through Edit deletes the observation, backing out of Edit warns about changes nobody made, My Observations reopens scrolled down | J-01, J-02, J-03, J-04 |
 | Other screens after Match: species maps and Suggest ID show the last observation, regrouping imports opens an empty ObsEdit, the camera's photo limit counts the wrong photos | S-01, S-02, S-03, S-04 |

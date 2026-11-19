@@ -42,34 +42,15 @@ import {
   makeWorld,
   suggestion,
   TAXA,
+  taxaResponse,
 } from "./matchWorld";
 
 jest.unmock( "@react-navigation/native" );
 
-// NetInfo whose answer can change mid-test (matchWorld drives it)
-jest.mock( "@react-native-community/netinfo", ( ) => {
-  const mockReact = jest.requireActual( "react" );
-  let mockState = { isConnected: true, isInternetReachable: true, type: "wifi" };
-  const mockListeners = new Set( );
-  global.mockNetwork = {
-    set: next => {
-      mockState = { ...mockState, ...next };
-      mockListeners.forEach( listener => listener( mockState ) );
-    },
-  };
-  const subscribe = listener => {
-    mockListeners.add( listener );
-    return ( ) => mockListeners.delete( listener );
-  };
-  const mockNetInfo = {
-    configure: jest.fn( ),
-    fetch: jest.fn( async ( ) => mockState ),
-    refresh: jest.fn( async ( ) => mockState ),
-    addEventListener: jest.fn( subscribe ),
-    useNetInfo: ( ) => mockReact.useSyncExternalStore( subscribe, ( ) => mockState ),
-  };
-  return { __esModule: true, default: mockNetInfo, ...mockNetInfo };
-} );
+jest.mock(
+  "@react-native-community/netinfo",
+  ( ) => jest.requireActual( "./mockNetInfo" ).default( ),
+);
 
 jest.mock( "react-native-image-picker", ( ) => ( {
   launchImageLibrary: jest.fn( ),
@@ -202,7 +183,7 @@ describe( "Observation flow state that outlives the observation", ( ) => {
     expect( realm( ).objectForPrimaryKey( "Observation", observation.uuid ) ).toBeTruthy( );
 
     // Later, browsing an unrelated species in Explore
-    inatjs.taxa.fetch.mockResolvedValue( makeResponse( [TAXA.human] ) );
+    inatjs.taxa.fetch.mockResolvedValue( taxaResponse( [TAXA.human] ) );
     inatjs.observations.search.mockResolvedValue( {
       ...makeResponse( [] ),
       total_results: 1000,
