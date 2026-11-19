@@ -21,6 +21,7 @@ const OUTLINE_STYLE = {
 const LoginSignUpInputField = ( {
   accessibilityLabel,
   autoComplete,
+  editable,
   headerText,
   inputMode,
   keyboardType,
@@ -41,6 +42,7 @@ const LoginSignUpInputField = ( {
       autoComplete={autoComplete}
       className="h-[45px]"
       contentStyle={CONTENT_STYLE}
+      editable={editable}
       outlineStyle={OUTLINE_STYLE}
       activeOutlineColor={String( colors?.inatGreen )}
       inputMode={inputMode}
