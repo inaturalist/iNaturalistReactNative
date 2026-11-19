@@ -419,7 +419,9 @@ describe( "Observation", ( ) => {
           .toBe( true );
       } );
 
-      it( "marks only photos whose position changed for sync", async ( ) => {
+      // Web-added photos have no position on the server, so a photo that keeps
+      // its place still needs its position sent
+      it( "marks every photo for sync when any photo moves", async ( ) => {
         const obs = seedSyncedObsWithPhotos( );
         const reordered = obs.observationPhotos.map( op => ( {
           ...op,
@@ -428,13 +430,10 @@ describe( "Observation", ( ) => {
 
         const photos = await savedPhotos( { ...obs, observationPhotos: reordered } );
 
-        const needsSyncByPosition = Object.fromEntries(
-          photos.map( op => [op.position, op.needsSync( )] ),
-        );
-        expect( needsSyncByPosition ).toEqual( { 0: true, 1: false, 2: true } );
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [true, true, true] );
       } );
 
-      it( "adding a photo leaves existing synced photos unmarked", async ( ) => {
+      it( "marks every photo for sync when a photo is added", async ( ) => {
         const obs = seedSyncedObsWithPhotos( );
         const newPhoto = {
           _created_at: new Date( ),
@@ -449,7 +448,8 @@ describe( "Observation", ( ) => {
           observationPhotos: [...obs.observationPhotos, newPhoto],
         } );
 
-        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [false, false, false, true] );
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [true, true, true, true] );
+        expect( photos.map( op => op.wasSynced( ) ) ).toEqual( [true, true, true, false] );
       } );
 
       it( "keeps a photo change from an earlier save pending", async ( ) => {

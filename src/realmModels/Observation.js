@@ -342,14 +342,16 @@ class Observation extends Realm.Object {
       : evidence );
 
     const taxon = obs.taxon || null;
-    const observationPhotos = obs.observationPhotos?.map( obsPhoto => {
+    const photoOrderChanged = obs.observationPhotos?.some( obsPhoto => {
       const existingObsPhoto = existingObservation?.observationPhotos
         ?.find( op => op.uuid === obsPhoto.uuid );
-      if ( existingObsPhoto && existingObsPhoto.position === obsPhoto.position ) {
-        return obsPhoto;
-      }
-      return { ...obsPhoto, ...timestamps };
+      return !existingObsPhoto || existingObsPhoto.position !== obsPhoto.position;
     } );
+    // Photos added on the web have no position on the server even though the
+    // API reports one, so any add or move re-sends every photo's position
+    const observationPhotos = photoOrderChanged
+      ? obs.observationPhotos.map( obsPhoto => ( { ...obsPhoto, ...timestamps } ) )
+      : obs.observationPhotos;
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
     const projectObservations = Observation.prepareEmbedsForLocalSave(
       obs.projectObservations,
