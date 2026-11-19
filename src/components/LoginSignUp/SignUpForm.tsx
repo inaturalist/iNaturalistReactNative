@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { TextInput } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 
-import { emailAvailable } from "./AuthenticationService";
+import checkEmailAvailability from "./checkEmailAvailability";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
@@ -37,16 +37,18 @@ const SignUpForm = ( ) => {
 
   const onContinue = async ( ) => {
     setIsLoading( true );
-    const isAvailable = await emailAvailable( email );
+    const availability = await checkEmailAvailability( email );
     setIsLoading( false );
-    if ( isAvailable ) {
+    if ( availability === "available" ) {
       navigation.navigate( "SignUpConfirmation", {
         user: {
           email,
         },
       } );
-    } else {
+    } else if ( availability === "taken" ) {
       setError( t( "That-email-is-already-associated-with-an-account" ) );
+    } else {
+      setError( t( "Connection-problem-Please-try-again-later" ) );
     }
   };
 
