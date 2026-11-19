@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { BackHandler } from "react-native";
 import { useOnboardingShown } from "sharedHelpers/installData";
 
+import { showLocationStep } from "./onboardingNavigation";
 import type { OnboardingStepId } from "./onboardingSteps";
 import { getNextStepId, getStepBlocksBack, isOnboardingStepId } from "./onboardingSteps";
 
@@ -20,14 +21,16 @@ const useOnboardingFlow = ( ) => {
   const stepId: OnboardingStepId = name;
   const blocksBack = getStepBlocksBack( stepId );
 
+  // A step that blocks back still lets back close the app when it's the
+  // first screen
   useFocusEffect(
     useCallback( ( ) => {
       const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
-        ( ) => blocksBack,
+        ( ) => blocksBack && navigation.canGoBack( ),
       );
       return ( ) => backHandler.remove( );
-    }, [blocksBack] ),
+    }, [blocksBack, navigation] ),
   );
 
   const finishOnboarding = ( ) => {
@@ -45,10 +48,12 @@ const useOnboardingFlow = ( ) => {
 
   const proceedToNext = ( ) => {
     const nextStepId = getNextStepId( stepId );
-    if ( nextStepId ) {
-      navigation.navigate( nextStepId );
-    } else {
+    if ( !nextStepId ) {
       finishOnboarding( );
+    } else if ( nextStepId === "signup_credentials" ) {
+      throw new Error( `${stepId} must navigate to signup_credentials itself, with the email` );
+    } else {
+      navigation.navigate( nextStepId );
     }
   };
 
@@ -60,9 +65,14 @@ const useOnboardingFlow = ( ) => {
     } );
   };
 
+  // Signed in from a step (e.g. with Apple or Google), so skip ahead to the
+  // location permission step
+  const signedIn = ( ) => showLocationStep( navigation );
+
   return {
     logIn,
     proceedToNext,
+    signedIn,
     stepId,
   };
 };

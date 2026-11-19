@@ -21,11 +21,14 @@ const OUTLINE_STYLE = {
 const LoginSignUpInputField = ( {
   accessibilityLabel,
   autoComplete,
+  editable,
   headerText,
   inputMode,
   keyboardType,
   onChangeText,
+  onSubmitEditing,
   ref,
+  returnKeyType,
   secureTextEntry = false,
   testID,
   textContentType,
@@ -41,12 +44,15 @@ const LoginSignUpInputField = ( {
       autoComplete={autoComplete}
       className="h-[45px]"
       contentStyle={CONTENT_STYLE}
+      editable={editable}
       outlineStyle={OUTLINE_STYLE}
       activeOutlineColor={String( colors?.inatGreen )}
       inputMode={inputMode}
       keyboardType={keyboardType}
       mode="outlined"
       onChangeText={onChangeText}
+      onSubmitEditing={onSubmitEditing}
+      returnKeyType={returnKeyType}
       secureTextEntry={secureTextEntry}
       selectionColor={String( colors?.darkGray )}
       spellCheck={false}
