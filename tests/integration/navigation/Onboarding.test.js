@@ -645,6 +645,21 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     } );
 
     it(
+      "shows the location step when signing in turns OnboardingV2Enabled off",
+      async ( ) => {
+        signInWithGoogle.mockImplementationOnce( async ( ) => {
+          setStoreStateFeatureFlags( { } );
+          return { success: true };
+        } );
+        renderApp( );
+        await continueTo( "signup_email" );
+        await actor.press( screen.getByTestId( "ThirdPartySignIn.google" ) );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( screen.queryByTestId( "OnboardingCarousel" ) ).toBeNull( );
+      },
+    );
+
+    it(
       "stays on the email step and lets the user try again when Google sign-in is cancelled",
       async ( ) => {
         signInWithGoogle.mockResolvedValueOnce( { success: false } );
