@@ -191,6 +191,9 @@ Body-parts-and-colors = Body parts and colors
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
 Bulk-importer = Bulk importer
+# Onboarding welcome screen: consent shown above the Get Started and Log In
+# buttons. <0> is a link to a screen explaining the terms and data licensing
+By-continuing-you-agree-to-our-Terms-of-Use-and-Privacy-Policy-Learn-More = By continuing, you agree to our Terms of Use and Privacy Policy. <0>Learn More</0>
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
 By-exiting-observation-not-saved = By exiting, your observation will not be saved.
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
@@ -646,6 +649,8 @@ For-slugs-photograph-the-right-side-where-the-breathing-hole-is = For slugs, pho
 For-spiders-try-a-head-on-shot-The-way-the-eyes-are-arranged-can-help-identify-the-family = For spiders, try a head-on shot. The way the eyes are arranged can help identify the family.
 # Forgot password link
 Forgot-Password = Forgot Password
+# Onboarding welcome screen: subtitle describing iNaturalist
+Free-non-profit-community-powered = Free, non-profit, community-powered.
 # Display name for the iconic taxa category for fungi
 Fungi = Fungi
 GEOPRIVACY = GEOPRIVACY
@@ -657,6 +662,8 @@ Get-close-ups-of-the-surface-Small-details-can-separate-similar-sea-stars-and-ur
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
 # Body of the camera tip "Face, ears, and markings" for mammals
 Get-images-of-any-markings-or-patterns-and-the-ear-shape-if-you-can-Keep-your-distance = Get images of any markings or patterns, and the ear shape if you can. Keep your distance!
+# Onboarding welcome screen: button that starts the introduction to iNaturalist
+GET-STARTED = GET STARTED
 # Body of the camera tip "Head from top and side" for amphibians
 Get-the-eyes-snout-and-any-markings-in-the-shot = Get the eyes, snout, and any markings in the shot.
 # Body of the camera tip "Head close-up" for fishes
@@ -698,6 +705,8 @@ Host-plant = Host plant
 # Tips how to take good photos
 HOW-TO-MAKE-A-GOOD-OBSERVATION = HOW TO MAKE A GOOD OBSERVATION
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
+# Onboarding welcome screen: button that skips the introduction and opens Log In
+I-ALREADY-HAVE-AN-ACCOUNT = I ALREADY HAVE AN ACCOUNT
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-in-Camera = ID in Camera
 ID-Suggestions = ID Suggestions
@@ -750,6 +759,8 @@ Improve-suggestions-by-using-your-location = Improve suggestions by using your l
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
+# Accessibility label for the iNaturalist logo
+iNaturalist = iNaturalist
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-Blog = iNaturalist Blog
@@ -1798,6 +1809,8 @@ When-tapping-the-green-observation-button = When tapping the green observation b
 # Onboarding observation story screen: label for the row showing where the
 # sample observation was made
 Where = Where
+# Onboarding welcome screen: tagline below the iNaturalist logo
+Where-your-curiosity-contributes-to-science = Where your curiosity contributes to science.
 # Onboarding observation story screen: label for the row showing who made the
 # sample observation
 Who = Who
