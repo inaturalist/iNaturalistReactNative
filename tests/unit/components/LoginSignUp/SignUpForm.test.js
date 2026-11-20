@@ -59,4 +59,14 @@ describe( "SignUpForm", ( ) => {
       user: { email: "new@example.com" },
     } );
   } );
+
+  it( "continues with an internationalized domain converted to punycode", async ( ) => {
+    renderComponent( <SignUpForm /> );
+    await actor.type( screen.getByTestId( "Signup.email" ), "anna@bücher.de" );
+    await actor.press( screen.getByTestId( "Signup.signupButton" ) );
+    expect( emailAvailable ).toHaveBeenCalledWith( "anna@xn--bcher-kva.de" );
+    expect( mockNavigate ).toHaveBeenCalledWith( "SignUpConfirmation", {
+      user: { email: "anna@xn--bcher-kva.de" },
+    } );
+  } );
 } );

@@ -8,8 +8,8 @@ import { TouchableWithoutFeedback } from "react-native";
 
 import checkEmailAvailability from "./checkEmailAvailability";
 import Error from "./Error";
-import isValidEmail from "./isValidEmail";
 import LoginSignUpInputField from "./LoginSignUpInputField";
+import parseEmail from "./parseEmail";
 
 const SignUpForm = ( ) => {
   const navigation = useNavigation( );
@@ -37,19 +37,19 @@ const SignUpForm = ( ) => {
   }, [navigation] );
 
   const onContinue = async ( ) => {
-    const trimmedEmail = email.trim( );
-    if ( !isValidEmail( trimmedEmail ) ) {
+    const parsedEmail = parseEmail( email );
+    if ( !parsedEmail ) {
       setError( t( "Please-enter-a-valid-email-address" ) );
       return;
     }
     setError( undefined );
     setIsLoading( true );
-    const availability = await checkEmailAvailability( trimmedEmail );
+    const availability = await checkEmailAvailability( parsedEmail );
     setIsLoading( false );
     if ( availability === "available" ) {
       navigation.navigate( "SignUpConfirmation", {
         user: {
-          email: trimmedEmail,
+          email: parsedEmail,
         },
       } );
     } else if ( availability === "taken" ) {
