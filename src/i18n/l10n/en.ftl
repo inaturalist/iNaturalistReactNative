@@ -1171,7 +1171,6 @@ Photograph-the-whole-animal-from-above-so-its-colors-and-pattern-show = Photogra
 # Body of the camera tip "Top view" for crustaceans
 Photograph-the-whole-body-from-above = Photograph the whole body from above.
 Photos = Photos
-Photos-you-take-will-appear-here = Photos you take will appear here
 # Display name for the iconic taxa category for plantae
 Plants = Plants
 # Title of screen asking for permission to access the camera when access was denied
@@ -1645,6 +1644,8 @@ This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound w
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
+# Tip shown in the standard camera before the first photo is taken
+Tip-take-photos-of-the-organism-at-different-angles = Tip: Take photos of the organism at different angles.
 To-add-to-this-project-all-required-fields-must-be-filled = To add to this project, all required fields must be filled
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
