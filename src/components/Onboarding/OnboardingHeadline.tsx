@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import type { PropsWithChildren } from "react";
 import React from "react";
@@ -10,9 +11,9 @@ const OnboardingHeadline = ( { children }: PropsWithChildren ) => {
   return (
     <Heading1
       accessibilityRole="header"
-      className={compact
-        ? "text-2xl"
-        : undefined}
+      // Android will clip an underline on the last line; the padding makes room
+      // for it and the negative margin cancels the padding out
+      className={classnames( "pb-[4px] -mb-[4px]", { "text-2xl": compact } )}
     >
       {children}
     </Heading1>
