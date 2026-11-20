@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
@@ -11,7 +11,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import DeviceInfo from "react-native-device-info";
@@ -118,22 +117,8 @@ const StandardCamera = ( {
     showDiscardSheet,
   } = useBackPress( photosTaken );
 
-  const navigation = useNavigation( );
-  // Camera tips is pushed over the camera and should return to it as it was, so
-  // the reset below is skipped when coming back from it. Otherwise prepareCamera
-  // would drop the photos taken in this instance of the camera
-  const returningFromCameraTipsRef = useRef( false );
-  useEffect( ( ) => navigation.addListener( "blur", ( ) => {
-    const { routes, index } = navigation.getState( );
-    returningFromCameraTipsRef.current = routes[index]?.name === "CameraTips";
-  } ), [navigation] );
-
   useFocusEffect(
     useCallback( ( ) => {
-      if ( returningFromCameraTipsRef.current ) {
-        returningFromCameraTipsRef.current = false;
-        return;
-      }
       // Reset camera zoom every time we get into a fresh camera view
       resetZoom( );
       prepareCamera();
