@@ -455,6 +455,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     it( "opens Learn More from welcome, and its back button returns to welcome", async ( ) => {
       renderApp( );
       const welcome = await screen.findByTestId( "Onboarding.welcome" );
+      expect( within( welcome ).getByText( /By continuing, you agree/ ) ).toBeVisible( );
       await actor.press( within( welcome ).getByTestId( "Onboarding.welcome.learnMore" ) );
       expect( await screen.findByText( i18next.t( "TERMS-OF-USE" ) ) ).toBeVisible( );
       expect( queryMounted( "Login.email" ) ).toBeNull( );
