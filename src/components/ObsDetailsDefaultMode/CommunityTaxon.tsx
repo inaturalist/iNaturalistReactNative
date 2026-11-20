@@ -1,5 +1,5 @@
-// @flow
 import { useNavigation, useRoute } from "@react-navigation/native";
+import type { ApiTaxon } from "api/types";
 import {
   Body1,
   Body4,
@@ -10,23 +10,27 @@ import {
   Subheading2,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import type { RealmTaxon } from "realmModels/types";
 import {
   useTranslation,
 } from "sharedHooks";
 
-type Props = {
-  belongsToCurrentUser: boolean,
-  isSimpleMode: boolean,
-  observation: Object,
+interface Props {
+  belongsToCurrentUser: boolean;
+  isSimpleMode?: boolean;
+  observation: {
+    taxon?: RealmTaxon | ApiTaxon | null;
+    prefersCommunityTaxon?: boolean | null;
+    user?: { prefers_community_taxa?: boolean | null };
+  };
 }
 
 const CommunityTaxon = ( {
   belongsToCurrentUser,
   isSimpleMode = false,
   observation,
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation( );
   const route = useRoute( );
   const { t } = useTranslation( );
@@ -34,6 +38,8 @@ const CommunityTaxon = ( {
   const communityTaxon = observation?.taxon;
   const taxonId = communityTaxon?.id || "unknown";
 
+  // TS error: keyed navigate() calls don't match the navigator's param types (as in TaxonGridItem).
+  // Fix in one pass over all keyed navigate() calls rather than file by file.
   const handlePress = ( ) => navigation.navigate( {
     // Ensure button mashing doesn't open multiple TaxonDetails instances
     key: `${route.key}-CommunityTaxon-TaxonDetails-${taxonId}`,
@@ -71,7 +77,6 @@ const CommunityTaxon = ( {
         >
           <DisplayTaxonName
             taxon={communityTaxon}
-            testID={`ObsDetails.taxon.${taxonId}`}
             topTextComponent={Heading1}
             bottomTextComponent={Subheading1}
           />

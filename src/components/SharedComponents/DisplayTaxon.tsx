@@ -6,17 +6,18 @@ import {
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import React from "react";
+import type { TextProps } from "react-native";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
   accessibilityHint?: string;
   accessibilityLabel?: string;
-  bottomTextComponent?: () => React.JSX.Element;
+  bottomTextComponent?: React.ComponentType<TextProps>;
   handlePress?: () => void;
   taxon: object;
   testID?: string;
-  topTextComponent?: () => React.JSX.Element;
+  topTextComponent?: React.ComponentType<TextProps>;
   withdrawn?: boolean;
 }
 
