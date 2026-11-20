@@ -1046,6 +1046,8 @@ Please-allow-Location-Access = Please allow Location Access
 # Title of screen asking for permission to access the microphone when access was denied
 Please-allow-Microphone-Access = Please allow Microphone Access
 Please-choose-a-different-password = Please choose a different password.
+# Error below the email field on sign-up when the address isn't in a valid email format
+Please-enter-a-valid-email-address = Please enter a valid email address.
 # Title of a screen asking for permission when permission has been denied
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN

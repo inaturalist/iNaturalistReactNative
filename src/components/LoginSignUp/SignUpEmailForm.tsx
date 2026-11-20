@@ -11,6 +11,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 import checkEmailAvailability from "./checkEmailAvailability";
 import Error from "./Error";
+import isValidEmail from "./isValidEmail";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 import ThirdPartySignInButtons from "./ThirdPartySignInButtons";
 
@@ -52,6 +53,10 @@ const SignUpEmailForm = ( { onAvailable, onSignedIn, testID }: Props ) => {
   };
 
   const continueWithEmail = async ( ) => {
+    if ( !isValidEmail( trimmedEmail ) ) {
+      setError( t( "Please-enter-a-valid-email-address" ) );
+      return;
+    }
     setError( null );
     setChecking( true );
     const availability = await checkEmailAvailability( trimmedEmail );
