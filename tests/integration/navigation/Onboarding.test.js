@@ -632,6 +632,20 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
     } );
 
+    it( "shows an error and stays when the email isn't valid, and clears it on edit", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await enterEmail( "test@email" );
+      await actor.press( continueButton( ) );
+      const invalidEmailError = i18next.t( "Please-enter-a-valid-email-address" );
+      expect( await screen.findByText( invalidEmailError ) ).toBeVisible( );
+      expect( emailAvailable ).not.toHaveBeenCalled( );
+      expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+      await enterEmail( ".com" );
+      expect( screen.queryByText( invalidEmailError ) ).toBeNull( );
+    } );
+
     it(
       "shows a connection error when the email can't be checked, and clears it on edit",
       async ( ) => {
