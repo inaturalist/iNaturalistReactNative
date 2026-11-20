@@ -417,6 +417,18 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       },
     );
 
+    it( "opens Learn More from welcome, and its back button returns to welcome", async ( ) => {
+      renderApp( );
+      const welcome = await screen.findByTestId( "Onboarding.welcome" );
+      await actor.press( within( welcome ).getByTestId( "Onboarding.welcome.learnMore" ) );
+      expect( await screen.findByText( i18next.t( "TERMS-OF-USE" ) ) ).toBeVisible( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+      await actor.press( screen.getByTestId( "BackButton" ) );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+      expect( screen.queryByText( i18next.t( "TERMS-OF-USE" ) ) ).toBeNull( );
+      expect( mockOnboarding.shown ).toBeFalsy( );
+    } );
+
     it( "shows the location step after logging in from welcome", async ( ) => {
       renderApp( );
       await logInFrom( "welcome" );
