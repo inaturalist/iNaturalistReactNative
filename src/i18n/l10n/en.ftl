@@ -117,6 +117,8 @@ An-Internet-connection-is-required = An Internet connection is required to load 
 # have seen a species suggestion but before they land on the match screen,
 # where they might see a better suggestion.
 Analyzing-for-the-best-identification = Analyzing for the best identification...
+# Title of a camera tip about insects
+Antennae-legs-and-wings = Antennae, legs, and wings
 # Option when choosing a value for an date filter that indicates any value is
 # acceptable
 Any--date = Any
@@ -163,6 +165,10 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 # Month of August
 August = August
+# Title of a camera tip about reptiles
+Back-and-full-body = Back and full body
+# Title of a camera tip about amphibians
+Back-of-the-animal = Back of the animal
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
 # Explanation on observation details for an observation with casual quality grade
@@ -170,6 +176,8 @@ Because-this-observation-is-of-a-pet-garden-plant-or-zoo-animal = Because this o
 # Display name for the iconic taxa category for aves
 Birds = Birds
 BLOG = BLOG
+# Title of a camera tip about mollusks
+Body-parts-and-colors = Body parts and colors
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
@@ -240,12 +248,16 @@ Chooses-taxon = Chooses taxon
 # Accessibility hint for button that chooses the best suggestion among a list of suggested
 # taxa for an identification
 Chooses-top-taxon = Chooses top taxon
+# Title of a camera tip about crustaceans
+Claws-and-legs = Claws and legs
 # Label for a button that closes a window or popup
 Close = Close
 # Accessibility label for a button that closes the permission request screen
 Close-permission-request-screen = Close permission request screen
 # Label for a button that closes a search interface
 Close-search = Close search
+# Body of the camera tip "Antennae, legs, and wings" for insects
+Close-ups-of-these-including-the-veins-on-clear-wings-help-identifiers-sort-out-similar-groups = Close-ups of these, including the veins on clear wings, help identifiers sort out similar groups.
 # Accessibility hint for button that closes the explanation card
 Closes-explanation = Closes explanation
 # Accessibility hint for button that closes the introductory slides that
@@ -258,6 +270,10 @@ Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 COLLABORATORS = COLLABORATORS
 Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Collection Project
+# Title of a camera tip about birds
+Colors-and-markings = Colors and markings
+# Title of a camera tip about fishes
+Colors-and-patterns = Colors and patterns
 # Button that combines multiple photos into a single observation
 Combine-Photos = Combine Photos
 # Title for a form that let's you enter a comment
@@ -300,6 +316,8 @@ Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
 CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-observation-with-no-evidence = Create observation with no evidence
+# Heading of a section of camera tips about crustaceans
+Crustaceans = Crustaceans
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
@@ -476,8 +494,14 @@ DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete
 DONE = DONE
+# Body of the camera tip "Stay safe" for reptiles
+Dont-handle-or-corner-the-animal-A-photo-from-a-safe-distance-is-still-useful-even-if-its-not = Don't handle or corner the animal. A photo from a safe distance is still useful, even if it's not perfect.
 Dont-have-an-account = <0>Don't have an account? </0><1>Sign up</1>
+# Body of the camera tip "Leave it where you found it" for crustaceans
+Dont-pry-crabs-off-rocks-If-you-lift-a-rock-to-look-underneath-put-it-back-gently = Don't pry crabs off rocks. If you lift a rock to look underneath, put it back gently.
 During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AI camera.
+# Heading of a section of camera tips about echinoderms
+Echinoderms = Echinoderms
 # Button for editing something
 Edit = Edit
 EDIT-COMMENT = EDIT COMMENT
@@ -537,6 +561,10 @@ EXPAND-MAP = EXPAND MAP
 # Onboarding carousel second screen description
 Experts-help-verify-and-improve-IDs = Experts help verify and improve IDs
 Explore = Explore
+# Title of a camera tip about arachnids
+Eyes-and-face = Eyes and face
+# Title of a camera tip about mammals
+Face-ears-and-markings = Face, ears, and markings
 Failed-to-delete-sound = Failed to delete sound
 # Error message with log in fails
 Failed-to-log-in = Failed to log in
@@ -562,11 +590,15 @@ Filters-observations-to-anywhere-in-the-world = Filters observations to anywhere
 Filters-observations-to-your-current-location = Filters observations to your current location.
 # Display name for the iconic taxa category for actinopterygii
 Fish = Fish
+# Heading of a section of camera tips about fishes
+Fishes = Fishes
 # Status when an item has been flagged
 Flagged = Flagged
 Flash = Flash
 # Label for a button that toggles between the front and back cameras
 Flip-camera = Flip camera
+# Title of a camera tip about plants
+Flowers-fruit-or-seeds = Flowers, fruit, or seeds
 FOLLOW = FOLLOW
 # Subtitle for a screen showing the list of people a user is following
 FOLLOWING-X-PEOPLE =
@@ -574,7 +606,13 @@ FOLLOWING-X-PEOPLE =
         [one] FOLLOWING { $count } PERSON
        *[other] FOLLOWING { $count } PEOPLE
     }
+# Body of the camera tip "Host plant" for insects
+For-caterpillars-and-other-plant-feeders-include-a-photo-of-the-plant-theyre-on = For caterpillars and other plant-feeders, include a photo of the plant they're on.
 For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
+# Body of the camera tip "No shell? Show the body!" for mollusks
+For-slugs-photograph-the-right-side-where-the-breathing-hole-is = For slugs, photograph the right side, where the breathing hole is.
+# Body of the camera tip "Eyes and face" for arachnids
+For-spiders-try-a-head-on-shot-The-way-the-eyes-are-arranged-can-help-identify-the-family = For spiders, try a head-on shot. The way the eyes are arranged can help identify the family.
 # Forgot password link
 Forgot-Password = Forgot Password
 # Display name for the iconic taxa category for fungi
@@ -583,7 +621,15 @@ GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Onboarding message describing one of the reasons to use iNat
 Get-an-instant-ID-of-any-plant-animal-fungus = Get an instant ID of any plant, animal, or fungus
+# Body of the camera tip "Spines and texture" for echinoderms
+Get-close-ups-of-the-surface-Small-details-can-separate-similar-sea-stars-and-urchins = Get close-ups of the surface. Small details can separate similar sea stars and urchins.
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
+# Body of the camera tip "Face, ears, and markings" for mammals
+Get-images-of-any-markings-or-patterns-and-the-ear-shape-if-you-can-Keep-your-distance = Get images of any markings or patterns, and the ear shape if you can. Keep your distance!
+# Body of the camera tip "Head from top and side" for amphibians
+Get-the-eyes-snout-and-any-markings-in-the-shot = Get the eyes, snout, and any markings in the shot.
+# Body of the camera tip "Head close-up" for fishes
+Get-the-mouth-eyes-and-any-markings-on-the-head = Get the mouth, eyes, and any markings on the head.
 # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Get-your-identification-verified-by-real-people = Get your identification verified by real people in the iNaturalist community
 # Label for button that returns to the previous screen
@@ -596,6 +642,14 @@ Grant-Permission-title = Grant Permission
 Group-Photos = Group Photos
 # Onboarding for users learning to group photos in the camera roll
 Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
+# Title of a camera tip about birds
+Head-beak-and-body = Head, beak, and body
+# Title of a camera tip about fishes
+Head-close-up = Head close-up
+# Title of a camera tip about amphibians
+Head-from-top-and-side--amphibians = Head from top and side
+# Title of a camera tip about reptiles
+Head-from-top-and-side--reptiles = Head from top and side
 HELP = HELP
 Help-create-Research-Grade-data-used-in-science-and-conservation = Help create Research Grade data used in science and conservation.
 # Onboarding message describing one of the reasons to use iNat
@@ -608,6 +662,8 @@ Helps-with-science-and-community = Helps with science and community
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
+# Title of a camera tip about insects
+Host-plant = Host plant
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-in-Camera = ID in Camera
@@ -625,6 +681,8 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
        *[other] IDENTIFICATIONS
     }
 Identifiers = Identifiers
+# Body of the camera tip "If you can, the feet!" for amphibians
+Identifiers-sometimes-count-toes-so-try-to-show-the-feet-If-that-would-disturb-the-animal-skip-it = Identifiers sometimes count toes, so try to show the feet. If that would disturb the animal, skip it!
 # Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
 IDENTIFY = IDENTIFY
 # Title of screen asking for permission to access the camera
@@ -633,6 +691,10 @@ Identify-organisms-in-real-time-with-your-camera = Identify organisms in real ti
 Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
 If-the-only-reason-youre-leaving-is-to-stop-project-curators = If the only reason you're leaving is to stop project curators from viewing your hidden coordinates.
+# Body of the camera tip "Flowers, fruit, or seeds" for plants
+If-the-plant-has-any-get-a-close-up-Identifiers-often-need-these-to-name-the-species = If the plant has any, get a close-up. Identifiers often need these to name the species.
+# Title of a camera tip about amphibians
+If-you-can-the-feet = If you can, the feet!
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
@@ -684,6 +746,10 @@ INATURALIST-STORE = INATURALIST STORE
 INATURALIST-TEAM = INATURALIST TEAM
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
+# Body of the camera tip "Whole body from the side" for fishes
+Include-every-fin-and-the-tail-spread-if-you-can-For-flat-fish-like-rays-shoot-from-above-instead = Include every fin and the tail, spread if you can. For flat fish like rays, shoot from above instead.
+# Body of the camera tip "Web, burrow, or surroundings" for arachnids
+Include-photos-of-the-web-burrow-or-where-you-found-it = Include photos of the web, burrow, or where you found it.
 # Display name for the iconic taxa category for insecta
 Insects = Insects
 # Title for dialog telling the user that an Internet connection is required
@@ -730,6 +796,10 @@ Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a
 Just-so-you-know = Just so you know:
 KEEP-EDITING = KEEP EDITING
 Keep-in-mind-that-project-curators = Keep in mind that project curators will still be able to add your observations to their project unless you change your account settings.
+# Title of a camera tip about birds
+Keep-it-sharp = Keep it sharp
+# Title of a camera tip about echinoderms
+Keep-it-underwater = Keep it underwater
 # Display name for the iconic taxa category chromista
 Kelp-and-Diatoms = Kelp & Diatoms
 # Shows date user last active on iNaturalist on user profile
@@ -747,6 +817,8 @@ LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
 # Label for species sort order
 Least-Observed = Least Observed
 LEAVE = LEAVE
+# Title of a camera tip about crustaceans
+Leave-it-where-you-found-it = Leave it where you found it
 LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
 LEAVE-PROJECT--question = LEAVE PROJECT?
@@ -755,6 +827,8 @@ LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 Leave-your-observations-in-this-project = Leave your observations in this project
 # Traditional project leave: keep observations but revoke hidden coordinate access
 Leave-your-observations-revoke-hidden-coordinates = Leave your observations in this project but prevent curators from viewing their hidden coordinates
+# Title of a camera tip about plants
+Leaves = Leaves
 Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
@@ -775,6 +849,8 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
+# Body of the camera tip "Colors and markings" for birds
+Look-for-wing-bars-eye-rings-and-patterns-on-the-breast-Similar-species-often-differ-in-just-these = Look for wing bars, eye rings, and patterns on the breast. Similar species often differ in just these spots.
 # When the user searches their own observations for something they haven't observed
 Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
     Looks like you haven't observed this yet.
@@ -901,6 +977,8 @@ No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
+# Title of a camera tip about mollusks
+No-shell-Show-the-body = No shell? Show the body!
 # Displayed in place of positional accuracy when that value is missing
 none--accuracy = none
 # Option when selecting taxonomic ranks that indicates no rank was selected
@@ -1030,6 +1108,24 @@ PEOPLE--title = PEOPLE
 Photo--project-rule = Photo
 Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
+# Body of the camera tip "Back of the animal" for amphibians
+Photograph-it-from-above-to-show-its-pattern-and-skin-texture = Photograph it from above to show its pattern and skin texture.
+# Body of the camera tip "Keep it underwater" for echinoderms
+Photograph-it-in-place-Dont-lift-it-out-of-the-water-or-pry-it-off-rocks = Photograph it in place. Don't lift it out of the water or pry it off rocks.
+# Body of the camera tip "Body parts and colors" for mollusks
+Photograph-tentacles-gills-and-the-foot-Their-colors-matter-for-sea-slugs-squid-and-more = Photograph tentacles, gills, and the foot. Their colors matter for sea slugs, squid, and more.
+# Body of the camera tip "Top view" for arachnids
+Photograph-the-body-from-above-showing-the-abdomen-and-leg-markings = Photograph the body from above, showing the abdomen and leg markings.
+# Body of the camera tip "Underside" for fungi
+Photograph-the-gills-pores-or-teeth-under-the-cap-Most-mushrooms-cant-be-identified-without-this = Photograph the gills, pores, or teeth under the cap. Most mushrooms can't be identified without this view.
+# Body of the camera tip "Leaves" for plants
+Photograph-the-top-and-underside-of-a-leaf-and-where-the-leaves-attach-to-the-stem = Photograph the top and underside of a leaf, and where the leaves attach to the stem.
+# Body of the camera tip "Shell from several angles" for mollusks
+Photograph-the-top-the-side-and-the-opening-or-hinge-For-chitons-show-the-plates-and-the-band = Photograph the top, the side, and the opening or hinge. For chitons, show the plates and the band around them.
+# Body of the camera tip "Back and full body" for reptiles
+Photograph-the-whole-animal-from-above-so-its-colors-and-pattern-show = Photograph the whole animal from above so its colors and pattern show.
+# Body of the camera tip "Top view" for crustaceans
+Photograph-the-whole-body-from-above = Photograph the whole body from above.
 Photos = Photos
 Photos-you-take-will-appear-here = Photos you take will appear here
 # Display name for the iconic taxa category for plantae
@@ -1307,8 +1403,20 @@ Share-location = Share Location
 Share-map = Share map
 # Preceded by the fragment # Preceded by the fragment, "By uploading your observation to iNaturalist, you can:"
 Share-your-observation-where-it-can-help-scientists = Share your observation, where it can help scientists across the world better understand biodiversity.
+# Title of a camera tip about mollusks
+Shell-from-several-angles = Shell from several angles
 SHOP-INATURALIST-MERCH = SHOP INATURALIST MERCH
 Show-observation-options = Show observation options.
+# Body of the camera tip "Top and side views" for insects
+Show-the-body-shape-and-wing-patterns-For-butterflies-try-to-get-the-underside-of-the-wings-too = Show the body shape and wing patterns. For butterflies, try to get the underside of the wings too.
+# Body of the camera tip "Top of the cap" for fungi
+Show-the-color-and-texture-of-the-cap-and-its-shape = Show the color and texture of the cap, and its shape.
+# Body of the camera tip "Top view" for echinoderms
+Show-the-full-shape-and-colors-For-sea-stars-include-every-arm = Show the full shape and colors. For sea stars, include every arm.
+# Body of the camera tip "Stem and what it grows on" for fungi
+Show-the-very-base-even-if-its-partly-buried-and-whether-its-growing-on-wood-soil-or-leaves = Show the very base, even if it's partly buried, and whether it's growing on wood, soil, or leaves.
+# Body of the camera tip "Claws and legs" for crustaceans
+Show-their-size-color-and-shape-Similar-crabs-often-differ-here = Show their size, color, and shape. Similar crabs often differ here.
 # Message when offline search results are being displayed
 Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
 # Label for button that shows identification suggestions
@@ -1322,6 +1430,8 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
+# Body of the camera tip "Whole body from the side" for mammals
+Size-shape-and-tail-length-can-tell-identifiers-a-lot-especially-for-larger-mammals = Size, shape, and tail length can tell identifiers a lot, especially for larger mammals.
 Skip-for-now = Skip for now
 # Generic error message
 Something-went-wrong = Something went wrong.
@@ -1372,6 +1482,10 @@ Specific-identification--project-rule = Specific identification
 # Header for a project rule requiring an observation to be in a place chosen
 # by the project
 Specific-location--project-rule = Specific location
+# Title of a camera tip about echinoderms
+Spines-and-texture = Spines and texture
+# Body of the camera tip "Colors and patterns" for fishes
+Spots-stripes-and-bars-are-often-what-tells-similar-species-apart = Spots, stripes, and bars are often what tells similar species apart.
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
@@ -1379,6 +1493,12 @@ Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
 Stay-on-this-screen = Stay on this screen while your location loads.
+# Title of a camera tip about reptiles
+Stay-safe = Stay safe
+# Title of a camera tip about fungi
+Stem-and-what-it-grows-on = Stem and what it grows on
+# Body of the camera tip "Whole plant" for plants
+Step-back-and-get-the-whole-plant-plus-a-bit-of-whats-around-it = Step back and get the whole plant, plus a bit of what's around it.
 Still-loading = Still loading...
 Still-need-help = Still need help? You can file a support request here.
 # Button or accessibility label for an interactive element that stops an upload
@@ -1430,6 +1550,8 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
+# Body of the camera tip "Tracks and scat" for mammals
+These-count-too-Put-something-near-them-for-scale-like-a-coin-or-your-shoe = These count, too! Put something near them for scale, like a coin or your shoe.
 This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
 This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
 This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
@@ -1438,6 +1560,8 @@ This-is-a-wild-organism = This is a wild organism and wasn't placed in this loca
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 # Text shown only for new users on their own ID on their first few observations
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
+# Body of the camera tip "Head from top and side" for reptiles
+This-matters-most-for-snakes-since-the-scales-on-the-head-are-often-what-identifiers-use-to-name = This matters most for snakes, since the scales on the head are often what identifiers use to name the species.
 This-may-take-a-few-seconds = This may take a few seconds.
 This-observation-has-no-comments-or-identifications-yet = This observation has no comments or identifications yet.
 This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade = This observation has not met the conditions required to meet Research Grade status
@@ -1473,10 +1597,26 @@ To-view-this-observations-Collection-and-Umbrella-Projects = To view this observ
 Toggle-map-type = Toggle map type
 # Accessibility hint for tapping a collapsible section header
 Toggles-the-section-open-or-closed = Toggles the section open or closed.
+# Title of a camera tip about insects
+Top-and-side-views = Top and side views
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
+# Title of a camera tip about fungi
+Top-of-the-cap = Top of the cap
+# Title of a camera tip about arachnids
+Top-view--arachnids = Top view
+# Title of a camera tip about crustaceans
+Top-view--crustaceans = Top view
+# Title of a camera tip about echinoderms
+Top-view--echinoderms = Top view
+# Title of a camera tip about mammals
+Tracks-and-scat = Tracks and scat
 Traditional-Project = Traditional Project
 Traditional-Projects = Traditional Projects
+# Body of the camera tip "Head, beak, and body" for birds
+Try-to-get-the-head-beak-and-body-in-focus-Their-shapes-say-a-lot-about-what-kind-of-bird-it-is = Try to get the head, beak, and body in focus. Their shapes say a lot about what kind of bird it is.
 Umbrella-Project = Umbrella Project
+# Title of a camera tip about fungi
+Underside = Underside
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
 # Text to show when a taoxn rank is unknown or missing
@@ -1565,10 +1705,18 @@ We-are-not-confident-enough-to-make-a-top-ID-suggestion = We’re not confident 
 We-dont-sell-your-data = We don’t sell your data
 # Onboarding location permission screen: reassurance about how location is used
 We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this for observations you upload to iNaturalist
+# Title of a camera tip about arachnids
+Web-burrow-or-surroundings = Web, burrow, or surroundings
 Welcome-back = Welcome back!
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
+# Title of a camera tip about fishes
+Whole-body-from-the-side--fishes = Whole body from the side
+# Title of a camera tip about mammals
+Whole-body-from-the-side--mammals = Whole body from the side
+# Title of a camera tip about plants
+Whole-plant = Whole plant
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
 WILD-STATUS = WILD STATUS
@@ -1798,6 +1946,8 @@ Youve-denied-permission-prompt = You’ve denied permission. Please grant permis
 Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
+# Body of the camera tip "Keep it sharp" for birds
+Zoom-in-as-far-as-you-can-without-the-photo-getting-blurry-A-clear-photo-from-farther-away-is-more = Zoom in as far as you can without the photo getting blurry. A clear photo from farther away is more useful.
 Zoom-in-as-much-as-possible-to-improve = Zoom in as much as possible to improve location accuracy and get better identifications.
 Zoom-to-current-location = Zoom to current location
 # Label for button that shows zoom level, e.g. on a camera
