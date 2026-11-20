@@ -38,7 +38,7 @@ describe( "parseEmail", ( ) => {
   it.each( [
     ["anna@bücher.de", "anna@xn--bcher-kva.de"],
     ["Anna@BÜCHER.de", "Anna@xn--bcher-kva.de"],
-    ["anna@bücher.de", "anna@xn--bcher-kva.de"],
+    ["anna@bu\u0308cher.de", "anna@xn--bcher-kva.de"],
     ["user@пример.рф", "user@xn--e1afmkfd.xn--p1ai"],
   ] )( "converts the internationalized domain in %p to punycode", ( email, expected ) => {
     expect( parseEmail( email ) ).toBe( expected );

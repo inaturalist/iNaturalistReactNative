@@ -551,6 +551,21 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       },
     );
 
+    it(
+      "passes an internationalized domain to the username/password step as punycode",
+      async ( ) => {
+        const { navigationContainer } = renderAppWithNavigationContainer( );
+        await continueTo( "signup_email" );
+        await enterEmail( "anna@bücher.de" );
+        await actor.press( continueButton( ) );
+        expect( await screen.findByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+        expect( emailAvailable ).toHaveBeenCalledWith( "anna@xn--bcher-kva.de" );
+        expect( navigationContainer.current.getCurrentRoute( ).params ).toEqual( {
+          email: "anna@xn--bcher-kva.de",
+        } );
+      },
+    );
+
     it( "shows an error and stays when the email is already in use", async ( ) => {
       emailAvailable.mockResolvedValueOnce( false );
       renderApp( );
