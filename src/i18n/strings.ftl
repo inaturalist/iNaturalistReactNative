@@ -192,6 +192,8 @@ BY-ME = BY ME
 # Lead in to a list including "Get your identifcation verified..." and "Share your observation..."
 By-uploading-your-observation-to-iNaturalist-you-can = By uploading your observation to iNaturalist, you can:
 Camera = Camera
+# Label for a button on the camera that opens tips for taking good photos
+Camera-tips = Camera tips
 CANCEL = CANCEL
 Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
@@ -1086,6 +1088,8 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 # Accessibility hint for search button in Explore header that navigates to the search interface
 Opens-search-interface = Opens search interface.
+# Accessibility hint for the camera tips button
+Opens-tips-for-taking-good-photos = Opens tips for taking good photos.
 # Connector placed between any number of alternative project rule sentences, e.g. "must be observed in Germany or must be observed in France"
 or--project-rule = or
 OR-SIGN-IN-WITH = OR SIGN IN WITH
