@@ -20,6 +20,7 @@ type Props = {
   currentUser: boolean,
   deleteComment: Function,
   flagged: boolean,
+  mentionSuggestions?: Object[],
   idWithdrawn?: boolean,
   isConnected?: boolean,
   item: Object,
@@ -37,6 +38,7 @@ const ActivityHeader = ( {
   currentUser,
   deleteComment,
   flagged,
+  mentionSuggestions,
   idWithdrawn,
   isConnected,
   item,
@@ -177,6 +179,7 @@ const ActivityHeader = ( {
         {( currentUser && showEditCommentSheet ) && (
           <TextInputSheet
             mentionsEnabled
+            mentionSuggestions={mentionSuggestions}
             onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}

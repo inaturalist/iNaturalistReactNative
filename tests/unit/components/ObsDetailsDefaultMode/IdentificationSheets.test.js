@@ -198,6 +198,40 @@ describe( "IdentificationSheets", () => {
     } );
   } );
 
+  describe( "AddCommentSheet", () => {
+    it( "suggests the people on the observation when typing @", async () => {
+      useRoute.mockReturnValue( { params: { uuid: mockObservation.uuid } } );
+      const observer = factory( "RemoteUser" );
+      const commenter = factory( "RemoteUser" );
+      const observation = {
+        ...mockObservation,
+        user: observer,
+        comments: [
+          { user: commenter, created_at: "2026-01-01T00:00:00Z" },
+          { user: mockUser, created_at: "2026-02-01T00:00:00Z" },
+        ],
+        identifications: [],
+      };
+      renderComponent(
+        <IdentificationSheets
+          {...defaultProps}
+          observation={observation}
+          showAddCommentSheet
+        />,
+      );
+
+      const input = await screen.findByTestId( "TextInputSheet.notes" );
+      fireEvent.changeText( input, "@" );
+      fireEvent( input, "selectionChange", {
+        nativeEvent: { selection: { start: 1, end: 1 } },
+      } );
+
+      expect( await screen.findByText( observer.login ) ).toBeVisible();
+      expect( screen.getByText( commenter.login ) ).toBeVisible();
+      expect( screen.queryByText( mockUser.login ) ).toBeNull();
+    } );
+  } );
+
   describe( "deleted remote observation", () => {
     it( "shows WarningSheet when remoteObsWasDeleted is true", async () => {
       const confirmRemoteObsWasDeleted = jest.fn( );
