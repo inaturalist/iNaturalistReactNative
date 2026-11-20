@@ -30,8 +30,9 @@ export interface LayoutSlice {
     setScreenAfterPhotoEvidence: ( screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE ) => void;
     isAllAddObsOptionsMode: boolean;
     setIsAllAddObsOptionsMode: ( isAllAddObsOptionsMode: boolean ) => void;
-    shownOnce: object;
+    shownOnce: Record<string, boolean>;
     setShownOnce: ( key: string ) => void;
+    unsetShownOnce: ( key: string ) => void;
     resetShownOnce: ( ) => void;
     loginBannerDismissed: boolean;
     setLoginBannerDismissed: ( ) => void;
@@ -109,6 +110,15 @@ const createLayoutSlice: StateCreator<LayoutSlice> = set => ( {
         },
       },
     } ) ),
+    unsetShownOnce: key => set( state => {
+      const { [key]: _removed, ...shownOnce } = state.layout.shownOnce;
+      return {
+        layout: {
+          ...state.layout,
+          shownOnce,
+        },
+      };
+    } ),
     resetShownOnce: ( ) => set( state => ( {
       layout: {
         ...state.layout,

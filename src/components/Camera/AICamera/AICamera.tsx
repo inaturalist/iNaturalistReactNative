@@ -36,6 +36,7 @@ import {
 } from "../helpers";
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
+import GoodObservationSheet from "./GoodObservationSheet";
 import usePredictions from "./hooks/usePredictions";
 
 const isTablet = DeviceInfo.isTablet();
@@ -335,6 +336,7 @@ const AICamera = ( {
         toggleLocation={toggleLocation}
         completeSentinelFile={() => completeSentinelFile( sentinelFileName )}
       />
+      <GoodObservationSheet />
     </>
   );
 };
