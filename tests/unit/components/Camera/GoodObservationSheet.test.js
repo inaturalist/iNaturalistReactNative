@@ -56,14 +56,4 @@ describe( "GoodObservationSheet", ( ) => {
     render( <GoodObservationSheet /> );
     expect( screen.queryByTestId( "GoodObservationSheet" ) ).not.toBeOnTheScreen( );
   } );
-
-  it( "shows again once the shown state is unset", ( ) => {
-    act( ( ) => useStore.getState( ).layout.setShownOnce( GOOD_OBSERVATION_SHEET_KEY ) );
-    render( <GoodObservationSheet /> );
-    expect( screen.queryByTestId( "GoodObservationSheet" ) ).not.toBeOnTheScreen( );
-
-    act( ( ) => useStore.getState( ).layout.unsetShownOnce( GOOD_OBSERVATION_SHEET_KEY ) );
-
-    expect( screen.getByTestId( "GoodObservationSheet" ) ).toBeVisible( );
-  } );
 } );

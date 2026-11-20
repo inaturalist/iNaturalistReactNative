@@ -9,9 +9,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
-import { GOOD_OBSERVATION_SHEET_KEY } from "components/Camera/AICamera/GoodObservationSheet";
 import {
-  Body2,
   Button,
   ScrollViewWrapper,
 } from "components/SharedComponents";
@@ -23,11 +21,9 @@ import {
   I18nManager, Platform, Text,
 } from "react-native";
 import Config from "react-native-config";
-import { Switch } from "react-native-paper";
 import RNRestart from "react-native-restart";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import useStore from "stores/useStore";
-import colors from "styles/tailwindColors";
 
 import {
   CODE, H1, H2, P,
@@ -340,36 +336,6 @@ const DebugTools = () => {
   );
 };
 
-const ONE_TIME_TIPS = [
-  { key: GOOD_OBSERVATION_SHEET_KEY, label: "AI camera good-observation sheet" },
-];
-
-const OneTimeTips = () => {
-  const shownOnce = useStore( state => state.layout.shownOnce );
-  const setShownOnce = useStore( state => state.layout.setShownOnce );
-  const unsetShownOnce = useStore( state => state.layout.unsetShownOnce );
-  return (
-    <>
-      <H1>One-time tips</H1>
-      <P>Switch off to show a tip again. Signing out also resets these.</P>
-      {ONE_TIME_TIPS.map( ( { key, label } ) => (
-        <View key={key} className="flex-row items-center border-b border-lightGray py-3 mb-5">
-          <Body2 className="flex-1 mr-3">{`${label} shown`}</Body2>
-          <Switch
-            value={!!shownOnce[key]}
-            onValueChange={shown => ( shown
-              ? setShownOnce( key )
-              : unsetShownOnce( key ) )}
-            color={colors.inatGreen}
-            accessibilityLabel={`${label} shown`}
-            testID={`OneTimeTips.${key}.switch`}
-          />
-        </View>
-      ) )}
-    </>
-  );
-};
-
 const PathStats = () => {
   return (
     <>
@@ -408,7 +374,6 @@ const Developer = () => {
         <ComputerVisionStats />
         <CameraTipsStrings />
         <FeatureFlags />
-        <OneTimeTips />
         <PathStats />
         <AppFileSizes />
       </View>
