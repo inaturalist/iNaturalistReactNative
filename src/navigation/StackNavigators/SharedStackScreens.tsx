@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddToProjects from "components/AddToProjects/AddToProjects";
-import CameraTipsScreen from "components/CameraTips/CameraTipsScreen";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import PostDetails from "components/Journal/PostDetails";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
@@ -153,14 +152,6 @@ const SharedStackScreens = ( ) => (
         }}
       />
     </Stack.Group>
-    <Stack.Screen
-      name="CameraTips"
-      component={CameraTipsScreen}
-      options={{
-        ...hideHeader,
-        presentation: "fullScreenModal",
-      }}
-    />
     <Stack.Screen
       name="FullPageWebView"
       component={FadeInFullPageWebView}

@@ -189,8 +189,6 @@ export type SharedStackParamList = {
   };
   MatchTaxonSearchScreen: undefined;
   AddToProjects: undefined;
-  // From CameraTips button on the AI camera and standard camera
-  CameraTips: undefined;
   // From About
   //  {
   //   title: t( "COMMUNITY-GUIDELINES" ),
@@ -439,6 +437,8 @@ export type BaseNoBottomTabStackParamList = {
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
   GroupPhotos: { lastScreen: "PhotoSharing" };
+  // From the camera tips button on the AI camera and standard camera
+  CameraTips: undefined;
 };
 
 export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
