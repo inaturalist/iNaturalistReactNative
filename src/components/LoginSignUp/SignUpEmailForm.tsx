@@ -11,13 +11,13 @@ import useTranslation from "sharedHooks/useTranslation";
 
 import checkEmailAvailability from "./checkEmailAvailability";
 import Error from "./Error";
-import isValidEmail from "./isValidEmail";
 import LoginSignUpInputField from "./LoginSignUpInputField";
+import parseEmail from "./parseEmail";
 import ThirdPartySignInButtons from "./ThirdPartySignInButtons";
 
 interface Props {
-  // Called with the trimmed email once it's been checked as available for a
-  // new account, if the screen is still focused
+  // Called with the parsed email once it's been checked as available for
+  // a new account, if the screen is still focused
   onAvailable: ( email: string ) => void;
   onSignedIn: ( ) => void;
   // Prefixes the email field's and Continue button's testIDs
@@ -53,17 +53,18 @@ const SignUpEmailForm = ( { onAvailable, onSignedIn, testID }: Props ) => {
   };
 
   const continueWithEmail = async ( ) => {
-    if ( !isValidEmail( trimmedEmail ) ) {
+    const parsedEmail = parseEmail( email );
+    if ( !parsedEmail ) {
       setError( t( "Please-enter-a-valid-email-address" ) );
       return;
     }
     setError( null );
     setChecking( true );
-    const availability = await checkEmailAvailability( trimmedEmail );
+    const availability = await checkEmailAvailability( parsedEmail );
     setChecking( false );
     if ( availability === "available" ) {
       if ( !navigation.isFocused( ) ) return;
-      onAvailable( trimmedEmail );
+      onAvailable( parsedEmail );
     } else if ( availability === "taken" ) {
       setError( t( "That-email-is-already-associated-with-an-account" ) );
     } else {
