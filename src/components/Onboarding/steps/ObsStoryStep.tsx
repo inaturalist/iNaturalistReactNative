@@ -1,6 +1,10 @@
 import { tailwindFontBold } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistItem";
+import { useOnboardingCompact } from "components/Onboarding/onboardingCompact";
+import OnboardingFlexGap from "components/Onboarding/OnboardingFlexGap";
+import OnboardingFooterNote from "components/Onboarding/OnboardingFooterNote";
+import OnboardingHeadline from "components/Onboarding/OnboardingHeadline";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
@@ -13,7 +17,6 @@ import Body1 from "components/SharedComponents/Typography/Body1";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import Body4 from "components/SharedComponents/Typography/Body4";
-import Heading1 from "components/SharedComponents/Typography/Heading1";
 import List2 from "components/SharedComponents/Typography/List2";
 import { Image, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
@@ -39,21 +42,34 @@ interface StoryCardRowProps extends PropsWithChildren {
   alignTop?: boolean;
 }
 
-const StoryCardRow = ( { label, alignTop, children }: StoryCardRowProps ) => (
-  <View
-    className={classnames( "flex-row", {
-      "items-start": alignTop,
-      "items-center": !alignTop,
-    } )}
-  >
-    <Body1 className={`w-[52px] mr-[19px] ${tailwindFontBold}`}>{label}</Body1>
-    <View className="flex-1">{children}</View>
-  </View>
-);
+const StoryCardRow = ( { label, alignTop, children }: StoryCardRowProps ) => {
+  const compact = useOnboardingCompact( );
+  const Label = compact
+    ? Body2
+    : Body1;
+  return (
+    <View
+      className={classnames( "flex-row", {
+        "items-start": alignTop,
+        "items-center": !alignTop,
+      } )}
+    >
+      <Label
+        className={classnames( tailwindFontBold, compact
+          ? "w-[46px] mr-[10px]"
+          : "w-[52px] mr-[19px]" )}
+      >
+        {label}
+      </Label>
+      <View className="flex-1">{children}</View>
+    </View>
+  );
+};
 
 const StoryCard = ( ) => {
   const { t, i18n } = useTranslation( );
   const currentUser = useCurrentUser( );
+  const compact = useOnboardingCompact( );
   const taxon = {
     id: 134933,
     name: "Espadarana prosoblepon",
@@ -63,10 +79,12 @@ const StoryCard = ( ) => {
 
   return (
     <View
-      className={
-        "mt-[47px] mx-[3px] gap-[11px] rounded-[30px] border-4 border-inatGreen "
-        + "bg-lightGreen p-5"
-      }
+      className={classnames(
+        "rounded-[30px] border-4 border-inatGreen bg-lightGreen",
+        compact
+          ? "-mx-[12px] gap-2 p-4"
+          : "mx-[3px] gap-[11px] p-5",
+      )}
     >
       <StoryCardRow label={t( "Who" )}>
         <View className="flex-row items-center">
@@ -79,7 +97,10 @@ const StoryCard = ( ) => {
         </View>
       </StoryCardRow>
       <StoryCardRow label={t( "What" )} alignTop>
-        <View className="gap-[15px]">
+        <View className={compact
+          ? "gap-[10px]"
+          : "gap-[15px]"}
+        >
           <View
             className="w-full overflow-hidden rounded-[4px]"
             style={{ aspectRatio: STORY_PHOTO_ASPECT_RATIO }}
@@ -127,35 +148,25 @@ const StoryCard = ( ) => {
   );
 };
 
-const ObsStoryStep = ( ) => {
+const ObsStoryContent = ( ) => {
   const { t } = useTranslation( );
-  const { stepId, proceedToNext } = useOnboardingFlow( );
-  useOnboardingScreenView( stepId );
+  const compact = useOnboardingCompact( );
 
   return (
-    <OnboardingStepLayout
-      footer={(
-        <>
-          <Body2 className="px-[6px] mb-[24px]">
-            {t( "Even-a-photo-of-something-commonly-seen-in-your-area-can-help-science" )}
-          </Body2>
-          <Button
-            level="focus"
-            text={t( "CONTINUE" )}
-            onPress={proceedToNext}
-            testID={`Onboarding.${stepId}.next`}
-          />
-        </>
-      )}
-    >
-      <Heading1 accessibilityRole="header">
+    <>
+      <OnboardingHeadline>
         <Trans
           i18nKey="Every-observation-tells-a-story"
           components={UNDERLINED_SPANS}
         />
-      </Heading1>
-      <Body2 className="my-3">{t( "An-observation-is" )}</Body2>
-      <View className="gap-3 px-[10px]">
+      </OnboardingHeadline>
+      <OnboardingFlexGap min={6} max={12} />
+      <Body2>{t( "An-observation-is" )}</Body2>
+      <OnboardingFlexGap min={6} max={12} />
+      <View className={classnames( "px-[10px]", compact
+        ? "gap-2"
+        : "gap-3" )}
+      >
         <OnboardingChecklistItem>
           <Trans i18nKey="a-photo-or-sound-recording" components={BOLD_SPANS} />
         </OnboardingChecklistItem>
@@ -166,7 +177,35 @@ const ObsStoryStep = ( ) => {
           <Trans i18nKey="at-the-time-and-place-you-saw-it" components={BOLD_SPANS} />
         </OnboardingChecklistItem>
       </View>
+      <OnboardingFlexGap min={12} max={47} />
       <StoryCard />
+    </>
+  );
+};
+
+const ObsStoryStep = ( ) => {
+  const { t } = useTranslation( );
+  const { stepId, proceedToNext } = useOnboardingFlow( );
+  useOnboardingScreenView( stepId );
+
+  return (
+    <OnboardingStepLayout
+      fitsToScreen
+      footer={(
+        <>
+          <OnboardingFooterNote>
+            {t( "Even-a-photo-of-something-commonly-seen-in-your-area-can-help-science" )}
+          </OnboardingFooterNote>
+          <Button
+            level="focus"
+            text={t( "CONTINUE" )}
+            onPress={proceedToNext}
+            testID={`Onboarding.${stepId}.next`}
+          />
+        </>
+      )}
+    >
+      <ObsStoryContent />
     </OnboardingStepLayout>
   );
 };
