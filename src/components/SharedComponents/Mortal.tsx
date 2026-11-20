@@ -1,4 +1,4 @@
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { PropsWithChildren } from "react";
 import React, { useCallback, useState } from "react";
 
@@ -12,16 +12,27 @@ import React, { useCallback, useState } from "react";
  * Morghulis!
  * @see https://www.corstianboerman.com/blog/2020-09-05/force-a-component-to-unmount-with-react-navigation
  */
-const Mortal = ( { children }: PropsWithChildren ) => {
+interface Props extends PropsWithChildren {
+  // Names of routes that can be pushed on top of this screen without unmounting
+  // its children, so the screen is still as it was when they are closed
+  keepMountedUnder?: string[];
+}
+
+const Mortal = ( { children, keepMountedUnder }: Props ) => {
+  const navigation = useNavigation( );
   const [isVisible, setIsVisible] = useState( false );
   useFocusEffect(
     useCallback( ( ) => {
       setIsVisible( true );
 
       return ( ) => {
+        if ( keepMountedUnder ) {
+          const { routes, index } = navigation.getState( );
+          if ( keepMountedUnder.includes( routes[index]?.name ) ) return;
+        }
         setIsVisible( false );
       };
-    }, [] ),
+    }, [keepMountedUnder, navigation] ),
   );
 
   if ( !isVisible ) return null;

@@ -58,8 +58,12 @@ const SOUND_RECORDER_OPTIONS = {
   headerTitleAlign: "center",
 } as const;
 
+// Camera tips is pushed over the camera and closing it should return to the
+// camera as it was, e.g. with the photos taken so far
+const KEEP_CAMERA_MOUNTED_UNDER = ["CameraTips"];
+
 const CameraContainerWithPermission = ( ) => fadeInComponent(
-  <Mortal>
+  <Mortal keepMountedUnder={KEEP_CAMERA_MOUNTED_UNDER}>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
       title={t( "Identify-organisms-in-real-time-with-your-camera" )}
