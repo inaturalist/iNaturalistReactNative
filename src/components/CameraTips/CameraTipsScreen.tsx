@@ -24,8 +24,6 @@ const CameraTipsScreen = ( ) => {
             color={colors.darkGray}
             size={19}
             style={dropShadow}
-            // The camera stays mounted under this screen, so going back
-            // returns to it instead of reopening it
             onPress={( ) => navigation.goBack( )}
             accessibilityLabel={t( "Close" )}
             accessibilityHint={t( "Closes-camera-tips" )}
