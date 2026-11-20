@@ -189,6 +189,8 @@ export type SharedStackParamList = {
   };
   MatchTaxonSearchScreen: undefined;
   AddToProjects: undefined;
+  // From CameraTips button on the AI camera and standard camera
+  CameraTips: undefined;
   // From About
   //  {
   //   title: t( "COMMUNITY-GUIDELINES" ),
