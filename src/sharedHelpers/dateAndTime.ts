@@ -542,6 +542,7 @@ function formatObsFieldDatetime( date: Date ): string {
 
 export {
   formatApiDatetime,
+  formatDateString,
   formatDateStringFromTimestamp,
   formatDifferenceForHumans,
   formatISONoSeconds,

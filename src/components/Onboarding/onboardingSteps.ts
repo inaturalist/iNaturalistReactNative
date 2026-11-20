@@ -2,6 +2,10 @@ export type OnboardingExitSheet = "demo" | "signup";
 
 interface OnboardingStepConfig {
   id: string;
+  // The step's analytics position from the onboarding tracking spec. Fixed per
+  // step rather than derived from its index, so positions stay the same when
+  // steps (like the demo steps at 3-5) are absent
+  position: number;
   showsProgress: boolean;
   blocksBack: boolean;
   // The exit sheet the step's close button opens; steps without one have no
@@ -16,47 +20,55 @@ interface OnboardingStepConfig {
 export const ONBOARDING_STEPS = [
   {
     id: "welcome",
+    position: 1,
     showsProgress: false,
     blocksBack: false,
   },
   {
     id: "obs_story",
+    position: 2,
     showsProgress: true,
     exitSheet: "demo",
     blocksBack: false,
   },
   {
     id: "community_id",
+    position: 6,
     showsProgress: true,
     exitSheet: "demo",
     blocksBack: false,
   },
   {
     id: "research_grade",
+    position: 7,
     showsProgress: true,
     exitSheet: "demo",
     blocksBack: false,
   },
   {
     id: "impact",
+    position: 8,
     showsProgress: true,
     exitSheet: "demo",
     blocksBack: false,
   },
   {
     id: "signup_email",
+    position: 9,
     showsProgress: false,
     exitSheet: "signup",
     blocksBack: false,
   },
   {
     id: "signup_credentials",
+    position: 10,
     showsProgress: false,
     exitSheet: "signup",
     blocksBack: false,
   },
   {
     id: "location_explainer",
+    position: 11,
     showsProgress: true,
     blocksBack: true,
   },
@@ -88,6 +100,10 @@ export const getExitSheet = ( id: OnboardingStepId ): OnboardingExitSheet | null
 
 export const getNextStepId = ( id: OnboardingStepId ): OnboardingStepId | null => (
   ONBOARDING_STEPS[stepIndex( id ) + 1]?.id ?? null
+);
+
+export const getStepPosition = ( id: OnboardingStepId ): number => (
+  ONBOARDING_STEPS[stepIndex( id )].position
 );
 
 export const getStepBlocksBack = ( id: OnboardingStepId ): boolean => (

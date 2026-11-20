@@ -25,6 +25,9 @@
 
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
+# Onboarding observation story screen: checklist item completeing "An
+# observation is:". Text in tags is bold
+a-photo-or-sound-recording = <0>a </0><1>photo</1><0> or </0><1>sound recording</1>
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -113,6 +116,9 @@ Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 # Display name for the iconic taxa category for amphibia
 Amphibians = Amphibians
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
+# Onboarding observation story screen: introduces a checklist of what makes an
+# observation; each item that follows completes this sentence
+An-observation-is = An observation is:
 # Message shown to the user after they have left the AI camera where they may
 # have seen a species suggestion but before they land on the match screen,
 # where they might see a better suggestion.
@@ -157,6 +163,9 @@ Are-you-an-educator = Are you an educator wanting to use iNaturalist with your s
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 # Accessibility hint for the close button on onboarding steps, which opens a sheet asking whether to exit
 Asks-whether-to-exit = Asks whether to exit.
+# Onboarding observation story screen: checklist item completing "An
+# observation is:". Text in tags is bold
+at-the-time-and-place-you-saw-it = <0>at the </0><1>time and place</1><0> you saw it.</0>
 attribution-cc-by = some rights reserved (CC BY)
 attribution-cc-by-nc = some rights reserved (CC BY-NC)
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
@@ -412,6 +421,12 @@ datetime-format-long = Pp
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-long-with-zone = Pp (zzz)
+# Medium-length datetime with time zone, e.g. the sample observation in
+# onboarding. See complete list of formatting styles at
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
+# characters at
+# https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
+datetime-format-medium-with-zone = PP · p zzz
 # Shorter datetime, e.g. on observation detail view
 # See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-short = M/d/yy h:mm a
@@ -522,6 +537,9 @@ Edits-this-observations-taxon = Edits this observation's taxon
 EDUCATORS = EDUCATORS
 EMAIL = EMAIL
 EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
+# Common name of the frog Espadarana prosoblepon, shown in the sample
+# observation on the onboarding observation story screen
+Emerald-Glass-Frog = Emerald Glass Frog
 # Button that enables the camera's flash
 Enable-flash = Enable flash
 # Button that enables the camera to use location for suggestions
@@ -549,7 +567,12 @@ Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. C
 Establishment = Establishment
 # Header for a section describing how a taxon arrived in a given place
 ESTABLISHMENT-MEANS = ESTABLISHMENT MEANS
+# Onboarding observation story screen: encouragement shown above the Continue button
+Even-a-photo-of-something-commonly-seen-in-your-area-can-help-science = Even a photo of something commonly seen in your area can help science!
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
+# Onboarding observation story screen: headline. The word "observation" is
+# underlined for emphasis
+Every-observation-tells-a-story = <0>Every </0><1>observation</1><0> tells a story.</0>
 Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = EVIDENCE
 Exact-Date = Exact Date
@@ -760,11 +783,17 @@ Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
 It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
+# Onboarding Research Grade screen: checklist item completing "Your
+# observation can become Research Grade when:". Text in <1> tags is bold
+it-has-a-photo-or-sound-date-and-location = <0>it has a </0><1>photo or sound</1><0>, </0><1>date</1><0>, and </0><1>location</1>
 It-may-take-up-to-an-hour-to-remove-content = It may take up to an hour to completely delete all associated content
 # Label for suggested list of organisms from computer vision in the Match screen new user flow
 It-might-also-be = It might also be
 # Label for suggested list of organisms from computer vision in the Match screen new user flow when there is no top suggestion
 It-might-be-one-of-these = It might be one of these
+# Onboarding Research Grade screen: checklist item completing "Your
+# observation can become Research Grade when:". Text in <1> tags is bold
+it-passes-iNaturalists-standards-for-good-data = <0>it passes iNaturalist's standards for </0><1>good data</1>
 # Month of January
 January = January
 JOIN = JOIN
@@ -812,6 +841,9 @@ Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, 
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 # Identification category
 leading--identification = Leading
+# Common name of the beetle family Chrysomelidae, shown in the sample activity
+# feed on the onboarding community identification screen
+Leaf-Beetles = Leaf Beetles
 Learn-from-people-who-verify-and-refine-your-identifications = Learn from people who verify and refine your identifications.
 Learn-More = Learn More
 LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
@@ -962,6 +994,9 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+# Onboarding community identification screen: a sample comment someone left on
+# the user's observation, complimenting the photo
+Nice-shot = Nice shot!
 # As a categorical answer to the question presented on joining traditional projects: Do you want private coordinates be shared?
 No = No
 # Error message when no camera can be found
@@ -1063,6 +1098,9 @@ observer-must-allow-project-curators-to-view-coordinates = observer must allow p
 Observers = Observers
 # Month of October
 October = October
+# Onboarding observation story screen: checklist item completing "An
+# observation is:". Text in tags is bold
+of-one-living-thing = <0>of </0><1>one living thing</1>
 Offline-DQA-description = The DQA may not be accurate. Check your internet connection and try again.
 Offline-suggestions-may-differ-from-online = Offline suggestions may differ from online suggestions, and taxon images and common names may not load.
 # Generic confirmation, e.g. button on a warning alert
@@ -1105,6 +1143,8 @@ OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 # Tab on notifications showing notifications about content created by others.
 # Should be 16 characters or fewer or it will be ellipsized.
 OTHERS--notifications = OTHERS
+# Onboarding community identification screen: explains the sample activity feed below it
+Our-global-community-works-together-to-help-identify-the-species-youre-looking-at = Our global community works together to help identify the species you're looking at.
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
@@ -1264,6 +1304,9 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Onboarding community identification screen: headline. The word "identify" is
+# underlined for emphasis
+Real-people-will-identify-your-observation = <0>Real people will </0><1>identify</1><0> your observation.</0>
 # Heading above the list of recently used searches
 Recent-searches = Recent searches
 # Help text for the button that opens the sound recorder
@@ -1310,6 +1353,9 @@ Required = Required
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
 RESEARCH-GRADE--quality-grade = RESEARCH GRADE
+# Onboarding Research Grade screen: shown above the Continue button. Text in
+# <1> tags is bold
+Research-Grade-observations-can-more-easily-be-used-to = <0>Research Grade observations can more easily be used to </0><1>make new discoveries</1><0> and </0><1>protect nature.</1>
 # Reset password button
 RESET-PASSWORD = RESET PASSWORD
 # Label for a button that resets a sound recording
@@ -1490,6 +1536,9 @@ Specific-location--project-rule = Specific location
 Spines-and-texture = Spines and texture
 # Body of the camera tip "Colors and patterns" for fishes
 Spots-stripes-and-bars-are-often-what-tells-similar-species-apart = Spots, stripes, and bars are often what tells similar species apart.
+# Common name of the beetle species Diabrotica undecimpunctata, shown in the
+# sample activity feed on the onboarding community identification screen
+Spotted-Cucumber-Beetle = Spotted Cucumber Beetle
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
@@ -1547,6 +1596,9 @@ The-AI-is-not-confident-It-may-be-one-of-the-IDs-below = The AI is not confident
 The-AI-is-not-confident-Upload-to-ask-the-community = The AI is not confident. Upload to ask the community.
 # Explanation on observation details for an observation with Research Grade quality grade
 The-community-agrees-on-an-identification = The community agrees on an identification, and this observation can now more easily be used to make new discoveries and protect nature.
+# Onboarding Research Grade screen: checklist item completing "Your
+# observation can become Research Grade when:". Text in <1> tags is bold
+the-community-vets-the-identification = <0>the community </0><1>vets the identification</1>
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
@@ -1598,6 +1650,8 @@ To-sync-your-observations-to-iNaturalist = To sync your observations to iNatural
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
 To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
+# Onboarding Research Grade screen: headline. Text in <1> tags is underlined
+Together-we-help-observations-reach-Research-Grade = <0>Together, we help observations reach </0><1>Research Grade</1><0>.</0>
 Toggle-map-type = Toggle map type
 # Accessibility hint for tapping a collapsible section header
 Toggles-the-section-open-or-closed = Toggles the section open or closed.
@@ -1667,6 +1721,14 @@ Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos = Us
 Use-your-devices-microphone-to-record-animal-sounds-and-share-them = Use your device’s microphone to record animal sounds and share them to get identifications and contribute to science!
 USER = USER
 User = User { $userHandle }
+# Onboarding community identification screen: header of a sample activity feed
+# entry where another person commented on the user's observation. userName is
+# a username. Text in <1> tags is bold
+user-added-a-comment = <1>{ $userName }</1><0> added a comment</0>
+# Onboarding community identification screen: header of a sample activity feed
+# entry where another person identified the user's observation. userName is a
+# username. Text in <1> tags is bold
+user-identified-your-observation = <1>{ $userName }</1><0> identified your observation!</0>
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
@@ -1712,9 +1774,21 @@ We-only-use-this-for-observations-you-upload-to-iNaturalist = We only use this f
 # Title of a camera tip about arachnids
 Web-burrow-or-surroundings = Web, burrow, or surroundings
 Welcome-back = Welcome back!
+# Onboarding observation story screen: label for the row showing what was seen
+# in the sample observation
+What = What
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
+# Onboarding observation story screen: label for the row showing when the
+# sample observation was made
+When = When
 When-tapping-the-green-observation-button = When tapping the green observation button, open:
+# Onboarding observation story screen: label for the row showing where the
+# sample observation was made
+Where = Where
+# Onboarding observation story screen: label for the row showing who made the
+# sample observation
+Who = Who
 # Title of a camera tip about fishes
 Whole-body-from-the-side--fishes = Whole body from the side
 # Title of a camera tip about mammals
@@ -1892,6 +1966,9 @@ Yes-but-only-if-I-add-the-observation-to-the-project-myself = Yes, but only if I
 # Button confirming the user wants to leave the onboarding demo
 YES-EXIT = YES, EXIT
 Yes-no-matter-who-adds-the-observation-to-the-project = Yes, no matter who adds the observation to the project
+# Onboarding Research Grade screen: shown in place of a username on a sample
+# observation, to show it as the user's own
+you--observer = you
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
@@ -1909,9 +1986,16 @@ You-can-only-add-20-photos-per-observation = You can only add 20 photos per obse
 # Body of the sheet shown when closing an onboarding sign-up step
 You-can-only-get-identifications-from-other-people-by-creating-an-account = You can only get identifications from other people by creating an account.
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
+# Onboarding community identification screen: a note left with a sample
+# identification of a spotted beetle, explaining how the identifier knew what
+# it was
+You-can-tell-because-of-the-spots = You can tell because of the spots!
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
+# Onboarding community identification screen: first entry in a sample activity
+# feed about the user's own observation. Text in <1> tags is bold
+you-created-an-observation-with-an-identification = <1>you</1><0> created an observation with an identification</0>
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
@@ -1937,6 +2021,9 @@ You-will-see-notifications = You’ll see notifications here once you log in & u
 Your-donation-to-iNaturalist = Your donation to iNaturalist supports the improvement and stability of the mobile apps and website that connects millions of people to nature and enables the protection of biodiversity worldwide!
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+# Onboarding Research Grade screen: introduces a checklist of the
+# requirements for an observation to become Research Grade
+Your-observation-can-become-Research-Grade-when = Your observation can become Research Grade when:
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
