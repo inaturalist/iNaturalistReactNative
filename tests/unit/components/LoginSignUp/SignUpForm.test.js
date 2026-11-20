@@ -31,21 +31,14 @@ describe( "SignUpForm", ( ) => {
     } );
   } );
 
-  it( "shows an error and stays when the email isn't valid", async ( ) => {
-    renderComponent( <SignUpForm /> );
-    await actor.type( screen.getByTestId( "Signup.email" ), "test@email" );
-    await actor.press( screen.getByTestId( "Signup.signupButton" ) );
-    expect( await screen.findByText( invalidEmailError( ) ) ).toBeVisible( );
-    expect( emailAvailable ).not.toHaveBeenCalled( );
-    expect( mockNavigate ).not.toHaveBeenCalled( );
-  } );
-
-  it( "clears the invalid email error on edit", async ( ) => {
+  it( "shows an error and stays when the email isn't valid, and clears it on edit", async ( ) => {
     renderComponent( <SignUpForm /> );
     const emailField = screen.getByTestId( "Signup.email" );
     await actor.type( emailField, "test@email" );
     await actor.press( screen.getByTestId( "Signup.signupButton" ) );
     expect( await screen.findByText( invalidEmailError( ) ) ).toBeVisible( );
+    expect( emailAvailable ).not.toHaveBeenCalled( );
+    expect( mockNavigate ).not.toHaveBeenCalled( );
     await actor.type( emailField, ".com" );
     expect( screen.queryByText( invalidEmailError( ) ) ).toBeNull( );
   } );
