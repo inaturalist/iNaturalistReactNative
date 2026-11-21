@@ -261,19 +261,19 @@ const DQAContainer = ( ) => {
   return (
     <>
       <DataQualityAssessment
-        qualityMetrics={combinedQualityMetrics}
+        checkTest={checkTest}
+        ifMajorityAgree={ifMajorityAgree}
+        isConnected={isConnected}
         loadingAgree={loadingAgree}
         loadingDisagree={loadingDisagree}
         loadingMetric={loadingMetric}
         qualityGrade={observation?.quality_grade}
-        setMetricVote={setMetricVote}
-        removeMetricVote={removeMetricVote}
-        setNeedsIDVote={setNeedsIDVote}
-        removeNeedsIDVote={removeNeedsIDVote}
-        ifMajorityAgree={ifMajorityAgree}
-        checkTest={checkTest}
-        isConnected={isConnected}
+        qualityMetrics={combinedQualityMetrics}
         recheckisConnected={refreshNetInfo}
+        removeMetricVote={removeMetricVote}
+        removeNeedsIDVote={removeNeedsIDVote}
+        setMetricVote={setMetricVote}
+        setNeedsIDVote={setNeedsIDVote}
       />
       <BottomSheet
         headerText={t( "ERROR-VOTING-IN-DQA" )}
