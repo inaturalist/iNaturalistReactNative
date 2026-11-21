@@ -41,7 +41,7 @@ const titleDescription = ( option: string ) => {
 interface Props {
   checkTest: ( metric: string ) => boolean;
   ifMajorityAgree: ( metric: string ) => boolean | null;
-  isConnected?: boolean;
+  isConnected: boolean | null;
   loadingAgree: boolean;
   loadingDisagree: boolean;
   loadingMetric: string;
