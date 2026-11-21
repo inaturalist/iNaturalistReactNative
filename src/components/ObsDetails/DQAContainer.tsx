@@ -57,7 +57,7 @@ const DQAContainer = ( ) => {
 
   const fetchMetricsParams = {
     id: observationUUID,
-    fields: "metric,agree,user_id",
+    fields: { metric: true, agree: true, user_id: true },
     ttl: -1,
   };
 
