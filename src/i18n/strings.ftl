@@ -937,6 +937,8 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+# Onboarding Impact screen: shown below the headline. Text in <1> tags is bold
+More-than-8000-scientific-studies-have-relied-on-iNaturalist = <1>8,000+ scientific studies</1><0> have relied on iNaturalist observations!</0>
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
@@ -2040,6 +2042,8 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x 
 Your-observation-can-become-Research-Grade-when = Your observation can become Research Grade when:
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
+# Onboarding Impact screen: headline. Text in <1> tags is underlined
+Your-observations-make-a-difference = <0>Your observations make a </0><1>difference</1><0>.</0>
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
 # Subtitle on Add to Projects membership rule row (coordinates_shareable_by_project_curators?)
 Your-project-membership-settings-must-allow = Your project membership settings must allow project curators to access the true locations of your project observations. You change location permissions on the project's page.

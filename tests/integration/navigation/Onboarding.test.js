@@ -359,12 +359,13 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       { screen_id: "obs_story", position: 2 },
       { screen_id: "community_id", position: 6 },
       { screen_id: "research_grade", position: 7 },
+      { screen_id: "impact", position: 8 },
     ] );
 
     act( ( ) => navigationContainer.current.goBack( ) );
     expect( screen.getByTestId( "Onboarding.research_grade" ) ).toBeVisible( );
-    expect( screenViews( ) ).toHaveLength( 4 );
-    expect( screenViews( )[3] ).toEqual( { screen_id: "research_grade", position: 7 } );
+    expect( screenViews( ) ).toHaveLength( 5 );
+    expect( screenViews( )[4] ).toEqual( { screen_id: "research_grade", position: 7 } );
   } );
 
   describe( "exit sheets", ( ) => {
