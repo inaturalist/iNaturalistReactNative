@@ -50,9 +50,11 @@ interface QualityMetrics {
   needs_id: Vote[];
 }
 
+type Indicator = "date" | "location" | "evidence" | "id_supported" | "rank";
+
 interface Props {
-  checkTest: ( metric: string ) => boolean;
-  ifMajorityAgree: ( metric: string ) => boolean | null;
+  checkTest: ( metric: Indicator ) => boolean;
+  ifMajorityAgree: ( metric: Metric ) => boolean | null;
   isConnected: boolean | null;
   loadingAgree: boolean;
   loadingDisagree: boolean;
@@ -86,7 +88,7 @@ const DataQualityAssessment = ( {
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between";
   const listTextClass = "flex-row shrink gap-x-[11px] mr-[11px] items-center";
 
-  const renderMetricIndicator = ( metric: string ) => {
+  const renderMetricIndicator = ( metric: Metric ) => {
     const ifAgree = ifMajorityAgree( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
@@ -107,7 +109,7 @@ const DataQualityAssessment = ( {
     );
   };
 
-  const renderIndicator = ( metric: string ) => {
+  const renderIndicator = ( metric: Indicator ) => {
     const ifAgree = checkTest( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
