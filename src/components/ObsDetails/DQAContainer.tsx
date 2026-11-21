@@ -49,6 +49,8 @@ const DQAContainer = ( ) => {
     refetchRemoteObservation,
     isRefetching,
   } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
+
+  // TODO: type result of Observation.mapApiToRealm
   const observation = remoteObservation
     ? Observation.mapApiToRealm( remoteObservation )
     : localObservation;
