@@ -3,6 +3,7 @@ import {
   useNetInfo,
 } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
+import { METRICS_FIELDS } from "api/fields";
 import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import type { Indicator } from "components/ObsDetails/DataQualityAssessment";
@@ -57,7 +58,7 @@ const DQAContainer = ( ) => {
 
   const fetchMetricsParams = {
     id: observationUUID,
-    fields: { metric: true, agree: true, user_id: true },
+    fields: METRICS_FIELDS,
     ttl: -1,
   };
 
