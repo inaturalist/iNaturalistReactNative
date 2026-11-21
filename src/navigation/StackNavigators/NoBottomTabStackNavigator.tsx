@@ -43,11 +43,6 @@ const CAMERA_SCREEN_OPTIONS = {
   },
 } as const;
 
-const CAMERA_TIPS_OPTIONS = {
-  ...hideHeader,
-  presentation: "fullScreenModal",
-} as const;
-
 const GROUP_PHOTOS_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
@@ -65,18 +60,20 @@ const SOUND_RECORDER_OPTIONS = {
 } as const;
 
 const CameraContainerWithPermission = ( ) => fadeInComponent(
-  <PermissionGateContainer
-    permissions={CAMERA_PERMISSIONS}
-    title={t( "Identify-organisms-in-real-time-with-your-camera" )}
-    titleDenied={t( "Please-allow-Camera-Access" )}
-    body={t( "Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos" )}
-    blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
-    buttonText={t( "OBSERVE-ORGANISMS" )}
-    icon="camera"
-    image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
-  >
-    <CameraContainer />
-  </PermissionGateContainer>,
+  <Mortal>
+    <PermissionGateContainer
+      permissions={CAMERA_PERMISSIONS}
+      title={t( "Identify-organisms-in-real-time-with-your-camera" )}
+      titleDenied={t( "Please-allow-Camera-Access" )}
+      body={t( "Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos" )}
+      blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
+      buttonText={t( "OBSERVE-ORGANISMS" )}
+      icon="camera"
+      image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+    >
+      <CameraContainer />
+    </PermissionGateContainer>
+  </Mortal>,
 );
 
 // On iOS we don't actually need PHOTO LIBRARY permission to import photos,
@@ -128,7 +125,7 @@ const NoBottomTabStackNavigator = ( ) => (
         <Stack.Screen
           name="CameraTips"
           component={CameraTipsScreen}
-          options={CAMERA_TIPS_OPTIONS}
+          options={hideHeader}
         />
         <Stack.Screen
           name="PhotoLibrary"
