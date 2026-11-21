@@ -5,6 +5,7 @@ import {
 import { useRoute } from "@react-navigation/native";
 import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
+import type { Indicator } from "components/ObsDetails/DataQualityAssessment";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import {
   BottomSheet,
@@ -215,7 +216,7 @@ const DQAContainer = ( ) => {
     return null;
   };
 
-  const checkTest = metric => {
+  const checkTest = ( metric: Indicator ) => {
     if ( observation ) {
       const obsDataToCheck = {
         date: observation.observed_on,

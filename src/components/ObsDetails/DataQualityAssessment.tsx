@@ -50,7 +50,7 @@ interface QualityMetrics {
   needs_id: Vote[];
 }
 
-type Indicator = "date" | "location" | "evidence" | "id_supported" | "rank";
+export type Indicator = "date" | "location" | "evidence" | "id_supported" | "rank";
 
 interface Props {
   checkTest: ( metric: Indicator ) => boolean;
