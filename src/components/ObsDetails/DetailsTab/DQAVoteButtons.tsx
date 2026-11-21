@@ -16,7 +16,7 @@ interface Vote {
   vote_flag: boolean;
 }
 
-type Metric =
+export type Metric =
   | "date"
   | "location"
   | "wild"
@@ -30,12 +30,12 @@ interface Props {
   votes: Vote[];
   loadingAgree: boolean;
   loadingDisagree: boolean;
-  loadingMetric?: string | null | undefined;
-  setVote: ( { metric, vote }: { metric: string; vote: boolean } ) => void;
-  removeVote: ( { metric, vote }: { metric: string; vote: boolean } ) => void;
+  loadingMetric?: Metric | null | undefined;
+  setVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  removeVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
 }
 
-const getUserVote = ( currentUser: UserPojo | null, metric: string, votes: Vote[] ) => {
+const getUserVote = ( currentUser: UserPojo | null, metric: Metric, votes: Vote[] ) => {
   if ( votes && votes.length > 0 ) {
     const match = votes.find( element => ( element.user_id === currentUser?.id ) );
     if ( match ) {
@@ -48,7 +48,7 @@ const getUserVote = ( currentUser: UserPojo | null, metric: string, votes: Vote[
   return null;
 };
 
-const renderVoteCount = ( status: boolean, metric: string, votes: Vote[] ) => {
+const renderVoteCount = ( status: boolean, metric: Metric, votes: Vote[] ) => {
   if ( !votes ) return null;
 
   const count = votes
