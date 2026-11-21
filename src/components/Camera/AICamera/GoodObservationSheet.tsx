@@ -33,11 +33,12 @@ const GoodObservationSheet = ( ) => {
 
   return (
     <BottomSheetV2
+      contentClassName="pt-0"
       headerText={t( "HOW-TO-MAKE-A-GOOD-OBSERVATION" )}
       onPressClose={markShown}
       onDismiss={markShown}
     >
-      <View className="px-5 pb-5 gap-y-6" testID="GoodObservationSheet">
+      <View className="p-5 gap-y-6" testID="GoodObservationSheet">
         <View className="gap-y-4">
           <View className="gap-y-1">
             <Body1>{t( "Clear-photo-of-a-single-living-thing" )}</Body1>
