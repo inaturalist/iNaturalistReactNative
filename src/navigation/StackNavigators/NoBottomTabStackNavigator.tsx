@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // used in our e2e tests on Github Actions
 // eslint-disable-next-line import/no-unresolved
 import CameraContainer from "components/Camera/CameraContainer";
+import CameraTipsScreen from "components/CameraTips/CameraTipsScreen";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoLibrary from "components/PhotoImporter/PhotoLibrary";
 import { Heading4 } from "components/SharedComponents";
@@ -120,6 +121,11 @@ const NoBottomTabStackNavigator = ( ) => (
           name="Camera"
           component={CameraContainerWithPermission}
           options={CAMERA_SCREEN_OPTIONS}
+        />
+        <Stack.Screen
+          name="CameraTips"
+          component={CameraTipsScreen}
+          options={hideHeader}
         />
         <Stack.Screen
           name="PhotoLibrary"

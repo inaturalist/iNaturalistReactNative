@@ -437,6 +437,8 @@ export type BaseNoBottomTabStackParamList = {
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
   GroupPhotos: { lastScreen: "PhotoSharing" };
+  // From the camera tips button on the AI camera and standard camera
+  CameraTips: undefined;
 };
 
 export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
