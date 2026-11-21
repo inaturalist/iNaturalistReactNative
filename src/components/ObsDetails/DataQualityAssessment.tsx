@@ -58,7 +58,7 @@ interface Props {
   isConnected: boolean | null;
   loadingAgree: boolean;
   loadingDisagree: boolean;
-  loadingMetric?: Metric | null | undefined;
+  loadingMetric: Metric | "none";
   qualityGrade: string;
   qualityMetrics: QualityMetrics;
   recheckisConnected: ( ) => void;

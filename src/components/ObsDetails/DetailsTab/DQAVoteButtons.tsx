@@ -30,7 +30,7 @@ interface Props {
   votes: Vote[];
   loadingAgree: boolean;
   loadingDisagree: boolean;
-  loadingMetric?: Metric | null | undefined;
+  loadingMetric: Metric | "none";
   setVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
   removeVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
 }

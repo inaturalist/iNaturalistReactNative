@@ -26,6 +26,8 @@ import {
 } from "sharedHooks";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
+import type { Metric } from "./DetailsTab/DQAVoteButtons";
+
 const logger = log.extend( "DQAContainer" );
 
 const DQAContainer = ( ) => {
@@ -34,7 +36,7 @@ const DQAContainer = ( ) => {
   const { observationUUID } = params;
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
-  const [loadingMetric, setLoadingMetric] = useState( "none" );
+  const [loadingMetric, setLoadingMetric] = useState<Metric | "none">( "none" );
   const [hideErrorSheet, setHideErrorSheet] = useState( true );
   const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
 
@@ -61,7 +63,7 @@ const DQAContainer = ( ) => {
     setLoadingDisagree( false );
   }, [] );
 
-  const setLoading = ( metric, vote ) => {
+  const setLoading = ( metric: Metric, vote: boolean ) => {
     setLoadingMetric( metric );
     if ( vote ) {
       setLoadingAgree( true );
@@ -133,7 +135,7 @@ const DQAContainer = ( ) => {
     },
   );
 
-  const setMetricVote = ( { metric, vote } ) => {
+  const setMetricVote = ( { metric, vote }: { metric: Metric; vote: boolean} ) => {
     setLoading( metric, vote );
 
     const qualityMetricParams = {
@@ -198,7 +200,7 @@ const DQAContainer = ( ) => {
     unfaveMutate( unfaveParams );
   };
 
-  const ifMajorityAgree = metric => {
+  const ifMajorityAgree = ( metric: Metric ) => {
     const votesOfMetric = combinedQualityMetrics[metric];
     if ( votesOfMetric && votesOfMetric.length > 0 ) {
       const agreeCount = votesOfMetric.filter(
