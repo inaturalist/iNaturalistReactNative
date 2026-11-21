@@ -696,7 +696,7 @@ HIGHEST-RANK = HIGHEST RANK
 # Title of a camera tip about insects
 Host-plant = Host plant
 # Title of the one-time sheet shown the first time the AI camera opens
-How-to-make-a-good-observation = How to make a good observation
+HOW-TO-MAKE-A-GOOD-OBSERVATION = HOW TO MAKE A GOOD OBSERVATION
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-in-Camera = ID in Camera

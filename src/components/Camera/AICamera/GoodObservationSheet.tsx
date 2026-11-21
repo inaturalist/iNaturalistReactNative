@@ -3,7 +3,6 @@ import {
   Body2,
   BottomSheetV2,
   Button,
-  Heading2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -34,26 +33,31 @@ const GoodObservationSheet = ( ) => {
 
   return (
     <BottomSheetV2
-      contentClassName="pt-0"
+      headerText={t( "HOW-TO-MAKE-A-GOOD-OBSERVATION" )}
       onPressClose={markShown}
       onDismiss={markShown}
     >
-      <View className="px-[30px] pb-5" testID="GoodObservationSheet">
-        <Heading2 className="mb-5" accessibilityRole="header">
-          {t( "How-to-make-a-good-observation" )}
-        </Heading2>
-        <Body1 className="mb-1">{t( "Clear-photo-of-a-single-living-thing" )}</Body1>
-        <Body2 className="mb-4">
-          {t( "common-species-are-great-just-make-sure-the-shot-is-as-sharp-as-possible" )}
-        </Body2>
-        <Body1 className="mb-1">{t( "Wild-animals-and-plants" )}</Body1>
-        <Body2 className="mb-4">
-          {t( "not-pets-garden-plants-or-zoo-animals-only-things-living-freely" )}
-        </Body2>
-        <Body1 className="mb-1">{t( "Evidence-is-ok" )}</Body1>
-        <Body2 className="mb-6">
-          {t( "scat-tracks-and-eggs-all-count-as-do-fallen-leaves-fruits" )}
-        </Body2>
+      <View className="px-[30px] pb-5 gap-y-6" testID="GoodObservationSheet">
+        <View className="gap-y-4">
+          <View className="gap-y-1">
+            <Body1>{t( "Clear-photo-of-a-single-living-thing" )}</Body1>
+            <Body2>
+              {t( "common-species-are-great-just-make-sure-the-shot-is-as-sharp-as-possible" )}
+            </Body2>
+          </View>
+          <View className="gap-y-1">
+            <Body1>{t( "Wild-animals-and-plants" )}</Body1>
+            <Body2>
+              {t( "not-pets-garden-plants-or-zoo-animals-only-things-living-freely" )}
+            </Body2>
+          </View>
+          <View className="gap-y-1">
+            <Body1>{t( "Evidence-is-ok" )}</Body1>
+            <Body2>
+              {t( "scat-tracks-and-eggs-all-count-as-do-fallen-leaves-fruits" )}
+            </Body2>
+          </View>
+        </View>
         <Button
           level="focus"
           text={t( "CONTINUE" )}
