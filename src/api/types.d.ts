@@ -508,3 +508,12 @@ export interface ApiSpeciesCountVerboseSummary extends ApiCount {
 export interface ApiSpeciesCountDetails extends ApiCount {
   taxon: ApiTaxonLimited;
 }
+
+// TODO: check APIv2 docs
+// When using METRIC_FIELDS
+export interface ApiQualityMetric extends ApiRecord {
+  metric: any;
+  agree: any;
+  user_id: number;
+
+}
