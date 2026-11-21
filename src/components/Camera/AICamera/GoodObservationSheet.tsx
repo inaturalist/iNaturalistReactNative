@@ -1,7 +1,7 @@
 import {
   Body1,
   Body2,
-  BottomSheet,
+  BottomSheetV2,
   Button,
   Heading2,
 } from "components/SharedComponents";
@@ -12,8 +12,8 @@ import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 // Shown the first time the AI camera opens, while the onboarding flag is on.
-// CONTINUE and any other dismissal (close button, backdrop tap, swipe down)
-// mark it shown
+// CONTINUE and any other dismissal (close button and backdrop tap via
+// onPressClose, swipe down via onDismiss) mark it shown
 const GoodObservationSheet = ( ) => {
   const { t } = useTranslation( );
   // Key in layout.shownOnce. Signing out clears that store, so the sheet can
@@ -33,8 +33,12 @@ const GoodObservationSheet = ( ) => {
   if ( !onboardingV2Enabled || alreadyShown ) return null;
 
   return (
-    <BottomSheet onPressClose={markShown} testID="GoodObservationSheet">
-      <View className="px-[30px] pb-5">
+    <BottomSheetV2
+      contentClassName="pt-0"
+      onPressClose={markShown}
+      onDismiss={markShown}
+    >
+      <View className="px-[30px] pb-5" testID="GoodObservationSheet">
         <Heading2 className="mb-5" accessibilityRole="header">
           {t( "How-to-make-a-good-observation" )}
         </Heading2>
@@ -57,7 +61,7 @@ const GoodObservationSheet = ( ) => {
           testID="GoodObservationSheet.continue"
         />
       </View>
-    </BottomSheet>
+    </BottomSheetV2>
   );
 };
 
