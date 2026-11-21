@@ -1,4 +1,3 @@
-// @flow
 import {
   refresh as refreshNetInfo,
   useNetInfo,
@@ -29,7 +28,7 @@ import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
 const logger = log.extend( "DQAContainer" );
 
-const DQAContainer = ( ): React.Node => {
+const DQAContainer = ( ) => {
   const { isConnected } = useNetInfo( );
   const { params } = useRoute( );
   const { observationUUID } = params;
