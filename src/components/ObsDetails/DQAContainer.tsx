@@ -16,6 +16,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import compact from "lodash/compact";
 import groupBy from "lodash/groupBy";
+import type { TabStackScreenProps } from "navigation/types";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -33,7 +34,7 @@ const logger = log.extend( "DQAContainer" );
 
 const DQAContainer = ( ) => {
   const { isConnected } = useNetInfo( );
-  const { params } = useRoute( );
+  const { params } = useRoute<TabStackScreenProps<"DataQualityAssessment">["route"]>();
   const { observationUUID } = params;
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
