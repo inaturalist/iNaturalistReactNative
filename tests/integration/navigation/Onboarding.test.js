@@ -7,7 +7,7 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useContext } from "react";
-import { BackHandler, Image } from "react-native";
+import { Alert, BackHandler, Image } from "react-native";
 import { requestMultiple, RESULTS } from "react-native-permissions";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -366,6 +366,16 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     expect( screen.getByTestId( "Onboarding.research_grade" ) ).toBeVisible( );
     expect( screenViews( ) ).toHaveLength( 5 );
     expect( screenViews( )[4] ).toEqual( { screen_id: "research_grade", position: 7 } );
+  } );
+
+  it( "shows an impact story photo's attribution from its copyright button", async ( ) => {
+    jest.spyOn( Alert, "alert" ).mockImplementation( ( ) => undefined );
+    renderApp( );
+    const step = await continueTo( "impact" );
+    const attribution = "(c) Pav Johnsson, some rights reserved (CC BY)";
+    await actor.press( within( step ).getByLabelText( attribution ) );
+    expect( Alert.alert ).toHaveBeenCalledWith( i18next.t( "Copyright" ), attribution );
+    Alert.alert.mockRestore( );
   } );
 
   describe( "exit sheets", ( ) => {

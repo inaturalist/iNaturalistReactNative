@@ -943,6 +943,8 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+# Onboarding Impact screen: title of a story about a moth rediscovered in New Zealand
+Moth-presumed-extinct-for-decades-rediscovered-by-tourist = Moth presumed extinct for decades rediscovered by tourist
 must-be-captive-cultivated = must be captive / cultivated
 must-be-georeferenced = must be georeferenced
 must-be-identified = must be identified
@@ -999,6 +1001,8 @@ Nearby = Nearby
 Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
+# Country name, shown as the location of a story on the onboarding Impact screen
+New-Zealand = New Zealand
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
@@ -1614,6 +1618,9 @@ The-community-agrees-on-an-identification = The community agrees on an identific
 # observation can become Research Grade when:". Text in <1> tags is bold
 the-community-vets-the-identification = <0>the community </0><1>vets the identification</1>
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+# Onboarding Impact screen: body of a story about a moth rediscovered in New
+# Zealand. The Frosted Phoenix is the moth's common name
+The-Frosted-Phoenix-hadnt-been-spotted-in-decades = The Frosted Phoenix hadn't been spotted in decades and was once thought extinct... until a tourist shared a photo on iNaturalist without realizing what it was.
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
