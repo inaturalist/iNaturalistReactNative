@@ -6,6 +6,7 @@ import { useRoute } from "@react-navigation/native";
 import { METRICS_FIELDS } from "api/fields";
 import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
+import type { ApiQualityMetric } from "api/types";
 import type { Indicator } from "components/ObsDetails/DataQualityAssessment";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import {
@@ -82,7 +83,7 @@ const DQAContainer = ( ) => {
     refetch: refetchQualityMetrics,
   } = useAuthenticatedQuery(
     ["fetchQualityMetrics", observationUUID],
-    optsWithAuth => fetchQualityMetrics( fetchMetricsParams, optsWithAuth ),
+    optsWithAuth => fetchQualityMetrics<ApiQualityMetric>( fetchMetricsParams, optsWithAuth ),
   );
 
   const combinedQualityMetrics = {
