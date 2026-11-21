@@ -10,7 +10,7 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 // TODO: or { agree } | { vote_flag }?
-interface Vote {
+export interface Vote {
   user_id: number;
   agree: boolean;
   vote_flag: boolean;
