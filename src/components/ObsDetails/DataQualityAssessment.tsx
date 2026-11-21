@@ -1,3 +1,4 @@
+import type { Metric } from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import {
   Body1,
@@ -44,16 +45,16 @@ interface Props {
   isConnected: boolean | null;
   loadingAgree: boolean;
   loadingDisagree: boolean;
-  loadingMetric: string;
+  loadingMetric?: Metric | null | undefined;
   qualityGrade: string;
   // There's no type definition for qualityMetrics available yet;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   qualityMetrics: any;
   recheckisConnected: ( ) => void;
-  removeMetricVote: ( ) => void;
-  removeNeedsIDVote: ( ) => void;
-  setMetricVote: ( ) => void;
-  setNeedsIDVote: ( ) => void;
+  removeMetricVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  removeNeedsIDVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  setMetricVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  setNeedsIDVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
 }
 
 const DataQualityAssessment = ( {
