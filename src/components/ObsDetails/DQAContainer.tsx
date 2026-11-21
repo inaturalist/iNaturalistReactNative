@@ -149,7 +149,7 @@ const DQAContainer = ( ) => {
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
   // as it's interaction with the API
-  const setNeedsIDVote = ( { vote } ) => {
+  const setNeedsIDVote = ( { vote }: { vote: boolean } ) => {
     setLoading( "needs_id", vote );
 
     const faveParams = {
@@ -177,7 +177,7 @@ const DQAContainer = ( ) => {
     },
   );
 
-  const removeMetricVote = ( { metric, vote } ) => {
+  const removeMetricVote = ( { metric, vote }: { metric: Metric; vote: boolean } ) => {
     setLoading( metric, vote );
 
     const qualityMetricParams = {
@@ -190,7 +190,7 @@ const DQAContainer = ( ) => {
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
   // as it's interaction with the API
-  const removeNeedsIDVote = ( { vote } ) => {
+  const removeNeedsIDVote = ( { vote }: { vote: boolean } ) => {
     setLoading( "needs_id", vote );
 
     const unfaveParams = {
