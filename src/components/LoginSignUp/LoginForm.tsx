@@ -1,13 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
 import { showLocationStep, showSignUpStep } from "components/Onboarding/onboardingNavigation";
 import {
-  Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
+  Body1, Body2, Button, CloseButton, INatIcon, List2,
   WarningSheet,
 } from "components/SharedComponents";
-import { Image, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
@@ -16,29 +15,21 @@ import React, {
 } from "react";
 import { Trans } from "react-i18next";
 import type { ScrollView, TextInput } from "react-native";
-import {
-  Platform,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
+import { TouchableWithoutFeedback } from "react-native";
+import { useCurrentUser } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import colors from "styles/tailwindColors";
 
 import Error from "./Error";
-import { signInWithApple, signInWithGoogle } from "./loginFormHelpers";
 import LoginSignUpInputField from "./LoginSignUpInputField";
+import ThirdPartySignInButtons from "./ThirdPartySignInButtons";
+import useApplySignInPrefs from "./useApplySignInPrefs";
 
 const { useRealm } = RealmContext;
 
 interface Props {
   scrollViewRef?: React.Ref<ScrollView>;
 }
-
-/**
- * If a user loggs in and their account has at least this many
- * uploaded observations, auto-switch to advanced mode
- */
-export const AUTO_ADVANCED_MODE_OBSERVATION_THRESHOLD = 100;
 
 const LoginForm = ( {
   scrollViewRef,
@@ -52,8 +43,7 @@ const LoginForm = ( {
   const currentUser = useCurrentUser( );
   const loginAgain = !!currentUser && !!currentUser?.login;
   const realm = useRealm( );
-  const { isDefaultMode, setIsDefaultMode, setLoggedInWhileInDefaultMode }
-    = useLayoutPrefs();
+  const applySignInPrefs = useApplySignInPrefs( );
   const firstInputFieldRef = useRef( null );
   const usernameRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
@@ -108,29 +98,7 @@ const LoginForm = ( {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const logIn = useCallback( async ( logInCallback: () => Promise<AuthenticateUserResult> ) => {
-    setLoading( true );
-    const result = await logInCallback( );
-
-    if ( !result.success ) {
-      setError( t( "Failed-to-log-in" ) );
-      setLoading( false );
-      return;
-    }
-
-    setLoading( false );
-
-    if (
-      result.observationsCount
-      && result.observationsCount >= AUTO_ADVANCED_MODE_OBSERVATION_THRESHOLD
-    ) {
-      // If a user that just logged in already has more than the threshold number of observations,
-      // we assume they are an advanced user and switch them to advanced mode.
-      setIsDefaultMode( false );
-    } else {
-      // Set a state to zustand that we just logged in while in default mode
-      setLoggedInWhileInDefaultMode( isDefaultMode );
-    }
+  const navigateAfterLogIn = useCallback( ( ) => {
     if ( params?.fromOnboarding ) {
       showLocationStep( navigation );
       return;
@@ -148,13 +116,27 @@ const LoginForm = ( {
     } else {
       navigation.getParent( )?.goBack( );
     }
-  }, [
-    navigation,
-    params,
-    isDefaultMode,
-    setIsDefaultMode,
-    setLoggedInWhileInDefaultMode,
-  ] );
+  }, [navigation, params] );
+
+  const logIn = async ( ) => {
+    setLoading( true );
+    const result = await authenticateUser(
+      loginAgain
+        ? currentUser.login
+        : username.trim( ),
+      password,
+      realm,
+    );
+    setLoading( false );
+
+    if ( !result.success ) {
+      setError( t( "Failed-to-log-in" ) );
+      return;
+    }
+
+    applySignInPrefs( result.observationsCount );
+    navigateAfterLogIn( );
+  };
 
   const openSignUp = ( ) => {
     if ( params?.fromOnboarding ) {
@@ -182,49 +164,12 @@ const LoginForm = ( {
 
   const renderFooter = ( ) => (
     <>
-      <Heading4
-        className="color-white self-center mt-10"
-      >
-        {t( "OR-SIGN-IN-WITH" )}
-      </Heading4>
-      <View className="flex-row justify-center mt-5">
-        {/*
-          Note: Sign in with Apple is doable in Android if we want to:
-          https://github.com/invertase/react-native-apple-authentication?tab=readme-ov-file#android
-        */}
-        { Platform.OS === "ios" && (
-          <INatIconButton
-            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
-            disabled={loading}
-            className="mr-8"
-            icon="apple"
-            // The svg icon for the Apple logo was downloaded from Apple,
-            // according to the Design Guidelines it already has a margin inside the svg
-            // so we scale it here to fill the entire button.
-            size={50}
-            color={colors.black}
-            backgroundColor={colors.white}
-            accessibilityLabel={t( "Sign-in-with-Apple" )}
-            mode="contained"
-            width={50}
-            height={50}
-          />
-        ) }
-        <INatIconButton
-          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+      <View className="mt-10">
+        <ThirdPartySignInButtons
           disabled={loading}
-          backgroundColor={colors.white}
-          accessibilityLabel={t( "Sign-in-with-Google" )}
-          mode="contained"
-          width={50}
-          height={50}
-        >
-          <Image
-            className="w-[20px] h-[20px]"
-            source={require( "images/google.png" )}
-            accessibilityIgnoresInvertColors
-          />
-        </INatIconButton>
+          onBusyChange={setLoading}
+          onSignedIn={navigateAfterLogIn}
+        />
       </View>
       <Trans
         className={classnames(
@@ -334,13 +279,7 @@ const LoginForm = ( {
           forceDark
           level="focus"
           loading={loading}
-          onPress={() => logIn( async () => authenticateUser(
-            loginAgain
-              ? currentUser.login
-              : username.trim( ),
-            password,
-            realm,
-          ) )}
+          onPress={logIn}
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
