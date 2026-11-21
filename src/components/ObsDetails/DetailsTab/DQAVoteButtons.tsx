@@ -16,8 +16,17 @@ interface Vote {
   vote_flag: boolean;
 }
 
+type Metric =
+  | "date"
+  | "location"
+  | "wild"
+  | "evidence"
+  | "recent"
+  | "subject"
+  | "needs_id";
+
 interface Props {
-  metric: string;
+  metric: Metric;
   votes: Vote[];
   loadingAgree: boolean;
   loadingDisagree: boolean;
