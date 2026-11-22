@@ -41,8 +41,7 @@ export interface QualityMetricsFetchParams extends ApiParams {
 }
 
 const fetchQualityMetrics = async <T = ApiDefaultResult>(
-  // TODO: what to do here?
-  params: QualityMetricsFetchParams = {},
+  params: QualityMetricsFetchParams,
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T>["results"] | null | ErrorWithResponse | INatApiError> => {
   try {
