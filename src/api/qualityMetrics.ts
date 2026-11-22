@@ -3,7 +3,7 @@ import inatjs from "inaturalistjs";
 import type { ErrorWithResponse, INatApiError } from "./error";
 import handleError from "./error";
 import type {
-  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse, ApiUntypedParams,
+  ApiDefaultResult, ApiOpts, ApiParams, ApiResponse, ApiUntypedParams,
 } from "./types";
 
 const setQualityMetric = async (
@@ -36,9 +36,13 @@ const deleteQualityMetric = async (
   }
 };
 
+export interface QualityMetricsFetchParams extends ApiParams {
+  id: string; // uuid
+}
+
 const fetchQualityMetrics = async <T = ApiDefaultResult>(
   // TODO: what to do here?
-  params: ApiGetByIdParams = {},
+  params: QualityMetricsFetchParams = {},
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T>["results"] | null | ErrorWithResponse | INatApiError> => {
   try {
