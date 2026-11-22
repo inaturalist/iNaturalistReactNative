@@ -1,34 +1,22 @@
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import MasonryLayout from "components/ObsDetails/MasonryLayout";
+import type { MediaPhotoItem } from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
 import PhotoContainer from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
+import type { MediaSoundItem } from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import { ActivityIndicator, Carousel, CarouselDots } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo, useState } from "react";
 import type { ListRenderItem } from "react-native";
 
-export interface ObsMediaPhoto {
-  id?: number;
-  url: string;
-  localFilePath?: string;
-  attribution?: string;
-  licenseCode?: string;
-  hidden: boolean;
-}
+type ObsMediaItem = MediaPhotoItem | MediaSoundItem;
 
-export interface ObsMediaSound {
-  file_url: string;
-  hidden: boolean;
-}
-
-type ObsMediaItem = ObsMediaPhoto | ObsMediaSound;
-
-const isSound = ( item: ObsMediaItem ): item is ObsMediaSound => "file_url" in item;
+const isSound = ( item: ObsMediaItem ): item is MediaSoundItem => "file_url" in item;
 
 interface Props {
   loading: boolean;
-  photos: ObsMediaPhoto[];
-  sounds?: ObsMediaSound[];
+  photos: MediaPhotoItem[];
+  sounds?: MediaSoundItem[];
   tablet?: boolean;
 }
 

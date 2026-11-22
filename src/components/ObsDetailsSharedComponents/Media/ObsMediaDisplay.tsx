@@ -1,9 +1,7 @@
 import classnames from "classnames";
-import type {
-  ObsMediaPhoto,
-  ObsMediaSound,
-} from "components/ObsDetailsSharedComponents/Media/ObsMedia";
 import ObsMedia from "components/ObsDetailsSharedComponents/Media/ObsMedia";
+import type { MediaPhotoItem } from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
+import type { MediaSoundItem } from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import {
   INatIcon,
   PhotoCount,
@@ -17,8 +15,8 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   loading: boolean;
-  photos: ObsMediaPhoto[];
-  sounds: ObsMediaSound[];
+  photos: MediaPhotoItem[];
+  sounds: MediaSoundItem[];
   tablet?: boolean;
 }
 

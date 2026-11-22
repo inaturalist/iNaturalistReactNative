@@ -52,14 +52,16 @@ const SoundSlider = ( { playBackState, onSlidingComplete }: SoundSliderProps ) =
   );
 };
 
+export interface MediaSoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
 interface SoundContainerProps {
   autoPlay?: boolean;
   isVisible: boolean;
   sizeClass: string;
-  sound: {
-    file_url: string;
-    hidden: boolean;
-  };
+  sound: MediaSoundItem;
 }
 
 const SoundContainer = ( {
