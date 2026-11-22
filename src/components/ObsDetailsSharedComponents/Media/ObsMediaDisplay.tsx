@@ -1,4 +1,3 @@
-// @flow
 import classnames from "classnames";
 import ObsMedia from "components/ObsDetailsSharedComponents/Media/ObsMedia";
 import {
@@ -6,18 +5,26 @@ import {
   PhotoCount,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   useTranslation,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  loading: boolean,
-  photos: Object[],
-  sounds: Object[],
-  tablet?: boolean
+interface Props {
+  loading: boolean;
+  photos: {
+    url?: string | null;
+    localFilePath?: string | null;
+    attribution?: string | null;
+    licenseCode?: string | null;
+    hidden?: boolean | null;
+  }[];
+  sounds: {
+    file_url: string;
+    hidden?: boolean | null;
+  }[];
+  tablet?: boolean;
 }
 
 const ObsMediaDisplay = ( {
@@ -25,7 +32,7 @@ const ObsMediaDisplay = ( {
   photos = [],
   sounds = [],
   tablet = false,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const items = [...photos, ...sounds];
