@@ -9,7 +9,8 @@ import type { UserPojo } from "realmModels/User";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-// TODO: or { agree } | { vote_flag }?
+// TODO: this is not correct, but depends on Observation.mapApiToRealm being typed
+// TWhat comes in here are either { agree } or { vote_flag } shapes.
 export interface Vote {
   user_id: number;
   agree: boolean;
