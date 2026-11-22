@@ -19,7 +19,7 @@ export interface ApiParams {
 }
 
 export interface ApiGetByIdParams extends ApiParams {
-  id: number | string;
+  id: number;
 }
 
 // Params for wrappers that don't have endpoint-specific types yet
