@@ -1,4 +1,8 @@
 import classnames from "classnames";
+import type {
+  ObsMediaPhoto,
+  ObsMediaSound,
+} from "components/ObsDetailsSharedComponents/Media/ObsMedia";
 import ObsMedia from "components/ObsDetailsSharedComponents/Media/ObsMedia";
 import {
   INatIcon,
@@ -13,17 +17,8 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   loading: boolean;
-  photos: {
-    url?: string | null;
-    localFilePath?: string | null;
-    attribution?: string | null;
-    licenseCode?: string | null;
-    hidden?: boolean | null;
-  }[];
-  sounds: {
-    file_url: string;
-    hidden?: boolean | null;
-  }[];
+  photos: ObsMediaPhoto[];
+  sounds: ObsMediaSound[];
   tablet?: boolean;
 }
 
