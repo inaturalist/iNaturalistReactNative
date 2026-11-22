@@ -8,10 +8,10 @@ import React, { useCallback, useMemo, useState } from "react";
 import type { ListRenderItem } from "react-native";
 
 export interface ObsMediaPhoto {
-  id: number;
+  id?: number;
   url: string;
-  localFilePath: string;
-  attribution: string;
+  localFilePath?: string;
+  attribution?: string;
   licenseCode?: string;
   hidden: boolean;
 }
