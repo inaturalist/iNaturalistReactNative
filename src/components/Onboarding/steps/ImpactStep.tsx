@@ -1,5 +1,5 @@
 import type { ImpactStory } from "components/Onboarding/ImpactStoryCard";
-import ImpactStoryCard from "components/Onboarding/ImpactStoryCard";
+import ImpactStoryStrip from "components/Onboarding/ImpactStoryStrip";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import {
   BOLD_SPANS, ITALIC_SPANS, UNDERLINED_SPANS,
@@ -91,8 +91,8 @@ const ImpactStep = ( ) => {
           components={BOLD_SPANS}
         />
       </Body1>
-      <View className="mt-[50px] mb-[20px] gap-[30px]">
-        {stories.map( story => <ImpactStoryCard key={story.id} story={story} /> )}
+      <View className="mt-[50px] mb-[20px]">
+        <ImpactStoryStrip stories={stories} />
       </View>
     </OnboardingStepLayout>
   );
