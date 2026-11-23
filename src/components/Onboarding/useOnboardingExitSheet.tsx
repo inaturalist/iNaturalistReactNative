@@ -3,6 +3,7 @@ import ConfirmSheet from "components/SharedComponents/Sheets/ConfirmSheet";
 import type { TFunction } from "i18next";
 import type { OnboardingStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
+import { Keyboard } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 import type { OnboardingExitSheet, OnboardingStepId } from "./onboardingSteps";
@@ -31,7 +32,10 @@ const useOnboardingExitSheet = ( stepId: OnboardingStepId ) => {
   const [exitSheetOpen, setExitSheetOpen] = useState( false );
   const exitSheet = getExitSheet( stepId );
 
-  const openExitSheet = useCallback( ( ) => setExitSheetOpen( true ), [] );
+  const openExitSheet = useCallback( ( ) => {
+    Keyboard.dismiss( );
+    setExitSheetOpen( true );
+  }, [] );
   const closeExitSheet = ( ) => setExitSheetOpen( false );
 
   let exitSheetElement = null;
