@@ -7,12 +7,14 @@ import Login from "components/LoginSignUp/Login";
 import SignUp from "components/LoginSignUp/SignUp";
 import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
 import { CloseButton } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import {
   hideHeaderLeft,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
 import type { LoginStackParamList } from "navigation/types";
 import React from "react";
+import colors from "styles/tailwindColors";
 
 const Stack = createNativeStackNavigator<LoginStackParamList>( );
 
@@ -22,6 +24,8 @@ const LoginCloseButton = ( ) => (
     buttonClassName="mr-[-5px]"
   />
 );
+
+const LearnMoreBackButton = ( ) => <BackButton color={colors.white} inCustomHeader />;
 
 const LOGIN_SCREEN_OPTIONS = {
   headerTitle: "",
@@ -56,7 +60,11 @@ const LoginStackNavigator = ( ) => (
     <Stack.Screen
       name="LearnMore"
       component={LearnMore}
-      options={LOGIN_SCREEN_OPTIONS}
+      // Opened directly from onboarding sign-up, it's this stack's first
+      // screen, so there's no native back button
+      options={( { navigation } ) => ( navigation.getState( ).index === 0
+        ? { ...LOGIN_SCREEN_OPTIONS, headerLeft: LearnMoreBackButton }
+        : LOGIN_SCREEN_OPTIONS )}
     />
     <Stack.Screen
       name="SignUpConfirmation"
