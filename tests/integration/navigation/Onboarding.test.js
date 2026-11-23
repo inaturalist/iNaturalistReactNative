@@ -1,3 +1,4 @@
+import { logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
   act, screen, userEvent, waitFor, within,
@@ -391,6 +392,25 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
       expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
     } );
+  } );
+
+  it( "logs a screen view each time an education step becomes visible", async ( ) => {
+    logEvent.mockClear( );
+    const { navigationContainer } = renderAppWithNavigationContainer( );
+    const screenViews = ( ) => logEvent.mock.calls
+      .filter( ( [, eventName] ) => eventName === "onboarding_screen_view" )
+      .map( ( [, , params] ) => params );
+    await continueTo( "impact" );
+    expect( screenViews( ) ).toEqual( [
+      { screen_id: "obs_story", position: 2 },
+      { screen_id: "community_id", position: 6 },
+      { screen_id: "research_grade", position: 7 },
+    ] );
+
+    act( ( ) => navigationContainer.current.goBack( ) );
+    expect( screen.getByTestId( "Onboarding.research_grade" ) ).toBeVisible( );
+    expect( screenViews( ) ).toHaveLength( 4 );
+    expect( screenViews( )[3] ).toEqual( { screen_id: "research_grade", position: 7 } );
   } );
 
   describe( "exit sheets", ( ) => {

@@ -1,3 +1,4 @@
+import type { ApiUser } from "api/types";
 import {
   ActivityIndicator,
   Body3,
@@ -11,17 +12,20 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { TextInput as RNTextInput, TextInputProps } from "react-native";
+import type {
+  TextInput as RNTextInput,
+  TextInputProps,
+  TextInputSelectionChangeEvent,
+} from "react-native";
 import { ScrollView, StyleSheet } from "react-native";
+import {
+  getMentionAtCursor,
+  insertMention,
+  MENTION_SUGGESTION_LIMIT,
+} from "sharedHelpers/mentions";
 import { useTranslation } from "sharedHooks";
 import useUserSearch from "sharedHooks/useUserSearch";
 
-// Matches @username at the end of the input string.
-// \B ensures @ doesn't follow a word char (prevents matching emails)
-// Username must start with a letter
-// $ anchor means mentions only trigger when typing at the end of the text;
-// editing mid-text won't show the dropdown (would require cursor tracking)
-const MENTION_MATCH = /\B@([A-Za-z][\w-]*)$/;
 const DEBOUNCE_MS = 400;
 const MENTION_LIST_MAX_HEIGHT = 200;
 const MIN_INPUT_HEIGHT = 80;
@@ -38,20 +42,38 @@ interface MentionTextInputProps extends Omit<TextInputProps, "value" | "onChange
   ref?: React.Ref<MentionTextInputHandle>;
   onChangeText: ( text: string ) => void;
   InputComponent?: React.ComponentType<TextInputProps>;
+  // Users to show as soon as the user types "@", and above the search results
+  // when they match what's typed, e.g. the current participants on an observation
+  suggestedUsers?: ApiUser[];
 }
 
-function getMentionQuery( value: string ): string {
-  const match = value.match( MENTION_MATCH );
-  return match
-    ? match[1]
-    : "";
+const startsWithQuery = ( user: ApiUser, query: string ) => {
+  const lowerQuery = query.toLowerCase( );
+  return !!user.login?.toLowerCase( ).startsWith( lowerQuery )
+    || !!user.name?.toLowerCase( ).startsWith( lowerQuery );
+};
+
+interface MentionListItemProps {
+  onSelect: ( user: ApiUser ) => void;
+  showDivider: boolean;
+  user: ApiUser;
 }
 
-function getLastAtIndex( value: string ): number {
-  const match = value.match( MENTION_MATCH );
-  if ( !match || match.index === undefined ) return -1;
-  return match.index;
-}
+const MentionListItem = ( { onSelect, showDivider, user }: MentionListItemProps ) => {
+  const { t } = useTranslation( );
+  return (
+    <View>
+      {showDivider && <View className="border-b border-lightGray" />}
+      <UserListItem
+        item={{ user }}
+        countText=""
+        onPress={( ) => onSelect( user )}
+        accessibilityLabel={t( "Select-user" )}
+        iconVariant="mention"
+      />
+    </View>
+  );
+};
 
 const MentionTextInput = ( {
   accessibilityLabel,
@@ -67,6 +89,7 @@ const MentionTextInput = ( {
   placeholder,
   ref,
   style,
+  suggestedUsers,
   testID,
 }: MentionTextInputProps ) => {
   const { t } = useTranslation( );
@@ -75,38 +98,103 @@ const MentionTextInput = ( {
   const inputRef = useRef<RNTextInput | null>( null );
   const [debouncedQuery, setDebouncedQuery] = useState( "" );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>( null );
+  // Cursor position, or null when a range of text is selected. The handlers
+  // read the latest text and cursor from refs, and the state copy of the
+  // cursor is only used for rendering
+  const [cursor, setCursor] = useState<number | null>( currentValue.length );
+  const cursorRef = useRef<number | null>( currentValue.length );
+  const textRef = useRef( currentValue );
+  // The last text JS gave the native input, as defaultValue or through
+  // setNativeProps. Fabric ignores a text prop that matches this, even if
+  // the user has typed since, so see handleSelectUser
+  const lastPushedTextRef = useRef( defaultValue );
+  // Only typing opens the list. Moving the cursor, e.g. dragging it back
+  // through a mention, or the cursor move after picking a user, closes it.
+  // Both platforms fire onChangeText before onSelectionChange, so a selection
+  // change with no text change since the last one is a cursor-only move
+  const [isTyping, setIsTyping] = useState( false );
+  const isTypingRef = useRef( false );
+  const textAtLastSelectionRef = useRef( currentValue );
+  const updateIsTyping = useCallback( ( typing: boolean ) => {
+    isTypingRef.current = typing;
+    setIsTyping( typing );
+  }, [] );
 
   useImperativeHandle( ref, ( ) => ( {
     clear: ( ) => inputRef.current?.clear( ),
   } ) );
 
-  const handleChangeText = useCallback( ( text: string ) => {
-    onChangeText( text );
-
+  // Always debounced, including clearing the query, so the brief mismatch
+  // between text and cursor while the two native events arrive never
+  // reaches the search
+  const updateQuery = useCallback( ( text: string, position: number | null ) => {
     if ( debounceRef.current ) {
       clearTimeout( debounceRef.current );
     }
-
-    const query = getMentionQuery( text );
-    if ( query === "" ) {
-      setDebouncedQuery( "" );
-      return;
-    }
-
+    const query = position === null || !isTypingRef.current
+      ? ""
+      : getMentionAtCursor( text, position )?.query ?? "";
     debounceRef.current = setTimeout( ( ) => {
       setDebouncedQuery( query );
       debounceRef.current = null;
     }, DEBOUNCE_MS );
-  }, [onChangeText] );
+  }, [] );
+
+  const handleChangeText = useCallback( ( text: string ) => {
+    onChangeText( text );
+    textRef.current = text;
+    updateIsTyping( true );
+    updateQuery( text, cursorRef.current );
+  }, [onChangeText, updateIsTyping, updateQuery] );
+
+  const handleSelectionChange = useCallback(
+    ( event: TextInputSelectionChangeEvent ) => {
+      const { start, end } = event.nativeEvent.selection;
+      const position = start === end
+        ? end
+        : null;
+      cursorRef.current = position;
+      setCursor( position );
+      if ( textRef.current === textAtLastSelectionRef.current ) {
+        updateIsTyping( false );
+      }
+      textAtLastSelectionRef.current = textRef.current;
+      updateQuery( textRef.current, position );
+    },
+    [updateIsTyping, updateQuery],
+  );
 
   const { users, isLoading } = useUserSearch( debouncedQuery );
 
   const handleSelectUser = useCallback(
     ( item: { login?: string } ) => {
       const username = item?.login;
-      const lastAt = getLastAtIndex( currentValue );
-      const newValue = `${currentValue.slice( 0, lastAt )}@${username} `;
+      const position = cursorRef.current;
+      const mention = position === null
+        ? null
+        : getMentionAtCursor( textRef.current, position );
+      if ( !username || !mention ) return;
+      const { text: newValue, cursor: newCursor } = insertMention(
+        textRef.current,
+        mention,
+        username,
+      );
+      if ( newValue === lastPushedTextRef.current ) {
+        // Change the text prop first so the native side applies the new
+        // text, e.g. when the user removes a mention and picks the same
+        // user again
+        inputRef.current?.setNativeProps( { text: textRef.current } );
+      }
       inputRef.current?.setNativeProps( { text: newValue } );
+      lastPushedTextRef.current = newValue;
+      inputRef.current?.setSelection( newCursor, newCursor );
+      textRef.current = newValue;
+      // So Android's report of the cursor move from setSelection counts as a
+      // cursor-only move
+      textAtLastSelectionRef.current = newValue;
+      cursorRef.current = newCursor;
+      setCursor( newCursor );
+      updateIsTyping( false );
       if ( debounceRef.current ) {
         clearTimeout( debounceRef.current );
         debounceRef.current = null;
@@ -114,10 +202,26 @@ const MentionTextInput = ( {
       setDebouncedQuery( "" );
       onChangeText( newValue );
     },
-    [currentValue, onChangeText],
+    [onChangeText, updateIsTyping],
   );
 
-  const showList = getMentionQuery( currentValue ).length > 0;
+  const mention = cursor === null || !isTyping
+    ? null
+    : getMentionAtCursor( currentValue, cursor );
+  const query = mention?.query ?? "";
+
+  const listedUsers = useMemo( ( ) => {
+    const matchingSuggestions = ( suggestedUsers ?? [] )
+      .filter( user => startsWithQuery( user, query ) );
+    const searchResults = query === ""
+      ? []
+      : users.filter( user => !matchingSuggestions.some( match => match.id === user.id ) );
+    return [...matchingSuggestions, ...searchResults].slice( 0, MENTION_SUGGESTION_LIMIT );
+  }, [query, suggestedUsers, users] );
+
+  const showList = !!mention && ( query !== "" || listedUsers.length > 0 );
+  // The search hasn't caught up with what's typed yet
+  const isSearchPending = query !== "" && ( debouncedQuery !== query || isLoading );
 
   const inputStyle = useMemo( ( ) => {
     if ( !showList ) return style;
@@ -131,7 +235,7 @@ const MentionTextInput = ( {
     return style;
   }, [style, showList] );
 
-  const emptyListContent = isLoading
+  const emptyListContent = isSearchPending
     ? (
       <View className="p-4 items-center justify-center min-h-[200px]">
         <ActivityIndicator size="small" />
@@ -157,6 +261,7 @@ const MentionTextInput = ( {
         maxLength={maxLength}
         multiline={multiline}
         onChangeText={handleChangeText}
+        onSelectionChange={handleSelectionChange}
         placeholder={placeholder}
         style={inputStyle}
         testID={testID}
@@ -164,21 +269,18 @@ const MentionTextInput = ( {
       {showList && (
         <View
           className="bg-white border border-lightGray rounded-lg overflow-hidden max-h-[200px]"
+          testID="MentionTextInput.list"
         >
           <ScrollView keyboardShouldPersistTaps="handled">
-            {users.length === 0
+            {listedUsers.length === 0
               ? emptyListContent
-              : users.map( ( item, index ) => (
-                <View key={item.id}>
-                  {index > 0 && <View className="border-b border-lightGray" />}
-                  <UserListItem
-                    item={{ user: item }}
-                    countText=""
-                    onPress={( ) => handleSelectUser( item )}
-                    accessibilityLabel={t( "Select-user" )}
-                    iconVariant="mention"
-                  />
-                </View>
+              : listedUsers.map( ( user, index ) => (
+                <MentionListItem
+                  key={user.id}
+                  onSelect={handleSelectUser}
+                  showDivider={index > 0}
+                  user={user}
+                />
               ) )}
           </ScrollView>
         </View>
