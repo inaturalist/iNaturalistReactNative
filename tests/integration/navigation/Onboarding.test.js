@@ -2,7 +2,11 @@ import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
   act, screen, userEvent, waitFor, within,
 } from "@testing-library/react-native";
-import { emailAvailable } from "components/LoginSignUp/AuthenticationService";
+import {
+  authenticateUser,
+  emailAvailable,
+  registerUser,
+} from "components/LoginSignUp/AuthenticationService";
 import { signInWithGoogle } from "components/LoginSignUp/loginFormHelpers";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -142,8 +146,34 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     await actor.type( within( step ).getByTestId( "Onboarding.signup_email.email" ), email );
   };
 
+  const enterCredentials = async ( username, password ) => {
+    const step = await screen.findByTestId( "Onboarding.signup_credentials" );
+    await actor.type(
+      within( step ).getByTestId( "Onboarding.signup_credentials.username" ),
+      username,
+    );
+    await actor.type(
+      within( step ).getByTestId( "Onboarding.signup_credentials.password" ),
+      password,
+    );
+  };
+
+  const agreeToTerms = async ( ) => {
+    const step = await screen.findByTestId( "Onboarding.signup_credentials" );
+    await actor.press(
+      within( step ).getByLabelText(
+        "I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community "
+        + "Guidelines (required).",
+      ),
+    );
+  };
+
   const continueFrom = async stepId => {
     if ( stepId === "signup_email" ) await enterEmail( "new@example.com" );
+    if ( stepId === "signup_credentials" ) {
+      await enterCredentials( "newuser", "a-good-password" );
+      await agreeToTerms( );
+    }
     const step = await screen.findByTestId( `Onboarding.${stepId}` );
     await actor.press( within( step ).getByTestId( `Onboarding.${stepId}.next` ) );
   };
@@ -268,6 +298,8 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       ( ) => Promise.resolve( locationResults( RESULTS.GRANTED ) ),
     );
     emailAvailable.mockClear( );
+    registerUser.mockClear( );
+    authenticateUser.mockClear( );
     signInWithGoogle.mockReset( );
     signInWithGoogle.mockResolvedValue( { success: true } );
   } );
@@ -705,5 +737,256 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         expect( screen.queryByTestId( "OnboardingCarousel" ) ).toBeNull( );
       } );
     } );
+  } );
+
+  describe( "sign-up username/password step", ( ) => {
+    const createButton = ( ) => screen.getByTestId( "Onboarding.signup_credentials.next" );
+    const backButton = ( ) => screen.getByTestId( "Onboarding.signup_credentials.back" );
+    const findCredentialsStep = ( ) => screen.findByTestId( "Onboarding.signup_credentials" );
+
+    const submitCredentials = async ( ) => {
+      await continueTo( "signup_credentials" );
+      await enterCredentials( "newuser", "a-good-password" );
+      await agreeToTerms( );
+      await actor.press( createButton( ) );
+    };
+
+    // Leaving is locked while the account is being created, so the user can
+    // only go back once the lock has expired
+    const goBackOnceStalled = async ( ) => {
+      act( ( ) => jest.advanceTimersByTime( 15_000 ) );
+      await actor.press( backButton( ) );
+      return screen.findByTestId( "Onboarding.signup_email" );
+    };
+
+    it( "disables the create button until everything is provided", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_credentials" );
+      expect( createButton( ) ).toBeDisabled( );
+      await enterCredentials( "   ", "a-good-password" );
+      await agreeToTerms( );
+      expect( createButton( ) ).toBeDisabled( );
+      await enterCredentials( "newuser", "" );
+      expect( createButton( ) ).toBeEnabled( );
+      await agreeToTerms( );
+      expect( createButton( ) ).toBeDisabled( );
+      await actor.press( screen.getByText( /I agree to the Terms of Use/ ) );
+      expect( createButton( ) ).toBeEnabled( );
+    } );
+
+    describe( "signing in to the new account", ( ) => {
+      beforeEach( ( ) => {
+        authenticateUser.mockImplementationOnce( async ( ) => {
+          await signIn( factory( "LocalUser" ) );
+          return { success: true };
+        } );
+      } );
+
+      afterEach( async ( ) => {
+        await signOut( );
+      } );
+
+      it( "creates the account with the email step's email, then shows location", async ( ) => {
+        renderApp( );
+        await continueTo( "signup_credentials" );
+        await enterCredentials( " newuser ", "a-good-password" );
+        await agreeToTerms( );
+        await actor.press( createButton( ) );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+        expect( registerUser ).toHaveBeenCalledWith( expect.objectContaining( {
+          email: "new@example.com",
+          login: "newuser",
+          password: "a-good-password",
+          pi_consent: true,
+          data_transfer_consent: true,
+        } ) );
+        expect( authenticateUser ).toHaveBeenCalledWith(
+          "newuser",
+          "a-good-password",
+          expect.anything( ),
+        );
+        expect( mockOnboarding.shown ).toBe( false );
+      } );
+    } );
+
+    it.each( [
+      [
+        "shorter than 6 characters",
+        "abc12",
+        "Please-make-sure-your-password-is-at-least-6-characters",
+      ],
+      ["\"password\" in any case", "PassWord", "Please-choose-a-different-password"],
+    ] )( "refuses a password that is %s", async ( _description, password, errorKey ) => {
+      renderApp( );
+      await continueTo( "signup_credentials" );
+      await enterCredentials( "newuser", password );
+      await agreeToTerms( );
+      await actor.press( createButton( ) );
+      expect( await screen.findByText( i18next.t( errorKey ) ) ).toBeVisible( );
+      expect( registerUser ).not.toHaveBeenCalled( );
+      expect( screen.getByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+    } );
+
+    it( "says a taken username is unavailable, and clears the error on edit", async ( ) => {
+      registerUser.mockResolvedValueOnce( "Username has already been taken" );
+      renderApp( );
+      await continueTo( "signup_credentials" );
+      await enterCredentials( "taken", "a-good-password" );
+      await agreeToTerms( );
+      await actor.press( createButton( ) );
+      expect( await screen.findByText( "That username is unavailable" ) ).toBeVisible( );
+      expect( authenticateUser ).not.toHaveBeenCalled( );
+      expect( screen.getByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+      await enterCredentials( "2", "" );
+      expect( screen.queryByText( "That username is unavailable" ) ).toBeNull( );
+    } );
+
+    it( "shows the server's own message for other registration errors", async ( ) => {
+      registerUser.mockResolvedValueOnce( "Something went wrong" );
+      renderApp( );
+      await submitCredentials( );
+      expect( await screen.findByText( "Something went wrong" ) ).toBeVisible( );
+      expect( authenticateUser ).not.toHaveBeenCalled( );
+      expect( screen.getByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+    } );
+
+    it( "exits sign-up to the location step without creating an account", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_credentials" );
+      await confirmExit( "signup_credentials", "EXIT" );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+      expect( registerUser ).not.toHaveBeenCalled( );
+    } );
+
+    it( "opens Learn More over the step and keeps what was entered", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_credentials" );
+      await enterCredentials( "newuser", "a-good-password" );
+      await agreeToTerms( );
+      await actor.press( screen.getByText( i18next.t( "Learn-More" ) ) );
+      expect( await screen.findByText( i18next.t( "COMMUNITY-GUIDELINES" ) ) ).toBeVisible( );
+      await actor.press( screen.getByTestId( "BackButton" ) );
+      expect( await findCredentialsStep( ) ).toBeVisible( );
+      await waitFor( ( ) => expect( createButton( ) ).toBeEnabled( ) );
+    } );
+
+    it.each( [
+      ["fails", ( ) => Promise.resolve( { success: false } )],
+      ["throws", ( ) => Promise.reject( new Error( "Fetch user without a login" ) )],
+    ] )(
+      "shows Login over the email step when signing in to the new account %s",
+      async ( _how, signInResult ) => {
+        authenticateUser.mockImplementationOnce( signInResult );
+        renderApp( );
+        await submitCredentials( );
+        expect( await screen.findByTestId( "Login.email" ) ).toBeVisible( );
+        expect( queryMounted( "Onboarding.signup_credentials" ) ).toBeNull( );
+        await closeLogin( );
+        expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+        expect( queryMounted( "Onboarding.signup_credentials" ) ).toBeNull( );
+      },
+    );
+
+    it( "shows the location step after logging in once sign-in has failed", async ( ) => {
+      authenticateUser.mockResolvedValueOnce( { success: false } );
+      renderApp( );
+      await submitCredentials( );
+      await logIn( );
+      expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+    } );
+
+    it.each( [
+      ["offline", ( ) => Promise.resolve( undefined )],
+      ["because the request throws", ( ) => Promise.reject( new Error( "Something broke" ) )],
+    ] )(
+      "doesn't sign in and unlocks the step when registering fails %s",
+      async ( _why, registration ) => {
+        registerUser.mockImplementationOnce( registration );
+        renderApp( );
+        await submitCredentials( );
+        expect( await screen.findByText(
+          i18next.t( "Connection-problem-Please-try-again-later" ),
+        ) ).toBeVisible( );
+        expect( authenticateUser ).not.toHaveBeenCalled( );
+        expect( screen.getByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+        expect( backButton( ) ).toBeEnabled( );
+        expect( queryMounted( "Login.email" ) ).toBeNull( );
+      },
+    );
+
+    it( "lets the user leave once creating the account has stalled for 15 seconds", async ( ) => {
+      registerUser.mockReturnValueOnce( new Promise( ( ) => { } ) );
+      const { navigationContainer } = renderAppWithNavigationContainer( );
+      await submitCredentials( );
+      act( ( ) => jest.advanceTimersByTime( 14_000 ) );
+      expect( backButton( ) ).toBeDisabled( );
+      act( ( ) => jest.advanceTimersByTime( 1_000 ) );
+      expect( backButton( ) ).toBeEnabled( );
+      expect( screen.getByTestId( "Onboarding.signup_credentials.close" ) ).toBeEnabled( );
+      expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).toBe( true );
+      await actor.press( backButton( ) );
+      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+    } );
+
+    it(
+      "locks leaving, Learn More and the fields while the account is being created, and "
+      + "unlocks them when that fails",
+      async ( ) => {
+        let finishRegistration;
+        registerUser.mockReturnValueOnce(
+          new Promise( resolve => { finishRegistration = resolve; } ),
+        );
+        const pressHardwareBack = mockHardwareBack( );
+        const { navigationContainer } = renderAppWithNavigationContainer( );
+        await submitCredentials( );
+        expect( backButton( ) ).toBeDisabled( );
+        expect( screen.getByTestId( "Onboarding.signup_credentials.close" ) ).toBeDisabled( );
+        expect( screen.getByTestId( "Onboarding.signup_credentials.username" ) ).toBeDisabled( );
+        expect( screen.getByTestId( "Onboarding.signup_credentials.password" ) ).toBeDisabled( );
+        await actor.press( screen.getByText( i18next.t( "Learn-More" ) ) );
+        expect( screen.queryByText( i18next.t( "COMMUNITY-GUIDELINES" ) ) ).toBeNull( );
+        expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).toBe( false );
+        expect( pressHardwareBack( ) ).toBe( true );
+        expect( screen.getByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+        await act( async ( ) => finishRegistration( "Something went wrong" ) );
+        expect( await screen.findByText( "Something went wrong" ) ).toBeVisible( );
+        expect( backButton( ) ).toBeEnabled( );
+        expect( screen.getByTestId( "Onboarding.signup_credentials.username" ) ).toBeEnabled( );
+        expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).toBe( true );
+        pressHardwareBack( );
+        expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      },
+    );
+
+    it(
+      "shows the location step when the account is signed in after the user went back",
+      async ( ) => {
+        let finishSignIn;
+        authenticateUser.mockReturnValueOnce(
+          new Promise( resolve => { finishSignIn = resolve; } ),
+        );
+        renderApp( );
+        await submitCredentials( );
+        expect( await goBackOnceStalled( ) ).toBeVisible( );
+        await act( async ( ) => finishSignIn( { success: true } ) );
+        expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
+      },
+    );
+
+    it(
+      "stays on the email step when signing in fails after the user went back",
+      async ( ) => {
+        let finishSignIn;
+        authenticateUser.mockReturnValueOnce(
+          new Promise( resolve => { finishSignIn = resolve; } ),
+        );
+        renderApp( );
+        await submitCredentials( );
+        expect( await goBackOnceStalled( ) ).toBeVisible( );
+        await act( async ( ) => finishSignIn( { success: false } ) );
+        expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+        expect( queryMounted( "Login.email" ) ).toBeNull( );
+      },
+    );
   } );
 } );
