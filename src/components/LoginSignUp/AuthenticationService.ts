@@ -730,18 +730,24 @@ interface CreateUserResponse {
   errors?: string[];
 }
 
+interface NewUser {
+  password: string;
+  email: string;
+  login: string;
+  pi_consent?: boolean;
+  data_transfer_consent?: boolean;
+  preferred_observation_license?: string;
+  preferred_photo_license?: string;
+  preferred_sound_license?: string;
+}
+
 /**
  * Registers a new user
  *
- * @param email
- * @param username
- * @param password
- * @param license (optional)
- * @param time_zone (optional)
- *
- * @returns null if successful, otherwise an error string
+ * @returns null if successful, otherwise the server's first error message,
+ * or undefined if the failed request carried none (e.g. when offline)
  */
-const registerUser = async ( user: { password: string } ) => {
+const registerUser = async ( user: NewUser ) => {
   const locales = RNLocalize.getLocales();
   const formData = {
     user: {
@@ -755,12 +761,17 @@ const registerUser = async ( user: { password: string } ) => {
   const response = await api.post<CreateUserResponse>( "/users.json", formData );
 
   if ( !response.ok ) {
-    console.error(
-      "registerUser failed when calling /users.json - ",
-      response.problem,
-      response.status,
-    );
-    return response.data?.errors?.[0];
+    const serverError = response.data?.errors?.[0];
+    if ( response.status === 422 && serverError ) {
+      logger.info( "registerUser rejected by server:", serverError );
+    } else {
+      logger.warn(
+        "registerUser failed when calling /users.json:",
+        response.problem,
+        response.status,
+      );
+    }
+    return serverError;
   }
 
   return null;
