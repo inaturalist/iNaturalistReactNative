@@ -261,6 +261,8 @@ Chooses-taxon = Chooses taxon
 Chooses-top-taxon = Chooses top taxon
 # Title of a camera tip about crustaceans
 Claws-and-legs = Claws and legs
+# Tips how to take good photos
+Clear-photo-of-a-single-living-thing = Clear photo of a single living thing
 # Label for a button that closes a window or popup
 Close = Close
 # Accessibility label for a button that closes the permission request screen
@@ -293,6 +295,8 @@ COMMENT = COMMENT
 Comment-options = Comment options
 # Label for a setting that shows the common name first
 Common-Name-Scientific-Name = Common Name (Scientific Name)
+# Tips how to take good photos
+common-species-are-great-just-make-sure-the-shot-is-as-sharp-as-possible = common species are great! Just make sure the shot is as sharp as possible and focused on one plant or animal.
 # Label for section of ObsDetails with community comments and ids
 Community-Discussion = Community Discussion
 Community-Guidelines = Community Guidelines
@@ -575,6 +579,8 @@ Every-observation-needs = Every observation needs a location, date, and time to 
 Every-observation-tells-a-story = <0>Every </0><1>observation</1><0> tells a story.</0>
 Every-time-a-collection-project = Every time a collection project's page is loaded, iNaturalist will perform a quick search and display all observations that match the project's requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
 EVIDENCE = EVIDENCE
+# Tips how to take good photos
+Evidence-is-ok = Evidence is ok!
 Exact-Date = Exact Date
 EXACT-DATE = EXACT DATE
 except = except
@@ -689,6 +695,8 @@ Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 # Title of a camera tip about insects
 Host-plant = Host plant
+# Tips how to take good photos
+HOW-TO-MAKE-A-GOOD-OBSERVATION = HOW TO MAKE A GOOD OBSERVATION
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-in-Camera = ID in Camera
@@ -1028,6 +1036,8 @@ Not-enough-space-left-on-device = Not enough space left on device
 # Error message description when not enough storage space on device, e.g. when
 # the disk is full and you try to save a photo
 Not-enough-space-left-on-device-try-again = There is not enough storage space left on your device to do that. Please free up some space and try again.
+# Tips how to take good photos
+not-pets-garden-plants-or-zoo-animals-only-things-living-freely = not pets, garden plants, or zoo animals — only things living freely on their own.
 # Header for observation description on observation detail
 NOTES = NOTES
 # Label for section in ObsDetails with notes/description of observation
@@ -1398,6 +1408,8 @@ Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $coun
 Saved-searches = Saved searches
 # Heading of the saved searches section on the advanced search screen
 SAVED-SEARCHES = SAVED SEARCHES
+# Tips how to take good photos
+scat-tracks-and-eggs-all-count-as-do-fallen-leaves-fruits = scat, tracks, and eggs all count, as do fallen leaves, fruits, and other parts of a plant or animal.
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 # Title for a search interface
@@ -1797,6 +1809,8 @@ Whole-body-from-the-side--mammals = Whole body from the side
 Whole-plant = Whole plant
 WIKIPEDIA = WIKIPEDIA
 Wild = Wild
+# Tips how to take good photos
+Wild-animals-and-plants = Wild animals and plants
 WILD-STATUS = WILD STATUS
 # Label for a button that withdraws an identification
 Withdraw = Withdraw
