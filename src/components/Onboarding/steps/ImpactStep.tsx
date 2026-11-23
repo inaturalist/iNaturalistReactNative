@@ -1,5 +1,7 @@
 import type { ImpactStory } from "components/Onboarding/ImpactStoryCard";
 import ImpactStoryStrip from "components/Onboarding/ImpactStoryStrip";
+import OnboardingFlexGap from "components/Onboarding/OnboardingFlexGap";
+import OnboardingHeadline from "components/Onboarding/OnboardingHeadline";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import {
   BOLD_SPANS, ITALIC_SPANS, UNDERLINED_SPANS,
@@ -8,8 +10,6 @@ import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import useOnboardingScreenView from "components/Onboarding/useOnboardingScreenView";
 import Button from "components/SharedComponents/Buttons/Button";
 import Body1 from "components/SharedComponents/Typography/Body1";
-import Heading1 from "components/SharedComponents/Typography/Heading1";
-import { View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import React from "react";
 import { Trans } from "react-i18next";
@@ -73,6 +73,7 @@ const ImpactStep = ( ) => {
 
   return (
     <OnboardingStepLayout
+      fitsToScreen
       footer={(
         <Button
           level="focus"
@@ -82,18 +83,19 @@ const ImpactStep = ( ) => {
         />
       )}
     >
-      <Heading1 accessibilityRole="header">
+      <OnboardingHeadline>
         <Trans i18nKey="Your-observations-make-a-difference" components={UNDERLINED_SPANS} />
-      </Heading1>
-      <Body1 className="mt-[19px]">
+      </OnboardingHeadline>
+      <OnboardingFlexGap min={8} max={19} />
+      <Body1>
         <Trans
           i18nKey="More-than-8000-scientific-studies-have-relied-on-iNaturalist"
           components={BOLD_SPANS}
         />
       </Body1>
-      <View className="mt-[50px] mb-[20px]">
-        <ImpactStoryStrip stories={stories} />
-      </View>
+      <OnboardingFlexGap min={12} max={50} />
+      <ImpactStoryStrip stories={stories} />
+      <OnboardingFlexGap min={4} max={12} />
     </OnboardingStepLayout>
   );
 };
