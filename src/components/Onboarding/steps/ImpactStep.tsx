@@ -1,7 +1,9 @@
 import type { ImpactStory } from "components/Onboarding/ImpactStoryCard";
 import ImpactStoryCard from "components/Onboarding/ImpactStoryCard";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
-import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
+import {
+  BOLD_SPANS, ITALIC_SPANS, UNDERLINED_SPANS,
+} from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import useOnboardingScreenView from "components/Onboarding/useOnboardingScreenView";
 import Button from "components/SharedComponents/Buttons/Button";
@@ -26,6 +28,40 @@ const getImpactStories = ( t: TFunction ): ImpactStory[] => [
     title: t( "Moth-presumed-extinct-for-decades-rediscovered-by-tourist" ),
     body: t( "The-Frosted-Phoenix-hadnt-been-spotted-in-decades" ),
     place: t( "New-Zealand" ),
+  },
+  {
+    id: "mantis_australia",
+    // https://www.inaturalist.org/observations/147015177
+    photo: require( "images/onboarding/impact_mantis.jpg" ),
+    attribution: "(c) Glenda Walter, some rights reserved (CC BY-NC)",
+    licenseCode: "cc-by-nc",
+    title: t( "New-praying-mantis-species-discovered-by-woman-walking-in-her-neighborhood" ),
+    body: (
+      <Trans
+        i18nKey="A-woman-walking-in-her-neighborhood-photographed-a-mantis"
+        components={ITALIC_SPANS}
+      />
+    ),
+    place: t( "Australia" ),
+  },
+  {
+    id: "lace_bug_uk",
+    // https://www.inaturalist.org/observations/231643910
+    photo: require( "images/onboarding/impact_lace_bug.jpg" ),
+    attribution: "(c) giulsinclair, some rights reserved (CC BY-NC)",
+    licenseCode: "cc-by-nc",
+    title: t( "Invasive-lace-bug-species-spotted-in-a-new-location-by-London-bus-commuter" ),
+    body: t( "A-London-commuter-noticed-a-tiny-insect" ),
+    place: t( "United-Kingdom" ),
+  },
+  {
+    id: "newt_brigade_us",
+    // https://www.inaturalist.org/observations/78316386
+    photo: require( "images/onboarding/impact_newt.jpg" ),
+    attribution: "(c) tcuriel, all rights reserved",
+    title: t( "Local-volunteers-form-newt-brigade-to-protect-amphibians" ),
+    body: t( "Local-volunteers-in-California-used-iNaturalist" ),
+    place: t( "United-States" ),
   },
 ];
 
@@ -55,7 +91,7 @@ const ImpactStep = ( ) => {
           components={BOLD_SPANS}
         />
       </Body1>
-      <View className="mt-[50px] mb-[20px]">
+      <View className="mt-[50px] mb-[20px] gap-[30px]">
         {stories.map( story => <ImpactStoryCard key={story.id} story={story} /> )}
       </View>
     </OnboardingStepLayout>

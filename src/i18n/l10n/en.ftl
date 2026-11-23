@@ -25,9 +25,15 @@
 
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
+# Onboarding Impact screen: body of a story about an invasive lace bug found
+# in London
+A-London-commuter-noticed-a-tiny-insect = A London commuter noticed a tiny insect and shared a photo on iNaturalist. It turned out to be an invasive species previously not recorded in the area for 18 years.
 # Onboarding observation story screen: checklist item completeing "An
 # observation is:". Text in tags is bold
 a-photo-or-sound-recording = <0>a </0><1>photo</1><0> or </0><1>sound recording</1>
+# Onboarding Impact screen: body of a story about a new mantis species found in
+# Australia. Text in <1> tags is a scientific name, shown in italics
+A-woman-walking-in-her-neighborhood-photographed-a-mantis = <0>A woman walking in her neighborhood photographed a mantis, and it turned out to be a species completely new to science — now named </0><1>Inimia nat</1><0>, or </0><1>I. nat</1><0> for short.</0>
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -174,6 +180,8 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 # Month of August
 August = August
+# Country name, shown as the location of a story on the onboarding Impact screen
+Australia = Australia
 # Title of a camera tip about reptiles
 Back-and-full-body = Back and full body
 # Title of a camera tip about amphibians
@@ -790,6 +798,9 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+# Onboarding Impact screen: title of a story about an invasive lace bug found
+# in London
+Invasive-lace-bug-species-spotted-in-a-new-location-by-London-bus-commuter = Invasive lace bug species spotted in a new location by London bus commuter
 It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
 # Onboarding Research Grade screen: checklist item completing "Your
 # observation can become Research Grade when:". Text in <1> tags is bold
@@ -875,6 +886,12 @@ Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
+# Onboarding Impact screen: title of a story about volunteers in California
+# protecting migrating amphibians
+Local-volunteers-form-newt-brigade-to-protect-amphibians = Local volunteers form "newt brigade" to protect amphibians migrating across a road
+# Onboarding Impact screen: body of a story about volunteers in California
+# protecting migrating amphibians
+Local-volunteers-in-California-used-iNaturalist = Local volunteers in California used iNaturalist to coordinate protection for newts, frogs, and other amphibians migrating across a busy road.
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
@@ -1001,6 +1018,9 @@ Nearby = Nearby
 Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
+# Onboarding Impact screen: title of a story about a new mantis species found in
+# Australia
+New-praying-mantis-species-discovered-by-woman-walking-in-her-neighborhood = New praying mantis species discovered by woman walking in her neighborhood
 # Country name, shown as the location of a story on the onboarding Impact screen
 New-Zealand = New Zealand
 # Sort order, refers to newest or oldest date
@@ -1698,6 +1718,10 @@ Umbrella-Project = Umbrella Project
 Underside = Underside
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
+# Country name, shown as the location of a story on the onboarding Impact screen
+United-Kingdom = United Kingdom
+# Country name, shown as the location of a story on the onboarding Impact screen
+United-States = United States
 # Text to show when a taoxn rank is unknown or missing
 Unknown--rank = Unknown
 # Text to show when a taxon or identification is unknown or missing

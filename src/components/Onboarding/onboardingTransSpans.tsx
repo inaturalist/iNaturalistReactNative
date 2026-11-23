@@ -16,3 +16,9 @@ export const UNDERLINED_SPANS = [
   <Text key="0" />,
   <Text key="1" className="underline" />,
 ];
+
+// For strings whose <1> spans are italic, like scientific names
+export const ITALIC_SPANS = [
+  <Text key="0" />,
+  <Text key="1" className="italic" />,
+];
