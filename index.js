@@ -28,6 +28,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import {
+  consumeOnboardingV2NextLaunch,
   getInstallID,
   store as installDataMMKVStorage,
   LAST_CRASH_DATA,
@@ -36,6 +37,8 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 import useRozenite, { HaltedLaunch, shouldHaltLaunchForDebug } from "sharedHooks/useRozenite";
 import { createMMKVStorageAdapter } from "@rozenite/storage-plugin";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import useStore from "stores/useStore";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
@@ -177,6 +180,12 @@ const AppWithProviders = ( ) => (
     </RealmProvider>
   </QueryClientProvider>
 );
+// Set by the Debug screen's wipe button. Uses the session-only debug override,
+// so the next launch is back to normal flag values
+if ( consumeOnboardingV2NextLaunch( ) ) {
+  useStore.getState( ).setFeatureFlagDebugOverride( FeatureFlag.OnboardingV2Enabled, true );
+}
+
 if ( __DEV__ && shouldHaltLaunchForDebug( ) ) {
   const HaltedWrappedApp = ( ) => <HaltedLaunch><AppWithProviders /></HaltedLaunch>;
   AppRegistry.registerComponent( appName, ( ) => HaltedWrappedApp );

@@ -9,6 +9,7 @@ import * as uuid from "uuid";
 const MMKV_ID = "install-data";
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
+const ONBOARDING_V2_NEXT_LAUNCH = "onboardingV2NextLaunch";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 export const LAST_CRASH_DATA = "LAST_CRASH_DATA";
 const ENVIRONMENT_OVERRIDE = "environmentOverride";
@@ -46,10 +47,23 @@ export function getInstallID( ) {
 }
 
 // Hook to see if this *installation* has seen the onboarding. If the user
-// signs out, we don't want them to see the onboarding again. This only gets
-// used in a component, so no need to expose any other getters/setters
+// signs out, we don't want them to see the onboarding again
 export function useOnboardingShown() {
   return useMMKVBoolean( ONBOARDING_SHOWN, store );
+}
+
+// For the Debug screen: the next launch shows onboarding as on a fresh
+// install, with onboarding v2 on for that launch only
+export function setOnboardingV2NextLaunch( ) {
+  store.delete( ONBOARDING_SHOWN );
+  store.set( ONBOARDING_V2_NEXT_LAUNCH, true );
+}
+
+// Unset on read, like haltLaunch, so it only affects the one launch
+export function consumeOnboardingV2NextLaunch( ): boolean {
+  const result = store.getBoolean( ONBOARDING_V2_NEXT_LAUNCH ) || false;
+  store.delete( ONBOARDING_V2_NEXT_LAUNCH );
+  return result;
 }
 
 // The baked-in environment prefix (e.g. "STAGING") the app should read
