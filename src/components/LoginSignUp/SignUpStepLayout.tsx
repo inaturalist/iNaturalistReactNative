@@ -1,12 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import {
   Image, LinearGradient, ScrollView, View,
 } from "components/styledComponents";
 import type { PropsWithChildren, ReactNode } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import type { ImageSourcePropType } from "react-native";
-import { Keyboard, StatusBar, useWindowDimensions } from "react-native";
+import {
+  BackHandler, Keyboard, StatusBar, useWindowDimensions,
+} from "react-native";
 import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useTranslation from "sharedHooks/useTranslation";
@@ -28,6 +30,9 @@ interface Props extends PropsWithChildren {
   backgroundSource: ImageSourcePropType;
   // Pinned to the bottom of the screen, below the scrolling content
   footer?: ReactNode;
+  // Disables the back and close buttons, swiping back and Android back, e.g.
+  // while an account is being created
+  leavingDisabled?: boolean;
   // Shows a close button when set
   onClose?: ( ) => void;
   // Also prefixes the back and close buttons' testIDs
@@ -37,12 +42,24 @@ interface Props extends PropsWithChildren {
 // Frame for the sign-up screens: a dark photo background, a back button, and
 // an optional close button
 const SignUpStepLayout = ( {
-  backgroundSource, children, footer, onClose, testID,
+  backgroundSource, children, footer, leavingDisabled = false, onClose, testID,
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const insets = useSafeAreaInsets( );
   const { width } = useWindowDimensions( );
+  useEffect( ( ) => {
+    navigation.setOptions( { gestureEnabled: !leavingDisabled } );
+  }, [navigation, leavingDisabled] );
+  useFocusEffect(
+    useCallback( ( ) => {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        ( ) => leavingDisabled,
+      );
+      return ( ) => backHandler.remove( );
+    }, [leavingDisabled] ),
+  );
   const backgroundHeight = width * BACKGROUND_ASPECT_RATIO;
   const backgroundStyle = { width, height: backgroundHeight };
   // Raised as soon as an input is focused, so the form moves with the keyboard
@@ -97,6 +114,7 @@ const SignUpStepLayout = ( {
           size={22}
           color={colors.white}
           accessibilityLabel={t( "Go-back" )}
+          disabled={leavingDisabled}
           onPress={( ) => navigation.goBack( )}
           testID={`${testID}.back`}
         />
@@ -107,6 +125,7 @@ const SignUpStepLayout = ( {
             color={colors.white}
             accessibilityLabel={t( "Close" )}
             accessibilityHint={t( "Asks-whether-to-exit" )}
+            disabled={leavingDisabled}
             onPress={onClose}
             testID={`${testID}.close`}
           />
