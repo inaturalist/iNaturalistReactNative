@@ -269,8 +269,6 @@ Close-permission-request-screen = Close permission request screen
 Close-search = Close search
 # Body of the camera tip "Antennae, legs, and wings" for insects
 Close-ups-of-these-including-the-veins-on-clear-wings-help-identifiers-sort-out-similar-groups = Close-ups of these, including the veins on clear wings, help identifiers sort out similar groups.
-# Accessibility hint for button that closes the camera tips screen and returns to the camera
-Closes-camera-tips = Closes camera tips and returns to the camera.
 # Accessibility hint for button that closes the explanation card
 Closes-explanation = Closes explanation
 # Accessibility hint for button that closes the introductory slides that
