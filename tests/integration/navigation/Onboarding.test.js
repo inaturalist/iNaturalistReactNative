@@ -1,7 +1,7 @@
 import { logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
-  act, screen, userEvent, within,
+  act, fireEvent, screen, userEvent, within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -376,6 +376,30 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     await actor.press( within( step ).getByLabelText( attribution ) );
     expect( Alert.alert ).toHaveBeenCalledWith( i18next.t( "Copyright" ), attribution );
     Alert.alert.mockRestore( );
+  } );
+
+  it( "logs a story view for the first story and each story the strip settles on", async ( ) => {
+    logEvent.mockClear( );
+    renderApp( );
+    const step = await continueTo( "impact" );
+    const storyViews = ( ) => logEvent.mock.calls
+      .filter( ( [, eventName] ) => eventName === "impact_story_view" )
+      .map( ( [, , params] ) => params.story_id );
+    expect( storyViews( ) ).toEqual( ["moth_new_zealand"] );
+
+    const strip = within( step ).getByTestId( "ImpactStoryStrip" );
+    const settleOnStory = index => fireEvent( strip, "momentumScrollEnd", {
+      nativeEvent: { contentOffset: { x: index * strip.props.snapToInterval, y: 0 } },
+    } );
+    settleOnStory( 1 );
+    // Settling back on the story already showing doesn't log it again
+    settleOnStory( 1 );
+    settleOnStory( 3 );
+    expect( storyViews( ) ).toEqual( [
+      "moth_new_zealand",
+      "mantis_australia",
+      "newt_brigade_us",
+    ] );
   } );
 
   describe( "exit sheets", ( ) => {
