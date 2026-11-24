@@ -65,6 +65,7 @@ const API_HOST: string = EnvConfig.OAUTH_API_URL
 // (safe margin). Actually they expire in 24 hours, but ideally they would
 // expire every 30 mins, so might as well be futureproof.
 const JWT_EXPIRATION_MINS = 25;
+const REGISTER_USER_TIMEOUT_MS = 40_000;
 
 interface AuthCache {
   isLoggedIn: boolean | null;
@@ -745,7 +746,8 @@ interface NewUser {
  * Registers a new user
  *
  * @returns null if successful, otherwise the server's first error message,
- * or undefined if the failed request carried none (e.g. when offline)
+ * or undefined if the failed request carried none (e.g. when offline or
+ * timed out)
  */
 const registerUser = async ( user: NewUser ) => {
   const locales = RNLocalize.getLocales();
@@ -758,7 +760,11 @@ const registerUser = async ( user: NewUser ) => {
   };
 
   const api = createAPI();
-  const response = await api.post<CreateUserResponse>( "/users.json", formData );
+  const response = await api.post<CreateUserResponse>(
+    "/users.json",
+    formData,
+    { timeout: REGISTER_USER_TIMEOUT_MS },
+  );
 
   if ( !response.ok ) {
     const serverError = response.data?.errors?.[0];

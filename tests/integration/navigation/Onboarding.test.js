@@ -751,10 +751,8 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       await actor.press( createButton( ) );
     };
 
-    // Leaving is locked while the account is being created, so the user can
-    // only go back once the lock has expired
-    const goBackOnceStalled = async ( ) => {
-      act( ( ) => jest.advanceTimersByTime( 15_000 ) );
+    const goBackWhileSigningIn = async ( ) => {
+      await waitFor( ( ) => expect( backButton( ) ).toBeEnabled( ) );
       await actor.press( backButton( ) );
       return screen.findByTestId( "Onboarding.signup_email" );
     };
@@ -914,20 +912,6 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       },
     );
 
-    it( "lets the user leave once creating the account has stalled for 15 seconds", async ( ) => {
-      registerUser.mockReturnValueOnce( new Promise( ( ) => { } ) );
-      const { navigationContainer } = renderAppWithNavigationContainer( );
-      await submitCredentials( );
-      act( ( ) => jest.advanceTimersByTime( 14_000 ) );
-      expect( backButton( ) ).toBeDisabled( );
-      act( ( ) => jest.advanceTimersByTime( 1_000 ) );
-      expect( backButton( ) ).toBeEnabled( );
-      expect( screen.getByTestId( "Onboarding.signup_credentials.close" ) ).toBeEnabled( );
-      expect( navigationContainer.current.getCurrentOptions( ).gestureEnabled ).toBe( true );
-      await actor.press( backButton( ) );
-      expect( await screen.findByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
-    } );
-
     it(
       "locks leaving, Learn More and the fields while the account is being created, and "
       + "unlocks them when that fails",
@@ -967,7 +951,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         );
         renderApp( );
         await submitCredentials( );
-        expect( await goBackOnceStalled( ) ).toBeVisible( );
+        expect( await goBackWhileSigningIn( ) ).toBeVisible( );
         await act( async ( ) => finishSignIn( { success: true } ) );
         expect( await screen.findByTestId( "Onboarding.location_explainer" ) ).toBeVisible( );
       },
@@ -982,7 +966,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         );
         renderApp( );
         await submitCredentials( );
-        expect( await goBackOnceStalled( ) ).toBeVisible( );
+        expect( await goBackWhileSigningIn( ) ).toBeVisible( );
         await act( async ( ) => finishSignIn( { success: false } ) );
         expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
         expect( queryMounted( "Login.email" ) ).toBeNull( );

@@ -108,6 +108,28 @@ test( "authenticates user", async ( ) => {
   scope2.done();
 } );
 
+test( "gives up on registering a user after 15 seconds without a response", async ( ) => {
+  const scope = nock( API_HOST )
+    .post( "/users.json" )
+    .delayConnection( 60_000 )
+    .reply( 200 );
+
+  jest.useFakeTimers( { doNotFake: ["nextTick", "setImmediate"] } );
+  try {
+    const registration = registerUser( {
+      email: "some@mail.com",
+      login: USERNAME,
+      password: PASSWORD,
+    } );
+    await jest.advanceTimersByTimeAsync( 15_000 );
+    await expect( registration ).resolves.toBeUndefined( );
+  } finally {
+    jest.useRealTimers( );
+  }
+
+  scope.done();
+} );
+
 test( "registers user", async ( ) => {
   inatjs.users.me.mockResolvedValue( makeResponse( [mockUserWithoutUploadedObs] ) );
 

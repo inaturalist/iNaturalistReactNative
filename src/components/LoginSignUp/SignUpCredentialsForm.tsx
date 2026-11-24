@@ -30,7 +30,9 @@ interface Props {
   onSignedIn: ( ) => void;
   // Called when the account is created but signing in to it fails
   onSignInFailed: ( ) => void;
-  onSubmittingChange?: ( submitting: boolean ) => void;
+  // Called with true when the account request starts and false once it
+  // settles, before signing in to the new account
+  onCreatingAccountChange?: ( creatingAccount: boolean ) => void;
   // Prefixes the fields' and create button's testIDs
   testID: string;
 }
@@ -38,7 +40,7 @@ interface Props {
 // Finishing an email account with a username, a password and the terms
 // agreement. Where the user goes next is up to the screen hosting the form.
 const SignUpCredentialsForm = ( {
-  email, onLearnMore, onSignedIn, onSignInFailed, onSubmittingChange, testID,
+  email, onLearnMore, onSignedIn, onSignInFailed, onCreatingAccountChange, testID,
 }: Props ) => {
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -54,11 +56,6 @@ const SignUpCredentialsForm = ( {
 
   useFocusEffect( useCallback( ( ) => ( ) => Keyboard.dismiss( ), [] ) );
 
-  const updateSubmitting = ( newSubmitting: boolean ) => {
-    setSubmitting( newSubmitting );
-    onSubmittingChange?.( newSubmitting );
-  };
-
   const createAccount = async ( ) => {
     if ( password.length < MIN_PASSWORD_LENGTH ) {
       setError( t( "Please-make-sure-your-password-is-at-least-6-characters" ) );
@@ -69,7 +66,8 @@ const SignUpCredentialsForm = ( {
       return;
     }
     setError( null );
-    updateSubmitting( true );
+    setSubmitting( true );
+    onCreatingAccountChange?.( true );
     let registrationError;
     try {
       registrationError = await registerUser( {
@@ -86,6 +84,7 @@ const SignUpCredentialsForm = ( {
     } catch ( registerUserError ) {
       logger.error( "Creating the account failed", registerUserError );
     }
+    onCreatingAccountChange?.( false );
     // Only null means the account was created: it's undefined when the
     // request failed without a server message, e.g. when offline, or threw
     if ( registrationError !== null ) {
@@ -95,7 +94,7 @@ const SignUpCredentialsForm = ( {
         // Other errors are shown as the server worded them
         setError( registrationError || t( "Connection-problem-Please-try-again-later" ) );
       }
-      updateSubmitting( false );
+      setSubmitting( false );
       return;
     }
     let signedIn = false;
@@ -105,7 +104,7 @@ const SignUpCredentialsForm = ( {
     } catch ( authenticateUserError ) {
       logger.error( "Signing in to the new account failed", authenticateUserError );
     }
-    updateSubmitting( false );
+    setSubmitting( false );
     if ( !signedIn ) {
       onSignInFailed( );
       return;
