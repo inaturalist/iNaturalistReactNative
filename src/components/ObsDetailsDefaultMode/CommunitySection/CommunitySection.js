@@ -6,6 +6,8 @@ import { View } from "components/styledComponents";
 import compact from "lodash/compact";
 import type { Node } from "react";
 import React, { useMemo } from "react";
+import getObservationParticipants from "sharedHelpers/getObservationParticipants";
+import { MENTION_SUGGESTION_LIMIT } from "sharedHelpers/mentions";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 type Props = {
@@ -34,6 +36,11 @@ const CommunitySection = ( {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+
+  const mentionSuggestions = useMemo(
+    ( ) => getObservationParticipants( observation, userId, MENTION_SUGGESTION_LIMIT ),
+    [observation, userId],
+  );
 
   // finds the user's most recent id
   const findRecentUserAgreedToID = ( ) => {
@@ -82,6 +89,7 @@ const CommunitySection = ( {
           >
             <ActivityItem
               currentUserId={userId}
+              mentionSuggestions={mentionSuggestions}
               isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
               isConnected={isConnected}
               item={item}

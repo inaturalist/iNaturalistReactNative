@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+const tailwindTheme = require( "./src/styles/tailwindTheme.json" );
+
 const setLineHeight = lineHeight => ( { lineHeight } );
 
 module.exports = {
@@ -59,40 +61,10 @@ module.exports = {
         "2xl": "15px",
       },
     },
-    colors: {
-      accessibleGreen: "#5D8017",
-      black: "#000000",
-      darkGray: "#454545",
-      darkGrayDisabled: "#828181",
-      inatGreen: "#74AC00",
-      inatGreenDisabled: "#B9D580",
-      inatGreenDisabledDark: "#3A5600",
-      lightGray: "#E8E8E8",
-      lightGrayOpaque: "#E8E8E854",
-      lightGreen: "#F1F7E5",
-      mediumGray: "#BFBFBF",
-      mediumGrayGhost: "#BFBFBF33",
-      warningRed: "#9B1010",
-      warningRedDisabled: "#b06365",
-      warningYellow: "#E6A939",
-      white: "#ffffff",
-      yellow: "#FFD600",
-
-      // Mostly for debugging
-      red: "#FF0000",
-      green: "#00FF00",
-      blue: "#0000FF",
-      deepPink: "#FF1493",
-      deeppink: "#FF1493",
-      DeepPink: "#FF1493",
-      orange: "#FFA500",
-    },
-    screens: {
-      sm: "240px",
-      md: "320px",
-      lg: "390px",
-      xl: "744px",
-      "2xl": "1366px",
-    },
+    // In JSON so app code (src/styles/tailwindColors.ts, tailwindScreens.ts) can read the
+    // same values, typed, without bundling this config and tailwindcss/resolveConfig.
+    // The colors red through orange are mostly for debugging.
+    colors: tailwindTheme.colors,
+    screens: tailwindTheme.screens,
   },
 };

@@ -1,7 +1,7 @@
+import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistItem";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import Button from "components/SharedComponents/Buttons/Button";
-import INatIcon from "components/SharedComponents/INatIcon";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Heading1 from "components/SharedComponents/Typography/Heading1";
 import { Image, View } from "components/styledComponents";
@@ -12,7 +12,6 @@ import Animated, { Easing, FadeIn } from "react-native-reanimated";
 import { log } from "sharedHelpers/logger";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
 const logger = log.extend( "LocationExplainerStep" );
 
@@ -91,15 +90,6 @@ const Bullet = ( { text }: { text: string } ) => (
   </View>
 );
 
-const Reason = ( { text }: { text: string } ) => (
-  <View className="flex-row items-start">
-    <View accessibilityElementsHidden importantForAccessibility="no">
-      <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />
-    </View>
-    <Body2 className="ml-3 flex-1">{text}</Body2>
-  </View>
-);
-
 const LocationExplainerStep = ( ) => {
   const { t } = useTranslation( );
   const { stepId, proceedToNext } = useOnboardingFlow( );
@@ -133,9 +123,15 @@ const LocationExplainerStep = ( ) => {
       </Heading1>
       <Body2 className="mb-3">{t( "Location-permissions--onboarding" )}</Body2>
       <View className="gap-3 px-[10px]">
-        <Reason text={t( "Help-you-find-species-nearby" )} />
-        <Reason text={t( "Quality-data-and-good-identifications" )} />
-        <Reason text={t( "Helps-with-science-and-community" )} />
+        <OnboardingChecklistItem>
+          {t( "Help-you-find-species-nearby" )}
+        </OnboardingChecklistItem>
+        <OnboardingChecklistItem>
+          {t( "Quality-data-and-good-identifications" )}
+        </OnboardingChecklistItem>
+        <OnboardingChecklistItem>
+          {t( "Helps-with-science-and-community" )}
+        </OnboardingChecklistItem>
       </View>
       <LocationMap />
       <Body2>{t( "Just-so-you-know" )}</Body2>

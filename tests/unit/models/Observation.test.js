@@ -1,7 +1,10 @@
+import { photoUploadPath } from "appConstants/paths";
 import Observation from "realmModels/Observation";
 import ObservationFieldValue from "realmModels/ObservationFieldValue";
+import Photo from "realmModels/Photo";
 import ProjectObservation from "realmModels/ProjectObservation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import * as uuid from "uuid";
 
@@ -379,6 +382,37 @@ describe( "Observation", ( ) => {
       expect( obs.observationFieldValues[0]._synced_at ).toEqual( syncedAt );
     } );
 
+    it( "saves an edited photo's new file to the same observation photo", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const obsPhotoUuid = uuid.v4( );
+      const originalPath = `${photoUploadPath}/original.jpg`;
+      const editedPath = `${photoUploadPath}/edited.jpg`;
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          observationPhotos: [{
+            uuid: obsPhotoUuid,
+            position: 0,
+            photo: { localFilePath: originalPath },
+          }],
+        } );
+      }, "seed unsynced obs with a local photo for photo edit save test" );
+
+      const { prepareObsEdit, replacePhotoInObservation } = useStore.getState( );
+      prepareObsEdit( global.realm.objectForPrimaryKey( "Observation", obsUuid ) );
+      replacePhotoInObservation( Photo.getLocalPhotoUri( originalPath ), editedPath );
+      await Observation.saveLocalObservationForUpload(
+        useStore.getState( ).currentObservation,
+        global.realm,
+      );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.observationPhotos ).toHaveLength( 1 );
+      expect( obs.observationPhotos[0].uuid ).toBe( obsPhotoUuid );
+      expect( obs.observationPhotos[0].photo.localFilePath ).toBe( editedPath );
+      expect( obs.observationPhotos[0].needsSync( ) ).toBe( true );
+    } );
+
     describe( "with synced photos", ( ) => {
       const updatedAt = new Date( "2020-01-01" );
       const syncedAt = new Date( "2020-01-02" );
@@ -419,7 +453,9 @@ describe( "Observation", ( ) => {
           .toBe( true );
       } );
 
-      it( "marks only photos whose position changed for sync", async ( ) => {
+      // Web-added photos have no position on the server, so a photo that keeps
+      // its place still needs its position sent
+      it( "marks every photo for sync when any photo moves", async ( ) => {
         const obs = seedSyncedObsWithPhotos( );
         const reordered = obs.observationPhotos.map( op => ( {
           ...op,
@@ -428,13 +464,10 @@ describe( "Observation", ( ) => {
 
         const photos = await savedPhotos( { ...obs, observationPhotos: reordered } );
 
-        const needsSyncByPosition = Object.fromEntries(
-          photos.map( op => [op.position, op.needsSync( )] ),
-        );
-        expect( needsSyncByPosition ).toEqual( { 0: true, 1: false, 2: true } );
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [true, true, true] );
       } );
 
-      it( "adding a photo leaves existing synced photos unmarked", async ( ) => {
+      it( "marks every photo for sync when a photo is added", async ( ) => {
         const obs = seedSyncedObsWithPhotos( );
         const newPhoto = {
           _created_at: new Date( ),
@@ -449,7 +482,8 @@ describe( "Observation", ( ) => {
           observationPhotos: [...obs.observationPhotos, newPhoto],
         } );
 
-        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [false, false, false, true] );
+        expect( photos.map( op => op.needsSync( ) ) ).toEqual( [true, true, true, true] );
+        expect( photos.map( op => op.wasSynced( ) ) ).toEqual( [true, true, true, false] );
       } );
 
       it( "keeps a photo change from an earlier save pending", async ( ) => {

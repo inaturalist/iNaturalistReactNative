@@ -37,14 +37,16 @@ const FullPageWebViewHeader = ( {
 
   return (
     <View
-      style={{
-        ...HEADER_STYLE,
-        ...options.headerStyle,
-        ...( options.headerShadowVisible && dropShadow ),
-        paddingTop: insets.top,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,
-      }}
+      style={[
+        HEADER_STYLE,
+        options.headerStyle,
+        options.headerShadowVisible && dropShadow,
+        {
+          paddingTop: insets.top,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
     >
       <View
         className={classNames(

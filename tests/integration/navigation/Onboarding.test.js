@@ -1,12 +1,13 @@
+import { logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
-  act, screen, userEvent, within,
+  act, fireEvent, screen, userEvent, within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useContext } from "react";
-import { BackHandler, Image } from "react-native";
+import { Alert, BackHandler, Image } from "react-native";
 import { requestMultiple, RESULTS } from "react-native-permissions";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -53,7 +54,10 @@ jest.mock( "components/LoginSignUp/AuthenticationService", ( ) => ( {
   resetPassword: jest.fn( ( ) => Promise.resolve( ) ),
 } ) );
 
-const actor = userEvent.setup( );
+// userEvent holds every press for RN's 130ms minimum press duration, so fake
+// timers let presses advance the clock instead of sleeping. They're enabled
+// per test because initI18next in beforeAll waits on a real timer.
+const actor = userEvent.setup( { advanceTimers: jest.advanceTimersByTime } );
 
 const closeCarousel = async ( ) => {
   await actor.press( await screen.findByLabelText( i18next.t( "Close" ) ) );
@@ -66,7 +70,12 @@ describe( "Onboarding", ( ) => {
   } );
 
   beforeEach( ( ) => {
+    jest.useFakeTimers( );
     mockOnboarding.shown = false;
+  } );
+
+  afterEach( ( ) => {
+    jest.useRealTimers( );
   } );
 
   it( "shows the login screen after the carousel is closed", async ( ) => {
@@ -236,6 +245,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   beforeEach( ( ) => {
+    jest.useFakeTimers( );
     mockOnboarding.shown = false;
     setStoreStateFeatureFlags( { [FeatureFlag.OnboardingV2Enabled]: true } );
     requestMultiple.mockReset( );
@@ -245,6 +255,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   } );
 
   afterEach( ( ) => {
+    jest.useRealTimers( );
     setStoreStateFeatureFlags( { } );
     addBackListener?.mockRestore( );
     addBackListener = undefined;
@@ -336,6 +347,60 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       }
     },
   );
+
+  it( "logs a screen view each time an education step becomes visible", async ( ) => {
+    logEvent.mockClear( );
+    const { navigationContainer } = renderAppWithNavigationContainer( );
+    const screenViews = ( ) => logEvent.mock.calls
+      .filter( ( [, eventName] ) => eventName === "onboarding_screen_view" )
+      .map( ( [, , params] ) => params );
+    await continueTo( "impact" );
+    expect( screenViews( ) ).toEqual( [
+      { screen_id: "obs_story", position: 2 },
+      { screen_id: "community_id", position: 6 },
+      { screen_id: "research_grade", position: 7 },
+      { screen_id: "impact", position: 8 },
+    ] );
+
+    act( ( ) => navigationContainer.current.goBack( ) );
+    expect( screen.getByTestId( "Onboarding.research_grade" ) ).toBeVisible( );
+    expect( screenViews( ) ).toHaveLength( 5 );
+    expect( screenViews( )[4] ).toEqual( { screen_id: "research_grade", position: 7 } );
+  } );
+
+  it( "shows an impact story photo's attribution from its copyright button", async ( ) => {
+    jest.spyOn( Alert, "alert" ).mockImplementation( ( ) => undefined );
+    renderApp( );
+    const step = await continueTo( "impact" );
+    const attribution = "(c) Pav Johnsson, some rights reserved (CC BY)";
+    await actor.press( within( step ).getByLabelText( attribution ) );
+    expect( Alert.alert ).toHaveBeenCalledWith( i18next.t( "Copyright" ), attribution );
+    Alert.alert.mockRestore( );
+  } );
+
+  it( "logs a story view for the first story and each story the strip settles on", async ( ) => {
+    logEvent.mockClear( );
+    renderApp( );
+    const step = await continueTo( "impact" );
+    const storyViews = ( ) => logEvent.mock.calls
+      .filter( ( [, eventName] ) => eventName === "impact_story_view" )
+      .map( ( [, , params] ) => params.story_id );
+    expect( storyViews( ) ).toEqual( ["moth_new_zealand"] );
+
+    const strip = within( step ).getByTestId( "ImpactStoryStrip" );
+    const settleOnStory = index => fireEvent( strip, "momentumScrollEnd", {
+      nativeEvent: { contentOffset: { x: index * strip.props.snapToInterval, y: 0 } },
+    } );
+    settleOnStory( 1 );
+    // Settling back on the story already showing doesn't log it again
+    settleOnStory( 1 );
+    settleOnStory( 3 );
+    expect( storyViews( ) ).toEqual( [
+      "moth_new_zealand",
+      "mantis_australia",
+      "newt_brigade_us",
+    ] );
+  } );
 
   describe( "exit sheets", ( ) => {
     it( "asks before exiting the demo, and cancelling stays on the step", async ( ) => {

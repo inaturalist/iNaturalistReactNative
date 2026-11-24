@@ -338,6 +338,7 @@ const AddToProjects = ( ) => {
         extraData={validationResult}
         keyExtractor={( project: RealmProject ) => String( project.id )}
         keyboardDismissMode="on-drag"
+        automaticallyAdjustKeyboardInsets
         renderItem={renderProject}
         ItemSeparatorComponent={ItemSeparator}
       />
