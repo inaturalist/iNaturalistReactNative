@@ -69,6 +69,7 @@ interface ObservationFlowState {
 interface ObservationFlowActions {
   deletePhotoFromObservation: ( uri: string ) => void;
   deleteSoundFromObservation: ( uri: string ) => void;
+  replacePhotoInObservation: ( uri: string, newLocalFilePath: string ) => void;
   resetObservationFlowSlice: ( ) => void;
   addCameraRollUris: ( uris: string[] ) => void;
   setSavingPhoto: ( saving: boolean ) => void;
@@ -210,6 +211,30 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
       currentObservation: newObservation
         ? observationToJSON( newObservation )
         : null,
+      unsavedChanges: true,
+    };
+  } ),
+  // Points a local photo at an edited copy of its file. The observation photo
+  // keeps its uuid and position, so saving updates it in place
+  replacePhotoInObservation: ( uri: string, newLocalFilePath: string ) => set( state => {
+    const observation = state.observations[state.currentObservationIndex];
+    if ( !observation ) return {};
+    const newObservation = {
+      ...observation,
+      observationPhotos: observation.observationPhotos.map( observationPhoto => (
+        Photo.getLocalPhotoUri( observationPhoto.photo?.localFilePath ) === uri
+          ? {
+            ...observationPhoto,
+            photo: { ...observationPhoto.photo, localFilePath: newLocalFilePath },
+          }
+          : observationPhoto
+      ) ),
+    };
+    const newObservations = [...state.observations];
+    newObservations[state.currentObservationIndex] = newObservation;
+    return {
+      observations: newObservations,
+      currentObservation: newObservation,
       unsavedChanges: true,
     };
   } ),

@@ -3,23 +3,28 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import PhotoCropperModal from "components/MediaViewer/PhotoCropperModal";
 import isEqual from "lodash/isEqual";
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import Photo from "realmModels/Photo";
 import {
   useLastScreen,
   useLocationPermission,
   useSuggestions,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
 import type { TopSuggestionType } from "sharedHooks/useSuggestions/types";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
@@ -127,6 +132,8 @@ const SuggestionsContainer = ( ) => {
     [currentObservation],
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const replacePhotoInObservation = useStore( state => state.replacePhotoInObservation );
+  const photoEditingEnabled = useFeatureFlag( FeatureFlag.PhotoEditingEnabled );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
@@ -334,6 +341,59 @@ const SuggestionsContainer = ( ) => {
     shouldUseEvidenceLocation,
   ] );
 
+  // The selected photo's file, if it's local and not uploaded yet
+  const selectedLocalFilePath = innerPhotos.find( photo => !photo.url
+    && Photo.getLocalPhotoUri( photo.localFilePath ) === selectedPhotoUri )?.localFilePath;
+  const hasNoSuggestions = !suggestions?.topSuggestion
+    && suggestions?.otherSuggestions?.length === 0;
+  // Offer cropping only when the online model found nothing to suggest
+  const canCropSelectedPhoto = photoEditingEnabled
+    && !!selectedLocalFilePath
+    && onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
+    && !usingOfflineSuggestions
+    && hasNoSuggestions;
+  const [localFilePathToCrop, setLocalFilePathToCrop] = useState<string | null>( null );
+  const closeCropper = useCallback( ( ) => setLocalFilePathToCrop( null ), [] );
+
+  // Selecting a photo fetches new suggestions for it
+  const selectPhoto = useCallback( async ( uri: string ) => {
+    const newImageParams = await createUploadParams( uri, shouldUseEvidenceLocation );
+    dispatch( {
+      type: "SELECT_PHOTO",
+      selectedPhotoUri: uri,
+      scoreImageParams: newImageParams,
+    } );
+  }, [createUploadParams, dispatch, shouldUseEvidenceLocation] );
+
+  // Swap the cropped copy into the observation, then select it
+  const selectCroppedPhoto = useCallback( async ( uri: string, newLocalFilePath: string ) => {
+    replacePhotoInObservation( uri, newLocalFilePath );
+    const croppedUri = Photo.getLocalPhotoUri( newLocalFilePath );
+    if ( croppedUri ) await selectPhoto( croppedUri );
+  }, [replacePhotoInObservation, selectPhoto] );
+
+  // The selected photo's URI after edits made in the media viewer. It's
+  // selected when the viewer closes, so a run of edits fetches suggestions
+  // once, and only if the selected photo was the one edited
+  const [editedSelectedPhotoUri, setEditedSelectedPhotoUri] = useState<string | null>( null );
+  const editPhotoInViewer = useCallback( ( uri: string, newLocalFilePath: string ) => {
+    replacePhotoInObservation( uri, newLocalFilePath );
+    if ( uri === ( editedSelectedPhotoUri || selectedPhotoUri ) ) {
+      setEditedSelectedPhotoUri( Photo.getLocalPhotoUri( newLocalFilePath ) || null );
+    }
+  }, [editedSelectedPhotoUri, replacePhotoInObservation, selectedPhotoUri] );
+
+  const closeMediaViewer = useCallback( ( ) => {
+    dispatch( {
+      type: "TOGGLE_MEDIA_VIEWER",
+      mediaViewerVisible: false,
+    } );
+    if ( editedSelectedPhotoUri ) {
+      setEditedSelectedPhotoUri( null );
+      selectPhoto( editedSelectedPhotoUri );
+    }
+  }, [dispatch, editedSelectedPhotoUri, selectPhoto] );
+
   const headerRight = useCallback( ( ) => <TaxonSearchButton />, [] );
 
   const shouldSetImageParams = useMemo(
@@ -393,6 +453,9 @@ const SuggestionsContainer = ( ) => {
         improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
         isLoading={isLoading}
         shouldUseEvidenceLocation={shouldUseEvidenceLocation}
+        onCropPhoto={canCropSelectedPhoto
+          ? ( ) => setLocalFilePathToCrop( selectedLocalFilePath )
+          : undefined}
         onPressPhoto={onPressPhoto}
         onTaxonChosen={navigateWithTaxonSelected}
         photoUris={photoUris}
@@ -406,12 +469,17 @@ const SuggestionsContainer = ( ) => {
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => dispatch( {
-          type: "TOGGLE_MEDIA_VIEWER",
-          mediaViewerVisible: false,
-        } )}
+        onClose={closeMediaViewer}
+        onEditPhoto={photoEditingEnabled
+          ? editPhotoInViewer
+          : undefined}
         uri={selectedPhotoUri}
         photos={innerPhotos}
+      />
+      <PhotoCropperModal
+        localFilePath={localFilePathToCrop}
+        onClose={closeCropper}
+        onEditPhoto={selectCroppedPhoto}
       />
       {renderPermissionsGate( { onPermissionGranted } )}
     </>

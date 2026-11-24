@@ -213,6 +213,8 @@ Camera = Camera
 Camera-tips = Camera tips
 CANCEL = CANCEL
 Cancel = Cancel
+# Accessibility label for a button that closes the photo cropper without cropping
+Cancel-crop = Cancel crop
 Captive-Cultivated = Captive/Cultivated
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
@@ -339,6 +341,12 @@ Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
 CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-observation-with-no-evidence = Create observation with no evidence
+# Button on Suggestions, shown when there are no suggestions, that opens the
+# photo cropper so the photo can be cropped
+CROP-PHOTO = CROP PHOTO
+# Accessibility label for buttons that open the photo cropper, in the photo
+# viewer and on Suggestions
+Crop-photo = Crop photo
 # Heading of a section of camera tips about crustaceans
 Crustaceans = Crustaceans
 DATA-QUALITY = DATA QUALITY
@@ -1416,6 +1424,9 @@ REVIEW-INATURALIST = REVIEW INATURALIST
 # reviewed the observations or not
 REVIEWED = REVIEWED
 Reviewed-observations-only = Reviewed observations only
+# Accessibility label for a button in the photo viewer that turns the photo a
+# quarter turn counterclockwise
+Rotate-photo = Rotate photo
 # Label for the satellite map type
 Satellite--map-type = Satellite
 # Label for a button that persists something
@@ -1424,6 +1435,8 @@ SAVE-ALL = SAVE ALL
 # Button that saves all observations in a batch of multiple observations
 Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
+# Accessibility label for a button that crops the photo to the part inside the frame
+Save-crop = Save crop
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 # Accessibility label for the star button that saves the current search
