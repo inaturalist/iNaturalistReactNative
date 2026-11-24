@@ -25,9 +25,15 @@
 
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
+# Onboarding Impact screen: body of a story about an invasive lace bug found
+# in London
+A-London-commuter-noticed-a-tiny-insect = A London commuter noticed a tiny insect and shared a photo on iNaturalist. It turned out to be an invasive species previously not recorded in the area for 18 years.
 # Onboarding observation story screen: checklist item completeing "An
 # observation is:". Text in tags is bold
 a-photo-or-sound-recording = <0>a </0><1>photo</1><0> or </0><1>sound recording</1>
+# Onboarding Impact screen: body of a story about a new mantis species found in
+# Australia. Text in <1> tags is a scientific name, shown in italics
+A-woman-walking-in-her-neighborhood-photographed-a-mantis = <0>A woman walking in her neighborhood photographed a mantis, and it turned out to be a species completely new to science — now named </0><1>Inimia nat</1><0>, or </0><1>I. nat</1><0> for short.</0>
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -174,6 +180,8 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 # Month of August
 August = August
+# Country name, shown as the location of a story on the onboarding Impact screen
+Australia = Australia
 # Title of a camera tip about reptiles
 Back-and-full-body = Back and full body
 # Title of a camera tip about amphibians
@@ -792,6 +800,9 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+# Onboarding Impact screen: title of a story about an invasive lace bug found
+# in London
+Invasive-lace-bug-species-spotted-in-a-new-location-by-London-bus-commuter = Invasive lace bug species spotted in a new location by London bus commuter
 It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
 # Onboarding Research Grade screen: checklist item completing "Your
 # observation can become Research Grade when:". Text in <1> tags is bold
@@ -877,6 +888,12 @@ Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
+# Onboarding Impact screen: title of a story about volunteers in California
+# protecting migrating amphibians
+Local-volunteers-form-newt-brigade-to-protect-amphibians = Local volunteers form "newt brigade" to protect amphibians migrating across a road
+# Onboarding Impact screen: body of a story about volunteers in California
+# protecting migrating amphibians
+Local-volunteers-in-California-used-iNaturalist = Local volunteers in California used iNaturalist to coordinate protection for newts, frogs, and other amphibians migrating across a busy road.
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
@@ -939,10 +956,14 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+# Onboarding Impact screen: shown below the headline. Text in <1> tags is bold
+More-than-8000-scientific-studies-have-relied-on-iNaturalist = <1>8,000+ scientific studies</1><0> have relied on iNaturalist observations!</0>
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+# Onboarding Impact screen: title of a story about a moth rediscovered in New Zealand
+Moth-presumed-extinct-for-decades-rediscovered-by-tourist = Moth presumed extinct for decades rediscovered by tourist
 must-be-captive-cultivated = must be captive / cultivated
 must-be-georeferenced = must be georeferenced
 must-be-identified = must be identified
@@ -999,6 +1020,11 @@ Nearby = Nearby
 Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
+# Onboarding Impact screen: title of a story about a new mantis species found in
+# Australia
+New-praying-mantis-species-discovered-by-woman-walking-in-her-neighborhood = New praying mantis species discovered by woman walking in her neighborhood
+# Country name, shown as the location of a story on the onboarding Impact screen
+New-Zealand = New Zealand
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
@@ -1614,6 +1640,9 @@ The-community-agrees-on-an-identification = The community agrees on an identific
 # observation can become Research Grade when:". Text in <1> tags is bold
 the-community-vets-the-identification = <0>the community </0><1>vets the identification</1>
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+# Onboarding Impact screen: body of a story about a moth rediscovered in New
+# Zealand. The Frosted Phoenix is the moth's common name
+The-Frosted-Phoenix-hadnt-been-spotted-in-decades = The Frosted Phoenix hadn't been spotted in decades and was once thought extinct... until a tourist shared a photo on iNaturalist without realizing what it was.
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
@@ -1691,6 +1720,10 @@ Umbrella-Project = Umbrella Project
 Underside = Underside
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
+# Country name, shown as the location of a story on the onboarding Impact screen
+United-Kingdom = United Kingdom
+# Country name, shown as the location of a story on the onboarding Impact screen
+United-States = United States
 # Text to show when a taoxn rank is unknown or missing
 Unknown--rank = Unknown
 # Text to show when a taxon or identification is unknown or missing
@@ -2044,6 +2077,8 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x 
 Your-observation-can-become-Research-Grade-when = Your observation can become Research Grade when:
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
+# Onboarding Impact screen: headline. Text in <1> tags is underlined
+Your-observations-make-a-difference = <0>Your observations make a </0><1>difference</1><0>.</0>
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
 # Subtitle on Add to Projects membership rule row (coordinates_shareable_by_project_curators?)
 Your-project-membership-settings-must-allow = Your project membership settings must allow project curators to access the true locations of your project observations. You change location permissions on the project's page.
