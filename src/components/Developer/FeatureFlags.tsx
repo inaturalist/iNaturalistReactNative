@@ -224,7 +224,7 @@ const FeatureFlags = () => {
         className="my-3"
       />
       <Button
-        text="WIPE DATA & RESTART WITH ONBOARDING V2"
+        text="RESTART WITH ONBOARDING V2"
         onPress={confirmWipeIntoOnboardingV2}
         testID="FeatureFlags.wipeIntoOnboardingV2"
       />
