@@ -16,9 +16,9 @@ import TaxonResult from "components/SharedComponents/TaxonResult";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import Heading5 from "components/SharedComponents/Typography/Heading5";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { Image, View } from "components/styledComponents";
 import React from "react";
-import { Trans } from "react-i18next";
 import bundledImageUrl from "sharedHelpers/bundledImageUrl";
 import useTranslation from "sharedHooks/useTranslation";
 

@@ -5,12 +5,12 @@ import {
   Checkbox,
   UnderlinedLink,
 } from "components/SharedComponents";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useEffect, useRef, useState } from "react";
-import { Trans } from "react-i18next";
 import type { TextInput } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import useStore from "stores/useStore";

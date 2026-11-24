@@ -1,9 +1,9 @@
 import {
   List2,
 } from "components/SharedComponents";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { View } from "components/styledComponents";
 import React from "react";
-import { Trans } from "react-i18next";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 

@@ -1,7 +1,7 @@
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
+import Trans from "components/SharedComponents/Typography/Trans";
 import type { FC } from "react";
 import React, { useCallback } from "react";
-import { Trans } from "react-i18next";
 import { useCurrentUser } from "sharedHooks";
 
 interface Props {
