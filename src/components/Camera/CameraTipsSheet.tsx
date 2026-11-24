@@ -54,11 +54,6 @@ const getCameraTips = ( t: TFunction ): [string, [string, string][]][] => [
     [t( "No-shell-Show-the-body" ), t( "For-slugs-photograph-the-right-side-where-the-breathing-hole-is" )],
     [t( "Body-parts-and-colors" ), t( "Photograph-tentacles-gills-and-the-foot-Their-colors-matter-for-sea-slugs-squid-and-more" )],
   ]],
-  [t( "Crustaceans" ), [
-    [t( "Top-view--crustaceans" ), t( "Photograph-the-whole-body-from-above" )],
-    [t( "Claws-and-legs" ), t( "Show-their-size-color-and-shape-Similar-crabs-often-differ-here" )],
-    [t( "Leave-it-where-you-found-it" ), t( "Dont-pry-crabs-off-rocks-If-you-lift-a-rock-to-look-underneath-put-it-back-gently" )],
-  ]],
   [t( "Fungi" ), [
     [t( "Top-of-the-cap" ), t( "Show-the-color-and-texture-of-the-cap-and-its-shape" )],
     [t( "Underside" ), t( "Photograph-the-gills-pores-or-teeth-under-the-cap-Most-mushrooms-cant-be-identified-without-this" )],
@@ -73,6 +68,11 @@ const getCameraTips = ( t: TFunction ): [string, [string, string][]][] => [
     [t( "Top-view--echinoderms" ), t( "Show-the-full-shape-and-colors-For-sea-stars-include-every-arm" )],
     [t( "Spines-and-texture" ), t( "Get-close-ups-of-the-surface-Small-details-can-separate-similar-sea-stars-and-urchins" )],
     [t( "Keep-it-underwater" ), t( "Photograph-it-in-place-Dont-lift-it-out-of-the-water-or-pry-it-off-rocks" )],
+  ]],
+  [t( "Crustaceans" ), [
+    [t( "Top-view--crustaceans" ), t( "Photograph-the-whole-body-from-above" )],
+    [t( "Claws-and-legs" ), t( "Show-their-size-color-and-shape-Similar-crabs-often-differ-here" )],
+    [t( "Leave-it-where-you-found-it" ), t( "Dont-pry-crabs-off-rocks-If-you-lift-a-rock-to-look-underneath-put-it-back-gently" )],
   ]],
 ];
 /* eslint-enable max-len */
