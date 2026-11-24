@@ -1,5 +1,10 @@
+import classnames from "classnames";
 import CARD_SHADOW from "components/Onboarding/onboardingCardShadow";
 import OnboardingChecklistItem from "components/Onboarding/OnboardingChecklistItem";
+import { useOnboardingCompact } from "components/Onboarding/onboardingCompact";
+import OnboardingFlexGap from "components/Onboarding/OnboardingFlexGap";
+import OnboardingFooterNote from "components/Onboarding/OnboardingFooterNote";
+import OnboardingHeadline from "components/Onboarding/OnboardingHeadline";
 import OnboardingStepLayout from "components/Onboarding/OnboardingStepLayout";
 import { BOLD_SPANS, UNDERLINED_SPANS } from "components/Onboarding/onboardingTransSpans";
 import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
@@ -10,7 +15,6 @@ import ObservationLocation from "components/SharedComponents/ObservationLocation
 import TaxonResult from "components/SharedComponents/TaxonResult";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
-import Heading1 from "components/SharedComponents/Typography/Heading1";
 import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { Image, View } from "components/styledComponents";
 import React from "react";
@@ -26,9 +30,13 @@ const RESEARCH_GRADE_OBSERVATION = {
 };
 
 const HERO_PHOTO_ASPECT_RATIO = 352 / 212;
+// The photo is the card's tallest part, so it gives up the most height in
+// compact mode: it keeps the full width and crops to this height
+const COMPACT_HERO_PHOTO_HEIGHT = 128;
 
 const ResearchGradeCard = ( ) => {
   const { t } = useTranslation( );
+  const compact = useOnboardingCompact( );
   const spottedCucumberBeetle = {
     id: 55487,
     name: "Diabrotica undecimpunctata",
@@ -41,10 +49,15 @@ const ResearchGradeCard = ( ) => {
   };
 
   return (
-    <View className="mt-[40px] mx-[4px] rounded-[20px] bg-white" style={CARD_SHADOW}>
+    <View
+      className="mx-[4px] rounded-[20px] bg-white"
+      style={CARD_SHADOW}
+    >
       <View
         className="w-full overflow-hidden rounded-t-[20px]"
-        style={{ aspectRatio: HERO_PHOTO_ASPECT_RATIO }}
+        style={compact
+          ? { height: COMPACT_HERO_PHOTO_HEIGHT }
+          : { aspectRatio: HERO_PHOTO_ASPECT_RATIO }}
       >
         <Image
           source={require( "images/onboarding/research_grade_spotted_cucumber_beetle.jpg" )}
@@ -61,7 +74,12 @@ const ResearchGradeCard = ( ) => {
         </View>
       </View>
       <View
-        className="gap-[11px] rounded-b-[20px] border border-lightGray bg-white px-[15px] py-[11px]"
+        className={classnames(
+          "rounded-b-[20px] border border-lightGray bg-white px-[15px]",
+          compact
+            ? "gap-2 py-2"
+            : "gap-[11px] py-[11px]",
+        )}
       >
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center">
@@ -89,40 +107,25 @@ const ResearchGradeCard = ( ) => {
   );
 };
 
-const ResearchGradeStep = ( ) => {
+const ResearchGradeContent = ( ) => {
   const { t } = useTranslation( );
-  const { stepId, proceedToNext } = useOnboardingFlow( );
-  useOnboardingScreenView( stepId );
+  const compact = useOnboardingCompact( );
 
   return (
-    <OnboardingStepLayout
-      footer={(
-        <>
-          <Body2 className="px-[6px] mb-[24px]">
-            <Trans
-              i18nKey="Research-Grade-observations-can-more-easily-be-used-to"
-              components={BOLD_SPANS}
-            />
-          </Body2>
-          <Button
-            level="focus"
-            text={t( "CONTINUE" )}
-            onPress={proceedToNext}
-            testID={`Onboarding.${stepId}.next`}
-          />
-        </>
-      )}
-    >
-      <Heading1 accessibilityRole="header">
+    <>
+      <OnboardingHeadline>
         <Trans
           i18nKey="Together-we-help-observations-reach-Research-Grade"
           components={UNDERLINED_SPANS}
         />
-      </Heading1>
-      <Body2 className="mt-[19px] mb-3">
-        {t( "Your-observation-can-become-Research-Grade-when" )}
-      </Body2>
-      <View className="gap-3 px-[10px]">
+      </OnboardingHeadline>
+      <OnboardingFlexGap min={8} max={19} />
+      <Body2>{t( "Your-observation-can-become-Research-Grade-when" )}</Body2>
+      <OnboardingFlexGap min={6} max={12} />
+      <View className={classnames( "px-[10px]", compact
+        ? "gap-2"
+        : "gap-3" )}
+      >
         <OnboardingChecklistItem>
           <Trans i18nKey="the-community-vets-the-identification" components={BOLD_SPANS} />
         </OnboardingChecklistItem>
@@ -136,7 +139,38 @@ const ResearchGradeStep = ( ) => {
           />
         </OnboardingChecklistItem>
       </View>
+      <OnboardingFlexGap min={12} max={40} />
       <ResearchGradeCard />
+    </>
+  );
+};
+
+const ResearchGradeStep = ( ) => {
+  const { t } = useTranslation( );
+  const { stepId, proceedToNext } = useOnboardingFlow( );
+  useOnboardingScreenView( stepId );
+
+  return (
+    <OnboardingStepLayout
+      fitsToScreen
+      footer={(
+        <>
+          <OnboardingFooterNote>
+            <Trans
+              i18nKey="Research-Grade-observations-can-more-easily-be-used-to"
+              components={BOLD_SPANS}
+            />
+          </OnboardingFooterNote>
+          <Button
+            level="focus"
+            text={t( "CONTINUE" )}
+            onPress={proceedToNext}
+            testID={`Onboarding.${stepId}.next`}
+          />
+        </>
+      )}
+    >
+      <ResearchGradeContent />
     </OnboardingStepLayout>
   );
 };
