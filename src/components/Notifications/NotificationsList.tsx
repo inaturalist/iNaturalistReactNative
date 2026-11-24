@@ -37,7 +37,6 @@ interface Props {
 }
 
 interface RenderItemProps {
-  // It is used, not sure what the problem is
   item: Notification;
 }
 

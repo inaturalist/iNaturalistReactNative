@@ -111,7 +111,6 @@ interface Props {
 }
 
 interface TaxaFlashListRenderItemProps {
-  // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   item: SpeciesCount;
 }
 

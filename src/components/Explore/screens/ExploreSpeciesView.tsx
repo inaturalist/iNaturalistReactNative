@@ -112,8 +112,6 @@ const ExploreSpeciesView = ( { enabled, isConnected, params }: Props ) => {
   const observedIdSet = useMemo( ( ) => new Set( observedIds ), [observedIds] );
 
   const renderItem = useCallback(
-    // eslint-plugin-react mistakes this render callback for a component and
-    // flags its param type as unused prop types
     ( { item }: { item: SpeciesCountResult } ) => (
       <ExploreSpeciesGridItem
         // Unique key ensures component recreation so images don't get

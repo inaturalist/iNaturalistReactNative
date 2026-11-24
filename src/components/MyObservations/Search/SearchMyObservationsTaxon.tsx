@@ -75,8 +75,6 @@ const SearchMyObservationsTaxon = ( ) => {
   }, [dispatch] );
 
   const renderItem = useCallback(
-    // no-unused-prop-types failing for components defined at runtime seems to
-    // be a bug. These props are clearly used
     ( { item: taxon, index }: { item: ApiTaxon; index: number } ) => (
       <TaxonResult
         first={index === 0}
