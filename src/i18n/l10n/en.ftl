@@ -697,6 +697,8 @@ HIGHEST-RANK = HIGHEST RANK
 Host-plant = Host plant
 # Tips how to take good photos
 HOW-TO-MAKE-A-GOOD-OBSERVATION = HOW TO MAKE A GOOD OBSERVATION
+# Heading in the camera tips sheet above what makes a good observation
+How-to-make-a-good-observation = How to make a good observation
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-in-Camera = ID in Camera
@@ -1790,6 +1792,8 @@ Welcome-back = Welcome back!
 # in the sample observation
 What = What
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
+# Heading in the camera tips sheet above the tips for each group of organisms
+What-to-take-a-picture-of = What to take a picture of
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 # Onboarding observation story screen: label for the row showing when the
 # sample observation was made
