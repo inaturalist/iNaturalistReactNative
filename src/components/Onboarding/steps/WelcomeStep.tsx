@@ -104,6 +104,9 @@ const WelcomeStep = ( ) => {
       <View className="px-4 pt-[17px]">
         <Body3 className="self-center w-[274px] text-center">
           <Trans
+            // Passing t makes Trans re-render when translations load or the
+            // language changes; otherwise the React Compiler caches it
+            t={t}
             i18nKey="By-continuing-you-agree-to-our-Terms-of-Use-and-Privacy-Policy-Learn-More"
             components={[
               <Text
