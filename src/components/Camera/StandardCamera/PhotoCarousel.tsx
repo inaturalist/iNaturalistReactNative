@@ -223,7 +223,6 @@ const PhotoCarousel = ( {
   return (
     <View
       // Dynamic calculation of these values kind of just doesn't work with tailwind.
-      // eslint-disable-next-line react-native/no-inline-styles
       style={containerStyle}
     >
       {photoPreviewsList}

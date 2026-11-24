@@ -323,7 +323,6 @@ describe( "MyObservations upload queue", ( ) => {
     // Step the advance so each upload's promise and the effect that queues
     // the next one get a chance to flush between timer fires
     for ( let step = 0; step < 6 && uploadedUuids.length < 3; step += 1 ) {
-      // eslint-disable-next-line no-await-in-loop
       await advanceTimers( 1500 );
     }
     expect( uploadedUuids ).toHaveLength( 3 );

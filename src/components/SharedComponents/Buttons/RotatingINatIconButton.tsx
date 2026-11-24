@@ -50,7 +50,6 @@ const RotatingINatIconButton = ( {
   width,
 }: Props ) => {
   const rotation = useSharedValue( 0 );
-  // eslint-disable-next-line no-unused-vars
   const [_, setNeedsReRender] = useState( false );
 
   const animatedStyles = useAnimatedStyle(

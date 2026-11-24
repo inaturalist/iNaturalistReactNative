@@ -18,7 +18,6 @@ interface Props {
   tabs: ComponentProps<typeof NavButton>[];
 }
 
-/* eslint-disable react/jsx-props-no-spreading */
 
 const CustomTabBar = ( { tabs }: Props ) => {
   const tabList: React.ReactNode[] = tabs.map(

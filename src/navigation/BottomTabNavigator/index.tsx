@@ -15,7 +15,6 @@ import tabScreenOptions from "./tabScreenOptions";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>( );
 
-/* eslint-disable react/jsx-props-no-spreading */
 
 const BottomTabs = ( ) => {
   const renderTabBar = ( props: BottomTabBarProps ) => <CustomTabBarContainer {...props} />;

@@ -13,7 +13,6 @@ interface Props {
 
 const BottomSheetStandardBackdrop = ( { props, onPress }: Props ) => (
   <BottomSheetBackdrop
-    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
     onPress={onPress}
     pressBehavior="close"

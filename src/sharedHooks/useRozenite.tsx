@@ -30,7 +30,6 @@ interface RozeniteOptions {
 
 const launchHaltStorageKey = "haltLaunch";
 
-// eslint-disable-next-line arrow-body-style
 export const shouldHaltLaunchForDebug = ( ) => {
   const result = installDataMMKVStorage.getBoolean( launchHaltStorageKey ) || false;
   // just unset this on read: make each halted launch intentional

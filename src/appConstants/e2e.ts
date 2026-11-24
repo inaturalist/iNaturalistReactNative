@@ -8,7 +8,6 @@
 // date after the date at these coordinates. The opposite (when local time is
 // in a time zone behind the time zone of the coordinates) will not fail, but
 // it might make an observation that's a day behind when you were expecting.
-// eslint-disable-next-line import/prefer-default-export
 export const CHUCKS_PAD = {
   latitude: 51.3313127,
   longitude: 0.0509862,

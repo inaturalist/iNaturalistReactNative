@@ -133,7 +133,6 @@ const enhanceLogRootWithExtras = ( logger: Logger ) => ( {
   errorWithExtra: wrapLogFunctionWithExtra( logger.error, "error" ),
 } );
 
-// eslint-disable-next-line arrow-body-style
 const wrapLogExtendWithExtra = ( extendFunc: ( extension: string ) => Logger ) => {
   return ( extension: string ) => {
     const logWithExtras = extendFunc( extension );

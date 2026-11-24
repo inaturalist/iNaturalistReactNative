@@ -1,6 +1,5 @@
 import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
-// eslint-disable-next-line import/no-cycle
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { transportFunctionType } from "react-native-logs";
 import { EnvConfig } from "sharedHelpers/envConfig";
@@ -104,7 +103,6 @@ const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions>
   if ( typeof ( messageParams ) === "string" ) {
     message = messageParams;
   } else if ( isError( messageParams ) ) {
-    // eslint-disable-next-line prefer-destructuring
     message = messageParams;
     errorType = messageParams.constructor?.name;
     backtrace = messageParams.stack;

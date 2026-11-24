@@ -34,7 +34,6 @@ function makeTaxonWithPhoto( options: Record<string, unknown> = {} ) {
 }
 
 /* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/no-unescaped-entities */
 const TaxonResultDemo = ( ) => (
   <ScrollViewWrapper>
     <View className="p-2">

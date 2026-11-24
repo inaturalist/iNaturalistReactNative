@@ -57,7 +57,6 @@ const logSuggestionAnalytics = (
 
 const experimentChanceIntegerPercentage = 1;
 
-// eslint-disable-next-line import/prefer-default-export
 export const startOfflineExperimentInBackground = async (
   obsUuid: string,
   shimmedOnlineResponse: OnlineSuggestionsQueryResponse,

@@ -51,7 +51,6 @@ const AutoheightWebView
   } );
   return (
     <View style={{ height: contentSize.height }}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Webshell {...autoheightWebshellProps} />
     </View>
   );

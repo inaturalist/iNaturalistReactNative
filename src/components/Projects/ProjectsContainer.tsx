@@ -15,11 +15,8 @@ import useJoinedProjects from "./hooks/useJoinedProjects";
 import Projects from "./Projects";
 
 export enum TAB_ID {
-  // eslint-disable-next-line no-unused-vars
   JOINED = "JOINED",
-  // eslint-disable-next-line no-unused-vars
   FEATURED = "FEATURED",
-  // eslint-disable-next-line no-unused-vars
   NEARBY = "NEARBY"
 }
 

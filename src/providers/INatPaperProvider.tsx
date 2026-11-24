@@ -21,7 +21,6 @@ const theme = {
 } as const;
 
 const renderCustomIcon = (
-  // eslint-disable-next-line react/jsx-props-no-spreading
   ( props: React.ComponentProps<typeof INatIcon> ) => <INatIcon {...props} />
 );
 

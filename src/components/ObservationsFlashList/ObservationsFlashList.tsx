@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
 import { useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import {

@@ -82,7 +82,6 @@ describe( "Taxonomy", ( ) => {
     const buttonText = screen.getByText( /VIEW CHILDREN TAXA/ );
     expect( buttonText ).toBeVisible( );
 
-    // eslint-disable-next-line testing-library/no-node-access
     currentTaxon.children.forEach( child => {
       const childName = screen.queryByText( child.name );
       const childCommonName = screen.queryByText( child.preferred_common_name );
@@ -98,7 +97,6 @@ describe( "Taxonomy", ( ) => {
     const buttonText = screen.getByText( /VIEW CHILDREN TAXA/ );
     fireEvent.press( buttonText );
 
-    // eslint-disable-next-line testing-library/no-node-access
     currentTaxon.children.forEach( child => {
       const childName = screen.getByText( child.name );
       const childCommonName = screen.getByText( child.preferred_common_name );

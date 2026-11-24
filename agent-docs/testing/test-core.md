@@ -29,6 +29,9 @@
 ### i18n
 - Initialize i18next in test files that render translated UI: `beforeAll( async () => { await initI18next(); } );` (import `initI18next` from `i18n/initI18next`).
 
+### Realm native binary
+- Jest loads Realm's Node binary (`node_modules/realm/prebuilds/node/realm.node`), which Realm's install script downloads. After an `npm ci --ignore-scripts` install (e.g. in a fresh worktree), suites fail with `Cannot find module .../realm.node`; run `npm rebuild realm` to fetch it.
+
 ### Running only affected tests
 - `npx jest --findRelatedTests <files>` runs just the tests that touch the given files.
 

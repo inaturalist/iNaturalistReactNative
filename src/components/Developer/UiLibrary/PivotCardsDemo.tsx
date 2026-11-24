@@ -13,8 +13,6 @@ import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import useStore from "stores/useStore";
 
-/* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/no-unescaped-entities */
 const Buttons = ( ) => {
   const resetShownOnce = useStore( state => state.layout.resetShownOnce );
   const [modalIndex, setModalIndex] = useState( -1 );

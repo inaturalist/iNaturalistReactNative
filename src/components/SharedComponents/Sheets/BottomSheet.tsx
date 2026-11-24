@@ -27,7 +27,6 @@ const marginOnWide = {
   overflow: "hidden",
 };
 
-// eslint-disable-next-line
 const noHandle = ( ) => <></>;
 
 interface Props {

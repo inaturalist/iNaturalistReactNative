@@ -32,7 +32,6 @@ const styles = StyleSheet.create( {
   },
 } );
 
-// eslint-disable-next-line
 const noHandle = ( ) => <></>;
 
 interface Props {

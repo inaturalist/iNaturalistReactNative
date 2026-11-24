@@ -1,7 +1,6 @@
 import mockOs from "os";
 import mockPath from "path";
 import Realm from "realm";
-// eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 
 // Mock the realm config so it uses an in-memory database. This means data is
