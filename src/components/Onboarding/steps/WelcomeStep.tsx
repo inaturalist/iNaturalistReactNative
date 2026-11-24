@@ -52,7 +52,7 @@ const WelcomeStep = ( ) => {
 
   return (
     <ScreenShell
-      style={{ paddingTop: insets.top, paddingBottom: Math.max( insets.bottom, 26 ) }}
+      style={{ paddingBottom: Math.max( insets.bottom, 26 ) }}
       testID={`Onboarding.${stepId}`}
     >
       <View
