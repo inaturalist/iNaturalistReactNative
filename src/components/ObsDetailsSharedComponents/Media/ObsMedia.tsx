@@ -1,27 +1,23 @@
-// @flow
-
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import MasonryLayout from "components/ObsDetails/MasonryLayout";
+import type { MediaPhotoItem } from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
 import PhotoContainer from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
+import type { MediaSoundItem } from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import { ActivityIndicator, Carousel, CarouselDots } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
+import type { ListRenderItem } from "react-native";
 
-type Props = {
-  loading: boolean,
-  photos: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  sounds?: {
-    file_url: string
-  }[],
-  tablet?: boolean
+type ObsMediaItem = MediaPhotoItem | MediaSoundItem;
+
+const isSound = ( item: ObsMediaItem ): item is MediaSoundItem => "file_url" in item;
+
+interface Props {
+  loading: boolean;
+  photos: MediaPhotoItem[];
+  sounds?: MediaSoundItem[];
+  tablet?: boolean;
 }
 
 const ObsMedia = ( {
@@ -29,14 +25,14 @@ const ObsMedia = ( {
   photos = [],
   sounds = [],
   tablet = false,
-}: Props ): Node => {
+}: Props ) => {
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
-  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
+  const items = useMemo<ObsMediaItem[]>( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
 
-  const CarouselSlide = useCallback(
-    ( { item } ) => ( item.file_url
+  const CarouselSlide: ListRenderItem<ObsMediaItem> = useCallback(
+    ( { item } ) => ( isSound( item )
       ? (
         <SoundContainer
           sizeClass="h-72 w-screen"

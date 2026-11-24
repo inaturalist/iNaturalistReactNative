@@ -9,14 +9,16 @@ import Photo from "realmModels/Photo";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+export interface MediaPhotoItem {
+  id: number;
+  url: string;
+  localFilePath: string;
+  attribution: string;
+  hidden: boolean;
+}
+
 interface Props {
-  photo: {
-    id: number;
-    url: string;
-    localFilePath: string;
-    attribution: string;
-    hidden: boolean;
-  };
+  photo: MediaPhotoItem;
   onPress: () => void;
   style?: StyleProp<ImageStyle>;
 }
