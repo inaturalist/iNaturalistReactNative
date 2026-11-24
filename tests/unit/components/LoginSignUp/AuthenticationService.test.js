@@ -108,7 +108,7 @@ test( "authenticates user", async ( ) => {
   scope2.done();
 } );
 
-test( "gives up on registering a user after 15 seconds without a response", async ( ) => {
+test( "gives up on registering a user after 40 seconds without a response", async ( ) => {
   const scope = nock( API_HOST )
     .post( "/users.json" )
     .delayConnection( 60_000 )
@@ -121,7 +121,7 @@ test( "gives up on registering a user after 15 seconds without a response", asyn
       login: USERNAME,
       password: PASSWORD,
     } );
-    await jest.advanceTimersByTimeAsync( 15_000 );
+    await jest.advanceTimersByTimeAsync( 40_000 );
     await expect( registration ).resolves.toBeUndefined( );
   } finally {
     jest.useRealTimers( );
