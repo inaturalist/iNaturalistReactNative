@@ -1,11 +1,10 @@
-import type { ParamListBase } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useFocusEffect } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import type { TextInput } from "react-native";
+import { Keyboard } from "react-native";
 import { log } from "sharedHelpers/logger";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
@@ -43,9 +42,7 @@ const SignUpCredentialsForm = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const realm = useRealm( );
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
   const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
-  const usernameRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
   const [username, setUsername] = useState( "" );
   const [password, setPassword] = useState( "" );
@@ -55,18 +52,7 @@ const SignUpCredentialsForm = ( {
   const trimmedUsername = username.trim( );
   const canSubmit = !!trimmedUsername && !!password && agreed && !submitting;
 
-  useEffect( ( ) => {
-    const blurFields = ( ) => {
-      usernameRef.current?.blur( );
-      passwordRef.current?.blur( );
-    };
-    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
-    const unsubscribeTransitionEnd = navigation.addListener( "transitionEnd", blurFields );
-    return ( ) => {
-      unsubscribeBlur( );
-      unsubscribeTransitionEnd( );
-    };
-  }, [navigation] );
+  useFocusEffect( useCallback( ( ) => ( ) => Keyboard.dismiss( ), [] ) );
 
   const updateSubmitting = ( newSubmitting: boolean ) => {
     setSubmitting( newSubmitting );
@@ -132,7 +118,6 @@ const SignUpCredentialsForm = ( {
     <>
       <View className="-mx-2">
         <LoginSignUpInputField
-          ref={usernameRef}
           accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
           autoComplete="username-new"
           editable={!submitting}
