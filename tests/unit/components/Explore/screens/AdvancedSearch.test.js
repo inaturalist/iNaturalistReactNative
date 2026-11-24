@@ -117,7 +117,7 @@ const t = key => i18next.t( key );
 
 const pressSearch = ( ) => actor.press( screen.getByTestId( "AdvancedSearch.searchButton" ) );
 
-const qualityGrade = key => screen.getByRole( "radio", { name: t( key ) } );
+const qualityGrade = key => screen.getByRole( "checkbox", { name: t( key ) } );
 
 const advancedSearchMode = ( ) => useStore
   .getState( ).exploreAdvancedSearch.advancedSearchMode;
