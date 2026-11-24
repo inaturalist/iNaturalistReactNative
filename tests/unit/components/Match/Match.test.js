@@ -43,7 +43,6 @@ describe( "Match", ( ) => {
     } ) );
     renderComponent(
       <Match
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...defaultProps}
         observation={defaultProps.observation}
       />,
@@ -70,7 +69,6 @@ describe( "Match", ( ) => {
 
     renderComponent(
       <Match
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...defaultProps}
         observation={{
           ...defaultProps.observation,

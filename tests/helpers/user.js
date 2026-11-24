@@ -3,7 +3,6 @@
 // Realm. Otherwise we get after effects from listeners on Realm, Realm
 // queries, and Realm objects that are hard/impossible to wait for before
 // tests finish
-// eslint-disable-next-line testing-library/no-manual-cleanup
 import { cleanup } from "@testing-library/react-native";
 import { API_HOST, clearAuthCache } from "components/LoginSignUp/AuthenticationService";
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";

@@ -20,13 +20,11 @@ const writeExifToCameraRollPhotos = async (
     return;
   }
 
-  // eslint-disable-next-line camelcase
   const { latitude, longitude, positional_accuracy } = exif;
 
   const exifToWrite: ExifTags = {
     GPSLatitude: latitude,
     GPSLongitude: longitude,
-    // eslint-disable-next-line camelcase
     GPSHPositioningError: positional_accuracy,
   };
 

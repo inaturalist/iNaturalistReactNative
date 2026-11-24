@@ -62,7 +62,6 @@ if (
     },
   } );
 }
-/* eslint-enable no-undef */
 
 const jsErrorHandler = ( e, isFatal ) => {
   if ( e?.message?.match( /No space left on device/ ) ) {

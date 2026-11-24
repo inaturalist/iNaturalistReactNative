@@ -8,8 +8,6 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { Alert } from "react-native";
 
-/* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/no-unescaped-entities */
 const Icons = ( ) => (
   <ScrollViewWrapper>
     <View className="p-4">

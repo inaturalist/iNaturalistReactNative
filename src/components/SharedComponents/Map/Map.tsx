@@ -459,7 +459,6 @@ const Map = ( {
 
   useEffect( ( ) => {
     // debug mode only: display performance metrics
-    // eslint-disable-next-line no-undef
     if ( isDebug ) {
       mapTracker.reset( );
 

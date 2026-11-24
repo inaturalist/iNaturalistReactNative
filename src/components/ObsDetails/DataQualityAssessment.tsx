@@ -10,7 +10,6 @@ import {
   ScrollViewWrapper,
   ViewWrapper,
 } from "components/SharedComponents";
-// eslint-disable-next-line max-len
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
 import { View } from "components/styledComponents";
 import { t } from "i18next";

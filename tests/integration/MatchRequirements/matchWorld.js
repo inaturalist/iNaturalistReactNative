@@ -273,7 +273,6 @@ export const makeWorld = ( ) => {
   // token fetch, say) still runs at the right moment
   world.advance = async ( ms, step = 250 ) => {
     for ( let elapsed = 0; elapsed < ms; elapsed += step ) {
-      // eslint-disable-next-line no-await-in-loop
       await act( async ( ) => {
         await jest.advanceTimersByTimeAsync( Math.min( step, ms - elapsed ) );
       } );

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";

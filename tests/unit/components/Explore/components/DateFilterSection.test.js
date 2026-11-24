@@ -48,7 +48,6 @@ const renderSection = ( props = {}, children = null ) => renderComponent(
     onChangeRangeEnd={jest.fn( )}
     onChangeRangeStart={jest.fn( )}
     rangeMode="range"
-    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   >
     {children}

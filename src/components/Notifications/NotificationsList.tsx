@@ -38,7 +38,6 @@ interface Props {
 
 interface RenderItemProps {
   // It is used, not sure what the problem is
-  // eslint-disable-next-line react/no-unused-prop-types
   item: Notification;
 }
 

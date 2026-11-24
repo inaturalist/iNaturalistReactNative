@@ -52,7 +52,6 @@ async function syncJoinedProjects(
         rule_details: true,
         ttl: -1,
       };
-      // eslint-disable-next-line no-await-in-loop
       const response = await fetchUserProjects<ApiProjectSummaryWithPOF>(
         params,
         { api_token: apiToken },

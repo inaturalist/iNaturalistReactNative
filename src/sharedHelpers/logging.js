@@ -123,7 +123,6 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   return shouldRetry;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export {
   handleRetryDelay,
   inspect,

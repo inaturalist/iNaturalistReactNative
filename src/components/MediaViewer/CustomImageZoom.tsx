@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { ZoomableRef } from "@likashefqet/react-native-image-zoom";
 import { ImageZoom } from "@likashefqet/react-native-image-zoom";
 import React, {

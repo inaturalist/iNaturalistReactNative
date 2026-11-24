@@ -83,7 +83,6 @@ jest.mock(
   "components/SharedComponents/ScrollViewWrapper",
   () => function MockContainer( props ) {
     const MockName = "mock-scroll-with-footer";
-    // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
   },
 );

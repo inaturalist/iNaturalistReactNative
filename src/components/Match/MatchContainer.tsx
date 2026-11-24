@@ -505,8 +505,6 @@ const MatchContainer = ( ) => {
           },
         } )}
         {/* eslint-disable i18next/no-literal-string */}
-        {/* eslint-disable react/jsx-one-expression-per-line */}
-        {/* eslint-disable max-len */}
         {isDebug && (
           <View className="bg-deeppink text-white p-3">
             <Heading4 className="text-white">Diagnostics</Heading4>

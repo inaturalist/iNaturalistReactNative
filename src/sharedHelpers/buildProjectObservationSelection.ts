@@ -20,7 +20,6 @@ function isSyncedOrTombstonedPo( po: RealmProjectObservationPojo ): boolean {
 }
 
 function activatePo( po: RealmProjectObservationPojo ): RealmProjectObservationPojo {
-  // eslint-disable-next-line camelcase
   const { _pendingRemoval, _pending_deletion, ...rest } = po;
   return rest;
 }

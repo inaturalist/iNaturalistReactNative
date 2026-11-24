@@ -61,7 +61,6 @@ const MatchTaxonSearchScreen = ( ) => {
   const renderTaxonResult = useCallback(
     // no-unused-prop-types failing for components defined at runtime seems to
     // be a bug. These props are clearly used
-    // eslint-disable-next-line react/no-unused-prop-types
     ( { item: taxon, index }: { item: ApiTaxon; index: number } ) => (
       <TaxonResult
         accessibilityHint={t( "Chooses-taxon" )}

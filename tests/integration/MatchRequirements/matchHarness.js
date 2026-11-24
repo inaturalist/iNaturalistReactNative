@@ -24,7 +24,6 @@ onlineManager.setEventListener( setOnline => NetInfo.addEventListener( state => 
 export const IMPLEMENTATIONS = {
   v1: {
     Component: MatchContainer,
-    // eslint-disable-next-line no-use-before-define
     read: candidates => readV1( candidates ),
     // Actions a person takes, expressed per implementation
     pressSave: actor => actor.press( screen.getByTestId( "MatchScreen.saveButton" ) ),

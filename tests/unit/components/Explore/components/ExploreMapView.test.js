@@ -40,7 +40,6 @@ const renderMapView = ( props, update = null ) => renderComponent(
     isLoading={false}
     placeMode={EXPLORE_PLACE_MODE.WORLDWIDE}
     queryParams={mockQueryParams}
-    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />,
   update,

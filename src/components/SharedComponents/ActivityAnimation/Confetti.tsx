@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import classNames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";

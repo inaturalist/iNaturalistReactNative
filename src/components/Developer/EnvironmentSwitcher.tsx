@@ -1,4 +1,3 @@
-/* eslint-disable arrow-body-style */
 /* eslint-disable i18next/no-literal-string */
 import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";

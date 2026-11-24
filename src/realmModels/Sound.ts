@@ -56,7 +56,6 @@ class Sound extends Realm.Object {
   }
 
   static async new( uri: string ) {
-    /* eslint-disable camelcase */
     let file_url = uri;
     if ( uri.match( /file:\/\// ) ) {
       file_url = await Sound.moveFromCacheToDocumentDirectory( uri, {
@@ -68,7 +67,6 @@ class Sound extends Realm.Object {
     return {
       file_url,
     };
-    /* eslint-enable camelcase */
   }
 
   // this is necessary because sounds, like photos, cannot be found reliably

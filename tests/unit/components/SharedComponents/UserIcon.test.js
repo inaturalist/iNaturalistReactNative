@@ -41,9 +41,7 @@ describe( "UserIcon", () => {
     const profilePicture = screen.getByTestId( "UserIcon.photo" );
     // FasterImage doesn't provide a TS-compliant way to specify a test ID, so
     // I'm not sure how else we'd access it
-    // eslint-disable-next-line testing-library/no-node-access
     expect( profilePicture.children[0] ).toBeTruthy();
-    // eslint-disable-next-line testing-library/no-node-access
     expect( profilePicture.children[0].props.source ).toHaveProperty( "uri", mockUri );
   } );
 } );

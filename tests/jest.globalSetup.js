@@ -19,7 +19,6 @@ module.exports = async () => {
     "utf8",
   );
   const { css } = await postcss( [
-    // eslint-disable-next-line global-require, import/no-dynamic-require
     tailwindcss( require( "../tailwind.config" ) ),
   ] ).process( input, { from: undefined } );
   fs.mkdirSync( CSS_CACHE_DIR, { recursive: true } );

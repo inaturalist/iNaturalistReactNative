@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
-// eslint-disable-next-line max-len
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
 import type { AnimatedStyle } from "react-native-reanimated";

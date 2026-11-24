@@ -114,7 +114,6 @@ const ExploreSpeciesView = ( { enabled, isConnected, params }: Props ) => {
   const renderItem = useCallback(
     // eslint-plugin-react mistakes this render callback for a component and
     // flags its param type as unused prop types
-    // eslint-disable-next-line react/no-unused-prop-types
     ( { item }: { item: SpeciesCountResult } ) => (
       <ExploreSpeciesGridItem
         // Unique key ensures component recreation so images don't get
