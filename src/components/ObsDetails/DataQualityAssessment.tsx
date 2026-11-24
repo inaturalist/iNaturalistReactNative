@@ -40,15 +40,7 @@ const titleDescription = ( option: string ) => {
   }
 };
 
-interface QualityMetrics {
-  date: Vote[];
-  location: Vote[];
-  wild: Vote[];
-  evidence: Vote[];
-  recent: Vote[];
-  subject: Vote[];
-  needs_id: Vote[];
-}
+type QualityMetrics = Partial<Record<Metric, Vote[]>>;
 
 export type Indicator = "date" | "location" | "evidence" | "id_supported" | "rank";
 

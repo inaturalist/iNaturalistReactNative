@@ -28,7 +28,7 @@ export type Metric =
 
 interface Props {
   metric: Metric;
-  votes: Vote[];
+  votes?: Vote[];
   loadingAgree: boolean;
   loadingDisagree: boolean;
   loadingMetric: Metric | "none";
@@ -36,7 +36,7 @@ interface Props {
   removeVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
 }
 
-const getUserVote = ( currentUser: UserPojo | null, metric: Metric, votes: Vote[] ) => {
+const getUserVote = ( currentUser: UserPojo | null, metric: Metric, votes?: Vote[] ) => {
   if ( votes && votes.length > 0 ) {
     const match = votes.find( element => ( element.user_id === currentUser?.id ) );
     if ( match ) {
@@ -49,7 +49,7 @@ const getUserVote = ( currentUser: UserPojo | null, metric: Metric, votes: Vote[
   return null;
 };
 
-const renderVoteCount = ( status: boolean, metric: Metric, votes: Vote[] ) => {
+const renderVoteCount = ( status: boolean, metric: Metric, votes?: Vote[] ) => {
   if ( !votes ) return null;
 
   const count = votes
