@@ -12,19 +12,23 @@ import {
 import INatLogo from "images/svg/inat_logo_color.svg";
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
+import type { ImageRequireSource } from "react-native";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadow } from "styles/global";
 
-// Collage sizes in the design, which is 402pt wide. The collages split the
-// height left over by the text and buttons in this ratio
-const DESIGN_WIDTH = 402;
-const COLLAGE_TOP_HEIGHT = 375;
-const COLLAGE_BOTTOM_HEIGHT = 167;
-// The logo SVG's natural size; it shrinks to fit narrower screens
-const LOGO_WIDTH = 314.681;
-const LOGO_HEIGHT = 57.9002;
+const COLLAGE_TOP = require( "images/onboarding/welcome_collage_top.jpg" );
+const COLLAGE_BOTTOM = require( "images/onboarding/welcome_collage_bottom.jpg" );
+
+const heightPerWidth = ( source: ImageRequireSource ) => {
+  const { width, height } = Image.resolveAssetSource( source );
+  return height / width;
+};
+// The collages split the height left over by the text and buttons in the
+// ratio of their heights at the same width
+const COLLAGE_TOP_RATIO = heightPerWidth( COLLAGE_TOP );
+const COLLAGE_BOTTOM_RATIO = heightPerWidth( COLLAGE_BOTTOM );
 
 // The terms line has to stay on screen (it's the consent for Apple/Google
 // sign-up), so this doesn't scroll and the collages give up height on short
@@ -35,12 +39,11 @@ const WelcomeStep = ( ) => {
   // Explicit sizes because Image otherwise takes its height from the source's
   // pixel size, which beats aspectRatio
   const { width } = useWindowDimensions( );
-  const logoWidth = Math.min( LOGO_WIDTH, width - 32 );
   // On tall screens the top collage grows past full width so it still
   // reaches the top, cropping its sides instead
   const [topCollageHeight, setTopCollageHeight] = useState( 0 );
   const topImageHeight = Math.max(
-    ( width * COLLAGE_TOP_HEIGHT ) / DESIGN_WIDTH,
+    width * COLLAGE_TOP_RATIO,
     topCollageHeight,
   );
   const {
@@ -54,22 +57,22 @@ const WelcomeStep = ( ) => {
     >
       <View
         className="basis-0 justify-end items-center overflow-hidden"
-        style={{ flexGrow: COLLAGE_TOP_HEIGHT }}
+        style={{ flexGrow: COLLAGE_TOP_RATIO }}
         onLayout={event => setTopCollageHeight( event.nativeEvent.layout.height )}
       >
         <Image
-          source={require( "images/onboarding/welcome_collage_top.jpg" )}
-          style={{
-            width: ( topImageHeight * DESIGN_WIDTH ) / COLLAGE_TOP_HEIGHT,
-            height: topImageHeight,
-          }}
+          source={COLLAGE_TOP}
+          style={{ width: topImageHeight / COLLAGE_TOP_RATIO, height: topImageHeight }}
           accessibilityIgnoresInvertColors
         />
       </View>
       <View className="items-center px-4">
+        {/*
+          Keeps the SVG's own height; filling the row's width lets its viewBox
+          shrink the logo on narrow screens
+        */}
         <INatLogo
-          width={logoWidth}
-          height={( logoWidth * LOGO_HEIGHT ) / LOGO_WIDTH}
+          width="100%"
           accessible
           accessibilityRole="image"
           accessibilityLabel={t( "iNaturalist" )}
@@ -84,17 +87,17 @@ const WelcomeStep = ( ) => {
       </View>
       <View
         className="basis-0 overflow-hidden"
-        style={{ flexGrow: COLLAGE_BOTTOM_HEIGHT }}
+        style={{ flexGrow: COLLAGE_BOTTOM_RATIO }}
       >
         <Image
-          source={require( "images/onboarding/welcome_collage_bottom.jpg" )}
-          style={{ width, height: ( width * COLLAGE_BOTTOM_HEIGHT ) / DESIGN_WIDTH }}
+          source={COLLAGE_BOTTOM}
+          style={{ width, height: width * COLLAGE_BOTTOM_RATIO }}
           accessibilityIgnoresInvertColors
         />
         {/* Drawn over the whole container so it still ends in white when cropped */}
         <LinearGradient
           colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
-          locations={[13 / COLLAGE_BOTTOM_HEIGHT, 1]}
+          locations={[0.08, 1]}
           className="absolute w-full h-full"
         />
       </View>
