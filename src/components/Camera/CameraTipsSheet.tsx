@@ -5,6 +5,7 @@ import {
 import { View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -84,10 +85,17 @@ const getCameraTips = ( t: TFunction ): [string, string, [string, string][]][] =
 // Opened from the camera tips button
 const CameraTipsSheet = ( { onClose }: Props ) => {
   const { t } = useTranslation( );
+  const { top } = useSafeAreaInsets( );
 
   return (
-    <BottomSheet onPressClose={onClose} testID="CameraTipsSheet">
-      <View className="px-5 pb-5 gap-y-6">
+    <BottomSheet onPressClose={onClose} containerClass="pt-0" testID="CameraTipsSheet">
+      <View
+        className="px-[21px] pb-5 gap-y-6"
+        // The sheet is as tall as the screen, so start the content 29px below
+        // the status bar
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ paddingTop: top + 29 }}
+      >
         <View className="gap-y-5">
           <Heading2 accessibilityRole="header" className="underline">
             {t( "How-to-make-a-good-observation" )}
