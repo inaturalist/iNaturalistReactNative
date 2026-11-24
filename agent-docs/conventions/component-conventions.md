@@ -53,5 +53,5 @@ import Component from "../../../components/MyComponent";
 - Spaces inside parentheses: `if ( condition ) { }`
 - Max line length: 100 characters
 - No console statements in production (removed via Babel plugin)
-- ESLint config extends Airbnb with custom rules (`.eslintrc.js`)
+- ESLint config extends `@react-native/eslint-config` with custom rules (`.eslintrc.js`); core house formatting rules (quotes, parens, indent, line length, etc.) live in `.eslintrc.formatting.js`
 - Pre-commit hooks run `eslint --fix` via Husky

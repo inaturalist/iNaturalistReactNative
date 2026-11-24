@@ -1,5 +1,7 @@
 module.exports = {
   root: true,
+  reportUnusedDisableDirectives: true,
+  env: { node: true },
   globals: {
     requestIdleCallback: "readonly",
     cancelIdleCallback: "readonly",
@@ -14,17 +16,21 @@ module.exports = {
     },
   },
   extends: [
-    "airbnb",
+    "eslint:recommended",
+    "@react-native",
     "plugin:@tanstack/query/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:i18next/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react-native-a11y/ios",
+    // Last, because @react-native switches formatting rules off
+    "./.eslintrc.formatting.js",
   ],
   plugins: [
     "@stylistic",
     "@tanstack/query",
     "@typescript-eslint",
+    "import",
     "lodash",
     "module-resolver",
     "react-hooks",
@@ -32,13 +38,7 @@ module.exports = {
     "simple-import-sort",
   ],
   rules: {
-    "arrow-parens": [2, "as-needed"],
-    // enforces trailing comma in objects / arrays except inline: no [1,2,3,]
-    // functionally, this improves git deltas when the last items of {}/[] are changed
-    "comma-dangle": ["error", "always-multiline"],
     "consistent-return": [2, { treatUndefinedAsUnspecified: true }],
-    "func-names": 0,
-    "global-require": 0,
     "i18next/no-literal-string": [
       2,
       {
@@ -49,17 +49,19 @@ module.exports = {
       },
     ],
     "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
-    // The AirBNB approach at
-    // https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js#L71
-    // is quite particular and forbids imports of devDependencies anywhere
-    // outside of tests and conventional config files, which causes problem
-    // if you have, say, some utility scripts that have nothing to do with
-    // your actually application. Here I'm trying to use the defaults
-    // (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-extraneous-dependencies.md,
-    // which allow imports of anything declared in package.json, but should
-    // raise alarms when you try to import things not declared in
-    // package.json.
+    // Use the plugin defaults
+    // (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-extraneous-dependencies.md),
+    // which allow imports of anything declared in package.json, including
+    // devDependencies in utility scripts, but raise alarms when you try to
+    // import things not declared in package.json.
     "import/no-extraneous-dependencies": ["error", {}],
+    // Import rules formerly supplied by Airbnb, with its options
+    "import/no-unresolved": ["error", { commonjs: true, caseSensitive: true }],
+    "import/named": "error",
+    "import/no-cycle": ["error", { maxDepth: "∞" }],
+    "import/no-duplicates": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
     "import/extensions": [2, {
       js: "never",
       jsx: "never",
@@ -67,45 +69,17 @@ module.exports = {
       ts: "never",
       tsx: "never",
     }],
-    indent: ["error", 2, { SwitchCase: 1 }],
-    "max-len": [
-      "error",
-      100,
-      2,
-      {
-        ignoreUrls: true,
-        ignoreComments: false,
-        ignoreRegExpLiterals: true,
-        ignoreStrings: false,
-        ignoreTemplateLiterals: false,
-      },
-    ],
     "no-alert": 0,
-    "no-underscore-dangle": 0,
     "no-void": 0,
     "prefer-destructuring": [2, { object: true, array: false }],
-    quotes: [2, "double"],
-    "space-in-parens": [2, "always"],
-    "max-classes-per-file": 0,
     "module-resolver/use-alias": 2,
-    "multiline-ternary": ["error", "always"],
-    // At least before we start making production builds
-    "no-console": 0,
-    "no-restricted-globals": 0,
-    "no-param-reassign": 0,
     "no-var": 1,
-    "operator-linebreak": [2, "before"],
     "prefer-const": [2, { destructuring: "all" }],
-    "no-restricted-syntax": 0,
     // "react/forbid-prop-types": 0,
-    "react/prop-types": 0,
-    "react/destructuring-assignment": 0,
-    "react/jsx-filename-extension": 0,
     "react/function-component-definition": [
       2,
       { namedComponents: "arrow-function" },
     ],
-    "react/require-default-props": 0,
 
     // React-Hooks Plugin
     // The following rules are made available via `eslint-plugin-react-hooks`
@@ -143,7 +117,6 @@ module.exports = {
     "react-native-a11y/has-valid-accessibility-ignores-invert-colors": 1,
     "react-native-a11y/has-valid-accessibility-live-region": 1,
     "react-native-a11y/has-valid-important-for-accessibility": 1,
-    "no-shadow": "off",
 
     // it's supposedly safe to remove no-undef because TS's compiler handles
     // this, but I'm bumping into this error a lot in VSCode - 20240624 amanda
@@ -158,7 +131,7 @@ module.exports = {
       {
         vars: "all",
         args: "after-used",
-        // Overriding airbnb to allow leading underscore to indicate unused var
+        // Allow leading underscore to indicate unused var
         argsIgnorePattern: "^_",
         varsIgnorePattern: "^_",
         ignoreRestSiblings: true,
@@ -182,6 +155,10 @@ module.exports = {
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
+    // Import plugin settings formerly supplied by Airbnb
+    "import/extensions": [".js", ".mjs", ".jsx"],
+    "import/core-modules": [],
+    "import/ignore": ["node_modules", "\\.(coffee|scss|css|less|hbs|svg|json)$"],
     "import/resolver": {
       "babel-module": { allowExistingDirectories: true },
       node: {
@@ -193,6 +170,8 @@ module.exports = {
   overrides: [
     {
       files: ["*.js", "*.jsx"],
+      // Keep JS on the TypeScript parser instead of the base's Babel parser
+      parser: "@typescript-eslint/parser",
       rules: {
         "import/consistent-type-specifier-style": "off",
         "@stylistic/member-delimiter-style": "off",
