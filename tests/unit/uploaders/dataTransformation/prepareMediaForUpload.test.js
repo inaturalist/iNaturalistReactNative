@@ -69,7 +69,7 @@ describe( "prepareMediaForUpload", () => {
     ObservationSound.mapSoundForUpload.mockReturnValue( {
       file: new FileUpload( {
         uri: mockSound.file_url,
-        name: mockSound.file_url,
+        name: mockSound.file_url.split( "/" ).pop( ),
         type: "audio/m4a",
       } ),
     } );
