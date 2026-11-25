@@ -150,6 +150,15 @@ describe( "useSuggestionsV2", ( ) => {
     expect( savedTaxon?.name ).toBe( "Silphium perfoliatum" );
   } );
 
+  it( "doesn't run the offline model when the server has no suggestions", async ( ) => {
+    scoreImage.mockResolvedValue( { results: [] } );
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( result.current.usingOfflineSuggestions ).toBe( false );
+    expect( result.current.suggestions.topSuggestion ).toBeUndefined( );
+    expect( predictImage ).not.toHaveBeenCalled( );
+  } );
+
   it( "treats half a coordinate pair as no location", async ( ) => {
     scoreImage.mockRejectedValue( new Error( "server error" ) );
     const { result } = renderSuggestionsHook( {
