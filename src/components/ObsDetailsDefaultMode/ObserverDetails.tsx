@@ -1,24 +1,35 @@
-// @flow
 import classnames from "classnames";
 import {
   DateDisplay,
   InlineUser,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import type { Geoprivacy } from "realmModels/geoprivacy";
 
-type Props = {
-  belongsToCurrentUser: boolean,
-  isConnected: boolean,
-  observation: Object,
+interface Props {
+  belongsToCurrentUser: boolean;
+  isConnected: boolean;
+  observation: {
+    geoprivacy?: Geoprivacy;
+    taxon_geoprivacy?: Geoprivacy;
+    user: {
+      id: number;
+      icon_url?: string;
+      login?: string;
+    };
+    time_observed_at?: string | null;
+    observed_on_string?: string | null;
+    observed_on?: string | null;
+    observed_time_zone?: string | null;
+  };
 }
 
 const ObserverDetails = ( {
   belongsToCurrentUser,
   isConnected,
   observation,
-}: Props ): Node => {
+}: Props ) => {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
@@ -31,6 +42,8 @@ const ObserverDetails = ( {
           <InlineUser user={observation?.user} isConnected={isConnected} />
           {observation && (
             <DateDisplay
+              // TS errors: DateDisplay's props don't accept null or a missing date.
+              // Fix when next touching DateDisplay; its date formatters already accept null.
               dateString={
                 observation.time_observed_at
               || observation.observed_on_string

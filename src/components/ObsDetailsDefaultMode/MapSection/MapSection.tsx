@@ -7,12 +7,27 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
-import Observation from "realmModels/Observation";
+import type { Geoprivacy } from "realmModels/geoprivacy";
 import { useCurrentUser } from "sharedHooks";
 
 interface Props {
-  observation: Observation,
-  taxon?: Object
+  observation: {
+    geoprivacy?: Geoprivacy;
+    latitude?: number | null;
+    longitude?: number | null;
+    obscured?: boolean | null;
+    place_guess?: string | null;
+    placeGuess?: string | null;
+    positional_accuracy?: number | null;
+    private_place_guess?: string | null;
+    privateLatitude?: number | null;
+    privateLongitude?: number | null;
+    privatePlaceGuess?: string | null;
+    taxon?: { id: number };
+    taxon_geoprivacy?: Geoprivacy;
+    user: { id: number };
+  };
+  taxon?: { id?: number };
 }
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
@@ -43,9 +58,10 @@ const MapSection = ( { observation, taxon }: Props ) => {
       coordinateString={coordinateString}
       closeModal={( ) => setShowMapModal( false )}
       observation={observation}
+      // TS error: DetailsMap types tileMapParams as strings only, but Map accepts any object.
+      // Fix when next touching DetailsMap; ObsDetails' LocationSection has the same error.
       tileMapParams={tileMapParams}
       withObsTiles={tileMapParams !== null}
-      showLocationIndicator
       headerTitle={(
         <DetailsMapHeader currentUser={currentUser} observation={observation} />
       )}
@@ -68,7 +84,6 @@ const MapSection = ( { observation, taxon }: Props ) => {
         observation={observation}
         openMapScreen={openMapScreen}
         scrollEnabled={false}
-        showLocationIndicator
         tileMapParams={tileMapParams}
         withObsTiles={tileMapParams !== null}
         zoomEnabled={false}

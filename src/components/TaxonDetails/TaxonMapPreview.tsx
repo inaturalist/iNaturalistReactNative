@@ -110,7 +110,6 @@ const TaxonMapPreview = ( {
               observation={observation}
               closeModal={( ) => setShowMapModal( false )}
               tileMapParams={obsParams}
-              showLocationIndicator={false}
               headerTitle={(
                 <TaxonDetailsTitle
                   taxon={taxon}
