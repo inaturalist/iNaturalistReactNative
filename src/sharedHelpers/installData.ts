@@ -36,6 +36,8 @@ if ( legacyStore.getAllKeys().length > 0 ) {
   } );
 }
 
+// Never reset this on sign out or account switch: the server assigns install-scoped feature
+// flags (client_install_*) by it, and a new ID can put this installation in a different group
 export function getInstallID( ) {
   const id = store.getString( INSTALL_ID );
   if ( id ) return id;

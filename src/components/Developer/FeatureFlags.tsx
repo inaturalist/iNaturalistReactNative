@@ -1,4 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
+import Clipboard from "@react-native-clipboard/clipboard";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
   Body2,
@@ -8,12 +9,17 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React, { useCallback, useState } from "react";
 import { Switch } from "react-native-paper";
+import { getInstallID } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import syncFeatureFlags, { featureFlagsLogExtra } from "sharedHelpers/syncFeatureFlags";
 import type { FeatureFlagSource } from "sharedHooks/useFeatureFlag";
 import { resolveFeatureFlag, useFeatureFlagLayers } from "sharedHooks/useFeatureFlag";
 import type { FeatureFlagApiStatus } from "stores/createFeatureFlagSlice";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import {
+  FeatureFlag,
+  featureFlagApiKey,
+  featureFlagScope,
+} from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -109,6 +115,9 @@ const FeatureFlagRow = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) =
     setOverride,
     clearOverride,
   } = useFeatureFlagForDebug( featureFlagKey );
+  const scopeLabel = featureFlagScope[featureFlagKey] === "install"
+    ? " · INSTALL"
+    : "";
 
   return (
     <View className="border-b border-lightGray py-3">
@@ -127,7 +136,7 @@ const FeatureFlagRow = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) =
               : "▸"} ${featureFlagKey}`}
           </Body2>
           <Body3 className="ml-4">
-            {`${onOff( resolvedValue )} · ${sourceLabels[source]}`}
+            {`${onOff( resolvedValue )} · ${sourceLabels[source]}${scopeLabel}`}
           </Body3>
         </Pressable>
         <Switch
@@ -140,7 +149,7 @@ const FeatureFlagRow = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) =
       </View>
       {expanded && (
         <View className="ml-4 mt-2">
-          <CODE optionalClassName="mb-2">{`client_${featureFlagKey}`}</CODE>
+          <CODE optionalClassName="mb-2">{featureFlagApiKey( featureFlagKey )}</CODE>
           <DetailRow label="Hard-coded default" value={onOff( layers.hardcoded )} />
           <DetailRow label="API" value={apiValueText( layers.apiValue, apiStatus )} />
           <DetailRow
@@ -170,6 +179,7 @@ const FeatureFlagRow = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) =
 
 const FeatureFlags = () => {
   const featureFlagKeys = Object.values( FeatureFlag );
+  const installID = getInstallID( );
   const apiStatus = useStore( state => state.featureFlagApiStatus );
   const storeClearAllOverrides = useStore( state => state.clearFeatureFlagDebugOverrides );
   const clearAllOverrides = useCallback( ( ) => {
@@ -182,6 +192,19 @@ const FeatureFlags = () => {
       <P>{apiStatusText( apiStatus )}</P>
       <P>API values are fetched on app start and on login / logout.</P>
       <P>Toggling a flag sets a local override. Overrides reset on app start.</P>
+      <P>
+        INSTALL flags are assigned by installation, signed in or out. Paste this installation ID
+        at /admin/feature_flags to see what it gets:
+      </P>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Copy installation ID"
+        accessibilityHint="Copies the installation ID to the clipboard."
+        onPress={( ) => Clipboard.setString( installID )}
+        testID="FeatureFlags.installID"
+      >
+        <CODE>{installID}</CODE>
+      </Pressable>
       {featureFlagKeys.map( featureFlagKey => (
         <FeatureFlagRow key={featureFlagKey} featureFlagKey={featureFlagKey} />
       ) )}
