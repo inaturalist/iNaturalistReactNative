@@ -2,6 +2,7 @@ import "tests/helpers/mockMortalForIntegration";
 
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { onlineManager } from "@tanstack/react-query";
 import {
   act,
   screen,
@@ -97,6 +98,13 @@ const makeObservation = ( overrides = {} ) => factory( "RemoteObservation", {
 } );
 
 const actor = userEvent.setup( );
+
+const makeObservationWithLocalPhoto = ( overrides = {} ) => makeObservation( {
+  observationPhotos: [factory( "LocalObservationPhoto", {
+    photo: factory( "LocalPhoto", { url: undefined, localFilePath: "photoUploads/local.jpg" } ),
+  } )],
+  ...overrides,
+} );
 
 const openSuggestionsFromObsEdit = async ( observation = makeObservation( ) ) => {
   useStore.setState( {
@@ -289,6 +297,24 @@ describe( "Suggestions requests", ( ) => {
       await expectSuggestion( withLocationSuggestion );
       expect( lastScoreImageParams( ) ).toEqual( expect.objectContaining( { lat: 7, lng: 8 } ) );
       expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 2 );
+    } );
+  } );
+
+  describe( "in airplane mode", ( ) => {
+    const originalUseNetInfo = useNetInfo.getMockImplementation( );
+    // the app sets react-query's online state from NetInfo too
+    beforeEach( ( ) => onlineManager.setOnline( false ) );
+    afterEach( ( ) => {
+      onlineManager.setOnline( true );
+      useNetInfo.mockImplementation( originalUseNetInfo );
+    } );
+
+    it( "shows on-device suggestions for a local photo", async ( ) => {
+      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      await openSuggestionsFromObsEdit( makeObservationWithLocalPhoto( ) );
+      await expectSuggestion( { taxon: { id: onDevicePrediction.taxon_id } } );
+      expect( screen.getByText( /You are offline. Tap to reload/ ) ).toBeVisible( );
+      expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
     } );
   } );
 
