@@ -13,10 +13,16 @@ import type { StateCreator } from "zustand";
 //    return the flag: offline, request failed, or the flag doesn't exist in Flipper
 
 // To add a new feature flag, add entries below, following the example of `MyFeatureFlagEnabled`.
-// The enum value is the flag's base name in snake_case, named for the feature. Create it in
-// Flipper as `client_<name>`: only `client_` flags are returned to the app, and Flipper flags
-// can't be renamed. Creating the flag in Flipper (in each environment) is only needed to
-// control it remotely, and a newly created Flipper flag is off for everyone until a gate is added
+// The enum value is the flag's base name in snake_case, named for the feature. Its scope in
+// `featureFlagScope` decides who Flipper assigns it to, and so its Flipper name:
+// - "user": `client_<name>`, assigned by account and follows it across devices and web.
+//   Signed out, it's off unless Fully Enabled, which overrides the hard-coded default
+// - "install": `client_install_<name>`, assigned by app installation (X-Installation-ID).
+//   Works signed out and keeps its value after login; a reinstall can change it. Use it for
+//   anything shown before login, or anything that must not change at login
+// Flipper flags can't be renamed, so changing a flag's scope means creating a new Flipper flag.
+// Creating the flag in Flipper (in each environment) is only needed to control it remotely, and
+// a newly created Flipper flag is off for everyone until a gate is added
 
 // Once a feature has been enabled, deployed, and verified, the feature flag should be removed
 // along with the newly-deprecated / "old" code.
@@ -31,6 +37,24 @@ export enum FeatureFlag {
   OnboardingV2Enabled = "onboarding_v2",
   PhotoEditingEnabled = "photo_editing",
 }
+
+export type FeatureFlagScope = "user" | "install";
+
+export const featureFlagScope: Record<FeatureFlag, FeatureFlagScope> = {
+  // [FeatureFlag.MyFeatureFlagEnabled]: "user",
+  [FeatureFlag.TraditionalProjectsEnabled]: "user",
+  [FeatureFlag.MyObservationsSmallGridViewEnabled]: "user",
+  [FeatureFlag.PhotoEditingEnabled]: "user",
+  // shown before login, so it has to be assignable signed out
+  [FeatureFlag.OnboardingV2Enabled]: "install",
+};
+
+// The key this flag has in Flipper and in the API's `flags` response
+export const featureFlagApiKey = ( featureFlag: FeatureFlag ): string => (
+  featureFlagScope[featureFlag] === "install"
+    ? `client_install_${featureFlag}`
+    : `client_${featureFlag}`
+);
 
 export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [
   FeatureFlag.MyObservationsSmallGridViewEnabled,

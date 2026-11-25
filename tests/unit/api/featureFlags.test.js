@@ -34,20 +34,32 @@ describe( "fetchFeatureFlags", ( ) => {
     );
   } );
 
-  it( "reads client_<name> flags by base name, including false ones", async ( ) => {
-    respond( { [`client_${ONBOARDING}`]: false, [`client_${PROJECTS}`]: true } );
+  it( "reads each flag by its scope's key, including false ones", async ( ) => {
+    respond( {
+      client_install_onboarding_v2: false,
+      client_traditional_projects: true,
+    } );
     await expect( fetchFeatureFlags( ) ).resolves.toEqual( {
       [ONBOARDING]: false,
       [PROJECTS]: true,
     } );
   } );
 
+  it( "ignores a flag's key under the other scope", async ( ) => {
+    respond( {
+      client_onboarding_v2: true,
+      client_install_traditional_projects: true,
+    } );
+    await expect( fetchFeatureFlags( ) ).resolves.toEqual( {} );
+  } );
+
   it( "drops flags the app doesn't define, other prefixes and non-boolean values", async ( ) => {
     respond( {
       client_some_web_flag: true,
-      [`client_install_${PROJECTS}`]: true,
+      client_install_some_web_flag: true,
       [PROJECTS]: true,
-      [`client_${ONBOARDING}`]: "true",
+      [`client_${PROJECTS}`]: "true",
+      client_install_onboarding_v2: null,
     } );
     await expect( fetchFeatureFlags( ) ).resolves.toEqual( {} );
   } );

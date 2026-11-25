@@ -1,12 +1,13 @@
 import inatjs from "inaturalistjs";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag, featureFlagApiKey } from "stores/createFeatureFlagSlice";
 
 import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts } from "./types";
 
-// The API returns Flipper flags named client_<name>, read here by each FeatureFlag base name.
-// Flags the app doesn't define, and non-boolean values, are dropped
+// Reads each FeatureFlag from the API's Flipper flags by its key (client_<name> or
+// client_install_<name>, per its scope). Flags the app doesn't define, and non-boolean values,
+// are dropped
 const fetchFeatureFlags = async (
   opts: ApiOpts = {},
 ): Promise<Partial<Record<FeatureFlag, boolean>>> => {
@@ -19,7 +20,7 @@ const fetchFeatureFlags = async (
     } );
     const values: Partial<Record<FeatureFlag, boolean>> = {};
     Object.values( FeatureFlag ).forEach( featureFlag => {
-      const value = flags?.[`client_${featureFlag}`];
+      const value = flags?.[featureFlagApiKey( featureFlag )];
       if ( typeof value === "boolean" ) {
         values[featureFlag] = value;
       }

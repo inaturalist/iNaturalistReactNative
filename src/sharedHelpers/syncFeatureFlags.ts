@@ -46,10 +46,11 @@ export const featureFlagsLogExtra = ( ) => {
   };
 };
 
-// Fetches Flipper-backed flags into the store. Signed out (no token), the API only returns flags
-// that are fully enabled; on failure the store's API values are cleared so hard-coded defaults
-// apply. Callers pass the token: getJWT lives in AuthenticationService, which calls this after
-// login, so importing it here would be circular
+// Fetches Flipper-backed flags into the store. Signed out (no token), user-scoped flags are off
+// unless fully enabled, while install-scoped flags still resolve by installation; on failure the
+// store's API values are cleared so hard-coded defaults apply. Callers pass the token: getJWT
+// lives in AuthenticationService, which calls this after login, so importing it here would be
+// circular
 const syncFeatureFlags = async ( apiToken: string | null ) => {
   latestRequestId += 1;
   const requestId = latestRequestId;

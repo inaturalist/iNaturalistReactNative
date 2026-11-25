@@ -2,6 +2,7 @@ import inatjs from "inaturalistjs";
 import syncFeatureFlags, { cancelFeatureFlagSync } from "sharedHelpers/syncFeatureFlags";
 import {
   FeatureFlag,
+  featureFlagApiKey,
   hardcodedFeatureFlagDefaults,
 } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
@@ -14,8 +15,8 @@ const mockLogger = jest.requireMock( "sharedHelpers/logger" ).log.extend( );
 
 const mockGet = jest.mocked( inatjs.feature_flags.get );
 
-const PROJECTS_KEY = `client_${FeatureFlag.TraditionalProjectsEnabled}`;
-const ONBOARDING_KEY = `client_${FeatureFlag.OnboardingV2Enabled}`;
+const PROJECTS_KEY = featureFlagApiKey( FeatureFlag.TraditionalProjectsEnabled );
+const ONBOARDING_KEY = featureFlagApiKey( FeatureFlag.OnboardingV2Enabled );
 
 describe( "syncFeatureFlags", ( ) => {
   beforeEach( ( ) => {
