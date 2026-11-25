@@ -9,7 +9,11 @@ const UnderlinedLink = ( props: TextProps ) => (
   <InatText
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
-    className={classnames( "text-md underline", tailwindFontBold, props.className )}
+    className={classnames(
+      "text-md underline android:leading-[20px]",
+      tailwindFontBold,
+      props.className,
+    )}
   />
 );
 
