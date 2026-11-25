@@ -1,11 +1,17 @@
 import { Body3, Body4 } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
-import type { License, RealmObservation } from "realmModels/types";
+import type { License } from "realmModels/types";
 import { useLayoutPrefs } from "sharedHooks";
 
 interface Props {
-  observation: RealmObservation;
+  observation: {
+    license_code: License | null;
+    user?: {
+      name?: string | null;
+      login?: string;
+    };
+  };
 }
 
 const renderRestrictions = ( licenseCode: License | null ) => {

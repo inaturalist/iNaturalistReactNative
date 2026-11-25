@@ -1,3 +1,4 @@
+import type { ApiSubscription } from "api/types";
 import FloatingButtons from "components/ObsDetailsSharedComponents/ActivityTab/FloatingButtons";
 import ObsMediaDisplayContainer
   from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
@@ -42,7 +43,7 @@ interface Props {
   refetchRemoteObservation: () => void;
   refetchSubscriptions: () => void;
   showAddCommentSheet: boolean;
-  subscriptions: object;
+  subscriptions?: ApiSubscription[];
   wasSynced: boolean;
   uuid: string;
 }
