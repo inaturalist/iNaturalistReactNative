@@ -199,7 +199,7 @@ describe( "Suggestions requests", ( ) => {
     await openSuggestionsFromObsEdit( );
     await expectSuggestion( { taxon: { id: onDevicePrediction.taxon_id } } );
     expect( screen.getByText( /You are offline. Tap to reload/ ) ).toBeVisible( );
-    expect( screen.queryByText( /IGNORE LOCATION/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /IGNORE LOCATION/ ) ).toBeNull( );
   } );
 
   it( "falls back to on-device suggestions when the request is slow", async ( ) => {
@@ -208,7 +208,7 @@ describe( "Suggestions requests", ( ) => {
     await waitFor( ( ) => {
       expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
     } );
-    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeNull( );
     await act( async ( ) => {
       jest.advanceTimersByTime( 5_000 );
     } );
@@ -225,7 +225,7 @@ describe( "Suggestions requests", ( ) => {
     await actor.press( offlineNotice );
 
     await expectSuggestion( withLocationSuggestion );
-    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeNull( );
   } );
 
   it( "asks the server about the other photo after falling back for the first", async ( ) => {
@@ -243,7 +243,7 @@ describe( "Suggestions requests", ( ) => {
     await actor.press( screen.getByTestId( `ObsPhotoSelectionList.${secondPhotoUri}` ) );
 
     await expectSuggestion( secondPhotoSuggestion );
-    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeNull( );
   } );
 
   it( "doesn't request again when Suggestions is reopened for the same photo", async ( ) => {
