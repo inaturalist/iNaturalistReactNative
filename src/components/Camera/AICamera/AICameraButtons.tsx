@@ -1,3 +1,4 @@
+import UploadCoachmark from "components/Camera/AICamera/UploadCoachmark";
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import CameraTips from "components/Camera/Buttons/CameraTips";
 import Close from "components/Camera/Buttons/Close";
@@ -34,6 +35,7 @@ interface Props {
   useLocation: boolean;
   toggleLocation: ( ) => void;
   completeSentinelFile: ( ) => Promise<void>;
+  showUploadCoachmark?: boolean;
 }
 
 const AICameraButtons = ( {
@@ -53,6 +55,7 @@ const AICameraButtons = ( {
   useLocation,
   toggleLocation,
   completeSentinelFile,
+  showUploadCoachmark = false,
 }: Props ) => {
   const { bottom } = useSafeAreaInsets( );
   const { isDefaultMode } = useLayoutPrefs();
@@ -147,6 +150,9 @@ const AICameraButtons = ( {
           />
         </View>
       </View>
+      {showUploadCoachmark
+        ? <UploadCoachmark />
+        : null}
       <View className="flex-row justify-center items-center w-full" pointerEvents="box-none">
         <TakePhoto
           disabled={!modelLoaded || takingPhoto}
