@@ -79,7 +79,7 @@ const SignUpEmailForm = ( { onAvailable, onSignedIn, testID }: Props ) => {
           ref={emailRef}
           accessibilityLabel={t( "EMAIL" )}
           autoComplete="email"
-          editable={!checking}
+          editable={!busy}
           headerText={t( "EMAIL" )}
           inputMode="email"
           keyboardType="email-address"
