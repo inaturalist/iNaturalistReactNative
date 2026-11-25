@@ -38,6 +38,7 @@ import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import GoodObservationSheet from "./GoodObservationSheet";
 import usePredictions from "./hooks/usePredictions";
+import useUploadCoachmark from "./hooks/useUploadCoachmark";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -94,6 +95,10 @@ const AICamera = ( {
 }: Props ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
+  const {
+    isVisible: showUploadCoachmark,
+    dismiss: dismissUploadCoachmark,
+  } = useUploadCoachmark( );
   const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
 
   const hasFlash = device?.hasFlash;
@@ -228,7 +233,13 @@ const AICamera = ( {
   };
 
   return (
-    <>
+    // onTouchStart sees every touch in the camera without taking part in the
+    // responder system, so the touch that dismisses the upload coachmark
+    // still reaches the control or camera preview underneath
+    <View
+      className="flex-1"
+      onTouchStart={dismissUploadCoachmark}
+    >
       {device && (
         <View className="w-full h-full absolute z-0">
           <FrameProcessorCamera
@@ -335,9 +346,10 @@ const AICamera = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
         completeSentinelFile={() => completeSentinelFile( sentinelFileName )}
+        showUploadCoachmark={showUploadCoachmark}
       />
       <GoodObservationSheet />
-    </>
+    </View>
   );
 };
 
