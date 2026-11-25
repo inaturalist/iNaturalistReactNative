@@ -1,16 +1,8 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiPhoto, ApiSuggestion } from "api/types";
 import { Body3, Heading4 } from "components/SharedComponents";
 import { BottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
-import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
-import {
-  FETCH_STATUSES,
-} from "components/Suggestions/SuggestionsContainer";
-import isEqual from "lodash/isEqual";
 import orderBy from "lodash/orderBy";
 import type {
   NoBottomTabStackScreenProps,
@@ -20,7 +12,7 @@ import type {
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect, useMemo, useReducer, useRef, useState,
+  useEffect, useMemo, useRef, useState,
 } from "react";
 import type { ScrollView } from "react-native";
 import Photo from "realmModels/Photo";
@@ -29,14 +21,12 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions,
+  useExitObservationFlow, useLocationPermission,
 } from "sharedHooks";
 import useDebugMode from "sharedHooks/useDebugMode";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationLocation from "sharedHooks/useObservationLocation";
-import {
-  internalUseSuggestionsInitialSuggestions,
-} from "sharedHooks/useSuggestions/filterSuggestions";
+import useSuggestionsV2 from "sharedHooks/useSuggestions/useSuggestionsV2";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
@@ -45,94 +35,11 @@ import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
-interface ImageParamsType {
-  uri?: string;
-  image: {
-    uri: string;
-    name: string;
-    type: string;
-  };
-  lat?: number;
-  lng?: number;
-}
-
-interface State {
-  onlineFetchStatus: FETCH_STATUSES;
-  offlineFetchStatus: FETCH_STATUSES;
-  scoreImageParams: ImageParamsType | null;
-  queryKey: ( string | { shouldUseEvidenceLocation: boolean } )[];
-  shouldUseEvidenceLocation: boolean;
-}
-
 export type MatchButtonAction = "save" | "discard";
 
-type Action =
-  | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
-  | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: FETCH_STATUSES }
-  | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: FETCH_STATUSES }
-  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
-  | { type: "SET_EDITED_PHOTO"; scoreImageParams: ImageParamsType };
-
-const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
-  "scoreImage",
-  selectedPhotoUri,
-  { shouldUseEvidenceLocation },
-];
-
-const initialState: State = {
-  onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
-  offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
-  scoreImageParams: null,
-  queryKey: [],
-  shouldUseEvidenceLocation: false,
-};
-
-const reducer = ( state: State, action: Action ): State => {
-  switch ( action.type ) {
-    case "SET_UPLOAD_PARAMS":
-      return {
-        ...state,
-        scoreImageParams: action.scoreImageParams,
-        queryKey: getQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
-      };
-    case "SET_ONLINE_FETCH_STATUS":
-      return {
-        ...state,
-        onlineFetchStatus: action.onlineFetchStatus,
-      };
-    case "SET_OFFLINE_FETCH_STATUS":
-      return {
-        ...state,
-        offlineFetchStatus: action.offlineFetchStatus,
-      };
-    case "SET_LOCATION":
-      return {
-        ...state,
-        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
-        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
-        scoreImageParams: action.scoreImageParams,
-        shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: getQueryKey(
-          action.scoreImageParams.image.uri,
-          action.shouldUseEvidenceLocation,
-        ),
-      };
-    case "SET_EDITED_PHOTO":
-      return {
-        ...state,
-        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
-        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
-        scoreImageParams: action.scoreImageParams,
-        queryKey: getQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
-      };
-    default:
-      throw new Error( );
-  }
-};
 const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
-  const hasLoadedRef = useRef( false );
   const { isDebug } = useDebugMode( );
   const scrollRef = useRef<ScrollView>( null );
   const currentObservation = useStore( state => state.currentObservation );
@@ -167,8 +74,6 @@ const MatchContainer = ( ) => {
     skipStoreReset: true,
   } );
 
-  const { isConnected } = useNetInfo( );
-
   const evidenceHasLocation = !!currentObservation?.latitude;
 
   const [iconicTaxon, setIconicTaxon] = useState<RealmTaxon>( );
@@ -177,96 +82,33 @@ const MatchContainer = ( ) => {
     longitude?: number;
   } | null>( null );
 
-  const [state, dispatch] = useReducer( reducer, {
-    ...initialState,
-    shouldUseEvidenceLocation: evidenceHasLocation,
-  } );
-
   const stopFirebaseTrace = useStore( state => state.stopFirebaseTrace );
 
-  const {
-    scoreImageParams,
-    onlineFetchStatus,
-    offlineFetchStatus,
-    queryKey,
-    shouldUseEvidenceLocation,
-  } = state;
+  // Read once, then replaced by the first GPS fix, so later fixes don't each
+  // ask the AI again
+  const [suggestionLocation, setSuggestionLocation] = useState( ( ) => (
+    evidenceHasLocation
+      ? { latitude: currentObservation?.latitude, longitude: currentObservation?.longitude }
+      : null
+  ) );
 
-  const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
-
-  const onlineSuggestionsAttempted
-     = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
-      || onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR;
-
-  const onFetchError = useCallback(
-    ( { isOnline }: { isOnline: boolean } ) => {
-      if ( isOnline ) {
-        dispatch( {
-          type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR,
-        } );
-      } else {
-        dispatch( {
-          type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_ERROR,
-        } );
-        // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
-          dispatch( {
-            type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED,
-          } );
-        }
-      }
-    },
-    [onlineFetchStatus],
-  );
-
-  const onFetched = useCallback(
-    ( { isOnline }: { isOnline: boolean } ) => {
-      if ( isOnline ) {
-        dispatch( {
-          type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED,
-        } );
-        // Currently we start offline only when online has an error, so
-        // we can register offline as skipped if online is successful
-        dispatch( {
-          type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_SKIPPED,
-        } );
-      } else {
-        dispatch( {
-          type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_FETCHED,
-        } );
-        // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
-          dispatch( {
-            type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED,
-          } );
-        }
-      }
-    },
-    [onlineFetchStatus],
-  );
+  // Wait until we know about location permission so we don't ask without
+  // location and then again with it
+  const permissionsKnown = hasPermissions !== undefined;
 
   const {
-    timedOut,
-    onlineSuggestionsError,
-    onlineSuggestionsUpdatedAt,
     suggestions,
+    isLoading,
+    onlineStatus,
+    offlineStatus,
+    onlineError,
+    offlineError,
     usingOfflineSuggestions,
-    refetchSuggestions,
-  } = useSuggestions( photoToIdentify, {
-    shouldFetchOnlineSuggestions,
-    onFetchError,
-    onFetched,
-    scoreImageParams,
-    queryKey,
-    onlineSuggestionsAttempted,
+  } = useSuggestionsV2( {
+    photoUri: photoToIdentify,
+    location: suggestionLocation,
+    enabled: permissionsKnown,
+    observationUuid: currentObservation?.uuid,
   } );
 
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
@@ -336,32 +178,7 @@ const MatchContainer = ( ) => {
     }
   }, [currentUserLocation, updateObservationKeys] );
 
-  const handleRefetchSuggestions = useCallback( ( location: {
-    latitude?: number;
-    longitude?: number;
-  } ) => {
-    const newScoreImageParams = {
-      ...scoreImageParams,
-      lat: location?.latitude,
-      lng: location?.longitude,
-    };
-    dispatch( {
-      type: "SET_LOCATION",
-      shouldUseEvidenceLocation: true,
-      scoreImageParams: newScoreImageParams,
-    } );
-    refetchSuggestions();
-    setHasRefetchedSuggestions( true );
-    // // Scroll to top of the screen
-    scrollToTop( );
-  }, [
-    refetchSuggestions,
-    scoreImageParams,
-    scrollToTop,
-  ] );
-
   useEffect( () => {
-    if ( !scoreImageParams ) return;
     if ( userLocation === currentUserLocation ) return;
     if ( !userLocation?.latitude ) return;
 
@@ -370,48 +187,27 @@ const MatchContainer = ( ) => {
 
     getCurrentUserPlaceName();
 
-    if ( !hasRefetchedSuggestions && suggestions ) {
-      handleRefetchSuggestions( userLocation );
+    if ( !hasRefetchedSuggestions ) {
+      setSuggestionLocation( {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+      } );
+      setHasRefetchedSuggestions( true );
+      scrollToTop( );
     }
   }, [
     userLocation,
     currentUserLocation,
-    scoreImageParams,
-    suggestions,
     hasRefetchedSuggestions,
     updateObservationKeys,
     getCurrentUserPlaceName,
-    handleRefetchSuggestions,
+    scrollToTop,
   ] );
 
   const onSuggestionChosen = useCallback( ( selection: ApiSuggestion ) => {
     setSelectedSuggestionId( selection.taxon.id );
     scrollToTop( );
   }, [scrollToTop] );
-
-  const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
-    const newImageParams = await flattenUploadParams( uri );
-    if ( showLocation && currentObservation?.latitude ) {
-      newImageParams.lat = currentObservation?.latitude;
-      newImageParams.lng = currentObservation?.longitude;
-    }
-    return newImageParams;
-  }, [
-    currentObservation,
-  ] );
-
-  const setImageParams = useCallback( async ( ) => {
-    if ( isConnected === false ) {
-      return;
-    }
-    const newImageParams = await createUploadParams( observationPhoto, shouldUseEvidenceLocation );
-    dispatch( { type: "SET_UPLOAD_PARAMS", scoreImageParams: newImageParams } );
-  }, [
-    createUploadParams,
-    isConnected,
-    observationPhoto,
-    shouldUseEvidenceLocation,
-  ] );
 
   // Edited copies replace the originals in the observation. Only the first
   // photo is identified, so only its edits need new suggestions
@@ -423,30 +219,12 @@ const MatchContainer = ( ) => {
     replacePhotoInObservation( uri, newLocalFilePath );
   }, [obsPhotos, observationPhoto, replacePhotoInObservation] );
 
-  const identifyEditedPhoto = useCallback( async ( ) => {
+  const identifyEditedPhoto = useCallback( ( ) => {
     if ( !photoBeforeEdits ) return;
-    const newImageParams = await createUploadParams( observationPhoto, shouldUseEvidenceLocation );
-    dispatch( { type: "SET_EDITED_PHOTO", scoreImageParams: newImageParams } );
     setPhotoBeforeEdits( undefined );
     // The chosen suggestion was for the photo before it was edited
     setSelectedSuggestionId( undefined );
-  }, [
-    createUploadParams,
-    observationPhoto,
-    photoBeforeEdits,
-    shouldUseEvidenceLocation,
-  ] );
-
-  useEffect( ( ) => {
-    if ( !hasLoadedRef.current
-      // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
-      // we shouldn't rely on implementation internals to consumer drive state
-      && isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
-    ) {
-      hasLoadedRef.current = true;
-      setImageParams( );
-    }
-  }, [setImageParams, suggestions] );
+  }, [photoBeforeEdits] );
 
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
@@ -460,8 +238,10 @@ const MatchContainer = ( ) => {
     topSuggestion,
   );
 
-  const suggestionsLoading = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING
-    || offlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
+  const suggestionsLoading = !permissionsKnown || isLoading;
+  const onlineSuggestionsAttempted = onlineStatus === "fetched"
+    || onlineStatus === "error"
+    || onlineStatus === "timed-out";
 
   useEffect( ( ) => {
     if (
@@ -558,12 +338,12 @@ const MatchContainer = ( ) => {
           <View className="bg-deeppink text-white p-3">
             <Heading4 className="text-white">Diagnostics</Heading4>
             <Body3 className="text-white">
-              Online fetch status:
-              {JSON.stringify( onlineFetchStatus )}
+              Online status:
+              {JSON.stringify( onlineStatus )}
             </Body3>
             <Body3 className="text-white">
-              Offline fetch status:
-              {JSON.stringify( offlineFetchStatus )}
+              Offline status:
+              {JSON.stringify( offlineStatus )}
             </Body3>
             <Body3 className="text-white">
               Lat/lng:
@@ -575,16 +355,12 @@ const MatchContainer = ( ) => {
               {JSON.stringify( usingOfflineSuggestions )}
             </Body3>
             <Body3 className="text-white">
-              Timed out:
-              {JSON.stringify( timedOut )}
+              Online error:
+              {JSON.stringify( onlineError?.message )}
             </Body3>
             <Body3 className="text-white">
-              Online suggestions error:
-              {JSON.stringify( onlineSuggestionsError )}
-            </Body3>
-            <Body3 className="text-white">
-              Online suggestions updated at:
-              {JSON.stringify( onlineSuggestionsUpdatedAt )}
+              Offline error:
+              {JSON.stringify( offlineError?.message )}
             </Body3>
           </View>
         )}
