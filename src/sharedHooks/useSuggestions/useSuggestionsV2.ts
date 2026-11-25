@@ -86,6 +86,9 @@ const resizePhoto = async ( photoUri: string, queryClient: QueryClient ) => {
     queryFn: async ( ) => ( await flattenUploadParams( photoUri ) ).image,
     staleTime: Infinity,
     retry: false,
+    // resizing is local, so it shouldn't wait for react-query to think the
+    // device is online
+    networkMode: "always",
   } );
   try {
     const image = await resize( );
@@ -249,6 +252,10 @@ const useSuggestionsV2 = ( {
       photoUri: photoUri as string, coordinates, locale, observationUuid, queryClient, realm,
     } ),
     enabled: !!inputs && isConnected !== false && !attempt.gaveUp,
+    // This hook decides when the device is offline. React-query's own idea of
+    // it comes from NetInfo too, but treats "not known yet" as offline and
+    // would hold the request without starting the timeout
+    networkMode: "always",
     staleTime: Infinity,
     retry: ( failureCount, error ) => error.name !== PHOTO_RESIZE_ERROR
       && reactQueryRetry( failureCount, error, { queryKey: onlineKey } ),

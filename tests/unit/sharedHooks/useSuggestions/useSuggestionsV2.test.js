@@ -259,6 +259,15 @@ describe( "useSuggestionsV2", ( ) => {
       expect( result.current.isLoading ).toBe( false );
       expect( topSuggestionId( result ) ).toBe( 750 );
     } );
+
+    it( "falls back to the offline model when NetInfo hasn't decided yet", async ( ) => {
+      useNetInfo.mockReturnValue( { isConnected: null } );
+      scoreImage.mockImplementation( neverResolves );
+      const { result } = renderSuggestionsHook( { photoUri: localPhotoUri, onlineTimeoutMs: 50 } );
+      await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+      expect( result.current.onlineStatus ).toBe( "timed-out" );
+      expect( topSuggestionId( result ) ).toBe( 750 );
+    } );
   } );
 
   it( "skips the offline model for a remote photo while offline", async ( ) => {
