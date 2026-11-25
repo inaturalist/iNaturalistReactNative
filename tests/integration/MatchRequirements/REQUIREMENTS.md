@@ -166,7 +166,8 @@ In `Match.requirements.test.js`.
 | --- | --- | --- |
 | R-PERF-01 |  | Reports “AI camera to Match” once, marked online |
 | R-PERF-02 |  | Reports “AI camera to Match” marked offline after a fallback |
-| R-PERF-03 | **bug** | Offline from the start: the performance trace is never stopped |
+| R-PERF-03 |  | Offline from the start: reports “AI camera to Match” marked offline |
+| R-PERF-04 |  | Connection drops while the API is working: reports “AI camera to Match” marked offline |
 
 ## Round trips through other screens
 

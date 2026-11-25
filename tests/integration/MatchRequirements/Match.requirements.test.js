@@ -1325,11 +1325,8 @@ describe( "Third pass: edges", ( ) => {
     } );
   } );
 
-  // SUSPECTED BUG: the stop waits for an online attempt that never happens,
-  // so offline visits end only by the trace's own 10 second timeout and are
-  // reported as timeouts
-  it( "R-PERF-03 [bug] offline from the start: "
-    + "the performance trace is never stopped", async ( ) => {
+  it( "R-PERF-03 offline from the start: reports “AI camera to Match” marked "
+    + "offline", async ( ) => {
     const stopFirebaseTrace = jest.fn( );
     useStore.setState( { stopFirebaseTrace } );
     world.setNetwork( false );
@@ -1338,8 +1335,27 @@ describe( "Third pass: edges", ( ) => {
     await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
     await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
-    await world.advance( 2_000 );
-    expect( stopFirebaseTrace ).not.toHaveBeenCalled( );
+    expect( stopFirebaseTrace ).toHaveBeenLastCalledWith(
+      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+      { online: "false" },
+    );
+  } );
+
+  it( "R-PERF-04 connection drops while the API is working: reports “AI camera to "
+    + "Match” marked offline", async ( ) => {
+    const stopFirebaseTrace = jest.fn( );
+    useStore.setState( { stopFirebaseTrace } );
+    world.setObservation( observationWithLocation( ) );
+    const { impl } = renderMatch( );
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 1 ) );
+    await world.setNetwork( false );
+    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
+    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    expect( stopFirebaseTrace ).toHaveBeenLastCalledWith(
+      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+      { online: "false" },
+    );
   } );
 } );
 

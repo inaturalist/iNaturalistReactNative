@@ -239,26 +239,22 @@ const MatchContainer = ( ) => {
   );
 
   const suggestionsLoading = !permissionsKnown || isLoading;
-  const onlineSuggestionsAttempted = onlineStatus === "fetched"
-    || onlineStatus === "error"
-    || onlineStatus === "timed-out";
+  // Settled, whether online, on-device, or neither, including when the device
+  // was offline from the start or the connection dropped mid-request
+  const suggestionsSettled = !suggestionsLoading && onlineStatus !== "idle";
+  const answeredOnline = onlineStatus === "fetched";
 
   useEffect( ( ) => {
-    if (
-      onlineSuggestionsAttempted
-      && !suggestionsLoading
-    ) {
-      // This should capture a case where online and offline have had a chance to load
+    if ( suggestionsSettled ) {
       stopFirebaseTrace(
         FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
-        { [FIREBASE_TRACE_ATTRIBUTES.ONLINE]: `${!usingOfflineSuggestions}` },
+        { [FIREBASE_TRACE_ATTRIBUTES.ONLINE]: `${answeredOnline}` },
       );
     }
   }, [
-    onlineSuggestionsAttempted,
-    suggestionsLoading,
+    suggestionsSettled,
+    answeredOnline,
     stopFirebaseTrace,
-    usingOfflineSuggestions,
   ] );
 
   // Remove the top suggestion from the list of other suggestions

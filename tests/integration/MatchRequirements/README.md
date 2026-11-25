@@ -30,7 +30,7 @@ These are pinned as they behave today (see [Suspected bugs](#suspected-bugs)).
 | Saved data: earlier camera-roll photos get the new location, a picked group goes to ObsEdit as an AI ID | B-01, R-NAV-05 |
 | Round trips: Discard on a species page reached through Edit deletes the observation, backing out of Edit warns about changes nobody made, My Observations reopens scrolled down | J-01, J-02, J-03, J-04 |
 | Other screens after Match: species maps and Suggest ID show the last observation, regrouping imports opens an empty ObsEdit, the camera's photo limit counts the wrong photos | S-01, S-02, S-03, S-04 |
-| Invisible to the person: unhandled errors from retries, the offline performance trace never stops | R-NET-05, R-PERF-03 |
+| Invisible to the person: unhandled errors from retries | R-NET-05 |
 
 ## Files
 
