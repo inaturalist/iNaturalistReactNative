@@ -24,7 +24,10 @@ import factory, { makeResponse } from "tests/factory";
 import {
   navigateToSuggestionsViaAICameraFromMyObs,
 } from "tests/helpers/addObsBottomSheet";
-import { renderAppWithObservations } from "tests/helpers/render";
+import {
+  queryClient,
+  renderAppWithObservations,
+} from "tests/helpers/render";
 import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -48,6 +51,8 @@ beforeEach( () => {
 afterEach( () => {
   // Restore original implementation
   Animated.Value = OriginalValue;
+  // suggestions are cached per photo and location, and tests reuse both
+  queryClient.clear( );
 } );
 
 const mockModelResult = {

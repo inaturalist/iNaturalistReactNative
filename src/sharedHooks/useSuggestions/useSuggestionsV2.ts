@@ -56,6 +56,8 @@ interface Coordinates {
 
 export interface UseSuggestionsV2Options {
   photoUri?: string | null;
+  // each new coordinate pair starts a new request, so hold it steady while a
+  // GPS fix is still settling
   location?: Location | null;
   // e.g. hold off until location permission is known
   enabled?: boolean;
@@ -486,6 +488,8 @@ const useSuggestionsV2 = ( {
     offlineStatus,
     onlineError,
     offlineError,
+    // the unfiltered response, for debugging
+    onlineSuggestions,
     usingOfflineSuggestions: offlineStatus === "loading"
       || offlineStatus === "fetched"
       || offlineStatus === "error",

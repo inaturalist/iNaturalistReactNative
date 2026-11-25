@@ -15,6 +15,7 @@ export enum TopSuggestionType {
 export interface UseSuggestionsOnlineSuggestion {
   score: number;
   combined_score: number;
+  vision_score?: number;
   taxon: {
     id: number;
     name: string;
