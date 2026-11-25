@@ -58,6 +58,7 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 const localPhotoUri = "file:///tmp/photo.jpg";
+const otherLocalPhotoUri = "file:///tmp/other-photo.jpg";
 const remotePhotoUri = "https://static.inaturalist.org/photos/1/medium.jpg";
 const location = { latitude: 41.88, longitude: -87.63 };
 
@@ -229,6 +230,23 @@ describe( "useSuggestionsV2", ( ) => {
     expect( result.current.onlineStatus ).toBe( "offline" );
   } );
 
+  it( "stays on the offline model when the connection comes back", async ( ) => {
+    scoreImage.mockImplementation( neverResolves );
+    const props = { photoUri: localPhotoUri };
+    const { result, rerender } = renderSuggestionsHook( props );
+    await waitFor( ( ) => expect( scoreImage ).toHaveBeenCalledTimes( 1 ) );
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    rerender( props );
+    await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+    scoreImage.mockResolvedValue( onlineResponse( cupPlant ) );
+    useNetInfo.mockReturnValue( { isConnected: true } );
+    rerender( props );
+    await act( async ( ) => { await new Promise( resolve => { setTimeout( resolve, 50 ); } ); } );
+    expect( result.current.onlineStatus ).toBe( "offline" );
+    expect( topSuggestionId( result ) ).toBe( 750 );
+    expect( scoreImage ).toHaveBeenCalledTimes( 1 );
+  } );
+
   it( "skips the offline model for a remote photo while offline", async ( ) => {
     useNetInfo.mockReturnValue( { isConnected: false } );
     const { result } = renderSuggestionsHook( { photoUri: remotePhotoUri } );
@@ -266,7 +284,7 @@ describe( "useSuggestionsV2", ( ) => {
     await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
   } );
 
-  it( "doesn't show the earlier result when re-enabled with the same inputs", async ( ) => {
+  it( "shows the cached result at once when re-enabled with the same inputs", async ( ) => {
     const {
       result, rerender, renderedStatuses,
     } = renderSuggestionsHook( { photoUri: localPhotoUri } );
@@ -277,7 +295,25 @@ describe( "useSuggestionsV2", ( ) => {
     const reenabledAt = renderedStatuses.length;
     rerender( { photoUri: localPhotoUri, enabled: true } );
     await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
-    expect( renderedStatuses[reenabledAt] ).toBe( "loading" );
+    expect( renderedStatuses[reenabledAt] ).toBe( "fetched" );
+    expect( scoreImage ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  it( "shows a photo's cached result at once when switching back to it", async ( ) => {
+    const {
+      result, rerender, renderedStatuses,
+    } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    scoreImage.mockResolvedValue( onlineResponse( compassPlant ) );
+    rerender( { photoUri: otherLocalPhotoUri } );
+    await waitFor( ( ) => expect( topSuggestionId( result ) ).toBe( 746 ) );
+
+    const switchedBackAt = renderedStatuses.length;
+    rerender( { photoUri: localPhotoUri } );
+    expect( renderedStatuses[switchedBackAt] ).toBe( "fetched" );
+    expect( result.current.isLoading ).toBe( false );
+    expect( topSuggestionId( result ) ).toBe( 745 );
+    expect( scoreImage ).toHaveBeenCalledTimes( 2 );
   } );
 
   it( "starts over when the location changes and ignores the earlier response", async ( ) => {
