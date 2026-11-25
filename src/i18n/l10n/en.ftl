@@ -25,9 +25,15 @@
 
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
+# Onboarding Impact screen: body of a story about an invasive lace bug found
+# in London
+A-London-commuter-noticed-a-tiny-insect = A London commuter noticed a tiny insect and shared a photo on iNaturalist. It turned out to be an invasive species previously not recorded in the area for 18 years.
 # Onboarding observation story screen: checklist item completeing "An
 # observation is:". Text in tags is bold
 a-photo-or-sound-recording = <0>a </0><1>photo</1><0> or </0><1>sound recording</1>
+# Onboarding Impact screen: body of a story about a new mantis species found in
+# Australia. Text in <1> tags is a scientific name, shown in italics
+A-woman-walking-in-her-neighborhood-photographed-a-mantis = <0>A woman walking in her neighborhood photographed a mantis, and it turned out to be a species completely new to science — now named </0><1>Inimia nat</1><0>, or </0><1>I. nat</1><0> for short.</0>
 # Header for a general description, e.g. of a user, or of iNaturalist itself
 ABOUT = ABOUT
 ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
@@ -177,6 +183,8 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 # Month of August
 August = August
+# Country name, shown as the location of a story on the onboarding Impact screen
+Australia = Australia
 # Title of a camera tip about reptiles
 Back-and-full-body = Back and full body
 # Title of a camera tip about amphibians
@@ -194,6 +202,9 @@ Body-parts-and-colors = Body parts and colors
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
 Bulk-importer = Bulk importer
+# Onboarding welcome screen: consent shown above the Get Started and Log In
+# buttons. <0> is a link to a screen explaining the terms and data licensing
+By-continuing-you-agree-to-our-Terms-of-Use-and-Privacy-Policy-Learn-More = By continuing, you agree to our Terms of Use and Privacy Policy. <0>Learn More</0>
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
 By-exiting-observation-not-saved = By exiting, your observation will not be saved.
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
@@ -208,6 +219,8 @@ Camera = Camera
 Camera-tips = Camera tips
 CANCEL = CANCEL
 Cancel = Cancel
+# Accessibility label for a button that closes the photo cropper without cropping
+Cancel-crop = Cancel crop
 Captive-Cultivated = Captive/Cultivated
 # Quality grade indicating observation does not quality for Needs ID or
 # Research Grade, e.g. missing media, voted out, etc.
@@ -334,6 +347,12 @@ Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
 CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 Create-observation-with-no-evidence = Create observation with no evidence
+# Button on Suggestions, shown when there are no suggestions, that opens the
+# photo cropper so the photo can be cropped
+CROP-PHOTO = CROP PHOTO
+# Accessibility label for buttons that open the photo cropper, in the photo
+# viewer and on Suggestions
+Crop-photo = Crop photo
 # Heading of a section of camera tips about crustaceans
 Crustaceans = Crustaceans
 DATA-QUALITY = DATA QUALITY
@@ -649,6 +668,8 @@ For-slugs-photograph-the-right-side-where-the-breathing-hole-is = For slugs, pho
 For-spiders-try-a-head-on-shot-The-way-the-eyes-are-arranged-can-help-identify-the-family = For spiders, try a head-on shot. The way the eyes are arranged can help identify the family.
 # Forgot password link
 Forgot-Password = Forgot Password
+# Onboarding welcome screen: subtitle describing iNaturalist
+Free-non-profit-community-powered = Free, non-profit, community-powered.
 # Display name for the iconic taxa category for fungi
 Fungi = Fungi
 GEOPRIVACY = GEOPRIVACY
@@ -660,6 +681,8 @@ Get-close-ups-of-the-surface-Small-details-can-separate-similar-sea-stars-and-ur
 Get-feedback-from-naturalists-and-experts-who-will-help-verify = Get feedback from naturalists and experts who will help verify and refine your identifications.
 # Body of the camera tip "Face, ears, and markings" for mammals
 Get-images-of-any-markings-or-patterns-and-the-ear-shape-if-you-can-Keep-your-distance = Get images of any markings or patterns, and the ear shape if you can. Keep your distance!
+# Onboarding welcome screen: button that starts the introduction to iNaturalist
+GET-STARTED = GET STARTED
 # Body of the camera tip "Head from top and side" for amphibians
 Get-the-eyes-snout-and-any-markings-in-the-shot = Get the eyes, snout, and any markings in the shot.
 # Body of the camera tip "Head close-up" for fishes
@@ -700,7 +723,11 @@ HIGHEST-RANK = HIGHEST RANK
 Host-plant = Host plant
 # Tips how to take good photos
 HOW-TO-MAKE-A-GOOD-OBSERVATION = HOW TO MAKE A GOOD OBSERVATION
+# Heading in the camera tips sheet above what makes a good observation
+How-to-make-a-good-observation = How to make a good observation
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
+# Onboarding welcome screen: button that skips the introduction and opens Log In
+I-ALREADY-HAVE-AN-ACCOUNT = I ALREADY HAVE AN ACCOUNT
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
 ID-in-Camera = ID in Camera
 ID-Suggestions = ID Suggestions
@@ -753,6 +780,8 @@ Improve-suggestions-by-using-your-location = Improve suggestions by using your l
 IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY USING YOUR LOCATION
 # Identification category
 improving--identification = Improving
+# Accessibility label for the iNaturalist logo
+iNaturalist = iNaturalist
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
 iNaturalist-Blog = iNaturalist Blog
@@ -793,6 +822,9 @@ Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
 Introduced-to-place = Introduced to { $place }
+# Onboarding Impact screen: title of a story about an invasive lace bug found
+# in London
+Invasive-lace-bug-species-spotted-in-a-new-location-by-London-bus-commuter = Invasive lace bug species spotted in a new location by London bus commuter
 It-can-now-be-shared-for-use-in-research = It can now be shared for use in research
 # Onboarding Research Grade screen: checklist item completing "Your
 # observation can become Research Grade when:". Text in <1> tags is bold
@@ -880,6 +912,12 @@ Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
+# Onboarding Impact screen: title of a story about volunteers in California
+# protecting migrating amphibians
+Local-volunteers-form-newt-brigade-to-protect-amphibians = Local volunteers form "newt brigade" to protect amphibians migrating across a road
+# Onboarding Impact screen: body of a story about volunteers in California
+# protecting migrating amphibians
+Local-volunteers-in-California-used-iNaturalist = Local volunteers in California used iNaturalist to coordinate protection for newts, frogs, and other amphibians migrating across a busy road.
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
@@ -942,10 +980,14 @@ MONTHS = MONTHS
 # Label for section of ObsDetails with information about observation projects, DQA, etc.
 More = More
 More-info = More info
+# Onboarding Impact screen: shown below the headline. Text in <1> tags is bold
+More-than-8000-scientific-studies-have-relied-on-iNaturalist = <1>8,000+ scientific studies</1><0> have relied on iNaturalist observations!</0>
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+# Onboarding Impact screen: title of a story about a moth rediscovered in New Zealand
+Moth-presumed-extinct-for-decades-rediscovered-by-tourist = Moth presumed extinct for decades rediscovered by tourist
 must-be-captive-cultivated = must be captive / cultivated
 must-be-georeferenced = must be georeferenced
 must-be-identified = must be identified
@@ -1002,6 +1044,11 @@ Nearby = Nearby
 Needs-ID--quality-grade = Needs ID
 # Heading when creating a new observation
 New-Observation = New Observation
+# Onboarding Impact screen: title of a story about a new mantis species found in
+# Australia
+New-praying-mantis-species-discovered-by-woman-walking-in-her-neighborhood = New praying mantis species discovered by woman walking in her neighborhood
+# Country name, shown as the location of a story on the onboarding Impact screen
+New-Zealand = New Zealand
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
@@ -1393,6 +1440,9 @@ REVIEW-INATURALIST = REVIEW INATURALIST
 # reviewed the observations or not
 REVIEWED = REVIEWED
 Reviewed-observations-only = Reviewed observations only
+# Accessibility label for a button in the photo viewer that turns the photo a
+# quarter turn counterclockwise
+Rotate-photo = Rotate photo
 # Label for the satellite map type
 Satellite--map-type = Satellite
 # Label for a button that persists something
@@ -1401,6 +1451,8 @@ SAVE-ALL = SAVE ALL
 # Button that saves all observations in a batch of multiple observations
 Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
+# Accessibility label for a button that crops the photo to the part inside the frame
+Save-crop = Save crop
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 # Accessibility label for the star button that saves the current search
@@ -1617,6 +1669,9 @@ The-community-agrees-on-an-identification = The community agrees on an identific
 # observation can become Research Grade when:". Text in <1> tags is bold
 the-community-vets-the-identification = <0>the community </0><1>vets the identification</1>
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+# Onboarding Impact screen: body of a story about a moth rediscovered in New
+# Zealand. The Frosted Phoenix is the moth's common name
+The-Frosted-Phoenix-hadnt-been-spotted-in-decades = The Frosted Phoenix hadn't been spotted in decades and was once thought extinct... until a tourist shared a photo on iNaturalist without realizing what it was.
 # Description for modal that pops up when user first logs in and goes to notifications screen
 The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNaturalist community will help verify and refine identifications on your observations to create Research Grade data for science and conservation.
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
@@ -1694,6 +1749,10 @@ Umbrella-Project = Umbrella Project
 Underside = Underside
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
+# Country name, shown as the location of a story on the onboarding Impact screen
+United-Kingdom = United Kingdom
+# Country name, shown as the location of a story on the onboarding Impact screen
+United-States = United States
 # Text to show when a taoxn rank is unknown or missing
 Unknown--rank = Unknown
 # Text to show when a taxon or identification is unknown or missing
@@ -1795,6 +1854,8 @@ Welcome-back = Welcome back!
 # in the sample observation
 What = What
 WHAT-IS-INATURALIST = WHAT IS INATURALIST?
+# Heading in the camera tips sheet above the tips for each group of organisms
+What-to-take-a-picture-of = What to take a picture of
 Whats-more-by-recording = What's more, by recording and sharing your observations, you'll create research-quality data for scientists working to better understand and protect nature. So if you like recording your findings from the outdoors, or if you just like learning about life, join us!
 # Onboarding observation story screen: label for the row showing when the
 # sample observation was made
@@ -1803,6 +1864,8 @@ When-tapping-the-green-observation-button = When tapping the green observation b
 # Onboarding observation story screen: label for the row showing where the
 # sample observation was made
 Where = Where
+# Onboarding welcome screen: tagline below the iNaturalist logo
+Where-your-curiosity-contributes-to-science = Where your curiosity contributes to science.
 # Onboarding observation story screen: label for the row showing who made the
 # sample observation
 Who = Who
@@ -2047,6 +2110,8 @@ Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x 
 Your-observation-can-become-Research-Grade-when = Your observation can become Research Grade when:
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
+# Onboarding Impact screen: headline. Text in <1> tags is underlined
+Your-observations-make-a-difference = <0>Your observations make a </0><1>difference</1><0>.</0>
 Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
 # Subtitle on Add to Projects membership rule row (coordinates_shareable_by_project_curators?)
 Your-project-membership-settings-must-allow = Your project membership settings must allow project curators to access the true locations of your project observations. You change location permissions on the project's page.

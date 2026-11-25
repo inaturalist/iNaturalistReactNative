@@ -1,7 +1,7 @@
 import { logEvent } from "@react-native-firebase/analytics";
 import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
-  act, screen, userEvent, waitFor, within,
+  act, fireEvent, screen, userEvent, waitFor, within,
 } from "@testing-library/react-native";
 import { emailAvailable } from "components/LoginSignUp/AuthenticationService";
 import { signInWithGoogle } from "components/LoginSignUp/loginFormHelpers";
@@ -9,7 +9,7 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useContext } from "react";
-import { BackHandler, Image } from "react-native";
+import { Alert, BackHandler, Image } from "react-native";
 import { requestMultiple, RESULTS } from "react-native-permissions";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -405,12 +405,47 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       { screen_id: "obs_story", position: 2 },
       { screen_id: "community_id", position: 6 },
       { screen_id: "research_grade", position: 7 },
+      { screen_id: "impact", position: 8 },
     ] );
 
     act( ( ) => navigationContainer.current.goBack( ) );
     expect( screen.getByTestId( "Onboarding.research_grade" ) ).toBeVisible( );
-    expect( screenViews( ) ).toHaveLength( 4 );
-    expect( screenViews( )[3] ).toEqual( { screen_id: "research_grade", position: 7 } );
+    expect( screenViews( ) ).toHaveLength( 5 );
+    expect( screenViews( )[4] ).toEqual( { screen_id: "research_grade", position: 7 } );
+  } );
+
+  it( "shows an impact story photo's attribution from its copyright button", async ( ) => {
+    jest.spyOn( Alert, "alert" ).mockImplementation( ( ) => undefined );
+    renderApp( );
+    const step = await continueTo( "impact" );
+    const attribution = "(c) Pav Johnsson, some rights reserved (CC BY)";
+    await actor.press( within( step ).getByLabelText( attribution ) );
+    expect( Alert.alert ).toHaveBeenCalledWith( i18next.t( "Copyright" ), attribution );
+    Alert.alert.mockRestore( );
+  } );
+
+  it( "logs a story view for the first story and each story the strip settles on", async ( ) => {
+    logEvent.mockClear( );
+    renderApp( );
+    const step = await continueTo( "impact" );
+    const storyViews = ( ) => logEvent.mock.calls
+      .filter( ( [, eventName] ) => eventName === "impact_story_view" )
+      .map( ( [, , params] ) => params.story_id );
+    expect( storyViews( ) ).toEqual( ["moth_new_zealand"] );
+
+    const strip = within( step ).getByTestId( "ImpactStoryStrip" );
+    const settleOnStory = index => fireEvent( strip, "momentumScrollEnd", {
+      nativeEvent: { contentOffset: { x: index * strip.props.snapToInterval, y: 0 } },
+    } );
+    settleOnStory( 1 );
+    // Settling back on the story already showing doesn't log it again
+    settleOnStory( 1 );
+    settleOnStory( 3 );
+    expect( storyViews( ) ).toEqual( [
+      "moth_new_zealand",
+      "mantis_australia",
+      "newt_brigade_us",
+    ] );
   } );
 
   describe( "exit sheets", ( ) => {
@@ -462,6 +497,19 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         expect( mockOnboarding.shown ).toBeFalsy( );
       },
     );
+
+    it( "opens Learn More from welcome, and its back button returns to welcome", async ( ) => {
+      renderApp( );
+      const welcome = await screen.findByTestId( "Onboarding.welcome" );
+      expect( within( welcome ).getByText( /By continuing, you agree/ ) ).toBeVisible( );
+      await actor.press( within( welcome ).getByTestId( "Onboarding.welcome.learnMore" ) );
+      expect( await screen.findByText( i18next.t( "TERMS-OF-USE" ) ) ).toBeVisible( );
+      expect( queryMounted( "Login.email" ) ).toBeNull( );
+      await actor.press( screen.getByTestId( "BackButton" ) );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+      expect( screen.queryByText( i18next.t( "TERMS-OF-USE" ) ) ).toBeNull( );
+      expect( mockOnboarding.shown ).toBeFalsy( );
+    } );
 
     it( "shows the location step after logging in from welcome", async ( ) => {
       renderApp( );

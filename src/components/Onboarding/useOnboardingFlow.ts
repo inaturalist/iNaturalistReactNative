@@ -69,7 +69,13 @@ const useOnboardingFlow = ( ) => {
   // location permission step
   const signedIn = ( ) => showLocationStep( navigation );
 
+  // Opens the sign-up Learn More screen on top of the step
+  const learnMore = ( ) => {
+    navigation.navigate( "LoginStackNavigator", { screen: "LearnMore" } );
+  };
+
   return {
+    learnMore,
     logIn,
     proceedToNext,
     signedIn,

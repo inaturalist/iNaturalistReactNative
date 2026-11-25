@@ -1,11 +1,13 @@
-// @flow
 import {
   refresh as refreshNetInfo,
   useNetInfo,
 } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
+import { METRICS_FIELDS } from "api/fields";
 import { faveObservation, unfaveObservation } from "api/observations";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
+import type { ApiQualityMetric } from "api/types";
+import type { Indicator } from "components/ObsDetails/DataQualityAssessment";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import {
   BottomSheet,
@@ -16,6 +18,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import compact from "lodash/compact";
 import groupBy from "lodash/groupBy";
+import type { TabStackScreenProps } from "navigation/types";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -27,15 +30,17 @@ import {
 } from "sharedHooks";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
+import type { Metric } from "./DetailsTab/DQAVoteButtons";
+
 const logger = log.extend( "DQAContainer" );
 
-const DQAContainer = ( ): React.Node => {
+const DQAContainer = ( ) => {
   const { isConnected } = useNetInfo( );
-  const { params } = useRoute( );
+  const { params } = useRoute<TabStackScreenProps<"DataQualityAssessment">["route"]>();
   const { observationUUID } = params;
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
-  const [loadingMetric, setLoadingMetric] = useState( "none" );
+  const [loadingMetric, setLoadingMetric] = useState<Metric | "none">( "none" );
   const [hideErrorSheet, setHideErrorSheet] = useState( true );
   const [hideOfflineSheet, setHideOfflineSheet] = useState( true );
 
@@ -46,13 +51,15 @@ const DQAContainer = ( ): React.Node => {
     refetchRemoteObservation,
     isRefetching,
   } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
+
+  // TODO: type result of Observation.mapApiToRealm
   const observation = remoteObservation
     ? Observation.mapApiToRealm( remoteObservation )
     : localObservation;
 
   const fetchMetricsParams = {
     id: observationUUID,
-    fields: "metric,agree,user_id",
+    fields: METRICS_FIELDS,
     ttl: -1,
   };
 
@@ -62,7 +69,7 @@ const DQAContainer = ( ): React.Node => {
     setLoadingDisagree( false );
   }, [] );
 
-  const setLoading = ( metric, vote ) => {
+  const setLoading = ( metric: Metric, vote: boolean ) => {
     setLoadingMetric( metric );
     if ( vote ) {
       setLoadingAgree( true );
@@ -76,7 +83,7 @@ const DQAContainer = ( ): React.Node => {
     refetch: refetchQualityMetrics,
   } = useAuthenticatedQuery(
     ["fetchQualityMetrics", observationUUID],
-    optsWithAuth => fetchQualityMetrics( fetchMetricsParams, optsWithAuth ),
+    optsWithAuth => fetchQualityMetrics<ApiQualityMetric>( fetchMetricsParams, optsWithAuth ),
   );
 
   const combinedQualityMetrics = {
@@ -134,7 +141,7 @@ const DQAContainer = ( ): React.Node => {
     },
   );
 
-  const setMetricVote = ( { metric, vote } ) => {
+  const setMetricVote = ( { metric, vote }: { metric: Metric; vote: boolean} ) => {
     setLoading( metric, vote );
 
     const qualityMetricParams = {
@@ -148,7 +155,7 @@ const DQAContainer = ( ): React.Node => {
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
   // as it's interaction with the API
-  const setNeedsIDVote = ( { vote } ) => {
+  const setNeedsIDVote = ( { vote }: { vote: boolean } ) => {
     setLoading( "needs_id", vote );
 
     const faveParams = {
@@ -176,7 +183,7 @@ const DQAContainer = ( ): React.Node => {
     },
   );
 
-  const removeMetricVote = ( { metric, vote } ) => {
+  const removeMetricVote = ( { metric, vote }: { metric: Metric; vote: boolean } ) => {
     setLoading( metric, vote );
 
     const qualityMetricParams = {
@@ -189,7 +196,7 @@ const DQAContainer = ( ): React.Node => {
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
   // as it's interaction with the API
-  const removeNeedsIDVote = ( { vote } ) => {
+  const removeNeedsIDVote = ( { vote }: { vote: boolean } ) => {
     setLoading( "needs_id", vote );
 
     const unfaveParams = {
@@ -199,7 +206,7 @@ const DQAContainer = ( ): React.Node => {
     unfaveMutate( unfaveParams );
   };
 
-  const ifMajorityAgree = metric => {
+  const ifMajorityAgree = ( metric: Metric ) => {
     const votesOfMetric = combinedQualityMetrics[metric];
     if ( votesOfMetric && votesOfMetric.length > 0 ) {
       const agreeCount = votesOfMetric.filter(
@@ -214,7 +221,7 @@ const DQAContainer = ( ): React.Node => {
     return null;
   };
 
-  const checkTest = metric => {
+  const checkTest = ( metric: Indicator ) => {
     if ( observation ) {
       const obsDataToCheck = {
         date: observation.observed_on,
@@ -262,19 +269,19 @@ const DQAContainer = ( ): React.Node => {
   return (
     <>
       <DataQualityAssessment
-        qualityMetrics={combinedQualityMetrics}
+        checkTest={checkTest}
+        ifMajorityAgree={ifMajorityAgree}
+        isConnected={isConnected}
         loadingAgree={loadingAgree}
         loadingDisagree={loadingDisagree}
         loadingMetric={loadingMetric}
         qualityGrade={observation?.quality_grade}
-        setMetricVote={setMetricVote}
-        removeMetricVote={removeMetricVote}
-        setNeedsIDVote={setNeedsIDVote}
-        removeNeedsIDVote={removeNeedsIDVote}
-        ifMajorityAgree={ifMajorityAgree}
-        checkTest={checkTest}
-        isConnected={isConnected}
+        qualityMetrics={combinedQualityMetrics}
         recheckisConnected={refreshNetInfo}
+        removeMetricVote={removeMetricVote}
+        removeNeedsIDVote={removeNeedsIDVote}
+        setMetricVote={setMetricVote}
+        setNeedsIDVote={setNeedsIDVote}
       />
       <BottomSheet
         headerText={t( "ERROR-VOTING-IN-DQA" )}

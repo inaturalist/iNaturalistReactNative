@@ -19,7 +19,9 @@ import ObservationSound from "realmModels/ObservationSound";
 import Photo from "realmModels/Photo";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useTranslation from "sharedHooks/useTranslation";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -48,6 +50,8 @@ const EvidenceList = ( {
 
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const deleteSoundFromObservation = useStore( state => state.deleteSoundFromObservation );
+  const replacePhotoInObservation = useStore( state => state.replacePhotoInObservation );
+  const photoEditingEnabled = useFeatureFlag( FeatureFlag.PhotoEditingEnabled );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
@@ -255,6 +259,9 @@ const EvidenceList = ( {
         onClose={( ) => setSelectedMediaUri( null )}
         onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}
+        onEditPhoto={photoEditingEnabled
+          ? replacePhotoInObservation
+          : undefined}
         photos={observationPhotos.map( obsPhoto => obsPhoto.photo )}
         showModal={!!selectedMediaUri || deleting}
         sounds={observationSounds.map( obsSound => obsSound.sound )}

@@ -1,3 +1,4 @@
+import type { Metric, Vote } from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import {
   Body1,
@@ -38,22 +39,25 @@ const titleDescription = ( option: string ) => {
       return t( "Data-quality-assessment-description-casual" );
   }
 };
+
+type QualityMetrics = Partial<Record<Metric, Vote[]>>;
+
+export type Indicator = "date" | "location" | "evidence" | "id_supported" | "rank";
+
 interface Props {
-  checkTest: ( metric: string ) => boolean;
-  ifMajorityAgree: ( metric: string ) => boolean | null;
-  isConnected?: boolean;
+  checkTest: ( metric: Indicator ) => boolean;
+  ifMajorityAgree: ( metric: Metric ) => boolean | null;
+  isConnected: boolean | null;
   loadingAgree: boolean;
   loadingDisagree: boolean;
-  loadingMetric: string;
+  loadingMetric: Metric | "none";
   qualityGrade: string;
-  // There's no type definition for qualityMetrics available yet;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  qualityMetrics: any;
+  qualityMetrics: QualityMetrics;
   recheckisConnected: ( ) => void;
-  removeMetricVote: ( ) => void;
-  removeNeedsIDVote: ( ) => void;
-  setMetricVote: ( ) => void;
-  setNeedsIDVote: ( ) => void;
+  removeMetricVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  removeNeedsIDVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  setMetricVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  setNeedsIDVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
 }
 
 const DataQualityAssessment = ( {
@@ -76,7 +80,7 @@ const DataQualityAssessment = ( {
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between";
   const listTextClass = "flex-row shrink gap-x-[11px] mr-[11px] items-center";
 
-  const renderMetricIndicator = ( metric: string ) => {
+  const renderMetricIndicator = ( metric: Metric ) => {
     const ifAgree = ifMajorityAgree( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
@@ -97,7 +101,7 @@ const DataQualityAssessment = ( {
     );
   };
 
-  const renderIndicator = ( metric: string ) => {
+  const renderIndicator = ( metric: Indicator ) => {
     const ifAgree = checkTest( metric );
     if ( ifAgree || ifAgree === null ) {
       return (

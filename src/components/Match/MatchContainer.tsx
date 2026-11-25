@@ -23,6 +23,7 @@ import React, {
   useEffect, useMemo, useReducer, useRef, useState,
 } from "react";
 import type { ScrollView } from "react-native";
+import Photo from "realmModels/Photo";
 import type { RealmPhoto, RealmTaxon } from "realmModels/types";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
@@ -31,10 +32,12 @@ import {
   useExitObservationFlow, useLocationPermission, useSuggestions,
 } from "sharedHooks";
 import useDebugMode from "sharedHooks/useDebugMode";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useObservationLocation from "sharedHooks/useObservationLocation";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
@@ -67,7 +70,8 @@ type Action =
   | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
   | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: FETCH_STATUSES }
   | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: FETCH_STATUSES }
-  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean };
+  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
+  | { type: "SET_EDITED_PHOTO"; scoreImageParams: ImageParamsType };
 
 const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
@@ -113,6 +117,14 @@ const reducer = ( state: State, action: Action ): State => {
           action.shouldUseEvidenceLocation,
         ),
       };
+    case "SET_EDITED_PHOTO":
+      return {
+        ...state,
+        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+        scoreImageParams: action.scoreImageParams,
+        queryKey: getQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
+      };
     default:
       throw new Error( );
   }
@@ -127,6 +139,8 @@ const MatchContainer = ( ) => {
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const replacePhotoInObservation = useStore( state => state.replacePhotoInObservation );
+  const photoEditingEnabled = useFeatureFlag( FeatureFlag.PhotoEditingEnabled );
   const navigation = useNavigation<
     NoBottomTabStackScreenProps<"Match">["navigation"] &
     TabStackScreenProps<"Match">["navigation"]
@@ -142,6 +156,11 @@ const MatchContainer = ( ) => {
 
   const observationPhoto = obsPhotos?.[0]?.photo?.url
     || obsPhotos?.[0]?.photo?.localFilePath;
+  // While the first photo has edits waiting for the media viewer to close,
+  // keep identifying the photo as it was, so suggestions don't change behind
+  // the viewer. Closing the viewer identifies the edited photo
+  const [photoBeforeEdits, setPhotoBeforeEdits] = useState<string>( );
+  const photoToIdentify = photoBeforeEdits || observationPhoto;
 
   const realm = useRealm( );
   const exitObservationFlow = useExitObservationFlow( {
@@ -241,7 +260,7 @@ const MatchContainer = ( ) => {
     suggestions,
     usingOfflineSuggestions,
     refetchSuggestions,
-  } = useSuggestions( observationPhoto, {
+  } = useSuggestions( photoToIdentify, {
     shouldFetchOnlineSuggestions,
     onFetchError,
     onFetched,
@@ -394,6 +413,30 @@ const MatchContainer = ( ) => {
     shouldUseEvidenceLocation,
   ] );
 
+  // Edited copies replace the originals in the observation. Only the first
+  // photo is identified, so only its edits need new suggestions
+  const editPhotoInViewer = useCallback( ( uri: string, newLocalFilePath: string ) => {
+    const firstPhotoUri = Photo.getLocalPhotoUri( obsPhotos?.[0]?.photo?.localFilePath );
+    if ( uri === firstPhotoUri ) {
+      setPhotoBeforeEdits( photo => photo || observationPhoto );
+    }
+    replacePhotoInObservation( uri, newLocalFilePath );
+  }, [obsPhotos, observationPhoto, replacePhotoInObservation] );
+
+  const identifyEditedPhoto = useCallback( async ( ) => {
+    if ( !photoBeforeEdits ) return;
+    const newImageParams = await createUploadParams( observationPhoto, shouldUseEvidenceLocation );
+    dispatch( { type: "SET_EDITED_PHOTO", scoreImageParams: newImageParams } );
+    setPhotoBeforeEdits( undefined );
+    // The chosen suggestion was for the photo before it was edited
+    setSelectedSuggestionId( undefined );
+  }, [
+    createUploadParams,
+    observationPhoto,
+    photoBeforeEdits,
+    shouldUseEvidenceLocation,
+  ] );
+
   useEffect( ( ) => {
     if ( !hasLoadedRef.current
       // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
@@ -489,6 +532,10 @@ const MatchContainer = ( ) => {
           iconicTaxon={iconicTaxon}
           setIconicTaxon={setIconicTaxon}
           taxonToSave={taxon}
+          onEditPhoto={photoEditingEnabled
+            ? editPhotoInViewer
+            : undefined}
+          onMediaViewerClosed={identifyEditedPhoto}
         />
         {renderPermissionsGate( {
           // If the user grants location permission while on this screen,

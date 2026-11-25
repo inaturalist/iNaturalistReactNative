@@ -40,6 +40,9 @@ interface Props {
   onDeletePhoto: ( uri: string ) => void;
   onClose: ( ) => void;
   onDeleteSound: ( uri: string ) => void;
+  // Only offered for photos that exist locally and have not been uploaded, for now
+  onCropPhoto?: ( localFilePath: string ) => void;
+  onRotatePhoto?: ( localFilePath: string ) => void;
   photos: Omit<PhotoItem, "type">[];
   sounds?: Omit<SoundItem, "type">[];
   selectedMediaIndex: number;
@@ -53,6 +56,8 @@ const MainMediaDisplay = ( {
   onDeletePhoto,
   onDeleteSound,
   onClose,
+  onCropPhoto,
+  onRotatePhoto,
   photos,
   sounds = [],
   selectedMediaIndex,
@@ -79,6 +84,12 @@ const MainMediaDisplay = ( {
   const renderPhoto = ( photo: PhotoItem ) => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
+    const { localFilePath } = photo;
+    // Editing is offered wherever the screen handles it, separately from
+    // deleting for now, and only for photos that haven't been uploaded
+    const canEditPhoto = ( !!onRotatePhoto || !!onCropPhoto )
+      && !photo.url
+      && !!localFilePath;
     return (
       <View className="flex-1">
         <CustomImageZoom
@@ -86,6 +97,24 @@ const MainMediaDisplay = ( {
           setZooming={setZooming}
           selectedMediaIndex={selectedMediaIndex}
         />
+        {canEditPhoto && (
+          <View className="absolute bottom-4 left-4 gap-[15px]">
+            {onRotatePhoto && (
+              <TransparentCircleButton
+                onPress={( ) => onRotatePhoto( localFilePath )}
+                icon="rotate-photo"
+                accessibilityLabel={t( "Rotate-photo" )}
+              />
+            )}
+            {onCropPhoto && (
+              <TransparentCircleButton
+                onPress={( ) => onCropPhoto( localFilePath )}
+                icon="crop"
+                accessibilityLabel={t( "Crop-photo" )}
+              />
+            )}
+          </View>
+        )}
         {
           editable
             ? (
