@@ -70,7 +70,6 @@ export type SharedStackParamList = {
       "PhotoSharing" |
       "GroupPhotos";
     entryScreen?: "CameraWithDevice" | "GroupPhotos";
-    // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   } | undefined;
   // From MatchContainer
@@ -208,7 +207,6 @@ export type SharedStackParamList = {
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type OnboardingStackParamList = {
   // The carousel shown while FeatureFlag.OnboardingV2Enabled is off
   Onboarding: undefined;
@@ -403,7 +401,6 @@ export type BaseNoBottomTabStackParamList = {
     lastScreen?: "Camera";
     fromAICamera?: boolean;
     skipGroupPhotos?: boolean;
-    // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
   // From AddObsButton
@@ -420,7 +417,6 @@ export type BaseNoBottomTabStackParamList = {
   Camera: {
     addEvidence?: boolean;
     camera?: "AI" | "Standard";
-    // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
   // From AddObsButton
@@ -431,7 +427,6 @@ export type BaseNoBottomTabStackParamList = {
   // { addEvidence: true }
   SoundRecorder: {
     addEvidence?: boolean;
-    // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
   // From PhotoSharing

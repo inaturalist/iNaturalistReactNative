@@ -41,7 +41,6 @@ const SmallGridObsItem = ( {
       source={photoUri
         ? { uri: photoUri }
         : undefined}
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{ width, height }}
       useShortGradient
       white

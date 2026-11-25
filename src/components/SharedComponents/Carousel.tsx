@@ -42,7 +42,6 @@ const Carousel = <T, >( props: CarouselProps<T> ) => (
       );
       props.onSlideScroll( newIndex );
     }}
-    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />
 );

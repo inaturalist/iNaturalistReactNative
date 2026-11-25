@@ -41,7 +41,6 @@ function renderOtherDataSection( props = {} ) {
     <OtherDataSection
       currentObservation={factory( "LocalObservation" )}
       updateObservationKeys={mockUpdateObservationKeys}
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     />,
   );

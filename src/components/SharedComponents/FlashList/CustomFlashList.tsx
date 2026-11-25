@@ -174,7 +174,6 @@ const CustomFlashList = <T, >( props: FlashListProps<T> & { ref?: React.Ref<Flas
       // Fixes MOB-1464 where successful upload creates reordering issues and sometimes gaps
       // https://shopify.github.io/flash-list/docs/known-issues#3-data-re-ordering-can-cause-items-to-move
       maintainVisibleContentPosition={{ disabled: true }}
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
     />
   );

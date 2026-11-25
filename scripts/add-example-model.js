@@ -117,7 +117,7 @@ const downloadIOS = async () => {
   console.log( "iOS done!" );
 };
 
-// eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs
   .usage( "Usage: $0 [args]" )
   .option( "androidFlavor", {
@@ -128,7 +128,6 @@ yargs
   .command(
     "$0",
     "Download example model files if not present",
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     () => {},
     async argv => {
       await downloadAndroid( argv );

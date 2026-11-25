@@ -134,9 +134,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   };
 
   const continueTo = async targetStepId => {
-    // eslint-disable-next-line no-restricted-syntax
     for ( const stepId of STEP_IDS.slice( 0, STEP_IDS.indexOf( targetStepId ) ) ) {
-      // eslint-disable-next-line no-await-in-loop
       await continueFrom( stepId );
     }
     return screen.findByTestId( `Onboarding.${targetStepId}` );
@@ -272,9 +270,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     + "sign-up steps), asks for location, then shows my observations",
     async ( ) => {
       renderApp( );
-      // eslint-disable-next-line no-restricted-syntax
       for ( const [stepId, showsProgress, hasClose] of STEPS_IN_ORDER ) {
-        // eslint-disable-next-line no-await-in-loop
         const step = await screen.findByTestId( `Onboarding.${stepId}` );
         if ( showsProgress ) {
           expect( within( step ).getByTestId( "Onboarding.progress" ) ).toBeVisible( );
@@ -286,7 +282,6 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
         } else {
           expect( within( step ).queryByTestId( `Onboarding.${stepId}.close` ) ).toBeNull( );
         }
-        // eslint-disable-next-line no-await-in-loop
         await continueFrom( stepId );
       }
       expect( requestMultiple ).toHaveBeenCalledWith( LOCATION_PERMISSIONS );
@@ -330,9 +325,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
     async ( ) => {
       const { navigationContainer } = renderAppWithNavigationContainer( );
       const impactIndex = STEP_IDS.indexOf( "impact" );
-      // eslint-disable-next-line no-restricted-syntax
       for ( const stepId of STEP_IDS.slice( 0, impactIndex ) ) {
-        // eslint-disable-next-line no-await-in-loop
         await continueFrom( stepId );
       }
       expect( await screen.findByTestId( "Onboarding.impact" ) ).toBeVisible( );

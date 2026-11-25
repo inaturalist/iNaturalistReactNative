@@ -102,7 +102,6 @@ const SuggestionsFooter = ( {
         </Body1>
       ) }
       {/* eslint-disable i18next/no-literal-string */}
-      {/* eslint-disable react/jsx-one-expression-per-line */}
       {/* eslint-disable max-len */}
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
@@ -152,7 +151,6 @@ const SuggestionsFooter = ( {
         </View>
       )}
       {/* eslint-enable i18next/no-literal-string */}
-      {/* eslint-enable react/jsx-one-expression-per-line */}
       {/* eslint-enable max-len */}
     </View>
   );

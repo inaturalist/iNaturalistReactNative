@@ -7,7 +7,6 @@ import InatText from "./InatText";
 
 // This is the same as List1 Typography in Figma
 const Body1 = ( props: TextProps ) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
   <InatText {...props} className={classnames( "text-base", tailwindFontMedium, props.className )} />
 );
 

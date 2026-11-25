@@ -227,7 +227,6 @@ const FullPageWebView = ( ) => {
       <ScreenShell>
         {( !params.loggedIn || source.headers ) && (
           <WebView
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
             onMessage={() => { }} // onMessage prop required to inject JS into webview
             injectedJavaScript={fontScalingJS}
             className="h-full w-full flex-1"

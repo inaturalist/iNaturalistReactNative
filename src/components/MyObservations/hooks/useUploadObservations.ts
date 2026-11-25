@@ -33,7 +33,6 @@ export const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
 
-// eslint-disable-next-line no-undef
 export default ( canUpload: boolean ) => {
   const realm = useRealm( );
   const queryClient = useQueryClient( );

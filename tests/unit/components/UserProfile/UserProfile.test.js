@@ -66,7 +66,6 @@ jest.mock(
   () => function MockContainer( props ) {
     const MockName = "mock-scrollview-with-footer";
     // No testID here because the component needs the correct one to work
-    // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
   },
 );
@@ -114,7 +113,6 @@ describe( "UserProfile", () => {
     ).toBeTruthy( );
     const userIcon = screen.getByTestId( "UserIcon.photo" );
     expect( userIcon ).toBeTruthy( );
-    // eslint-disable-next-line testing-library/no-node-access
     expect( userIcon.children[0].props.source ).toHaveProperty( "uri", mockUser.icon_url );
   } );
 

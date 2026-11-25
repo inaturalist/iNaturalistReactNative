@@ -26,7 +26,6 @@ const Mortal = ( { children }: PropsWithChildren ) => {
 
   if ( !isVisible ) return null;
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{ children }</>;
 };
 

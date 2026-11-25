@@ -15,7 +15,6 @@ const renderRow = ( props = {} ) => renderComponent(
     onEdit={jest.fn( )}
     onRemove={jest.fn( )}
     removeAccessibilityLabel="Remove taxon filter"
-    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   >
     <Text>{CHILD_LABEL}</Text>

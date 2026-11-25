@@ -1,5 +1,4 @@
 import { createRealmContext } from "@realm/react";
-// eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 
 // This is just some debug code that might be useful for investigating
@@ -14,6 +13,5 @@ import realmConfig from "realmModels/index";
 const RealmContext = createRealmContext( realmConfig );
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   RealmContext,
 };

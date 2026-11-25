@@ -39,7 +39,6 @@ import colors from "styles/tailwindColors";
 const { useRealm } = RealmContext;
 
 /* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/no-unescaped-entities */
 const Misc = ( ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -53,7 +52,6 @@ const Misc = ( ) => {
     flags: [],
     id: 324447975,
     taxon: {
-      // eslint-disable-next-line max-len
       default_photo: {
         attribution: "(c) Ján Svetlík, some rights reserved (CC BY-NC-ND)", id: 3688643, license_code: "cc-by-nc-nd", url: "https://inaturalist-open-data.s3.amazonaws.com/photos/3688643/square.jpg",
       },

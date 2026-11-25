@@ -33,7 +33,6 @@ const InatText = ( { className, style, ...props }: ComponentProps<typeof Text> )
   return (
     <Text
       maxFontSizeMultiplier={2}
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       className={mergedClassName}
       style={[

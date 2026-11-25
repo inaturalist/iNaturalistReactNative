@@ -17,7 +17,6 @@ import { Alert } from "react-native";
 import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/no-unescaped-entities */
 const Buttons = ( ) => {
   const [loading, setLoading] = useState( false );
   return (

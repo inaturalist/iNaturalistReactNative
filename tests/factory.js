@@ -7,7 +7,6 @@ import path from "path";
 const pathToFactories = path.join( __dirname, "factories" );
 fs.readdirSync( pathToFactories ).forEach( file => {
   const factoryName = path.basename( file, ".js" );
-  // eslint-disable-next-line global-require, import/no-dynamic-require
   require( `./factories/${factoryName}` );
 } );
 

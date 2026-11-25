@@ -14,7 +14,6 @@ import {
 } from "./ObsListItemDemo";
 
 /* eslint-disable i18next/no-literal-string */
-/* eslint-disable react/no-unescaped-entities */
 const ObsGridItemDemo = ( ) => (
   <ScrollViewWrapper>
     <View className="p-2">

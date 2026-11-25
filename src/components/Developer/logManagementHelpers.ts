@@ -130,9 +130,7 @@ const concatenateLogsForSharing = async () => {
     .reverse();
 
   for ( const { path } of mostRecentLogs ) {
-    // eslint-disable-next-line no-await-in-loop
     const chunkContents = await readFile( path );
-    // eslint-disable-next-line no-await-in-loop
     await appendFile( temporaryLogForSharingPath, chunkContents );
   }
 };
@@ -162,7 +160,6 @@ async function getRecentLogContentPreview() {
   let aggregatedContents = "";
   for ( const logPath of recentLogsPaths ) {
     // intentionally making file reads serial
-    // eslint-disable-next-line no-await-in-loop
     const contents = await readFile( logPath );
     aggregatedContents += contents;
   }

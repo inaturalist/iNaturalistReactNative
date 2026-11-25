@@ -79,7 +79,6 @@ describe( "Checkbox", () => {
         accessibilityLabel="Checkmark"
         text="Checkmark text"
         isChecked={checked}
-        // eslint-disable-next-line no-return-assign
         onPress={( ) => ( checked = !checked )}
       />,
     );

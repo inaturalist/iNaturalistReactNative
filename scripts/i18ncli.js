@@ -42,7 +42,7 @@ const writeLoadTranslations = async ( ) => {
   out.write( "\n];\n" );
 };
 
-// eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs
   .usage( "Usage: $0 <cmd> [args]" )
   .option( "verbose", {
@@ -53,7 +53,6 @@ yargs
   .command(
     "build",
     "Prepare existing localizations for use in the app",
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     async argv => {
       // Make sure all files are iNat locales before validating and
@@ -103,7 +102,6 @@ yargs
   .command(
     "prepare-fastlane-metadata",
     "Prepare existing localizations for uploading metadata via Fastlane",
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ( ) => {},
     async argv => {
       console.log( "Renaming directories..." );
