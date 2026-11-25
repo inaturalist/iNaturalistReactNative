@@ -72,4 +72,16 @@ describe( "CommunityTaxon", () => {
       params: { id: mockTaxon.id },
     } ) );
   } );
+
+  it( "tells screen readers the taxon button opens taxon details", async () => {
+    renderComponent(
+      <CommunityTaxon
+        observation={{
+          taxon: mockTaxon,
+        }}
+      />,
+    );
+    const button = await screen.findByTestId( `ObsDetails.taxon.${mockTaxon.id}` );
+    expect( screen.getByHintText( "Navigates to taxon details" ) ).toBe( button );
+  } );
 } );

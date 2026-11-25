@@ -1,4 +1,5 @@
 /* eslint-disable arrow-body-style */
+/* eslint-disable max-len */
 /* eslint-disable i18next/no-literal-string */
 import {
   CachesDirectoryPath,

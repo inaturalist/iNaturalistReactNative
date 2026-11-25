@@ -20,6 +20,7 @@ const TextFieldInput = ( { obsFieldId }: Props ) => {
       placeholder={t( "Enter-a-response" )}
       placeholderTextColor={colors.darkGrayDisabled}
       multiline
+      scrollEnabled={false}
       value={value}
       onChangeText={setValue}
     />

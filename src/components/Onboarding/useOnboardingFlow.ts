@@ -60,7 +60,13 @@ const useOnboardingFlow = ( ) => {
     } );
   };
 
+  // Opens the sign-up Learn More screen on top of the step
+  const learnMore = ( ) => {
+    navigation.navigate( "LoginStackNavigator", { screen: "LearnMore" } );
+  };
+
   return {
+    learnMore,
     logIn,
     proceedToNext,
     stepId,

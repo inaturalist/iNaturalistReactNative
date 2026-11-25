@@ -1,6 +1,15 @@
-import { StyleSheet } from "react-native";
+import type { ViewStyle } from "react-native";
 
-const DEFAULT_SHADOW = {
+interface ShadowOptions {
+  elevation: number;
+  offsetHeight: number;
+  offsetWidth: number;
+  shadowColor: string;
+  shadowOpacity: number;
+  shadowRadius: number;
+}
+
+const DEFAULT_SHADOW: ShadowOptions = {
   elevation: 5,
   offsetHeight: 2,
   offsetWidth: 0,
@@ -17,7 +26,7 @@ export const getShadowStyle = ( {
   shadowOpacity,
   shadowRadius,
   elevation,
-} ) => StyleSheet.create( {
+}: ShadowOptions ): ViewStyle => ( {
   // iOS + Android >= 28
   shadowColor,
 
@@ -26,19 +35,16 @@ export const getShadowStyle = ( {
     width: offsetWidth,
     height: offsetHeight,
   },
-  // $FlowIssue[incompatible-shape]
   shadowOpacity,
-  // $FlowIssue[incompatible-shape]
   shadowRadius,
 
   // Android-only
-  // $FlowIssue[incompatible-shape]
   elevation,
 } );
 
 export const dropShadow = getShadowStyle( DEFAULT_SHADOW );
 
-export function getShadow( options = {} ) {
+export function getShadow( options: Partial<ShadowOptions> = {} ) {
   return getShadowStyle( {
     ...DEFAULT_SHADOW,
     ...options,

@@ -168,3 +168,9 @@ export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
 export const SPECIES_COUNTS_DETAILS_FIELDS = {
   taxon: LIMITED_TAXON_FIELDS,
 };
+
+export const METRICS_FIELDS = {
+  metric: true,
+  agree: true,
+  user_id: true,
+};

@@ -9,7 +9,7 @@ import type { OnboardingStepId } from "./onboardingSteps";
 import useOnboardingFlow from "./useOnboardingFlow";
 
 // Steps whose finished design offers a Log in button
-const STEPS_WITH_LOG_IN: readonly OnboardingStepId[] = ["welcome", "signup_email"];
+const STEPS_WITH_LOG_IN: readonly OnboardingStepId[] = ["signup_email"];
 
 // Stands in for each step until its ticket builds it; delete once none use it
 const OnboardingPlaceholderStep = ( ) => {

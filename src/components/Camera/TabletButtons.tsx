@@ -8,6 +8,7 @@ import type { AnimatedStyle } from "react-native-reanimated";
 import type { CapturePhotoSettings } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
+import CameraTips from "./Buttons/CameraTips";
 import Flash from "./Buttons/Flash";
 import GreenCheckmark from "./Buttons/GreenCheckmark";
 import Location from "./Buttons/Location";
@@ -110,6 +111,10 @@ const TabletButtons = ( {
   return (
     <View className={classnames( tabletCameraOptionsClasses )} pointerEvents="box-none">
       { photosTaken && <CameraButtonPlaceholder extraClassName="mb-[25px]" /> }
+      <CameraTips
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        cameraTipsClassName="m-0 mb-[25px]"
+      />
       {!isDefaultMode && (
         <Location
           rotatableAnimatedStyle={rotatableAnimatedStyle}

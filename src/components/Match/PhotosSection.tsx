@@ -20,6 +20,9 @@ interface Props {
   obsPhotos: RealmObservationPhoto[];
   navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void;
   hideTaxonPhotos?: boolean;
+  // Offers rotate and crop in the media viewer for photos not yet uploaded
+  onEditPhoto?: ( uri: string, newLocalFilePath: string ) => void;
+  onMediaViewerClosed?: ( ) => void;
 }
 
 const PhotosSection = ( {
@@ -28,6 +31,8 @@ const PhotosSection = ( {
   obsPhotos,
   navToTaxonDetails,
   hideTaxonPhotos,
+  onEditPhoto,
+  onMediaViewerClosed,
 }: Props ) => {
   const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -220,7 +225,11 @@ const PhotosSection = ( {
       {!hideTaxonPhotos && bestTaxonPhotos.length > 0 && renderTaxonPhotos( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => setMediaViewerVisible( false )}
+        onClose={( ) => {
+          setMediaViewerVisible( false );
+          onMediaViewerClosed?.( );
+        }}
+        onEditPhoto={onEditPhoto}
         uri={observationPhoto}
         photos={observationPhotos}
       />

@@ -1,5 +1,3 @@
-// @flow
-
 import {
   ActivityIndicator,
   Body3,
@@ -7,20 +5,38 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
+import type { UserPojo } from "realmModels/User";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  metric: string,
-  votes: [Object],
-  loadingAgree: boolean,
-  loadingDisagree: boolean,
-  loadingMetric: ?string,
-  setVote: Function,
-  removeVote: Function
+// TODO: this is not correct, but depends on Observation.mapApiToRealm being typed
+// TWhat comes in here are either { agree } or { vote_flag } shapes.
+export interface Vote {
+  user_id: number;
+  agree: boolean;
+  vote_flag: boolean;
 }
 
-const getUserVote = ( currentUser, metric, votes ) => {
+export type Metric =
+  | "date"
+  | "location"
+  | "wild"
+  | "evidence"
+  | "recent"
+  | "subject"
+  | "needs_id";
+
+interface Props {
+  metric: Metric;
+  votes?: Vote[];
+  loadingAgree: boolean;
+  loadingDisagree: boolean;
+  loadingMetric: Metric | "none";
+  setVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+  removeVote: ( { metric, vote }: { metric: Metric; vote: boolean } ) => void;
+}
+
+const getUserVote = ( currentUser: UserPojo | null, metric: Metric, votes?: Vote[] ) => {
   if ( votes && votes.length > 0 ) {
     const match = votes.find( element => ( element.user_id === currentUser?.id ) );
     if ( match ) {
@@ -33,7 +49,7 @@ const getUserVote = ( currentUser, metric, votes ) => {
   return null;
 };
 
-const renderVoteCount = ( status, metric, votes ) => {
+const renderVoteCount = ( status: boolean, metric: Metric, votes?: Vote[] ) => {
   if ( !votes ) return null;
 
   const count = votes
@@ -57,7 +73,7 @@ const DQAVoteButtons = ( {
   loadingMetric,
   setVote,
   removeVote,
-}: Props ): React.Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const userAgrees = getUserVote( currentUser, metric, votes );
@@ -125,11 +141,11 @@ const DQAVoteButtons = ( {
   return (
     <View className="flex-row items-center justify-between w-[97px] gap-x-[11px]">
       <View className="flex-row items-center w-1/2">
-        {renderAgree()}
+        {renderAgree( )}
         {renderVoteCount( true, metric, votes )}
       </View>
       <View className="flex-row items-center w-1/2">
-        {renderDisagree()}
+        {renderDisagree( )}
         {renderVoteCount( false, metric, votes )}
       </View>
     </View>

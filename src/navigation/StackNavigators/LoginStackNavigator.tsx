@@ -6,7 +6,7 @@ import LearnMore from "components/LoginSignUp/LearnMore";
 import Login from "components/LoginSignUp/Login";
 import SignUp from "components/LoginSignUp/SignUp";
 import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
-import { CloseButton } from "components/SharedComponents";
+import { BackButton, CloseButton } from "components/SharedComponents";
 import {
   hideHeaderLeft,
   showSimpleCustomHeader,
@@ -32,6 +32,8 @@ const LOGIN_SCREEN_OPTIONS = {
   },
 } as const;
 
+const LoginBackButton = ( ) => <BackButton color="white" inCustomHeader />;
+
 const LoginStackNavigator = ( ) => (
   <Stack.Navigator>
     <Stack.Screen
@@ -56,7 +58,14 @@ const LoginStackNavigator = ( ) => (
     <Stack.Screen
       name="LearnMore"
       component={LearnMore}
-      options={LOGIN_SCREEN_OPTIONS}
+      // iOS only shows its native back button when this stack has a screen
+      // to go back to, so Learn More opened straight from onboarding needs
+      // its own, which leaves the stack
+      options={( { navigation, route } ) => (
+        navigation.getState( ).routes[0]?.key === route.key
+          ? { ...LOGIN_SCREEN_OPTIONS, headerLeft: LoginBackButton }
+          : LOGIN_SCREEN_OPTIONS
+      )}
     />
     <Stack.Screen
       name="SignUpConfirmation"

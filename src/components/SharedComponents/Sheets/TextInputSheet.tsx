@@ -1,4 +1,5 @@
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import type { ApiUser } from "api/types";
 import { fontRegular } from "appConstants/fontFamilies";
 import {
   Body3, BottomSheet, Button,
@@ -24,6 +25,8 @@ interface Props {
   confirm: ( input: string | undefined ) => boolean;
   description?: string;
   mentionsEnabled?: boolean;
+  // Users to suggest for @mentions, e.g. current participants on an observation
+  mentionSuggestions?: ApiUser[];
   onPressClose: ( ) => void;
   headerText: string;
   initialInput?: string;
@@ -63,6 +66,7 @@ const TextInputSheet = ( {
   confirm,
   description,
   mentionsEnabled = false,
+  mentionSuggestions,
   onPressClose,
   headerText,
   initialInput,
@@ -137,6 +141,7 @@ const TextInputSheet = ( {
                 onChangeText={setInput}
                 placeholder={placeholder}
                 style={[inputStyle, textInputStyle]}
+                suggestedUsers={mentionSuggestions}
                 testID="TextInputSheet.notes"
                 defaultValue={initialInput ?? ""}
               />

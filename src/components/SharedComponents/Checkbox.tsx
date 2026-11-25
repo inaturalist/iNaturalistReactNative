@@ -63,7 +63,7 @@ const Checkbox = ( {
       iconStyle={iconStyle}
       innerIconStyle={innerIconStyle}
       accessibilityLabel={accessibilityLabel}
-      accessibilityRole="radio"
+      accessibilityRole="checkbox"
       accessibilityState={{
         checked: isChecked,
       }}

@@ -1,5 +1,18 @@
 import tryToReplaceWithLocalTaxon from "components/Match/helpers/tryToReplaceWithLocalTaxon";
+import { UpdateMode } from "realm";
+import Taxon from "realmModels/Taxon";
 import factory from "tests/factory";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
+
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier,
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
 
 describe( "tryToReplaceWithLocalTaxon", () => {
   it( "should return original suggestion when local taxa array is empty", () => {
@@ -54,5 +67,29 @@ describe( "tryToReplaceWithLocalTaxon", () => {
     const result = tryToReplaceWithLocalTaxon( localTaxa, suggestion );
 
     expect( result ).toEqual( { ...suggestion, taxon: { ...suggestion.taxon, ...localTaxon } } );
+  } );
+
+  it( "should keep the taxon's photo readable after the taxon is saved again", () => {
+    const realm = global.mockRealms[mockRealmIdentifier];
+    const apiTaxon = factory( "RemoteTaxon", {
+      rank: "species",
+      rank_level: 10,
+      default_photo: { id: 678, url: "https://static.inaturalist.org/photos/678/square.jpg" },
+    } );
+    // Online suggestions save their taxa to Realm each time they arrive
+    const saveTaxon = ( ) => realm.write( ( ) => {
+      const taxonForUpdate = Taxon.forUpdate( Taxon.mapApiToRealm( apiTaxon ) );
+      realm.create( "Taxon", taxonForUpdate, UpdateMode.Modified );
+    } );
+    saveTaxon( );
+    const suggestion = { combined_score: 95, taxon: { id: apiTaxon.id, name: apiTaxon.name } };
+
+    const result = tryToReplaceWithLocalTaxon(
+      realm.objects( "Taxon" ).filtered( "id IN $0", [apiTaxon.id] ),
+      suggestion,
+    );
+    saveTaxon( );
+
+    expect( result.taxon.default_photo.url ).toEqual( apiTaxon.default_photo.url );
   } );
 } );
