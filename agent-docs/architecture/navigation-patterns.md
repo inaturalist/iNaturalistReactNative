@@ -8,7 +8,7 @@ React Navigation 7 with nested NativeStack and BottomTab navigators. All four bo
 
 ```
 RootStackNavigator (NativeStack)
-├── OnboardingStackNavigator (registered first, as the initial route, only when !onboardingShown)
+├── OnboardingStackNavigator (registered first, as the initial route, only when !onboardingShown, or when onboarding v2 is on and a signed-out install hasn't finished it)
 ├── BottomTabNavigator (always registered, so it can sit beneath Login when onboarding exits)
 │   ├── MenuTab → TabStackNavigator (initialRouteName: Menu)
 │   ├── ExploreTab → TabStackNavigator (initialRouteName: RootExplore)

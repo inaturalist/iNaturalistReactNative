@@ -4,7 +4,7 @@ import {
 import type { OnboardingStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import { BackHandler } from "react-native";
-import { useOnboardingShown } from "sharedHelpers/installData";
+import { useOnboardingShown, useOnboardingV2Shown } from "sharedHelpers/installData";
 
 import type { OnboardingStepId } from "./onboardingSteps";
 import { getNextStepId, getStepBlocksBack, isOnboardingStepId } from "./onboardingSteps";
@@ -13,6 +13,7 @@ const useOnboardingFlow = ( ) => {
   const navigation = useNavigation<OnboardingStackScreenProps<OnboardingStepId>["navigation"]>( );
   const { name } = useRoute( );
   const [, setOnboardingShown] = useOnboardingShown( );
+  const [, setOnboardingV2Shown] = useOnboardingV2Shown( );
 
   if ( !isOnboardingStepId( name ) ) {
     throw new Error( `useOnboardingFlow used outside an onboarding step: ${name}` );
@@ -41,6 +42,7 @@ const useOnboardingFlow = ( ) => {
       } ),
     );
     setOnboardingShown( true );
+    setOnboardingV2Shown( true );
   };
 
   const proceedToNext = ( ) => {

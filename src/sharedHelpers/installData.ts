@@ -9,6 +9,7 @@ import * as uuid from "uuid";
 const MMKV_ID = "install-data";
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
+const ONBOARDING_V2_SHOWN = "onboardingV2Shown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 export const LAST_CRASH_DATA = "LAST_CRASH_DATA";
 const ENVIRONMENT_OVERRIDE = "environmentOverride";
@@ -50,6 +51,10 @@ export function getInstallID( ) {
 // used in a component, so no need to expose any other getters/setters
 export function useOnboardingShown() {
   return useMMKVBoolean( ONBOARDING_SHOWN, store );
+}
+
+export function useOnboardingV2Shown() {
+  return useMMKVBoolean( ONBOARDING_V2_SHOWN, store );
 }
 
 // The baked-in environment prefix (e.g. "STAGING") the app should read
