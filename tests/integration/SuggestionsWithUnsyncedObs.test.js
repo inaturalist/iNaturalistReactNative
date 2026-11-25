@@ -101,7 +101,8 @@ jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   },
 } ) );
 
-const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
+const mockUserLocation = { latitude: 56, longitude: 9, accuracy: 8 };
+const mockFetchUserLocation = jest.fn( () => mockUserLocation );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation(),
@@ -492,6 +493,11 @@ describe( "from AICamera directly", ( ) => {
   } );
 
   describe( "suggestions without location permissions", ( ) => {
+    afterEach( ( ) => {
+      jest.mocked( useLocationPermission.default ).mockRestore( );
+      mockFetchUserLocation.mockImplementation( ( ) => mockUserLocation );
+    } );
+
     it( "should not call score_image with location parameters on first render"
       + " if location permission not given", async ( ) => {
       jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
@@ -521,6 +527,12 @@ describe( "from AICamera directly", ( ) => {
   } );
 
   describe( "suggestions while offline", ( ) => {
+    // otherwise the offline mock leaks into later tests
+    const originalUseNetInfo = useNetInfo.getMockImplementation( );
+    afterEach( ( ) => {
+      useNetInfo.mockImplementation( originalUseNetInfo );
+    } );
+
     it( "should not call score_image and should not show any location buttons", async ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
