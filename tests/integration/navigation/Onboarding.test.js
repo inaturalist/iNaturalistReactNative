@@ -3,43 +3,51 @@ import { NavigationContainerRefContext } from "@react-navigation/native";
 import {
   act, fireEvent, screen, userEvent, within,
 } from "@testing-library/react-native";
+import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useContext } from "react";
 import { Alert, BackHandler, Image } from "react-native";
 import { requestMultiple, RESULTS } from "react-native-permissions";
+import Observation from "realmModels/Observation";
 import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import factory from "tests/factory";
 import { renderApp, renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
+import { signIn, signOut } from "tests/helpers/user";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
 
-// Shared across every caller, like the real MMKV-backed hook, so the root
-// navigator sees the carousel set the flag
-const mockOnboarding = { shown: false, listeners: new Set( ) };
+// Shared across every caller, like the real MMKV-backed hooks, so the root
+// navigator sees the onboarding steps set them
+const mockOnboarding = { shown: false, v2Shown: false, listeners: new Set( ) };
 jest.mock( "sharedHelpers/installData", ( ) => {
   const actual = jest.requireActual( "sharedHelpers/installData" );
   const { useCallback, useEffect, useState } = jest.requireActual( "react" );
+  // Not named use*, so the React Compiler leaves it alone: its output
+  // references a helper jest.mock factories aren't allowed to touch
+  const mockBooleanHook = key => ( ) => {
+    const [value, setValue] = useState( mockOnboarding[key] );
+    useEffect( ( ) => {
+      const listener = ( ) => setValue( mockOnboarding[key] );
+      mockOnboarding.listeners.add( listener );
+      listener( );
+      return ( ) => { mockOnboarding.listeners.delete( listener ); };
+    }, [] );
+    const setMockBoolean = useCallback( newValue => {
+      mockOnboarding[key] = newValue;
+      mockOnboarding.listeners.forEach( listener => listener( ) );
+    }, [] );
+    return [value, setMockBoolean];
+  };
   return {
     ...actual,
-    useOnboardingShown: ( ) => {
-      const [shown, setShown] = useState( mockOnboarding.shown );
-      useEffect( ( ) => {
-        const listener = ( ) => setShown( mockOnboarding.shown );
-        mockOnboarding.listeners.add( listener );
-        listener( );
-        return ( ) => { mockOnboarding.listeners.delete( listener ); };
-      }, [] );
-      const setOnboardingShown = useCallback( value => {
-        mockOnboarding.shown = value;
-        mockOnboarding.listeners.forEach( listener => listener( ) );
-      }, [] );
-      return [shown, setOnboardingShown];
-    },
+    useOnboardingShown: mockBooleanHook( "shown" ),
+    useOnboardingV2Shown: mockBooleanHook( "v2Shown" ),
     getInstallID: jest.fn( ( ) => "fake-installation-id" ),
     getEnvironmentOverride: jest.fn( ( ) => undefined ),
     setEnvironmentOverride: jest.fn( ( ) => { } ),
@@ -72,6 +80,7 @@ describe( "Onboarding", ( ) => {
   beforeEach( ( ) => {
     jest.useFakeTimers( );
     mockOnboarding.shown = false;
+    mockOnboarding.v2Shown = false;
   } );
 
   afterEach( ( ) => {
@@ -111,6 +120,14 @@ describe( "Onboarding", ( ) => {
     expect(
       await screen.findByText( i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ) ),
     ).toBeVisible( );
+  } );
+  it( "doesn't show onboarding again to a signed-out user who finished it", async ( ) => {
+    mockOnboarding.shown = true;
+    renderApp( );
+    expect(
+      await screen.findByText( i18next.t( "Use-iNaturalist-to-identify-any-living-thing" ) ),
+    ).toBeVisible( );
+    expect( screen.queryByTestId( "OnboardingCarousel" ) ).toBeNull( );
   } );
 } );
 
@@ -247,6 +264,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
   beforeEach( ( ) => {
     jest.useFakeTimers( );
     mockOnboarding.shown = false;
+    mockOnboarding.v2Shown = false;
     setStoreStateFeatureFlags( { [FeatureFlag.OnboardingV2Enabled]: true } );
     requestMultiple.mockReset( );
     requestMultiple.mockImplementation(
@@ -520,6 +538,7 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
 
     it( "closes Login after logging in once onboarding is done", async ( ) => {
       mockOnboarding.shown = true;
+      mockOnboarding.v2Shown = true;
       renderApp( );
       await findMyObservations( );
       await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
@@ -531,12 +550,72 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
 
     it( "opens the existing sign-up form from Login once onboarding is done", async ( ) => {
       mockOnboarding.shown = true;
+      mockOnboarding.v2Shown = true;
       renderApp( );
       await findMyObservations( );
       await actor.press( screen.getByText( i18next.t( "Already-have-an-iNaturalist-account" ) ) );
       await signUpFromLogin( );
       expect( await screen.findByTestId( "Signup.email" ) ).toBeVisible( );
       expect( screen.queryByTestId( "Onboarding.signup_email" ) ).toBeNull( );
+    } );
+  } );
+
+  describe( "for an install that finished the old onboarding", ( ) => {
+    const mockUser = factory( "LocalUser" );
+
+    beforeEach( ( ) => {
+      mockOnboarding.shown = true;
+    } );
+
+    afterEach( async ( ) => {
+      await signOut( );
+    } );
+
+    it( "shows the welcome step when signed out", async ( ) => {
+      renderApp( );
+      expect( await screen.findByTestId( "Onboarding.welcome" ) ).toBeVisible( );
+    } );
+
+    it( "keeps local observations through the steps to my observations", async ( ) => {
+      const observation = factory( "LocalObservation" );
+      await Observation.saveLocalObservationForUpload( observation, global.realm );
+      renderApp( );
+      await continueToLocationStep( );
+      await continueFrom( "location_explainer" );
+      expect( await screen.findByTestId( "CustomTabBar" ) ).toBeVisible( );
+      expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
+      // The global test realm's useQuery returns nothing, so the list can't
+      // show it
+      expect( global.realm.objectForPrimaryKey( "Observation", observation.uuid ) ).not.toBeNull( );
+      expect( mockOnboarding.v2Shown ).toBe( true );
+    } );
+
+    it( "finishes the steps after logging in from welcome", async ( ) => {
+      authenticateUser.mockImplementationOnce( async ( ) => {
+        await signIn( mockUser );
+        return { success: true };
+      } );
+      renderApp( );
+      await logInFrom( "welcome" );
+      await logIn( );
+      await continueFrom( "location_explainer" );
+      expect( await screen.findByTestId( "CustomTabBar" ) ).toBeVisible( );
+      expect( queryMounted( "Onboarding.location_explainer" ) ).toBeNull( );
+      expect( mockOnboarding.v2Shown ).toBe( true );
+    } );
+
+    it( "doesn't show onboarding when signed in", async ( ) => {
+      await signIn( mockUser );
+      renderApp( );
+      expect( await screen.findByTestId( "CustomTabBar" ) ).toBeVisible( );
+      expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
+    } );
+
+    it( "doesn't show onboarding again once the new onboarding is finished", async ( ) => {
+      mockOnboarding.v2Shown = true;
+      renderApp( );
+      expect( await findMyObservations( ) ).toBeVisible( );
+      expect( queryMounted( "Onboarding.welcome" ) ).toBeNull( );
     } );
   } );
 } );

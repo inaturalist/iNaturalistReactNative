@@ -206,6 +206,7 @@ jest.mock( "sharedHelpers/installData", ( ) => ( {
   // most users only ever see once. If we do want to test it, we can redefine
   // this mock
   useOnboardingShown: jest.fn( ( ) => [true, jest.fn()] ),
+  useOnboardingV2Shown: jest.fn( ( ) => [true, jest.fn()] ),
   getInstallID: jest.fn( ( ) => "fake-installation-id" ),
   getEnvironmentOverride: jest.fn( ( ) => undefined ),
   setEnvironmentOverride: jest.fn( ( ) => { } ),

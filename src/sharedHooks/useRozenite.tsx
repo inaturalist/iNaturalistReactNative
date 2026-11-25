@@ -21,6 +21,7 @@ import { openInatUrl, parseInatUrl } from "sharedHelpers/inatUrlNavigation";
 import {
   store as installDataMMKVStorage,
   useOnboardingShown,
+  useOnboardingV2Shown,
 } from "sharedHelpers/installData";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
@@ -60,6 +61,7 @@ HaltedLaunch.displayName = "HaltedLaunch";
 const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
   const [pastedInatUrl, setPastedInatUrl] = useState( "" );
   const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
+  const [onboardingV2Shown, setOnboardingV2Shown] = useOnboardingV2Shown( );
   const navigation = useNavigation();
   const queryClient = useQueryClient();
   useTanStackQueryDevTools( queryClient );
@@ -83,6 +85,10 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
     resolvedValue: photoEditingEnabled,
     setOverride: setPhotoEditingEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.PhotoEditingEnabled );
+  const {
+    resolvedValue: onboardingV2Enabled,
+    setOverride: setOnboardingV2Enabled,
+  } = useFeatureFlagForDebug( FeatureFlag.OnboardingV2Enabled );
 
   const sections = useMemo(
     () => [
@@ -109,6 +115,15 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             value: !!onboardingShown,
             onUpdate: () => {
               setOnboardingShown( !onboardingShown );
+            },
+          },
+          {
+            id: "onboarding-v2-shown",
+            type: "toggle",
+            title: "Onboarding v2 shown",
+            value: !!onboardingV2Shown,
+            onUpdate: () => {
+              setOnboardingV2Shown( !onboardingV2Shown );
             },
           },
           {
@@ -175,6 +190,15 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
               setPhotoEditingEnabled( !photoEditingEnabled );
             },
           },
+          {
+            id: "onboarding-v2",
+            type: "toggle",
+            title: "Onboarding V2",
+            value: onboardingV2Enabled,
+            onUpdate: () => {
+              setOnboardingV2Enabled( !onboardingV2Enabled );
+            },
+          },
         ],
       } ),
     ],
@@ -182,6 +206,8 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       pastedInatUrl,
       onboardingShown,
       setOnboardingShown,
+      onboardingV2Shown,
+      setOnboardingV2Shown,
       navigation,
       traditionalProjectsEnabled,
       setTraditionalProjectsEnabled,
@@ -189,6 +215,8 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       setMyObservationsSmallGridViewEnabled,
       photoEditingEnabled,
       setPhotoEditingEnabled,
+      onboardingV2Enabled,
+      setOnboardingV2Enabled,
     ],
   );
 

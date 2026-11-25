@@ -3,6 +3,7 @@ import * as uuid from "uuid";
 
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
+const ONBOARDING_V2_SHOWN = "onboardingV2Shown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 const ENVIRONMENT_OVERRIDE = "environmentOverride";
 
@@ -38,23 +39,31 @@ export function setEnvironmentOverride( prefix ) {
   }
 }
 
-// Subscribers that get notified when onboardingShown changes, so all
-// components using this hook re-render (mimics useMMKVBoolean behavior)
-const onboardingListeners = new Set();
+// Subscribers that get notified when a boolean changes, so all components
+// using its hook re-render (mimics useMMKVBoolean behavior)
+const booleanListeners = new Set();
 
-export function useOnboardingShown() {
-  const [value, setValue] = useState( () => data.get( ONBOARDING_SHOWN ) ?? false );
+function useBoolean( key ) {
+  const [value, setValue] = useState( () => data.get( key ) ?? false );
 
   useEffect( () => {
-    const listener = () => setValue( data.get( ONBOARDING_SHOWN ) ?? false );
-    onboardingListeners.add( listener );
-    return () => onboardingListeners.delete( listener );
-  }, [] );
+    const listener = () => setValue( data.get( key ) ?? false );
+    booleanListeners.add( listener );
+    return () => booleanListeners.delete( listener );
+  }, [key] );
 
-  const setOnboardingShown = useCallback( newValue => {
-    data.set( ONBOARDING_SHOWN, newValue );
-    onboardingListeners.forEach( l => l() );
-  }, [] );
+  const setBoolean = useCallback( newValue => {
+    data.set( key, newValue );
+    booleanListeners.forEach( l => l() );
+  }, [key] );
 
-  return [value, setOnboardingShown];
+  return [value, setBoolean];
+}
+
+export function useOnboardingShown() {
+  return useBoolean( ONBOARDING_SHOWN );
+}
+
+export function useOnboardingV2Shown() {
+  return useBoolean( ONBOARDING_V2_SHOWN );
 }
