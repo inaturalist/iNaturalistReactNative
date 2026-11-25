@@ -18,6 +18,9 @@ interface Props {
   observation: {
     id: number;
     application?: { name?: string } | null;
+    // checkCamelAndSnakeCase looks up both casings; narrow once Realm models are typed
+    createdAt?: string;
+    created_at?: string;
     geoprivacy?: Geoprivacy;
     license_code: License | null;
     user?: {
