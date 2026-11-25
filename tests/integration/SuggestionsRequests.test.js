@@ -10,6 +10,8 @@ import {
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
+import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -21,6 +23,11 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
+
+jest.mock( "sharedHelpers/fetchCoarseUserLocation", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -74,7 +81,7 @@ const onDevicePrediction = factory( "ModelPrediction", {
 
 const mockUser = factory( "LocalUser" );
 
-const makeObservation = ( ) => factory( "RemoteObservation", {
+const makeObservation = ( overrides = {} ) => factory( "RemoteObservation", {
   _synced_at: null,
   needsSync: jest.fn( ( ) => true ),
   wasSynced: jest.fn( ( ) => false ),
@@ -86,12 +93,12 @@ const makeObservation = ( ) => factory( "RemoteObservation", {
   observed_on_string: "2020-01-01",
   latitude: 4,
   longitude: 10,
+  ...overrides,
 } );
 
 const actor = userEvent.setup( );
 
-const openSuggestionsFromObsEdit = async ( ) => {
-  const observation = makeObservation( );
+const openSuggestionsFromObsEdit = async ( observation = makeObservation( ) ) => {
   useStore.setState( {
     observations: [observation],
     currentObservation: observation,
@@ -253,6 +260,36 @@ describe( "Suggestions requests", ( ) => {
     await actor.press( await screen.findByText( "IDENTIFY" ) );
     await expectSuggestion( withLocationSuggestion );
     expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  describe( "without location permission", ( ) => {
+    let onPermissionGranted;
+    beforeEach( ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: gateProps => {
+          ( { onPermissionGranted } = gateProps );
+          return null;
+        },
+        requestPermissions: jest.fn( ),
+      } ) );
+      fetchCoarseUserLocation.mockResolvedValue( { latitude: 7, longitude: 8 } );
+    } );
+    afterEach( ( ) => {
+      jest.mocked( useLocationPermission.default ).mockRestore( );
+    } );
+
+    it( "asks again with the location once permission is granted", async ( ) => {
+      await openSuggestionsFromObsEdit( makeObservation( { latitude: null, longitude: null } ) );
+      await expectSuggestion( withoutLocationSuggestion );
+      expect( lastScoreImageParams( ) ).not.toHaveProperty( "lat" );
+
+      await act( async ( ) => { await onPermissionGranted( ); } );
+
+      await expectSuggestion( withLocationSuggestion );
+      expect( lastScoreImageParams( ) ).toEqual( expect.objectContaining( { lat: 7, lng: 8 } ) );
+      expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 2 );
+    } );
   } );
 
   describe( "with a remote photo while offline", ( ) => {
