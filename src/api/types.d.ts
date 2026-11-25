@@ -352,6 +352,11 @@ export interface ApiIdentification {
   hidden?: boolean;
 }
 
+export interface ApiSubscription {
+  id?: number;
+  user_id?: number;
+}
+
 export interface ApiNotification {
   comment?: ApiComment;
   comment_id?: number;

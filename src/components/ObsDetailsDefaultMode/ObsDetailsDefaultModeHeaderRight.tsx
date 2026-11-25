@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ApiSubscription } from "api/types";
 import {
   INatIconButton,
 } from "components/SharedComponents";
@@ -19,7 +20,7 @@ interface Props {
   observationId: number;
   uuid: string;
   refetchSubscriptions: () => void;
-  subscriptions: object[];
+  subscriptions?: ApiSubscription[];
 }
 
 const ObsDetailsDefaultModeHeaderRight = ( {

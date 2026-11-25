@@ -1,4 +1,5 @@
 import { createSubscription } from "api/observations";
+import type { ApiSubscription } from "api/types";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { t } from "i18next";
 import React, { useState } from "react";
@@ -14,7 +15,7 @@ interface Props {
   observationId: number;
   uuid: string;
   refetchSubscriptions: ( ) => void;
-  subscriptions: object[];
+  subscriptions?: ApiSubscription[];
 }
 
 const HeaderKebabMenu = ( {
@@ -38,7 +39,7 @@ const HeaderKebabMenu = ( {
     sharingOptions.message = url;
   }
 
-  const isSubscribed = subscriptions?.length > 0;
+  const isSubscribed = !!subscriptions?.length;
 
   const handleShare = async ( ) => {
     setKebabMenuVisible( false );
