@@ -619,6 +619,21 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       },
     );
 
+    it(
+      "passes an internationalized domain to the username/password step as punycode",
+      async ( ) => {
+        const { navigationContainer } = renderAppWithNavigationContainer( );
+        await continueTo( "signup_email" );
+        await enterEmail( "anna@bücher.de" );
+        await actor.press( continueButton( ) );
+        expect( await screen.findByTestId( "Onboarding.signup_credentials" ) ).toBeVisible( );
+        expect( emailAvailable ).toHaveBeenCalledWith( "anna@xn--bcher-kva.de" );
+        expect( navigationContainer.current.getCurrentRoute( ).params ).toEqual( {
+          email: "anna@xn--bcher-kva.de",
+        } );
+      },
+    );
+
     it( "shows an error and stays when the email is already in use", async ( ) => {
       emailAvailable.mockResolvedValueOnce( false );
       renderApp( );
@@ -630,6 +645,20 @@ describe( "Onboarding with OnboardingV2Enabled", ( ) => {
       ) ).toBeVisible( );
       expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
       expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+    } );
+
+    it( "shows an error and stays when the email isn't valid, and clears it on edit", async ( ) => {
+      renderApp( );
+      await continueTo( "signup_email" );
+      await enterEmail( "test@email" );
+      await actor.press( continueButton( ) );
+      const invalidEmailError = i18next.t( "Please-enter-a-valid-email-address" );
+      expect( await screen.findByText( invalidEmailError ) ).toBeVisible( );
+      expect( emailAvailable ).not.toHaveBeenCalled( );
+      expect( screen.getByTestId( "Onboarding.signup_email" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Onboarding.signup_credentials" ) ).toBeNull( );
+      await enterEmail( ".com" );
+      expect( screen.queryByText( invalidEmailError ) ).toBeNull( );
     } );
 
     it(
