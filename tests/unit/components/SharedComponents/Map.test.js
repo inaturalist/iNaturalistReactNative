@@ -51,7 +51,6 @@ describe( "Map", ( ) => {
   it( "displays location indicator when given an observation w/ lat/lng", async ( ) => {
     renderComponent(
       <Map
-        showLocationIndicator
         observation={{
           latitude: Number( faker.location.latitude( ) ),
           longitude: Number( faker.location.longitude( ) ),

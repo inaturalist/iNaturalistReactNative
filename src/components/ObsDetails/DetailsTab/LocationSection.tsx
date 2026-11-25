@@ -59,7 +59,6 @@ const LocationSection = ( { observation }: Props ) => {
         observation={observation}
         openMapScreen={openMapScreen}
         scrollEnabled={false}
-        showLocationIndicator
         tileMapParams={tileMapParams}
         withObsTiles={tileMapParams !== null}
         zoomEnabled={false}
@@ -79,7 +78,6 @@ const LocationSection = ( { observation }: Props ) => {
       closeModal={( ) => setShowMapModal( false )}
       observation={observation}
       tileMapParams={tileMapParams}
-      showLocationIndicator
       headerTitle={(
         <DetailsMapHeader currentUser={currentUser} observation={observation} />
       )}
