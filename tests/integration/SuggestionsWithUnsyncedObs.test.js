@@ -605,32 +605,25 @@ describe( "from AICamera directly", ( ) => {
   } );
 
   describe( "suggestions not using location", () => {
-    // 20240719 amanda - I keep bumping into an unmounted node error
-    // here when ignoreLocationButton is pressed and I'm not sure what the root cause is.
-    // I'm seeing the same type of error when trying to press Add an ID Later, so maybe
-    // the same root cause?
-    it.todo( "should call score_image without location parameters" );
-    // it( "should call score_image without location parameters if"
-    //   + " ignore location pressed", async ( ) => {
-    //   const { observations } = await setupAppWithSignedInUser( );
-    //   await navigateToSuggestionsViaAICameraFromMyObs( );
-    //   await waitFor( ( ) => {
-    //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
-    //   } );
-    //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-    //   expect( ignoreLocationButton ).toBeVisible( );
-    //   await actor.press( ignoreLocationButton );
-    //   await waitFor( ( ) => {
-    //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-    //       expect.not.objectContaining( {
-    //         lat: observations[0].latitude,
-    //         lng: observations[0].longitude
-    //       } ),
-    //       expect.anything( )
-    //     );
-    //   } );
-    //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
-    //   expect( useLocationButton ).toBeVisible( );
-    // } );
+    it( "should call score_image without location parameters if"
+      + " ignore location pressed", async ( ) => {
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.objectContaining( { lat: 56, lng: 9 } ),
+          expect.anything( ),
+        );
+      } );
+      const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
+      await actor.press( ignoreLocationButton );
+      await waitFor( ( ) => {
+        const lastParams = inatjs.computervision.score_image.mock.lastCall[0];
+        expect( lastParams ).not.toHaveProperty( "lat" );
+        expect( lastParams ).not.toHaveProperty( "lng" );
+      } );
+      const useLocationButton = await screen.findByText( /USE LOCATION/ );
+      expect( useLocationButton ).toBeVisible( );
+    } );
   } );
 } );
