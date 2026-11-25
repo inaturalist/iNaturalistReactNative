@@ -28,7 +28,7 @@ const resizeImage = async (
     width, // maxWidth
     height || width, // maxHeight
     "JPEG", // compressFormat
-    100, // quality
+    90, // quality
     rotation || 0, // rotation
     outputPath, // outputPath
     true, // keep metadata,
