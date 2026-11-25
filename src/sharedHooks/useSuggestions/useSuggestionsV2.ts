@@ -1,7 +1,7 @@
 import { exists } from "@dr.pogodin/react-native-fs";
 import { useNetInfo } from "@react-native-community/netinfo";
 import type { QueryClient } from "@tanstack/react-query";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
@@ -248,9 +248,11 @@ const useSuggestionsV2 = ( {
     // don't affect the response
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: onlineKey,
-    queryFn: ( ) => scoreOnline( {
-      photoUri: photoUri as string, coordinates, locale, observationUuid, queryClient, realm,
-    } ),
+    queryFn: photoUri
+      ? ( ) => scoreOnline( {
+        photoUri, coordinates, locale, observationUuid, queryClient, realm,
+      } )
+      : skipToken,
     enabled: !!inputs && isConnected !== false && !attempt.gaveUp,
     // This hook decides when the device is offline. React-query's own idea of
     // it comes from NetInfo too, but treats "not known yet" as offline and
@@ -320,9 +322,9 @@ const useSuggestionsV2 = ( {
       coordinates?.latitude ?? null,
       coordinates?.longitude ?? null,
     ],
-    queryFn: async ( ) => await predictOffline( {
-      ...coordinates, photoUri: photoUri as string, realm,
-    } ) ?? { results: [] },
+    queryFn: photoUri
+      ? async ( ) => await predictOffline( { ...coordinates, photoUri, realm } ) ?? { results: [] }
+      : skipToken,
     enabled: !!inputs && onlineFailed && !urlWillCrashOffline,
     // the on-device model is for when the device is offline
     networkMode: "always",
