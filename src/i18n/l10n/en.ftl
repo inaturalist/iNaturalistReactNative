@@ -117,6 +117,9 @@ All-required-fields-have-been-filled = All required fields have been filled
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
+# Link on the onboarding sign-up email step that opens Login. The <0> part is
+# the question and the <1> part is the bold link text.
+Already-have-an-account-Log-in = <0>Already have an account? </0><1>Log in</1>
 # Button asking if user has an existing iNaturalist account
 Already-have-an-iNaturalist-account = Already have an iNaturalist account?
 # Display name for the iconic taxa category for amphibia
@@ -903,6 +906,8 @@ Leave-your-observations-in-this-project = Leave your observations in this projec
 Leave-your-observations-revoke-hidden-coordinates = Leave your observations in this project but prevent curators from viewing their hidden coordinates
 # Title of a camera tip about plants
 Leaves = Leaves
+# Heading of the onboarding sign-up email step
+Lets-create-your-profile = Let’s create your profile
 Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
@@ -2062,6 +2067,8 @@ You-can-now-upload-your-observations-to-iNaturalist-and-contribute = You can now
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
 # Body of the sheet shown when closing an onboarding sign-up step
 You-can-only-get-identifications-from-other-people-by-creating-an-account = You can only get identifications from other people by creating an account.
+# Text below the heading of the onboarding sign-up email step, explaining why to create an account
+You-can-post-observations-and-other-naturalists-can-respond-to-what-you-find = You can post observations, and other naturalists can respond to what you find!
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 # Onboarding community identification screen: a note left with a sample
 # identification of a spotted beetle, explaining how the identifier knew what
