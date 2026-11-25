@@ -1,4 +1,5 @@
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import { exists } from "@dr.pogodin/react-native-fs";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
@@ -352,6 +353,26 @@ describe( "useSuggestionsV2", ( ) => {
     expect( result.current.usingOfflineSuggestions ).toBe( false );
     expect( topSuggestionId( result ) ).toBe( 745 );
     expect( scoreImage ).toHaveBeenCalledTimes( 2 );
+    expect( ImageResizer.createResizedImage ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  it( "resizes a photo once when the location changes", async ( ) => {
+    const { result, rerender } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    rerender( { photoUri: localPhotoUri, location } );
+    await waitFor( ( ) => expect( scoreImage ).toHaveBeenCalledTimes( 2 ) );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( ImageResizer.createResizedImage ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  it( "resizes again when the resized file is gone", async ( ) => {
+    const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    exists.mockResolvedValueOnce( false );
+    act( ( ) => result.current.retry( ) );
+    await waitFor( ( ) => expect( scoreImage ).toHaveBeenCalledTimes( 2 ) );
+    await waitFor( ( ) => expect( result.current.onlineStatus ).toBe( "fetched" ) );
+    expect( ImageResizer.createResizedImage ).toHaveBeenCalledTimes( 2 );
   } );
 
   describe( "online timeout", ( ) => {
