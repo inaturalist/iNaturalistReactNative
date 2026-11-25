@@ -1,7 +1,7 @@
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { exists } from "@dr.pogodin/react-native-fs";
 import { useNetInfo } from "@react-native-community/netinfo";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { onlineManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 import scoreImage from "api/computerVision";
 import i18n from "i18next";
@@ -245,6 +245,20 @@ describe( "useSuggestionsV2", ( ) => {
     expect( result.current.onlineStatus ).toBe( "offline" );
     expect( topSuggestionId( result ) ).toBe( 750 );
     expect( scoreImage ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  describe( "when react-query also thinks the device is offline", ( ) => {
+    // the app sets react-query's online state from NetInfo
+    beforeEach( ( ) => onlineManager.setOnline( false ) );
+    afterEach( ( ) => onlineManager.setOnline( true ) );
+
+    it( "runs the offline model", async ( ) => {
+      useNetInfo.mockReturnValue( { isConnected: false } );
+      const { result } = renderSuggestionsHook( { photoUri: localPhotoUri } );
+      await waitFor( ( ) => expect( result.current.offlineStatus ).toBe( "fetched" ) );
+      expect( result.current.isLoading ).toBe( false );
+      expect( topSuggestionId( result ) ).toBe( 750 );
+    } );
   } );
 
   it( "skips the offline model for a remote photo while offline", async ( ) => {

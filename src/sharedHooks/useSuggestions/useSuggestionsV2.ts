@@ -317,6 +317,8 @@ const useSuggestionsV2 = ( {
       ...coordinates, photoUri: photoUri as string, realm,
     } ) ?? { results: [] },
     enabled: !!inputs && onlineFailed && !urlWillCrashOffline,
+    // the on-device model is for when the device is offline
+    networkMode: "always",
     staleTime: Infinity,
     retry: false,
     refetchOnWindowFocus: false,
