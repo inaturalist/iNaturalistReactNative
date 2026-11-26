@@ -3,6 +3,7 @@ import * as uuid from "uuid";
 
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
+const ONBOARDING_V2_NEXT_LAUNCH = "onboardingV2NextLaunch";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 const ENVIRONMENT_OVERRIDE = "environmentOverride";
 
@@ -57,4 +58,16 @@ export function useOnboardingShown() {
   }, [] );
 
   return [value, setOnboardingShown];
+}
+
+export function setOnboardingV2NextLaunch( ) {
+  data.delete( ONBOARDING_SHOWN );
+  onboardingListeners.forEach( l => l() );
+  data.set( ONBOARDING_V2_NEXT_LAUNCH, true );
+}
+
+export function consumeOnboardingV2NextLaunch( ) {
+  const result = data.get( ONBOARDING_V2_NEXT_LAUNCH ) || false;
+  data.delete( ONBOARDING_V2_NEXT_LAUNCH );
+  return result;
 }

@@ -1,13 +1,17 @@
 /* eslint-disable i18next/no-literal-string */
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import { useQueryClient } from "@tanstack/react-query";
+import { getJWT, signOut } from "components/LoginSignUp/AuthenticationService";
 import {
   Body2,
   Body3,
   Button,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback, useState } from "react";
+import { Alert } from "react-native";
 import { Switch } from "react-native-paper";
+import { setOnboardingV2NextLaunch } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import syncFeatureFlags, { featureFlagsLogExtra } from "sharedHelpers/syncFeatureFlags";
 import type { FeatureFlagSource } from "sharedHooks/useFeatureFlag";
@@ -20,6 +24,8 @@ import colors from "styles/tailwindColors";
 import { CODE, H1, P } from "./DeveloperSharedComponents";
 
 const logger = log.extend( "FeatureFlags" );
+
+const { useRealm } = RealmContext;
 
 const onOff = ( enabled: boolean ) => ( enabled
   ? "ON"
@@ -176,6 +182,27 @@ const FeatureFlags = () => {
     storeClearAllOverrides( );
     logOverrideChange( "Feature flag overrides cleared" );
   }, [storeClearAllOverrides] );
+  const realm = useRealm( );
+  const queryClient = useQueryClient( );
+  const confirmWipeIntoOnboardingV2 = ( ) => {
+    Alert.alert(
+      "Wipe data and restart?",
+      "This will sign you out, delete all observations, and restart the app into "
+        + "onboarding as on a fresh install, with onboarding_v2 on until the next launch",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Wipe and restart",
+          style: "destructive",
+          onPress: ( ) => {
+            logger.info( "Wiping data and restarting into onboarding v2" );
+            setOnboardingV2NextLaunch( );
+            signOut( { realm, clearRealm: true, queryClient } );
+          },
+        },
+      ],
+    );
+  };
   return (
     <>
       <H1>Feature Flags</H1>
@@ -194,7 +221,12 @@ const FeatureFlags = () => {
       <Button
         text="CLEAR ALL OVERRIDES"
         onPress={clearAllOverrides}
-        className="mt-3"
+        className="my-3"
+      />
+      <Button
+        text="RESTART WITH ONBOARDING V2"
+        onPress={confirmWipeIntoOnboardingV2}
+        testID="FeatureFlags.wipeIntoOnboardingV2"
       />
     </>
   );
