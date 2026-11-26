@@ -36,6 +36,7 @@ class QueueItem extends Realm.Object {
   // Mark an item as failed. If it's failed too many times, delete it.
   static markAsFailed( realm, id ) {
     const queuedItem = realm.objectForPrimaryKey( "QueueItem", id );
+    if ( !queuedItem ) return;
     if ( queuedItem.tries >= MAX_TRIES - 1 ) {
       QueueItem.deleteDequeuedItem( realm, queuedItem.id );
       return;
@@ -48,6 +49,7 @@ class QueueItem extends Realm.Object {
 
   static deleteDequeuedItem( realm, id ) {
     const dequeuedItem = realm.objectForPrimaryKey( "QueueItem", id );
+    if ( !dequeuedItem ) return;
     safeRealmWrite( realm, ( ) => {
       realm.delete( dequeuedItem );
     }, `dequeued item with payload: ${dequeuedItem.payload}` );

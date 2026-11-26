@@ -51,4 +51,9 @@ describe( "QueueItem", ( ) => {
     QueueItem.deleteDequeuedItem( global.realm, 1 );
     expect( queuedItems( ) ).toHaveLength( 0 );
   } );
+
+  it( "should ignore failing or deleting an item that no longer exists", ( ) => {
+    expect( ( ) => QueueItem.markAsFailed( global.realm, 99 ) ).not.toThrow( );
+    expect( ( ) => QueueItem.deleteDequeuedItem( global.realm, 99 ) ).not.toThrow( );
+  } );
 } );
