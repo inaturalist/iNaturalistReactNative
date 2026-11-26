@@ -16,7 +16,7 @@ const { useRealm } = RealmContext;
 
 const useWorkQueue = ( ) => {
   const realm = useRealm( );
-  const [dequeuedItemId, setDequeuedItemId] = useState( null );
+  const [dequeuedItemId, setDequeuedItemId] = useState<number | null>( null );
 
   // we probably don't want this user mutation logic in the useWorkQueue in the long run
   const { mutate: updateUserMutate } = useAuthenticatedMutation(
@@ -68,7 +68,7 @@ const useWorkQueue = ( ) => {
       // Satisfy the useEffect return type by returning a destructor function.
       return () => {};
     }
-    const queuedItems = realm.objects( "QueueItem" );
+    const queuedItems = realm.objects( QueueItem );
     // logger.info( `Initial queue size: ${queuedItems?.length}` );
     queuedItems.addListener( ( collection, _changes ) => {
       // eslint-disable-next-line max-len
