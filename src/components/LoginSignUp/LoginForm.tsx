@@ -6,6 +6,7 @@ import {
   Body1, Body2, Button, CloseButton, INatIcon, List2,
   WarningSheet,
 } from "components/SharedComponents";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { LoginStackScreenProps } from "navigation/types";
@@ -13,7 +14,6 @@ import { RealmContext } from "providers/contexts";
 import React, {
   useCallback, useEffect, useRef, useState,
 } from "react";
-import { Trans } from "react-i18next";
 import type { ScrollView, TextInput } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import { useCurrentUser } from "sharedHooks";

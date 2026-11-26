@@ -9,9 +9,9 @@ import {
   List2,
   RadioButtonSheet,
 } from "components/SharedComponents";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { View } from "components/styledComponents";
 import React from "react";
-import { Trans } from "react-i18next";
 import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 

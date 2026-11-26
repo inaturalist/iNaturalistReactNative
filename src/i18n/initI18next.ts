@@ -54,6 +54,10 @@ const LOCALE = cleanLocaleName( getInatNextLocale( ) );
 export const I18NEXT_CONFIG: InitOptions = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
   lng: LOCALE,
+  // Load translations during init instead of a tick later. index.js doesn't
+  // wait for init, so otherwise the first screen renders raw keys. Our
+  // backend's loader is a synchronous require, so this finishes in init
+  initAsync: false,
   interpolation: {
     escapeValue: false, // react already safes from xss
   },

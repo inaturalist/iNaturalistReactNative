@@ -94,6 +94,14 @@ module.exports = {
     "no-restricted-globals": 0,
     "no-param-reassign": 0,
     "no-var": 1,
+    "no-restricted-imports": [2, {
+      paths: [{
+        name: "react-i18next",
+        importNames: ["Trans"],
+        message: "Use components/SharedComponents/Typography/Trans, which updates when "
+          + "translations load or the language changes",
+      }],
+    }],
     "operator-linebreak": [2, "before"],
     "prefer-const": [2, { destructuring: "all" }],
     "no-restricted-syntax": 0,

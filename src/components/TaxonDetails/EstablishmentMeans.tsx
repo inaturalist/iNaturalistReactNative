@@ -2,10 +2,10 @@ import {
   Body2,
   Heading4,
 } from "components/SharedComponents";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { View } from "components/styledComponents";
 import find from "lodash/find";
 import * as React from "react";
-import { Trans } from "react-i18next";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useTranslation } from "sharedHooks";
 

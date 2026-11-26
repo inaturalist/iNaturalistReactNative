@@ -5,13 +5,13 @@ import Button from "components/SharedComponents/Buttons/Button";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import List2 from "components/SharedComponents/Typography/List2";
+import Trans from "components/SharedComponents/Typography/Trans";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import {
   Image, LinearGradient, Text, View,
 } from "components/styledComponents";
 import INatLogo from "images/svg/inat_logo_color.svg";
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
 import type { ImageRequireSource } from "react-native";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -104,9 +104,6 @@ const WelcomeStep = ( ) => {
       <View className="px-4 pt-[17px]">
         <Body3 className="self-center w-[274px] text-center">
           <Trans
-            // Passing t makes Trans re-render when translations load or the
-            // language changes; otherwise the React Compiler caches it
-            t={t}
             i18nKey="By-continuing-you-agree-to-our-Terms-of-Use-and-Privacy-Policy-Learn-More"
             components={[
               <Text

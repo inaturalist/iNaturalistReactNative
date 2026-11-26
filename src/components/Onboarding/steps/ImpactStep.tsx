@@ -10,9 +10,9 @@ import useOnboardingFlow from "components/Onboarding/useOnboardingFlow";
 import useOnboardingScreenView from "components/Onboarding/useOnboardingScreenView";
 import Button from "components/SharedComponents/Buttons/Button";
 import Body1 from "components/SharedComponents/Typography/Body1";
+import Trans from "components/SharedComponents/Typography/Trans";
 import type { TFunction } from "i18next";
 import React from "react";
-import { Trans } from "react-i18next";
 import useTranslation from "sharedHooks/useTranslation";
 
 // Stories, photos and photo credits are bundled so we can show them offline.
