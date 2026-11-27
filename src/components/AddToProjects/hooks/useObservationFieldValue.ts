@@ -12,7 +12,8 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
     state => state.currentObservation as RealmObservationPojo,
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const { observationFieldValues } = currentObservation;
+  // A new observation that hasn't been saved to Realm yet has no OFV array
+  const { observationFieldValues = [] } = currentObservation;
 
   const existingOfv = ObservationFieldValue.findActiveForObsField(
     currentObservation,

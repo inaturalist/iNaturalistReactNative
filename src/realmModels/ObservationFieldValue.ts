@@ -44,7 +44,7 @@ class ObservationFieldValue extends Realm.Object {
     observation: RealmObservationPojo,
     obsFieldId: number,
   ) {
-    return observation.observationFieldValues.find(
+    return ( observation.observationFieldValues ?? [] ).find(
       ofv => ofv.obsFieldId === obsFieldId,
     );
   }
@@ -53,7 +53,7 @@ class ObservationFieldValue extends Realm.Object {
     observation: RealmObservationPojo,
     obsFieldId: number,
   ) {
-    return observation.observationFieldValues.find(
+    return ( observation.observationFieldValues ?? [] ).find(
       ofv => ofv.obsFieldId === obsFieldId && ObservationFieldValue.isActive( ofv ),
     );
   }

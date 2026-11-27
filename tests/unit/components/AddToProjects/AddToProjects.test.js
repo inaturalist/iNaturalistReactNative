@@ -5,6 +5,7 @@ import {
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
+import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
@@ -143,6 +144,22 @@ describe( "AddToProjects", ( ) => {
     expect(
       screen.queryByText( "To add to this project, all required fields must be filled" ),
     ).toBeNull( );
+  } );
+
+  describe( "when the observation is new", ( ) => {
+    beforeEach( async ( ) => {
+      useStore.setState( { currentObservation: await Observation.new( ) } );
+    } );
+
+    it( "selects a project with fields without crashing", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        screen.getByText( mockProjects[1].projectObservationFields[0].obsField.name ),
+      ).toBeVisible( );
+    } );
   } );
 
   describe( "when a selected project has fields out of position order", ( ) => {

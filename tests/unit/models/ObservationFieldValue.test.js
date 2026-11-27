@@ -48,6 +48,10 @@ describe( "ObservationFieldValue", () => {
       expect( ObservationFieldValue.findForObsField( obs, 10 )?.value ).toBe( "a" );
       expect( ObservationFieldValue.findForObsField( obs, 20 )?.value ).toBe( "b" );
     } );
+
+    it( "should return undefined for a new observation without OFVs", () => {
+      expect( ObservationFieldValue.findForObsField( {}, 10 ) ).toBeUndefined();
+    } );
   } );
 
   describe( "isActive", () => {
@@ -76,6 +80,10 @@ describe( "ObservationFieldValue", () => {
       expect( ObservationFieldValue.findActiveForObsField( obs, 20 ) ).toBeUndefined();
       expect( ObservationFieldValue.findActiveForObsField( obs, 30 ) ).toBeUndefined();
       expect( ObservationFieldValue.findActiveForObsField( obs, 99 ) ).toBeUndefined();
+    } );
+
+    it( "should return undefined for a new observation without OFVs", () => {
+      expect( ObservationFieldValue.findActiveForObsField( {}, 10 ) ).toBeUndefined();
     } );
   } );
 
