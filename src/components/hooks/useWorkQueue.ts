@@ -16,18 +16,18 @@ const { useRealm } = RealmContext;
 
 const useWorkQueue = ( ) => {
   const realm = useRealm( );
-  const [dequeuedItemId, setDequeuedItemId] = useState( null );
+  const [dequeuedItemId, setDequeuedItemId] = useState<number | null>( null );
 
   // we probably don't want this user mutation logic in the useWorkQueue in the long run
   const { mutate: updateUserMutate } = useAuthenticatedMutation(
-    ( params: ApiUntypedParams, optsWithAuth ) => {
-      logger.info( `Sending API request to update user with params: ${JSON.stringify( params )}` );
-      return updateUsers( params, optsWithAuth );
+    ( { payload }: { id: number; payload: ApiUntypedParams }, optsWithAuth ) => {
+      logger.info( `Sending API request to update user with params: ${JSON.stringify( payload )}` );
+      return updateUsers( payload, optsWithAuth );
     },
     {
-      onSuccess: async ( ) => {
-        // logger.info( `API update successful for item ID: ${dequeuedItemId}` );
-        QueueItem.deleteDequeuedItem( realm, dequeuedItemId );
+      onSuccess: async ( _response, { id } ) => {
+        // logger.info( `API update successful for item ID: ${id}` );
+        QueueItem.deleteDequeuedItem( realm, id );
         setDequeuedItemId( null );
         // note: we probably want to request that the web team changes
         // the API to send back a user object with all the right preferences
@@ -54,10 +54,10 @@ const useWorkQueue = ( ) => {
           // logger.info( `Updated user in Realm: prefers_common_names=${updatedRealmUser.prefers_common_names}, prefers_scientific_name_first=${updatedRealmUser.prefers_scientific_name_first}` );
         }, "modifying user via remote fetch in updateUserMutate" );
       },
-      onError: userUpdateError => {
-        logger.error( `User update failed for item ID: ${dequeuedItemId}`, userUpdateError );
+      onError: ( userUpdateError, { id } ) => {
+        logger.error( `User update failed for item ID: ${id}`, userUpdateError );
         // logger.info( "Marking queue item as failed" );
-        QueueItem.markAsFailed( realm, dequeuedItemId );
+        QueueItem.markAsFailed( realm, id );
         setDequeuedItemId( null );
       },
     },
@@ -68,7 +68,7 @@ const useWorkQueue = ( ) => {
       // Satisfy the useEffect return type by returning a destructor function.
       return () => {};
     }
-    const queuedItems = realm.objects( "QueueItem" );
+    const queuedItems = realm.objects( QueueItem );
     // logger.info( `Initial queue size: ${queuedItems?.length}` );
     queuedItems.addListener( ( collection, _changes ) => {
       // eslint-disable-next-line max-len
@@ -96,7 +96,7 @@ const useWorkQueue = ( ) => {
             //   logger.info( "Initiating taxon names update with API" );
             // }
             setDequeuedItemId( id );
-            updateUserMutate( dequeuedPayload );
+            updateUserMutate( { id, payload: dequeuedPayload } );
           }
         }
       }
