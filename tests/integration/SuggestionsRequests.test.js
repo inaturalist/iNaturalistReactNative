@@ -2,6 +2,7 @@ import "tests/helpers/mockMortalForIntegration";
 
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { onlineManager } from "@tanstack/react-query";
 import {
   act,
   screen,
@@ -10,6 +11,8 @@ import {
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
+import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -21,6 +24,11 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
+
+jest.mock( "sharedHelpers/fetchCoarseUserLocation", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -74,7 +82,7 @@ const onDevicePrediction = factory( "ModelPrediction", {
 
 const mockUser = factory( "LocalUser" );
 
-const makeObservation = ( ) => factory( "RemoteObservation", {
+const makeObservation = ( overrides = {} ) => factory( "RemoteObservation", {
   _synced_at: null,
   needsSync: jest.fn( ( ) => true ),
   wasSynced: jest.fn( ( ) => false ),
@@ -86,12 +94,19 @@ const makeObservation = ( ) => factory( "RemoteObservation", {
   observed_on_string: "2020-01-01",
   latitude: 4,
   longitude: 10,
+  ...overrides,
 } );
 
 const actor = userEvent.setup( );
 
-const openSuggestionsFromObsEdit = async ( ) => {
-  const observation = makeObservation( );
+const makeObservationWithLocalPhoto = ( overrides = {} ) => makeObservation( {
+  observationPhotos: [factory( "LocalObservationPhoto", {
+    photo: factory( "LocalPhoto", { url: undefined, localFilePath: "photoUploads/local.jpg" } ),
+  } )],
+  ...overrides,
+} );
+
+const openSuggestionsFromObsEdit = async ( observation = makeObservation( ) ) => {
   useStore.setState( {
     observations: [observation],
     currentObservation: observation,
@@ -199,7 +214,7 @@ describe( "Suggestions requests", ( ) => {
     await openSuggestionsFromObsEdit( );
     await expectSuggestion( { taxon: { id: onDevicePrediction.taxon_id } } );
     expect( screen.getByText( /You are offline. Tap to reload/ ) ).toBeVisible( );
-    expect( screen.queryByText( /IGNORE LOCATION/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /IGNORE LOCATION/ ) ).toBeNull( );
   } );
 
   it( "falls back to on-device suggestions when the request is slow", async ( ) => {
@@ -208,7 +223,7 @@ describe( "Suggestions requests", ( ) => {
     await waitFor( ( ) => {
       expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
     } );
-    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeNull( );
     await act( async ( ) => {
       jest.advanceTimersByTime( 5_000 );
     } );
@@ -225,7 +240,7 @@ describe( "Suggestions requests", ( ) => {
     await actor.press( offlineNotice );
 
     await expectSuggestion( withLocationSuggestion );
-    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeNull( );
   } );
 
   it( "asks the server about the other photo after falling back for the first", async ( ) => {
@@ -243,7 +258,7 @@ describe( "Suggestions requests", ( ) => {
     await actor.press( screen.getByTestId( `ObsPhotoSelectionList.${secondPhotoUri}` ) );
 
     await expectSuggestion( secondPhotoSuggestion );
-    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeFalsy( );
+    expect( screen.queryByText( /You are offline. Tap to reload/ ) ).toBeNull( );
   } );
 
   it( "doesn't request again when Suggestions is reopened for the same photo", async ( ) => {
@@ -253,6 +268,54 @@ describe( "Suggestions requests", ( ) => {
     await actor.press( await screen.findByText( "IDENTIFY" ) );
     await expectSuggestion( withLocationSuggestion );
     expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  describe( "without location permission", ( ) => {
+    let onPermissionGranted;
+    beforeEach( ( ) => {
+      jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+        hasPermissions: false,
+        renderPermissionsGate: gateProps => {
+          ( { onPermissionGranted } = gateProps );
+          return null;
+        },
+        requestPermissions: jest.fn( ),
+      } ) );
+      fetchCoarseUserLocation.mockResolvedValue( { latitude: 7, longitude: 8 } );
+    } );
+    afterEach( ( ) => {
+      jest.mocked( useLocationPermission.default ).mockRestore( );
+    } );
+
+    it( "asks again with the location once permission is granted", async ( ) => {
+      await openSuggestionsFromObsEdit( makeObservation( { latitude: null, longitude: null } ) );
+      await expectSuggestion( withoutLocationSuggestion );
+      expect( lastScoreImageParams( ) ).not.toHaveProperty( "lat" );
+
+      await act( async ( ) => { await onPermissionGranted( ); } );
+
+      await expectSuggestion( withLocationSuggestion );
+      expect( lastScoreImageParams( ) ).toEqual( expect.objectContaining( { lat: 7, lng: 8 } ) );
+      expect( inatjs.computervision.score_image ).toHaveBeenCalledTimes( 2 );
+    } );
+  } );
+
+  describe( "in airplane mode", ( ) => {
+    const originalUseNetInfo = useNetInfo.getMockImplementation( );
+    // the app sets react-query's online state from NetInfo too
+    beforeEach( ( ) => onlineManager.setOnline( false ) );
+    afterEach( ( ) => {
+      onlineManager.setOnline( true );
+      useNetInfo.mockImplementation( originalUseNetInfo );
+    } );
+
+    it( "shows on-device suggestions for a local photo", async ( ) => {
+      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      await openSuggestionsFromObsEdit( makeObservationWithLocalPhoto( ) );
+      await expectSuggestion( { taxon: { id: onDevicePrediction.taxon_id } } );
+      expect( screen.getByText( /You are offline. Tap to reload/ ) ).toBeVisible( );
+      expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
+    } );
   } );
 
   describe( "with a remote photo while offline", ( ) => {

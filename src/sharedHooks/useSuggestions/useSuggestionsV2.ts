@@ -1,14 +1,14 @@
 import { exists } from "@dr.pogodin/react-native-fs";
 import { useNetInfo } from "@react-native-community/netinfo";
 import type { QueryClient } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
+import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useMemo, useReducer, useRef, useState,
+  useCallback, useEffect, useMemo, useReducer,
 } from "react";
 import type Realm from "realm";
 import { UpdateMode } from "realm";
@@ -68,74 +68,6 @@ export interface UseSuggestionsV2Options {
   onlineTimeoutMs?: number;
 }
 
-interface State {
-  inputKey: string | null;
-  onlineStatus: OnlineStatus;
-  offlineStatus: OfflineStatus;
-  onlineSuggestions?: OnlineSuggestionsQueryResponse;
-  offlineSuggestions?: OfflineSuggestionsResponse;
-  onlineError?: Error;
-  offlineError?: Error;
-}
-
-type Action =
-  | {
-    type: "RUN_STARTED";
-    inputKey: string;
-    onlineStatus: "loading" | "offline";
-    offlineStatus: "idle" | "loading" | "skipped";
-  }
-  | {
-    type: "ONLINE_SETTLED";
-    onlineStatus: Exclude<OnlineStatus, "idle" | "loading">;
-    offlineStatus: "loading" | "skipped";
-    onlineSuggestions?: OnlineSuggestionsQueryResponse;
-    onlineError?: Error;
-  }
-  | {
-    type: "OFFLINE_SETTLED";
-    offlineStatus: "fetched" | "error";
-    offlineSuggestions?: OfflineSuggestionsResponse;
-    offlineError?: Error;
-  }
-  | { type: "RUN_ENDED" };
-
-const initialState: State = {
-  inputKey: null,
-  onlineStatus: "idle",
-  offlineStatus: "idle",
-};
-
-const reducer = ( state: State, action: Action ): State => {
-  switch ( action.type ) {
-    case "RUN_STARTED":
-      return {
-        inputKey: action.inputKey,
-        onlineStatus: action.onlineStatus,
-        offlineStatus: action.offlineStatus,
-      };
-    case "ONLINE_SETTLED":
-      return {
-        ...state,
-        onlineStatus: action.onlineStatus,
-        offlineStatus: action.offlineStatus,
-        onlineSuggestions: action.onlineSuggestions,
-        onlineError: action.onlineError,
-      };
-    case "OFFLINE_SETTLED":
-      return {
-        ...state,
-        offlineStatus: action.offlineStatus,
-        offlineSuggestions: action.offlineSuggestions,
-        offlineError: action.offlineError,
-      };
-    case "RUN_ENDED":
-      return initialState;
-    default:
-      return state;
-  }
-};
-
 // 20240815 amanda - passing an https photo to predictImage while offline
 // crashes the app
 const willCrashOffline = ( photoUri: string, isConnected: boolean | null ) => (
@@ -154,6 +86,9 @@ const resizePhoto = async ( photoUri: string, queryClient: QueryClient ) => {
     queryFn: async ( ) => ( await flattenUploadParams( photoUri ) ).image,
     staleTime: Infinity,
     retry: false,
+    // resizing is local, so it shouldn't wait for react-query to think the
+    // device is online
+    networkMode: "always",
   } );
   try {
     const image = await resize( );
@@ -168,9 +103,9 @@ const resizePhoto = async ( photoUri: string, queryClient: QueryClient ) => {
   }
 };
 
-const onlineQueryKeyPrefix = ( photoUri: string, coordinates?: Coordinates ) => [
+const onlineQueryKeyPrefix = ( photoUri?: string | null, coordinates?: Coordinates ) => [
   "scoreImageV2",
-  photoUri,
+  photoUri ?? null,
   coordinates?.latitude ?? null,
   coordinates?.longitude ?? null,
 ];
@@ -195,166 +130,72 @@ const saveTaxaToRealm = ( realm: Realm, response: OnlineSuggestionsQueryResponse
   }
 };
 
-interface Run {
-  cancelled: boolean;
-  // ends the online attempt early, e.g. when the connection drops
-  interruptOnline?: ( status: "offline" | "cancelled" ) => void;
-}
-
-interface RunParams {
-  run: Run;
-  inputKey: string;
+interface ScoreOnlineParams {
   photoUri: string;
   coordinates?: Coordinates;
-  isConnected: () => boolean | null;
-  language: string;
   locale?: string;
   observationUuid?: string;
-  onlineTimeoutMs: number;
   queryClient: QueryClient;
   realm: Realm;
-  dispatch: ( action: Action ) => void;
 }
 
-type OnlineOutcome =
-  | { status: "fetched"; data: OnlineSuggestionsQueryResponse }
-  | { status: "error"; error: Error }
-  | { status: "timed-out" | "offline" | "cancelled" };
-
-const fetchOnline = async ( {
-  run, photoUri, coordinates, language, locale, observationUuid, onlineTimeoutMs,
-  queryClient, realm,
-}: RunParams ): Promise<OnlineOutcome> => {
-  const queryKey = [...onlineQueryKeyPrefix( photoUri, coordinates ), language];
-
-  // realm and observationUuid don't affect the response, so they stay out of
-  // the key
-  const queryFn = async ( ) => {
-    const image = await resizePhoto( photoUri, queryClient );
-    const apiToken = await getJWT( true );
-    const params = {
-      image,
-      ...( coordinates && { lat: coordinates.latitude, lng: coordinates.longitude } ),
-      ...( locale && { locale } ),
-    };
-    const apiResponse = await scoreImage(
-      params,
-      { api_token: apiToken },
-    ) as OnlineSuggestionsApiResponse;
-    const response = shimApiResponseForCommonAncestor( apiResponse );
-    // Saving taxa and the comparison experiment happen here, once per server
-    // response, so a run that reuses a cached response doesn't repeat them.
-    // The experiment also needs the resized photo, which only exists here
-    saveTaxaToRealm( realm, response );
-    if ( observationUuid ) {
-      startOfflineExperimentInBackground(
-        observationUuid,
-        response,
-        ( ) => predictOffline( { ...coordinates, photoUri: image.uri, realm } ),
-      );
-    }
-    return response;
+const scoreOnline = async ( {
+  photoUri, coordinates, locale, observationUuid, queryClient, realm,
+}: ScoreOnlineParams ) => {
+  const image = await resizePhoto( photoUri, queryClient );
+  const apiToken = await getJWT( true );
+  const params = {
+    image,
+    ...( coordinates && { lat: coordinates.latitude, lng: coordinates.longitude } ),
+    ...( locale && { locale } ),
   };
-
-  const request = queryClient.fetchQuery( {
-    queryKey,
-    queryFn,
-    // a given photo and location always score the same, so reuse results
-    // until the query is garbage collected
-    staleTime: Infinity,
-    retry: ( failureCount, error ) => error.name !== PHOTO_RESIZE_ERROR
-      && reactQueryRetry( failureCount, error, { queryKey } ),
-    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
-  } );
-
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const outcome = await new Promise<OnlineOutcome>( resolve => {
-    // whichever settles first wins
-    timer = setTimeout( ( ) => resolve( { status: "timed-out" } ), onlineTimeoutMs );
-    run.interruptOnline = status => resolve( { status } );
-    request.then(
-      data => resolve( { status: "fetched", data } ),
-      error => resolve( { status: "error", error } ),
+  const apiResponse = await scoreImage(
+    params,
+    { api_token: apiToken },
+  ) as OnlineSuggestionsApiResponse;
+  const response = shimApiResponseForCommonAncestor( apiResponse );
+  saveTaxaToRealm( realm, response );
+  if ( observationUuid ) {
+    startOfflineExperimentInBackground(
+      observationUuid,
+      response,
+      ( ) => predictOffline( { ...coordinates, photoUri: image.uri, realm } ),
     );
-  } );
-  clearTimeout( timer );
-  run.interruptOnline = undefined;
-
-  // a cancelled run leaves the request alone so the next run with the same
-  // inputs (e.g. a remount) can pick it up
-  if ( outcome.status === "timed-out" || outcome.status === "offline" ) {
-    queryClient.cancelQueries( { queryKey } );
   }
-  return outcome;
+  return response;
 };
 
-const runSuggestions = async ( params: RunParams ) => {
-  const {
-    run, inputKey, photoUri, coordinates, isConnected, realm, dispatch: rawDispatch,
-  } = params;
-  const dispatch = ( action: Action ) => {
-    if ( !run.cancelled ) rawDispatch( action );
-  };
+// What the hook has to remember about the server attempt for the current
+// inputs. It starts over whenever the inputs change
+interface Attempt {
+  inputs: string | null;
+  // the server attempt was abandoned, and stays abandoned until retry()
+  gaveUp?: "timed-out" | "offline";
+  // the user asked for this attempt, so the server gets longer
+  isRetry: boolean;
+}
 
-  const runOffline = async ( ) => {
-    try {
-      const offlineSuggestions = await predictOffline( { ...coordinates, photoUri, realm } );
-      dispatch( {
-        type: "OFFLINE_SETTLED",
-        offlineStatus: "fetched",
-        offlineSuggestions: offlineSuggestions ?? { results: [] },
-      } );
-    } catch ( offlineError ) {
-      dispatch( {
-        type: "OFFLINE_SETTLED",
-        offlineStatus: "error",
-        offlineError: offlineError as Error,
-      } );
-    }
-  };
+type AttemptAction =
+  | { type: "INPUTS_CHANGED"; inputs: string | null }
+  | { type: "GAVE_UP"; inputs: string | null; reason: "timed-out" | "offline" }
+  | { type: "RETRIED"; inputs: string | null };
 
-  if ( isConnected( ) === false ) {
-    const skipOffline = willCrashOffline( photoUri, false );
-    dispatch( {
-      type: "RUN_STARTED",
-      inputKey,
-      onlineStatus: "offline",
-      offlineStatus: skipOffline
-        ? "skipped"
-        : "loading",
-    } );
-    if ( !skipOffline ) await runOffline( );
-    return;
+const newAttempt = ( inputs: string | null ): Attempt => ( { inputs, isRetry: false } );
+
+const attemptReducer = ( state: Attempt, action: AttemptAction ): Attempt => {
+  if ( action.type === "INPUTS_CHANGED" ) return newAttempt( action.inputs );
+  // an event from earlier inputs
+  if ( action.inputs !== state.inputs ) return state;
+  switch ( action.type ) {
+    case "GAVE_UP":
+      return state.gaveUp
+        ? state
+        : { ...state, gaveUp: action.reason };
+    case "RETRIED":
+      return { inputs: state.inputs, isRetry: true };
+    default:
+      return state;
   }
-
-  dispatch( {
-    type: "RUN_STARTED", inputKey, onlineStatus: "loading", offlineStatus: "idle",
-  } );
-  const outcome = await fetchOnline( params );
-  if ( run.cancelled || outcome.status === "cancelled" ) return;
-
-  if ( outcome.status === "fetched" ) {
-    dispatch( {
-      type: "ONLINE_SETTLED",
-      onlineStatus: "fetched",
-      offlineStatus: "skipped",
-      onlineSuggestions: outcome.data,
-    } );
-    return;
-  }
-
-  const skipOffline = willCrashOffline( photoUri, isConnected( ) );
-  dispatch( {
-    type: "ONLINE_SETTLED",
-    onlineStatus: outcome.status,
-    offlineStatus: skipOffline
-      ? "skipped"
-      : "loading",
-    onlineError: outcome.status === "error"
-      ? outcome.error
-      : undefined,
-  } );
-  if ( !skipOffline ) await runOffline( );
 };
 
 const useSuggestionsV2 = ( {
@@ -368,108 +209,153 @@ const useSuggestionsV2 = ( {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { isConnected } = useNetInfo( );
-  const [state, dispatch] = useReducer( reducer, initialState );
-  const [attempt, setAttempt] = useState( 0 );
-  // set by retry() and used up by the run it starts
-  const retryRequested = useRef( false );
 
   const latitude = location?.latitude;
   const longitude = location?.longitude;
-  // half a coordinate pair counts as no location
   const coordinates = useMemo( ( ): Coordinates | undefined => (
     typeof latitude === "number" && typeof longitude === "number"
       ? { latitude, longitude }
       : undefined
   ), [latitude, longitude] );
 
-  const inputKey = enabled && photoUri
-    ? JSON.stringify( [photoUri, coordinates ?? null, attempt] )
-    : null;
-
-  // Common names follow the app language. Signed-in users get it from their
-  // account, so only logged-out users send it
   const language = i18n?.language ?? "en";
   const locale = currentUser
     ? undefined
     : language;
 
-  // values a run reads when it starts or as it goes, but that shouldn't
-  // start a new run when they change
-  const latest = useRef( {
-    isConnected, language, locale, observationUuid, onlineTimeoutMs, queryClient, realm,
+  const inputs = enabled && photoUri
+    ? JSON.stringify( [photoUri, coordinates ?? null, language] )
+    : null;
+
+  const [storedAttempt, dispatch] = useReducer( attemptReducer, inputs, newAttempt );
+  // Start over when the inputs change. Adjusting state during render is
+  // React's alternative to an effect that resets state after a prop changes
+  // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  if ( storedAttempt.inputs !== inputs ) {
+    dispatch( { type: "INPUTS_CHANGED", inputs } );
+  }
+  const attempt = storedAttempt.inputs === inputs
+    ? storedAttempt
+    : newAttempt( inputs );
+
+  const onlineKey = useMemo(
+    ( ) => [...onlineQueryKeyPrefix( photoUri, coordinates ), language],
+    [photoUri, coordinates, language],
+  );
+
+  const online = useQuery( {
+    // locale follows language, which is in the key; realm and observationUuid
+    // don't affect the response
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: onlineKey,
+    queryFn: photoUri
+      ? ( ) => scoreOnline( {
+        photoUri, coordinates, locale, observationUuid, queryClient, realm,
+      } )
+      : skipToken,
+    enabled: !!inputs && isConnected !== false && !attempt.gaveUp,
+    // This hook decides when the device is offline. React-query's own idea of
+    // it comes from NetInfo too, but treats "not known yet" as offline and
+    // would hold the request without starting the timeout
+    networkMode: "always",
+    staleTime: Infinity,
+    retry: ( failureCount, error ) => error.name !== PHOTO_RESIZE_ERROR
+      && reactQueryRetry( failureCount, error, { queryKey: onlineKey } ),
+    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
+    // a failed attempt stays failed until retry()
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   } );
-  // declared before the run effect so it updates first in the same commit
+
+  // Give up on a slow server. Fall back to the on-device model quickly at
+  // first, but give the server longer when the user asked for another try
+  const timeoutMs = onlineTimeoutMs ?? (
+    attempt.isRetry
+      ? RETRY_SCORE_IMAGE_TIMEOUT
+      : INITIAL_SCORE_IMAGE_TIMEOUT
+  );
+  const waitingOnServer = !!inputs && online.isFetching;
   useEffect( ( ) => {
-    latest.current = {
-      isConnected, language, locale, observationUuid, onlineTimeoutMs, queryClient, realm,
-    };
+    const timer = waitingOnServer
+      ? setTimeout( ( ) => {
+        dispatch( { type: "GAVE_UP", inputs, reason: "timed-out" } );
+        queryClient.cancelQueries( { queryKey: onlineKey } );
+      }, timeoutMs )
+      : undefined;
+    return ( ) => clearTimeout( timer );
+  }, [waitingOnServer, timeoutMs, inputs, onlineKey, queryClient] );
+
+  // Losing the connection ends the server attempt, even if it comes back
+  useEffect( ( ) => {
+    if ( isConnected !== false ) return;
+    dispatch( { type: "GAVE_UP", inputs, reason: "offline" } );
+    queryClient.cancelQueries( { queryKey: onlineKey } );
+  }, [isConnected, inputs, onlineKey, queryClient] );
+
+  // gaveUp only explains why there's no answer; an answer that arrived before
+  // giving up still counts
+  let onlineStatus: OnlineStatus = "loading";
+  if ( !inputs ) {
+    onlineStatus = "idle";
+  } else if ( online.isSuccess ) {
+    onlineStatus = "fetched";
+  } else if ( online.isError ) {
+    onlineStatus = "error";
+  } else if ( attempt.gaveUp ) {
+    onlineStatus = attempt.gaveUp;
+  } else if ( isConnected === false ) {
+    onlineStatus = "offline";
+  }
+
+  const onlineFailed = onlineStatus === "error"
+    || onlineStatus === "timed-out"
+    || onlineStatus === "offline";
+  const urlWillCrashOffline = !!photoUri && willCrashOffline( photoUri, isConnected );
+
+  const offline = useQuery<OfflineSuggestionsResponse>( {
+    // coordinates are in the key as latitude and longitude; realm doesn't
+    // affect the result
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [
+      "predictOfflineV2",
+      photoUri ?? null,
+      coordinates?.latitude ?? null,
+      coordinates?.longitude ?? null,
+    ],
+    queryFn: photoUri
+      ? async ( ) => await predictOffline( { ...coordinates, photoUri, realm } ) ?? { results: [] }
+      : skipToken,
+    enabled: !!inputs && onlineFailed && !urlWillCrashOffline,
+    // the on-device model is for when the device is offline
+    networkMode: "always",
+    staleTime: Infinity,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   } );
 
-  const runRef = useRef<Run | null>( null );
-
-  useEffect( ( ) => {
-    const run: Run = { cancelled: false };
-    if ( inputKey && photoUri ) {
-      runRef.current = run;
-      const { current } = latest;
-      runSuggestions( {
-        run,
-        inputKey,
-        photoUri,
-        coordinates,
-        isConnected: ( ) => latest.current.isConnected,
-        language: current.language,
-        locale: current.locale,
-        observationUuid: current.observationUuid,
-        // Fall back to the on-device model quickly at first, but give the
-        // server longer when the user asked for another try
-        onlineTimeoutMs: current.onlineTimeoutMs ?? (
-          retryRequested.current
-            ? RETRY_SCORE_IMAGE_TIMEOUT
-            : INITIAL_SCORE_IMAGE_TIMEOUT
-        ),
-        queryClient: current.queryClient,
-        realm: current.realm,
-        dispatch,
-      } );
-      retryRequested.current = false;
-    }
-    return ( ) => {
-      run.cancelled = true;
-      run.interruptOnline?.( "cancelled" );
-      // otherwise re-enabling with the same inputs would match the old
-      // result for a frame before the new run starts
-      dispatch( { type: "RUN_ENDED" } );
-    };
-  }, [inputKey, photoUri, coordinates] );
-
-  useEffect( ( ) => {
-    if ( isConnected === false ) {
-      runRef.current?.interruptOnline?.( "offline" );
-    }
-  }, [isConnected] );
+  let offlineStatus: OfflineStatus = "loading";
+  if ( !inputs || onlineStatus === "loading" ) {
+    offlineStatus = "idle";
+  } else if ( onlineStatus === "fetched" || urlWillCrashOffline ) {
+    offlineStatus = "skipped";
+  } else if ( offline.isSuccess ) {
+    offlineStatus = "fetched";
+  } else if ( offline.isError ) {
+    offlineStatus = "error";
+  }
 
   const retry = useCallback( ( ) => {
-    // nothing to retry while there is no run
-    if ( !photoUri || !inputKey ) return;
-    queryClient.removeQueries( { queryKey: onlineQueryKeyPrefix( photoUri, coordinates ) } );
-    retryRequested.current = true;
-    setAttempt( a => a + 1 );
-  }, [photoUri, coordinates, inputKey, queryClient] );
+    dispatch( { type: "RETRIED", inputs } );
+    queryClient.resetQueries( { queryKey: onlineKey } );
+  }, [inputs, onlineKey, queryClient] );
 
-  // State from previous inputs is stale. Report a run that hasn't started
-  // yet as loading so callers never see a "no suggestions" frame
-  const view: State = !!inputKey && state.inputKey === inputKey
-    ? state
-    : {
-      ...initialState,
-      onlineStatus: inputKey
-        ? "loading"
-        : "idle",
-    };
-  const {
-    onlineStatus, offlineStatus, onlineSuggestions, offlineSuggestions, onlineError, offlineError,
-  } = view;
+  const onlineSuggestions = onlineStatus === "fetched"
+    ? online.data
+    : undefined;
+  const offlineSuggestions = offlineStatus === "fetched"
+    ? offline.data
+    : undefined;
 
   const suggestions = useMemo( ( ) => {
     if ( onlineSuggestions ) {
@@ -486,14 +372,18 @@ const useSuggestionsV2 = ( {
     isLoading: onlineStatus === "loading" || offlineStatus === "loading",
     onlineStatus,
     offlineStatus,
-    onlineError,
-    offlineError,
+    onlineError: onlineStatus === "error"
+      ? online.error ?? undefined
+      : undefined,
+    offlineError: offlineStatus === "error"
+      ? offline.error ?? undefined
+      : undefined,
     // the unfiltered response, for debugging
     onlineSuggestions,
     usingOfflineSuggestions: offlineStatus === "loading"
       || offlineStatus === "fetched"
       || offlineStatus === "error",
-    urlWillCrashOffline: !!photoUri && willCrashOffline( photoUri, isConnected ),
+    urlWillCrashOffline,
     retry,
   };
 };
