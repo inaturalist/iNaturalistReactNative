@@ -2060,6 +2060,9 @@ You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per obser
 # Onboarding location permission screen: reassurance about how location is used
 You-can-adjust-your-location-privacy-on-every-observation = You can adjust your location privacy on every observation
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
+# One-time tip in the AI camera, in a speech bubble pointing at the button
+# that opens the photo library to upload existing photos
+YOU-CAN-ALSO-UPLOAD-PHOTOS = YOU CAN ALSO UPLOAD PHOTOS
 # Body of the sheet shown when closing an onboarding education step; the demo can be replayed from Settings
 You-can-always-revisit-this-later-in-settings = You can always revisit this later in settings.
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
