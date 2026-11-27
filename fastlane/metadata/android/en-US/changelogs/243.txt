@@ -1,0 +1,2 @@
+FIXED
+* Minor bug fixes
