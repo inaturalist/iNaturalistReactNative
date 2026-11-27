@@ -8,21 +8,23 @@ import {
 import { View } from "components/styledComponents";
 import Attribution from "components/Suggestions/Attribution";
 import React from "react";
-import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
+import type {
+  OnlineSuggestionsQueryResponse,
+} from "sharedHooks/useSuggestions/useOnlineSuggestions";
+import type { OfflineStatus, OnlineStatus } from "sharedHooks/useSuggestions/useSuggestionsV2";
 
 interface Props {
   debugData: {
-    onlineFetchStatus: string;
-    offlineFetchStatus: string;
+    onlineStatus: OnlineStatus;
+    offlineStatus: OfflineStatus;
+    onlineError?: Error;
+    offlineError?: Error;
+    onlineSuggestions?: OnlineSuggestionsQueryResponse;
     selectedPhotoUri: string;
-    onlineSuggestionsUpdatedAt: Date;
-    timedOut: boolean;
     shouldUseEvidenceLocation: boolean;
     topSuggestionType: string;
-    onlineSuggestions: [];
     usingOfflineSuggestions: boolean;
-    onlineSuggestionsError: Error;
     suggestions: {
       otherSuggestions: [];
       topSuggestion: {
@@ -107,16 +109,15 @@ const SuggestionsFooter = ( {
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
           <Heading4 className="text-white">Diagnostics</Heading4>
-          <Body3 className="text-white">Online fetch status: {JSON.stringify( debugData?.onlineFetchStatus )}</Body3>
-          <Body3 className="text-white">Online fetch status: {JSON.stringify( debugData?.offlineFetchStatus )}</Body3>
+          <Body3 className="text-white">Online status: {JSON.stringify( debugData?.onlineStatus )}</Body3>
+          <Body3 className="text-white">Offline status: {JSON.stringify( debugData?.offlineStatus )}</Body3>
           <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
-          <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
-          <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
           <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.shouldUseEvidenceLocation )}</Body3>
           <Body3 className="text-white">Top suggestion type: {JSON.stringify( debugData?.topSuggestionType )}</Body3>
           <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
           <Body3 className="text-white">Using offline suggestions: {JSON.stringify( debugData?.usingOfflineSuggestions )}</Body3>
-          <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
+          <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineError?.message )}</Body3>
+          <Body3 className="text-white">Error loading offline: {JSON.stringify( debugData?.offlineError?.message )}</Body3>
           { debugData?.usingOfflineSuggestions && (
             <View className="mb-3">
               <Body3 className="text-white">Offline Scores</Body3>

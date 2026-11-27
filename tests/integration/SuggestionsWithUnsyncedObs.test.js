@@ -24,7 +24,10 @@ import factory, { makeResponse } from "tests/factory";
 import {
   navigateToSuggestionsViaAICameraFromMyObs,
 } from "tests/helpers/addObsBottomSheet";
-import { renderAppWithObservations } from "tests/helpers/render";
+import {
+  queryClient,
+  renderAppWithObservations,
+} from "tests/helpers/render";
 import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -48,6 +51,8 @@ beforeEach( () => {
 afterEach( () => {
   // Restore original implementation
   Animated.Value = OriginalValue;
+  // suggestions are cached per photo and location, and tests reuse both
+  queryClient.clear( );
 } );
 
 const mockModelResult = {
@@ -101,7 +106,8 @@ jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   },
 } ) );
 
-const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
+const mockUserLocation = { latitude: 56, longitude: 9, accuracy: 8 };
+const mockFetchUserLocation = jest.fn( () => mockUserLocation );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation(),
@@ -492,6 +498,11 @@ describe( "from AICamera directly", ( ) => {
   } );
 
   describe( "suggestions without location permissions", ( ) => {
+    afterEach( ( ) => {
+      jest.mocked( useLocationPermission.default ).mockRestore( );
+      mockFetchUserLocation.mockImplementation( ( ) => mockUserLocation );
+    } );
+
     it( "should not call score_image with location parameters on first render"
       + " if location permission not given", async ( ) => {
       jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
@@ -521,6 +532,12 @@ describe( "from AICamera directly", ( ) => {
   } );
 
   describe( "suggestions while offline", ( ) => {
+    // otherwise the offline mock leaks into later tests
+    const originalUseNetInfo = useNetInfo.getMockImplementation( );
+    afterEach( ( ) => {
+      useNetInfo.mockImplementation( originalUseNetInfo );
+    } );
+
     it( "should not call score_image and should not show any location buttons", async ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
@@ -588,32 +605,25 @@ describe( "from AICamera directly", ( ) => {
   } );
 
   describe( "suggestions not using location", () => {
-    // 20240719 amanda - I keep bumping into an unmounted node error
-    // here when ignoreLocationButton is pressed and I'm not sure what the root cause is.
-    // I'm seeing the same type of error when trying to press Add an ID Later, so maybe
-    // the same root cause?
-    it.todo( "should call score_image without location parameters" );
-    // it( "should call score_image without location parameters if"
-    //   + " ignore location pressed", async ( ) => {
-    //   const { observations } = await setupAppWithSignedInUser( );
-    //   await navigateToSuggestionsViaAICameraFromMyObs( );
-    //   await waitFor( ( ) => {
-    //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
-    //   } );
-    //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-    //   expect( ignoreLocationButton ).toBeVisible( );
-    //   await actor.press( ignoreLocationButton );
-    //   await waitFor( ( ) => {
-    //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
-    //       expect.not.objectContaining( {
-    //         lat: observations[0].latitude,
-    //         lng: observations[0].longitude
-    //       } ),
-    //       expect.anything( )
-    //     );
-    //   } );
-    //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
-    //   expect( useLocationButton ).toBeVisible( );
-    // } );
+    it( "should call score_image without location parameters if"
+      + " ignore location pressed", async ( ) => {
+      await setupAppWithSignedInUser( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
+      await waitFor( ( ) => {
+        expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
+          expect.objectContaining( { lat: 56, lng: 9 } ),
+          expect.anything( ),
+        );
+      } );
+      const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
+      await actor.press( ignoreLocationButton );
+      await waitFor( ( ) => {
+        const lastParams = inatjs.computervision.score_image.mock.lastCall[0];
+        expect( lastParams ).not.toHaveProperty( "lat" );
+        expect( lastParams ).not.toHaveProperty( "lng" );
+      } );
+      const useLocationButton = await screen.findByText( /USE LOCATION/ );
+      expect( useLocationButton ).toBeVisible( );
+    } );
   } );
 } );

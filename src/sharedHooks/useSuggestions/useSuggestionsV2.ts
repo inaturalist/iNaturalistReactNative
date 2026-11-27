@@ -1,3 +1,4 @@
+import { exists } from "@dr.pogodin/react-native-fs";
 import { useNetInfo } from "@react-native-community/netinfo";
 import type { QueryClient } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
@@ -55,6 +56,8 @@ interface Coordinates {
 
 export interface UseSuggestionsV2Options {
   photoUri?: string | null;
+  // each new coordinate pair starts a new request, so hold it steady while a
+  // GPS fix is still settling
   location?: Location | null;
   // e.g. hold off until location permission is known
   enabled?: boolean;
@@ -143,10 +146,21 @@ const willCrashOffline = ( photoUri: string, isConnected: boolean | null ) => (
 // an API response into unhandled rejections, so these skip it
 const PHOTO_RESIZE_ERROR = "PhotoResizeError";
 
-const resizePhoto = async ( photoUri: string ) => {
+// Resized once per photo; reloads and location changes reuse the file
+const resizePhoto = async ( photoUri: string, queryClient: QueryClient ) => {
+  const queryKey = ["resizedPhotoForScoreImage", photoUri];
+  const resize = ( ) => queryClient.fetchQuery( {
+    queryKey,
+    queryFn: async ( ) => ( await flattenUploadParams( photoUri ) ).image,
+    staleTime: Infinity,
+    retry: false,
+  } );
   try {
-    const { image } = await flattenUploadParams( photoUri );
-    return image;
+    const image = await resize( );
+    // startup cleanup and sign-out empty the folder the file is in
+    if ( await exists( image.uri.replace( /^file:\/\//, "" ) ) ) return image;
+    queryClient.removeQueries( { queryKey } );
+    return await resize( );
   } catch ( resizeError ) {
     const error = new Error( `Couldn't resize photo: ${( resizeError as Error ).message}` );
     error.name = PHOTO_RESIZE_ERROR;
@@ -216,7 +230,7 @@ const fetchOnline = async ( {
   // realm and observationUuid don't affect the response, so they stay out of
   // the key
   const queryFn = async ( ) => {
-    const image = await resizePhoto( photoUri );
+    const image = await resizePhoto( photoUri, queryClient );
     const apiToken = await getJWT( true );
     const params = {
       image,
@@ -474,6 +488,8 @@ const useSuggestionsV2 = ( {
     offlineStatus,
     onlineError,
     offlineError,
+    // the unfiltered response, for debugging
+    onlineSuggestions,
     usingOfflineSuggestions: offlineStatus === "loading"
       || offlineStatus === "fetched"
       || offlineStatus === "error",

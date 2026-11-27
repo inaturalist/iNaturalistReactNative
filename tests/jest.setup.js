@@ -99,6 +99,10 @@ jest.setTimeout( 50000 );
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
+// keeps its attributes, like the real one
+inatjs.FileUpload.mockImplementation( function FileUpload( attrs ) {
+  Object.assign( this, attrs );
+} );
 inatjs.observations.observers.mockResolvedValue( makeResponse( ) );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );

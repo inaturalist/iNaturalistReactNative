@@ -45,13 +45,17 @@ afterAll( uniqueRealmAfterAll );
 
 const mockUser = factory( "LocalUser" );
 
-jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions", ( ) => jest.fn( () => ( {
-  dataUpdatedAt: 1764627659, // arbitrary epoch timestamp, 1/1/2000
-  error: null,
-  onlineSuggestions: {
-    results: [],
-  },
-} ) ) );
+jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions", ( ) => ( {
+  __esModule: true,
+  ...jest.requireActual( "sharedHooks/useSuggestions/useOnlineSuggestions" ),
+  default: jest.fn( () => ( {
+    dataUpdatedAt: 1764627659, // arbitrary epoch timestamp, 1/1/2000
+    error: null,
+    onlineSuggestions: {
+      results: [],
+    },
+  } ) ),
+} ) );
 
 beforeEach( async () => {
   setStoreStateLayout( {
