@@ -523,37 +523,32 @@ describe( "Network", ( ) => {
     } );
   } );
 
-  // SUSPECTED BUG: the hook rethrows the model's error during render, and
-  // main has no error boundary, so in the app this takes the whole app down
-  it( "R-NET-07 [bug] offline and the on-device model fails: the screen crashes", async ( ) => {
+  it( "R-NET-07 offline and the on-device model fails: asks for the group", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     const { impl } = renderMatch( );
     await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
     await world.failOffline( );
-    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).crashed ).toBe( true ) );
-  } );
-
-  // SUSPECTED BUG: losing the connection throws away an online answer the
-  // person is already looking at
-  it( "R-NET-08 [bug] connection drops while a result is showing: "
-    + "the result is replaced", async ( ) => {
-    const { impl } = await showMatchWith( observationWithLocation( ), CONFIDENT_RESULTS );
-    await world.setNetwork( false );
-    // Briefly looks like nothing was found, with no “Analyzing” overlay
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
     expect( impl.read( ALL_TAXA ) ).toMatchObject( {
-      analyzing: false,
-      verdict: "The AI is not confident. Upload to ask the community.",
+      crashed: false,
       top: null,
       groupPicker: true,
     } );
-    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
-    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
-    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).top?.id ).toBe( TAXA.compassPlant.id ) );
-    // Coming back online doesn't bring the online answer back
+  } );
+
+  it( "R-NET-08 connection drops while a result is showing: the result stays", async ( ) => {
+    const { impl } = await showMatchWith( observationWithLocation( ), CONFIDENT_RESULTS );
+    await world.setNetwork( false );
+    await world.advance( 1_000 );
+    expect( impl.read( ALL_TAXA ) ).toMatchObject( {
+      analyzing: false,
+      top: { id: TAXA.cupPlant.id },
+    } );
+    expect( world.offlineCalls( ) ).toHaveLength( 0 );
     await world.setNetwork( true );
     await world.advance( 1_000 );
-    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.compassPlant.id } );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.cupPlant.id } );
     expect( world.onlineCalls( ) ).toHaveLength( 1 );
   } );
 
@@ -579,12 +574,8 @@ describe( "Network", ( ) => {
     } );
   } );
 
-  // SUSPECTED BUG: once the first request times out, useOnlineSuggestions
-  // keeps `timedOut` true for good and hides every online answer. The GPS fix
-  // still makes the screen show "Analyzing" and ask the API again with the
-  // location, but that answer is thrown away and the on-device guess stays.
-  it( "B-02 [bug] after a slow first answer, the online answer asked for with the GPS "
-    + "location is ignored", async ( ) => {
+  it( "B-02 after a slow first answer, the online answer asked for with the GPS "
+    + "location is used", async ( ) => {
     const observation = makeNewObservation( );
     world.setObservation( observation );
     const { impl, currentRoute } = renderMatch( );
@@ -601,17 +592,16 @@ describe( "Network", ( ) => {
     expect( impl.read( ALL_TAXA ).analyzing ).toBe( true );
     // The API answers the new request quickly and confidently
     await world.respondOnline( [suggestion( TAXA.rosinweed, 97 )], { call: 1 } );
-    // The on-device model is run again with the location too
-    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
     await world.advance( 1_000 );
-    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.compassPlant.id } );
-    expect( impl.read( ALL_TAXA ).alternatives ).not.toContain( TAXA.rosinweed.id );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.rosinweed.id } );
+    // the on-device model isn't needed again
+    expect( world.offlineCalls( ) ).toHaveLength( 1 );
 
     await impl.pressSave( actor );
     await waitFor( ( ) => expect( currentRoute( ).name ).toBe( "TabNavigator" ) );
     expect( savedObservation( observation.uuid ) ).toMatchObject( {
-      taxon: { id: TAXA.compassPlant.id },
+      taxon: { id: TAXA.rosinweed.id },
       latitude: 10,
       longitude: 20,
     } );
@@ -677,20 +667,19 @@ describe( "Location", ( ) => {
     } );
   } );
 
-  it( "R-LOC-05 connection drops while GPS is still fixing: the on-device model runs "
-    + "again with the location", async ( ) => {
+  it( "R-LOC-05 connection drops while GPS is still fixing: the online answer stays until "
+    + "the fix, then the on-device model runs with the location", async ( ) => {
     const { impl } = await showMatchWith( makeNewObservation( ), CONFIDENT_RESULTS );
     await world.setNetwork( false );
-    await waitFor( ( ) => expect( world.offlineCalls( ).length ).toBeGreaterThan( 0 ) );
-    expect( world.offlineCalls( )[0].location ).toBeUndefined( );
-    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
-    const runsBeforeFix = world.offlineCalls( ).length;
+    await world.advance( 1_000 );
+    expect( impl.read( ALL_TAXA ).top ).toMatchObject( { id: TAXA.cupPlant.id } );
+    expect( world.offlineCalls( ) ).toHaveLength( 0 );
     await world.deliverGpsFix( { latitude: 10, longitude: 20 } );
-    await waitFor( ( ) => expect( world.offlineCalls( ).length ).toBeGreaterThan( runsBeforeFix ) );
-    expect( world.offlineCalls( ).at( -1 ).location ).toEqual( { latitude: 10, longitude: 20 } );
+    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
+    expect( world.offlineCalls( )[0].location ).toEqual( { latitude: 10, longitude: 20 } );
     await world.respondOffline( [prediction( TAXA.rosinweed, 92 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).top?.id ).toBe( TAXA.rosinweed.id ) );
-    // React Query holds requests while offline, so the API isn't asked again
+    // offline, so the API isn't asked again
     expect( world.onlineCalls( ) ).toHaveLength( 1 );
     expect( useStore.getState( ).currentObservation ).toMatchObject( {
       latitude: 10, longitude: 20,
@@ -1173,24 +1162,19 @@ describe( "Deeper: photos, map, and returning with a location", ( ) => {
 } );
 
 describe( "Deeper: the on-device model", ( ) => {
-  // The location reaches the model through the online request's parameters,
-  // which are prepared after the first run
-  it( "R-NET-10 offline from the start: the on-device model runs without the observation's "
-    + "location, then again with it", async ( ) => {
+  it( "R-NET-10 offline from the start: the on-device model runs once, with the "
+    + "observation's location", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     renderMatch( );
     await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
     expect( world.offlineCalls( )[0] ).toMatchObject( {
-      useGeomodel: false,
-      location: undefined,
-    } );
-    await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
-    await waitFor( ( ) => expect( world.offlineCalls( ).length ).toBeGreaterThan( 1 ) );
-    expect( world.offlineCalls( ).at( -1 ) ).toMatchObject( {
       useGeomodel: true,
       location: { latitude: 41.5, longitude: -93.6 },
     } );
+    await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
+    await world.advance( 1_000 );
+    expect( world.offlineCalls( ) ).toHaveLength( 1 );
   } );
 
   it( "R-NET-10b falling back after an online attempt: the on-device model uses the "
@@ -1241,10 +1225,8 @@ describe( "Deeper: the on-device model", ( ) => {
     } );
   } );
 
-  // React Query holds the request while offline and sends it on reconnecting,
-  // but Match has already settled on the on-device answer
-  it( "R-NET-13 offline from the start, then the connection returns: the held request "
-    + "goes out and its answer is ignored", async ( ) => {
+  it( "R-NET-13 offline from the start, then the connection returns: the API isn't asked "
+    + "and the on-device answer stays", async ( ) => {
     world.setNetwork( false );
     world.setObservation( observationWithLocation( ) );
     const { impl } = renderMatch( );
@@ -1252,9 +1234,8 @@ describe( "Deeper: the on-device model", ( ) => {
     await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
     await world.setNetwork( true );
-    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 1 ) );
-    await world.respondOnline( [suggestion( TAXA.rosinweed, 95 )] );
     await world.advance( 6_000 );
+    expect( world.onlineCalls( ) ).toHaveLength( 0 );
     expect( impl.read( ALL_TAXA ) ).toMatchObject( {
       top: { id: TAXA.cupPlant.id },
       learnMore: "species",
@@ -1344,11 +1325,8 @@ describe( "Third pass: edges", ( ) => {
     } );
   } );
 
-  // SUSPECTED BUG: the stop waits for an online attempt that never happens,
-  // so offline visits end only by the trace's own 10 second timeout and are
-  // reported as timeouts
-  it( "R-PERF-03 [bug] offline from the start: "
-    + "the performance trace is never stopped", async ( ) => {
+  it( "R-PERF-03 offline from the start: reports “AI camera to Match” marked "
+    + "offline", async ( ) => {
     const stopFirebaseTrace = jest.fn( );
     useStore.setState( { stopFirebaseTrace } );
     world.setNetwork( false );
@@ -1357,8 +1335,27 @@ describe( "Third pass: edges", ( ) => {
     await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
     await world.respondOffline( [prediction( TAXA.cupPlant, 95 )] );
     await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
-    await world.advance( 2_000 );
-    expect( stopFirebaseTrace ).not.toHaveBeenCalled( );
+    expect( stopFirebaseTrace ).toHaveBeenLastCalledWith(
+      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+      { online: "false" },
+    );
+  } );
+
+  it( "R-PERF-04 connection drops while the API is working: reports “AI camera to "
+    + "Match” marked offline", async ( ) => {
+    const stopFirebaseTrace = jest.fn( );
+    useStore.setState( { stopFirebaseTrace } );
+    world.setObservation( observationWithLocation( ) );
+    const { impl } = renderMatch( );
+    await waitFor( ( ) => expect( world.onlineCalls( ) ).toHaveLength( 1 ) );
+    await world.setNetwork( false );
+    await waitFor( ( ) => expect( world.offlineCalls( ) ).toHaveLength( 1 ) );
+    await world.respondOffline( [prediction( TAXA.compassPlant, 90 )] );
+    await waitFor( ( ) => expect( impl.read( ALL_TAXA ).analyzing ).toBe( false ) );
+    expect( stopFirebaseTrace ).toHaveBeenLastCalledWith(
+      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+      { online: "false" },
+    );
   } );
 } );
 
@@ -1396,10 +1393,9 @@ describe( "Fourth pass: boundaries and stale data", ( ) => {
     } );
   } );
 
-  // SUSPECTED BUG: the device's stored taxon is merged over the API's, so an
-  // outdated stored name wins, even though the fresh one is then saved
-  it( "R-RESULT-15 [bug] a name stored on the device beats "
-    + "the fresh one from the API", async ( ) => {
+  // The API's taxa are saved before the answer is shown, so the stored taxon
+  // merged over it is already the fresh one
+  it( "R-RESULT-15 the fresh name from the API beats one stored on the device", async ( ) => {
     realm( ).write( ( ) => {
       realm( ).create( "Taxon", {
         id: TAXA.cupPlant.id,
@@ -1413,8 +1409,7 @@ describe( "Fourth pass: boundaries and stale data", ( ) => {
     await world.advance( 2_000 );
     const cached = screen.queryAllByText( "Old Cached Name" ).length > 0;
     const fresh = screen.queryAllByText( "Cup Plant" ).length > 0;
-    expect( { cached, fresh } ).toEqual( { cached: true, fresh: false } );
-    // The fresh name does reach the device afterwards
+    expect( { cached, fresh } ).toEqual( { cached: false, fresh: true } );
     expect( realm( ).objectForPrimaryKey( "Taxon", TAXA.cupPlant.id ) ).toMatchObject( {
       preferred_common_name: "Cup Plant",
     } );

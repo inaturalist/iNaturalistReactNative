@@ -25,7 +25,7 @@ In `Match.requirements.test.js`.
 | R-RESULT-13 |  | The match threshold is strictly above 78 |
 | R-RESULT-13b |  | A score just above 78 is a match, shown as 78% |
 | R-RESULT-14 |  | No results but a common ancestor: treated as no results |
-| R-RESULT-15 | **bug** | A name stored on the device beats the fresh one from the API |
+| R-RESULT-15 |  | The fresh name from the API beats one stored on the device |
 | R-RESULT-16 |  | The AI camera's own guess isn't shown while Match analyzes |
 
 ## Choosing another suggestion or a group
@@ -86,16 +86,16 @@ In `Match.requirements.test.js`.
 | R-NET-05 | **bug** | API errors (500): tries 3 times over about 4 seconds, then uses the on-device model |
 | R-NET-05b |  | API down (503): uses the on-device model right away, no retries |
 | R-NET-06 |  | Connection drops while the API is working: falls back right away |
-| R-NET-07 | **bug** | Offline and the on-device model fails: the screen crashes |
-| R-NET-08 | **bug** | Connection drops while a result is showing: the result is replaced |
+| R-NET-07 |  | Offline and the on-device model fails: asks for the group |
+| R-NET-08 |  | Connection drops while a result is showing: the result stays |
 | R-NET-09 |  | Offline: names come from taxa the app has seen before |
-| R-NET-10 |  | Offline from the start: the on-device model runs without the observation's location, then again with it |
+| R-NET-10 |  | Offline from the start: the on-device model runs once, with the observation's location |
 | R-NET-10b |  | Falling back after an online attempt: the on-device model uses the location |
 | R-NET-11 |  | Offline, nothing confident but a common ancestor: the ancestor is the match |
 | R-NET-12 |  | Offline, the model's prediction is human: shows only human |
-| R-NET-13 |  | Offline from the start, then the connection returns: the held request goes out and its answer is ignored |
+| R-NET-13 |  | Offline from the start, then the connection returns: the API isn't asked and the on-device answer stays |
 | R-NET-15 |  | The API answers with an empty response |
-| B-02 | **bug** | After a slow first answer, the online answer asked for with the GPS location is ignored |
+| B-02 |  | After a slow first answer, the online answer asked for with the GPS location is used |
 
 ## Location
 
@@ -107,7 +107,7 @@ In `Match.requirements.test.js`.
 | R-LOC-02 |  | New photo without location: asks the AI first, then again once GPS answers |
 | R-LOC-03 |  | GPS answers before the AI does: asks again with the location |
 | R-LOC-04 |  | GPS keeps improving: the location updates but the AI is only asked again once |
-| R-LOC-05 |  | Connection drops while GPS is still fixing: the on-device model runs again with the location |
+| R-LOC-05 |  | Connection drops while GPS is still fixing: the online answer stays until the fix, then the on-device model runs with the location |
 | R-LOC-06 |  | Offline from the start: the GPS location is added to the observation |
 | R-LOC-07 |  | No location permission: asks the AI without location and offers to add one |
 | R-LOC-08 |  | Add location without permission, then grant it: uses GPS and asks the AI again |
@@ -166,7 +166,8 @@ In `Match.requirements.test.js`.
 | --- | --- | --- |
 | R-PERF-01 |  | Reports “AI camera to Match” once, marked online |
 | R-PERF-02 |  | Reports “AI camera to Match” marked offline after a fallback |
-| R-PERF-03 | **bug** | Offline from the start: the performance trace is never stopped |
+| R-PERF-03 |  | Offline from the start: reports “AI camera to Match” marked offline |
+| R-PERF-04 |  | Connection drops while the API is working: reports “AI camera to Match” marked offline |
 
 ## Round trips through other screens
 

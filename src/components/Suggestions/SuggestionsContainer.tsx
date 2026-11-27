@@ -26,17 +26,6 @@ import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
 
-// Still used by MatchContainer
-export enum FETCH_STATUSES {
-  FETCH_STATUS_LOADING = "loading",
-  FETCH_STATUS_ONLINE_FETCHED = "online-fetched",
-  FETCH_STATUS_ONLINE_ERROR = "online-error",
-  FETCH_STATUS_OFFLINE_FETCHED = "offline-fetched",
-  FETCH_STATUS_OFFLINE_ERROR = "offline-error",
-  FETCH_STATUS_OFFLINE_SKIPPED = "offline-skipped",
-  FETCH_STATUS_ONLINE_SKIPPED = "online-skipped"
-}
-
 const SuggestionsContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );

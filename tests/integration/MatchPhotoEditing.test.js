@@ -12,7 +12,7 @@ import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
-import { renderAppWithComponent } from "tests/helpers/render";
+import { queryClient, renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -105,6 +105,8 @@ describe( "editing the observation photo in the Match media viewer", ( ) => {
   afterEach( ( ) => {
     setStoreStateFeatureFlags( { [FeatureFlag.PhotoEditingEnabled]: false } );
     inatjs.computervision.score_image.mockReset( );
+    // suggestions are cached per photo and location, and these tests reuse both
+    queryClient.clear( );
   } );
 
   it( "should fetch new suggestions for the edited photo when the viewer closes", async ( ) => {
