@@ -6,6 +6,6 @@ Plus de façons d’observer : Appuyez et maintenez le bouton de l’appareil ph
 
 Suivez les autres naturalistes : Consultez vos notifications pour voir si d’autres membres de la communauté iNaturalist ajoutent des identifications ou posent des questions sur vos observations.
 
-Set your preferences: If you're a longtime user and want your app experience to feel more like earlier versions of iNaturalist, you can! Allez dans les Paramètres, activez le mode avancé, puis sélectionnez « Modifier l’observation » dans la section du milieu.
+Définissez vos préférences : Si vous êtes un utilisateur de longue date et souhaitez que votre expérience d’application ressemble davantage aux versions antérieures d’iNaturalist, vous pouvez le faire ! Allez dans les Paramètres, activez le mode avancé, puis sélectionnez « Modifier l’observation » dans la section du milieu.
 
 Merci d’utiliser iNaturalist ! Merci de nous faire part de vos impressions sur l’application en utilisant le formulaire de Retour disponible dans le menu principal.
