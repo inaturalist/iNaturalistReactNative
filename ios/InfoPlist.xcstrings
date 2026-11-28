@@ -229,7 +229,7 @@
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "iNaturalist"
           }
         },
@@ -710,7 +710,7 @@
         },
         "id" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "iNaturalist"
           }
         },
